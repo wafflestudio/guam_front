@@ -28,7 +28,7 @@ class ProjectBanner extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [HexColor("#787878").withOpacity(0.75), HexColor("#000000").withOpacity(0.75)],
+                  colors: [HexColor("#787878").withOpacity(0.4), HexColor("#000000").withOpacity(0.4)],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 )
