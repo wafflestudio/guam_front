@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../../models/project.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class NewProject extends StatelessWidget {
-  final Project newProject;
+class ProjectBanner extends StatelessWidget {
+  final Project project;
 
-  NewProject(this.newProject);
+  ProjectBanner(this.project);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class NewProject extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(newProject.thumbnail),
+                  image: NetworkImage(project.thumbnail),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -42,7 +42,7 @@ class NewProject extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    newProject.title,
+                    project.title,
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,

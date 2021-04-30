@@ -4,17 +4,19 @@ import 'dart:convert';
 import '../../models/project.dart';
 import '../../helpers/http_request.dart';
 
-class NewProjects with ChangeNotifier {
-  List<Project> _newProjects;
+class Projects with ChangeNotifier {
+  List<Project> _projects;
+  List<Project> _almostFullProjects;
   bool loading = false;
 
-  NewProjects({@required String authToken}) {
-    fetchNewProjects(authToken);
+  Projects({@required String authToken}) {
+    fetchProjects(authToken);
   }
 
-  List<Project> get newProjects => _newProjects;
+  List<Project> get projects => _projects;
+  List<Project> get almostFullProjects => _almostFullProjects;
 
-  Future fetchNewProjects(String authToken) async {
+  Future fetchProjects(String authToken) async {
     try {
       loading = true;
       // await HttpRequest()
@@ -26,17 +28,24 @@ class NewProjects with ChangeNotifier {
       //     loading = false;
       //   }
       // });
-      List<Map<String, dynamic>> newProjects = [
+      List<Map<String, dynamic>> projects = [
         {'id': 1, "title": 'StackOverFlow 토이 프로젝트', 'difficulty': 1, 'thumbnail': "https://upload.wikimedia.org/wikipedia/commons/f/f7/Stack_Overflow_logo.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
         {'id': 2, "title": 'Youtube 제작하기', 'difficulty': 1, 'thumbnail': "https://blog.kakaocdn.net/dn/BFi6P/btqu2a0vtPj/Yz8dSCZronFkrwkGxZ2PQ1/img.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
         {'id': 3, "title": '커플앱 비트윈 카피앱 제작하기', 'difficulty': 1, 'thumbnail': "https://dtqvguqpjeirn.cloudfront.net/static/img/kr_jobs/ic_web_jobs_vision2@3x.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
         {'id': 4, "title": '카카오톡 만들기', 'difficulty': 1, 'thumbnail': "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Kakao_CI_yellow.svg/1200px-Kakao_CI_yellow.svg.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
-
       ];
 
-      _newProjects = newProjects.map((e) => Project.fromJson(e)).toList();
+      _projects = projects.map((e) => Project.fromJson(e)).toList();
 
-      print("new projects[0]: ${newProjects[0]}");
+      List<Map<String, dynamic>> almostFullProjects = [
+        {'id': 1, "title": '비트코인 채굴기 만들기', 'difficulty': 1, 'thumbnail': "https://upload.wikimedia.org/wikipedia/commons/f/f7/Stack_Overflow_logo.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
+        {'id': 2, "title": '시간표 앱 만들기', 'difficulty': 1, 'thumbnail': "https://blog.kakaocdn.net/dn/BFi6P/btqu2a0vtPj/Yz8dSCZronFkrwkGxZ2PQ1/img.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
+        {'id': 3, "title": '카풀 앱 제작하기', 'difficulty': 1, 'thumbnail': "https://dtqvguqpjeirn.cloudfront.net/static/img/kr_jobs/ic_web_jobs_vision2@3x.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
+        {'id': 4, "title": '교육용 드론 만들기', 'difficulty': 1, 'thumbnail': "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Kakao_CI_yellow.svg/1200px-Kakao_CI_yellow.svg.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
+      ];
+
+      _almostFullProjects = almostFullProjects.map((e) => Project.fromJson(e)).toList();
+
       loading = false;
     } catch (e) {
       print(e);
