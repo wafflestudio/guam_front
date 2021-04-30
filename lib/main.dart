@@ -11,6 +11,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static HexColor themeColor = HexColor('#6200EE');
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
             '/sign_in': (context) => SignIn(),
           },
           theme: ThemeData(
-            primaryColor: HexColor('#6200EE'),
+            primaryColor: themeColor,
           ),
         )
     );
