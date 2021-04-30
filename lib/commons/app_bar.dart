@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
+import 'package:guam_front/main.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic trailing}) {
-  var themeColor = HexColor('#6200EE');
   var textColor = HexColor('#f0f0f9');
   var iconColor = HexColor('#f0f0f9');
 
@@ -33,7 +33,7 @@ PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic tra
       ),
       leading: leading,
       trailing: trailing,
-      backgroundColor: themeColor,
+      backgroundColor: MyApp.themeColor,
     );
   }
 }

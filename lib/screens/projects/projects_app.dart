@@ -21,7 +21,13 @@ class ProjectsAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(title: '프로젝트'),
+      appBar: appBar(
+          title: '프로젝트',
+          trailing: Icon(
+            Icons.search,
+            color: Colors.white,
+          ),
+      ),
       body: ProjectsBody(),
     );
   }
