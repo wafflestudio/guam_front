@@ -13,6 +13,8 @@ class Home extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         onTap: (idx) => homeProvider.idx = idx,
         currentIndex: homeProvider.idx,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         items: homeProvider.bottomNavItems.map((e) =>
             BottomNavigationBarItem(
               label: e['label'],

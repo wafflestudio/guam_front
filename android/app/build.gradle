@@ -23,6 +23,7 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
@@ -60,4 +61,21 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+buildscript {
+
+    repositories {
+        google()  // Google's Maven repository
+    }
+
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.5'  // Google Services plugin
+    }
+}
+
+allprojects {
+    repositories {
+        google()  // Google's Maven repository
+    }
 }

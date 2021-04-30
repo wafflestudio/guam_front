@@ -15,11 +15,11 @@ class HomeProvider with ChangeNotifier {
   final List<Map<String, dynamic>> bottomNavItems = [
     {
       'label': '프로젝트',
-      'icon': Icons.content_paste,
+      'icon': Icons.home_filled,
     },
     {
       'label': '게시판',
-      'icon': Icons.dashboard,
+      'icon': Icons.content_paste,
     },
     {
       'label': '프로필',
