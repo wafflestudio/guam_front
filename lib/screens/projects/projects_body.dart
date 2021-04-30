@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'new_projects.dart';
+import 'new_projects_list.dart';
 
 class ProjectsBody extends StatelessWidget {
   @override
@@ -15,11 +15,11 @@ class ProjectsBody extends StatelessWidget {
             child: Text('필터'),
           ),
           Container(
-            height: bodyHeight * 0.8,
-            child: NewProjects(),
+            height: bodyHeight * 0.2,
           ),
           Container(
-            child: Text('신규 프로젝트'),
+            height: bodyHeight * 0.8,
+            child: NewProjectsList(),
           )
         ],
       ),

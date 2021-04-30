@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../commons/app_bar.dart';
 import '../../providers/user_auth/authenticate.dart';
-import '../../providers/projects/new_projects_list.dart';
+import '../../providers/projects/new_projects.dart';
 import 'projects_body.dart';
 
 class ProjectsApp extends StatelessWidget {
@@ -10,7 +10,7 @@ class ProjectsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => NewProjectsList(authToken: context.read<Authenticate>().authToken)),
+        ChangeNotifierProvider(create: (_) => NewProjects(authToken: context.read<Authenticate>().authToken)),
       ],
       child: ProjectsAppScaffold(),
     );
