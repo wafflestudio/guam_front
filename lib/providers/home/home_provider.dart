@@ -18,7 +18,7 @@ class HomeProvider with ChangeNotifier {
       'icon': Icons.home_filled,
     },
     {
-      'label': '게시판',
+      'label': '작업실',
       'icon': Icons.content_paste,
     },
     {
