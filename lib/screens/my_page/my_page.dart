@@ -6,10 +6,17 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(title: '프로필'),
-      body: MyPageBody()
+      appBar: AppBar(
+        title: Text('프로필'),
+        actions: [
+          IconButton(icon: Icon(
+            Icons.settings,
+            color: Colors.white,
+          ),
+              onPressed: () {})
+        ],
+      ),
+      body: MyPageBody(),
     );
   }
 }
-
-

@@ -1,8 +1,17 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../user_auth/sign_out.dart';
 
-class MyPageBody extends StatelessWidget {
 
+class MyPageBody extends StatefulWidget {
+  @override
+  _MyPageBodyState createState() => _MyPageBodyState();
+}
+
+class _MyPageBodyState extends State<MyPageBody> {
+  PickedFile _imageFile;
+  final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _blogController = TextEditingController();
@@ -18,33 +27,130 @@ class MyPageBody extends StatelessWidget {
       body: Stack(
         alignment: Alignment.center,
         children: <Widget>[
+          SizedBox(
+            height: 20
+          ),
           Container(color: Colors.grey),
           Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0, left: 120, right: 120, bottom: 50),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage("https://media.vlpt.us/images/nickanism/post/06e649c9-fc39-406a-9c54-375bd2ab0d62/lfVWBmiW_400x400.png"),
-                    ),
-                  ),
-                ),
-                ),
+                imageProfile(context, size),
                 Stack(
                   children: <Widget>[
                     _inputForm(size),
                     _authButton(size)
                   ],
                 ),
+
                 Center(child: SignOut()),
               ]
           ),
         ],
       ),
     );
+  }
+
+  Widget imageProfile(BuildContext context, Size size) {
+    return Center(
+      child: Stack(children: <Widget>[
+        Container(
+          width: 150,
+          height: 170,
+          child: _imageFile == null
+              ? Icon(Icons.person, color: Colors.white, size: 130)
+              : FileImage(File(_imageFile.path)),
+          decoration: BoxDecoration(
+            border: Border.all(width: 3, color: Colors.white),
+            boxShadow: [
+              BoxShadow(
+                spreadRadius: 2,
+                blurRadius: 10,
+                color: Colors.black.withOpacity(0.5)
+              )
+            ],
+            shape: BoxShape.circle
+          ),
+        ),
+        Positioned(
+          bottom: 15,
+          right: 0,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: ((builder) => bottomSheet(size))
+              );
+              },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2,
+                )
+              ),
+              child: Icon(
+              Icons.camera_alt_sharp,
+              color: Colors.black,
+              size: 30,
+            ),
+            )
+          )
+        )
+      ])
+    );
+  }
+
+  Widget bottomSheet(Size size) {
+    return Container(
+      height: 130,
+      width: size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            "프로필 사진을 설정해주세요.",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton.icon(
+                icon: Icon(Icons.camera),
+                onPressed: () {
+                  takePhoto(ImageSource.camera);
+                },
+                label: Text("카메라"),
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.image),
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                label: Text("갤러리"),
+              ),
+          ])
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(
+        source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile;
+    });
   }
 
   Widget _inputForm(Size size){
@@ -130,7 +236,7 @@ class MyPageBody extends StatelessWidget {
       bottom: 0,
       child: RaisedButton(
           child: Text("저장"),
-          color: Colors.indigoAccent,
+          color: Colors.blue,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15)),
           onPressed: (){
@@ -138,4 +244,3 @@ class MyPageBody extends StatelessWidget {
     );
   }
 }
-
