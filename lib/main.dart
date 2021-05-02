@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/projects/project_detail.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
