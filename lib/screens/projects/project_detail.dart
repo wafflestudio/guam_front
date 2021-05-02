@@ -22,7 +22,7 @@ class DetailProject extends StatelessWidget {
                 padding: EdgeInsets.all(20),
                 alignment: Alignment.center,
                 child: Text(
-                  project.title ?? 'default title',
+                  project.title,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 )
             ),
