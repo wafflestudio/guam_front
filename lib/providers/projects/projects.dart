@@ -29,7 +29,7 @@ class Projects with ChangeNotifier {
       //   }
       // });
       List<Map<String, dynamic>> projects = [
-        {'id': 1, "title": 'StackOverFlow 토이 프로젝트', 'difficulty': 1, 'thumbnail': "https://jessehouwing.net/content/images/size/w2000/2018/07/stackoverflow-1.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
+        {'id': 1, "title": 'StackOverFlow 토이 프로젝트', 'description': '스택오버플로우 프로젝트 해봐요!!!', 'time' : 3, 'difficulty': 1, 'thumbnail': "https://jessehouwing.net/content/images/size/w2000/2018/07/stackoverflow-1.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
         {'id': 2, "title": 'Youtube 제작하기', 'difficulty': 1, 'thumbnail': "https://blog.kakaocdn.net/dn/BFi6P/btqu2a0vtPj/Yz8dSCZronFkrwkGxZ2PQ1/img.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
         {'id': 3, "title": '커플앱 비트윈 카피앱 제작하기', 'difficulty': 1, 'thumbnail': "https://dtqvguqpjeirn.cloudfront.net/static/img/kr_jobs/ic_web_jobs_vision2@3x.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
         {'id': 4, "title": '카카오톡 만들기', 'difficulty': 1, 'thumbnail': "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Kakao_CI_yellow.svg/1200px-Kakao_CI_yellow.svg.png", 'devType': '웹', 'frontFramework': 'Flutter', 'frontHeadCount': 2, 'backFramework': "Spring boot", 'backHeadCount': 2, 'isRecruiting': true},
