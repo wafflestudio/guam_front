@@ -4,6 +4,7 @@ import '../../commons/app_bar.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../../providers/projects/projects.dart';
 import 'projects_body.dart';
+import 'projects_app_floating.dart';
 
 class ProjectsApp extends StatelessWidget {
   @override
@@ -29,6 +30,7 @@ class ProjectsAppScaffold extends StatelessWidget {
           ),
       ),
       body: ProjectsBody(),
+      floatingActionButton: ProjectsAppFloating(),
     );
   }
 }

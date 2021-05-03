@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/main.dart';
 import 'package:provider/provider.dart';
 import '../../providers/home/home_provider.dart';
 
@@ -22,10 +21,6 @@ class Home extends StatelessWidget {
               icon: Icon(e['icon']),
             )
         ).toList(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: MyApp.themeColor,
       ),
     );
   }
