@@ -20,7 +20,7 @@ PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic tra
       leading: leading,
       actions: trailing == null ? [] : [trailing],
       iconTheme: IconThemeData(
-        color: textColor
+        color: iconColor,
       ),
     );
   } else {

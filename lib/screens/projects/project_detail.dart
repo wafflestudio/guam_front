@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../commons/app_bar.dart';
+import '../../commons/back.dart';
 import '../../models/project.dart';
-import 'package:guam_front/main.dart';
+import '../../main.dart';
 
 class DetailProject extends StatelessWidget {
   final Project project;
@@ -11,8 +13,9 @@ class DetailProject extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("프로젝트 신청하기")
+      appBar: appBar(
+        title: "프로젝트 신청하기",
+        leading: Back(),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical:8, horizontal: 12),
