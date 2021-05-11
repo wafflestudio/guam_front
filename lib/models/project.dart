@@ -5,6 +5,7 @@ class Project extends ChangeNotifier {
   final int id;
   final String title;
   final String description;
+  final int time;
   final int difficulty;
   final String thumbnail;
   final String devType;
@@ -18,6 +19,7 @@ class Project extends ChangeNotifier {
     @required this.id,
     @required this.title,
     @required this.description,
+    @required this.time,
     @required this.difficulty,
     @required this.thumbnail,
     @required this.devType,
@@ -32,6 +34,8 @@ class Project extends ChangeNotifier {
     return Project(
         id: json['id'],
         title: json['title'],
+        description: json['description'],
+        time: json['time'],
         difficulty: json['difficulty'],
         thumbnail: json['thumbnail'],
         devType: json['devType'],
