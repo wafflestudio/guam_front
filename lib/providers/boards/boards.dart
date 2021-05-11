@@ -55,6 +55,8 @@ class Boards with ChangeNotifier {
       sampleNotice,
       sampleNotice,
     ];
+    /* Get rid of all the above unnecessary fields */
+
 
     try {
       loading = true;
