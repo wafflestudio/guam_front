@@ -34,7 +34,7 @@ class Boards with ChangeNotifier {
     Thread sampleNotice = Thread(
       id: 1,
       creator: sampleUser,
-      content: "공지입니다",
+      content: "@waffleno1 In this file, typography is defined through text styles. Colors and states are built as color styles.",
       comments: [],
       isEdited: false,
       createdAt: DateTime.now(),
@@ -64,7 +64,7 @@ class Boards with ChangeNotifier {
       _boards = [
         Project(
           id: 1,
-          title: "Boards sample 1",
+          title: "유튜브 제작하기",
           isRecruiting: false,
           notice: sampleNotice,
           progresses: sampleProgresses,
@@ -72,7 +72,7 @@ class Boards with ChangeNotifier {
         ),
         Project(
           id: 2,
-          title: "Boards sample 2",
+          title: "지그재그 카피앱 만들기",
           isRecruiting: false,
           notice: sampleNotice,
           progresses: sampleProgresses,
@@ -80,7 +80,7 @@ class Boards with ChangeNotifier {
         ),
         Project(
           id: 3,
-          title: "Boards sample 1",
+          title: "제 2의 GUAM 만들기",
           isRecruiting: false,
           notice: sampleNotice,
           progresses: sampleProgresses,
