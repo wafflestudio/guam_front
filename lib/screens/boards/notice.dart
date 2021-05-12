@@ -13,7 +13,7 @@ class Notice extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 12),
       child: GreyContainer(
-        height: 115,
+        // height: 115,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

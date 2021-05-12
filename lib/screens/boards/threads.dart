@@ -12,7 +12,7 @@ class Threads extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GreyContainer(
-      height: 420,
+      // height: 420,
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
