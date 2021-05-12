@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../commons/grey_container.dart';
-import '../../models/boards/thread.dart';
+import '../../models/boards/thread.dart' as ThreadModel;
+import 'thread.dart';
 
 class Notice extends StatelessWidget {
-  final Thread notice;
+  final ThreadModel.Thread notice;
 
   Notice(this.notice);
 
@@ -23,7 +24,7 @@ class Notice extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Text(notice.content)
+            Thread(notice),
           ],
         ),
       )

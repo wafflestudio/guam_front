@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/boards/user_progress.dart';
 import '../../commons/grey_container.dart';
+import 'progress.dart';
 
 class Progresses extends StatelessWidget {
   final List<UserProgress> progresses;
@@ -12,7 +13,7 @@ class Progresses extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 12),
       child: GreyContainer(
-        height: 210,
+        //height: 210,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -23,6 +24,9 @@ class Progresses extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
+            Column(
+              children: [...progresses.map((e) => Progress(e))],
+            )
           ],
         ),
       )
