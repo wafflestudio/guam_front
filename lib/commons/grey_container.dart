@@ -18,10 +18,7 @@ class GreyContainer extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 6,
-          ),
+          padding: EdgeInsets.all(14),
           child: content,
         ),
       ),
