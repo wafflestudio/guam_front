@@ -24,29 +24,31 @@ class _MyPageBodyState extends State<MyPageBody> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: 20
-          ),
-          Container(color: Colors.grey),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                imageProfile(context, size),
-                Stack(
-                  children: <Widget>[
-                    _inputForm(size),
-                    _authButton(size)
-                  ],
-                ),
+      body: SingleChildScrollView(
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            SizedBox(
+                height: 20
+            ),
+            Container(color: Colors.grey),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  imageProfile(context, size),
+                  Stack(
+                    children: <Widget>[
+                      _inputForm(size),
+                      _authButton(size)
+                    ],
+                  ),
 
-                Center(child: SignOut()),
-              ]
-          ),
-        ],
-      ),
+                  Center(child: SignOut()),
+                ]
+            ),
+          ],
+        ),
+      )
     );
   }
 
