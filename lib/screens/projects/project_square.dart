@@ -11,9 +11,9 @@ class ProjectSquare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
-      width: 180,
-      margin: EdgeInsets.only(right: 3),
+      height: 150,
+      width: 150,
+      margin: EdgeInsets.only(right: 10),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -30,6 +30,7 @@ class ProjectSquare extends StatelessWidget {
                       image: NetworkImage(project.thumbnail),
                       fit: BoxFit.fill,
                     ),
+                    borderRadius: BorderRadius.circular(5)
                   ),
                 )
             ),
@@ -40,7 +41,8 @@ class ProjectSquare extends StatelessWidget {
                       colors: [HexColor("#787878").withOpacity(0.4), HexColor("#000000").withOpacity(0.4)],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                    )
+                    ),
+                    borderRadius: BorderRadius.circular(5),
                 ),
               ),
             ),

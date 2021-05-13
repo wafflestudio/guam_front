@@ -92,7 +92,7 @@ class Boards with ChangeNotifier {
     Profile sampleUser6 = Profile(
       id: 1,
       nickname: "임시유저2",
-      profileImage: "https://lh3.googleusercontent.com/proxy/5e_d_4FsXmkFOizt9hsLbDGWjo3StJaDm-YpysKEiuqwad0ETgeWXWJ7t0f-qovprj66I6v1P8EOnVBaKnTllNVoTMuapzc077Itn6v8d_AGn7denKzMDlcO83MwDbxcusel-rp2NJJh8NshNspihCnqcVWxMHszTuFzTYWXnk0ulOOiYDJNscKiX2kgE2f9zHXEtQ0_IE52tEWv9xBVrofkwE9k-grP6vFcc9wHtQodFKRJsY4DWXEOZ69IYDa1o9LijM87H0DQXvk9_Rz7GXi5MDAcmKVxUFWcY3mDjWhcrYVgxRwHrI-f9CIXnoZo2h6it2ZHGKE-Ns0Hlwryp4v9URvxC3S1AyIUp3BWxkTSHwz07hVHLy8K5u_z-53ov1ZPrQfiw1e4n8Ylw3TGSMpuWSEo2pP9wqH9-liwuENUZ-Smu3SypgQHaYurULqKPJVnCf0XJBXAyvMa-w",
+      profileImage: "https://lh3.googleusercontent.com/proxy/ZNSsJvvwzPDI1RdWC0sD6N0GO5cCvArr3F-Lx-sdTMirI6gwmlOrdiZF59mTpy9SizUbGdCl3dyjF5VY4uKvz5QsSmb1_kXjlBELKh82nkX6KhkVjkDfV6n2bwFOhA",
       githubLink: "gajagajago@github.com",
       websiteLink: "bla@blah.com",
       skillSet: ["Flutter", "Rails"],
@@ -217,6 +217,7 @@ class Boards with ChangeNotifier {
       sampleThread3,
       sampleThread4,
       sampleThread5,
+      sampleThread6,
     ];
     /* Get rid of all the above unnecessary fields */
 

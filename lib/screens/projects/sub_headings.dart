@@ -11,7 +11,7 @@ class SubHeadings extends StatelessWidget {
       height: 44,
       padding: EdgeInsets.symmetric(
         vertical: 10,
-        horizontal: 20,
+        horizontal: 10,
       ),
       alignment: Alignment.centerLeft,
       child: Text(

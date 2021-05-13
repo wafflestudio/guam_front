@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
 
 class Back extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: MyApp.themeColor,
+      elevation: 0,
+      color: Colors.transparent,
       margin: EdgeInsets.zero,
-      child: BackButton(color: Colors.white),
+      child: BackButton(color: Colors.black),
     );
   }
 }

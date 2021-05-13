@@ -11,10 +11,13 @@ class ProjectsList extends StatelessWidget {
 
     return Column(
       children: [
-        SubHeadings("전체 프로젝트 💻"),
-        Column(
-          children: projectsProvider.projects.map((e) => ProjectBanner(e)).toList(),
-        )
+        SubHeadings("🖐 신규 프로젝트"),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [...projectsProvider.projects.map((e) => ProjectBanner(e))],
+          ),
+        ),
       ],
     );
   }
