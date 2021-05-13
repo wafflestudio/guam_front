@@ -21,16 +21,25 @@ class ProjectsApp extends StatelessWidget {
 class ProjectsAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/backgrounds/projects-bg.png"),
+          fit: BoxFit.cover,
+        )
+      ),
+      child: Scaffold(
+        appBar: appBar(
           title: '프로젝트',
           trailing: Icon(
             Icons.search,
-            color: Colors.white,
+            color: Colors.black,
           ),
+        ),
+        body: ProjectsBody(),
+        floatingActionButton: ProjectsAppFloating(),
+        backgroundColor: Colors.transparent,
       ),
-      body: ProjectsBody(),
-      floatingActionButton: ProjectsAppFloating(),
     );
   }
 }
