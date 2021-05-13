@@ -25,12 +25,19 @@ class ProjectsAppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String> projects = List.generate(10, (index) => "Project $index");
 
-    return Scaffold(
-      appBar: appBar(
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/backgrounds/projects-bg.png"),
+          fit: BoxFit.cover,
+        )
+      ),
+      child: Scaffold(
+        appBar: appBar(
           title: '프로젝트',
           trailing: IconButton(
             icon: Icon(Icons.search),
-            color: Colors.white,
+            color: Colors.black,
             onPressed: (){
               showSearch(
                   context: context,
@@ -38,9 +45,11 @@ class ProjectsAppScaffold extends StatelessWidget {
               );
             },
           ),
+        ),
+        body: ProjectsBody(),
+        floatingActionButton: ProjectsAppFloating(),
+        backgroundColor: Colors.transparent,
       ),
-      body: ProjectsBody(),
-      floatingActionButton: ProjectsAppFloating(),
     );
   }
 }

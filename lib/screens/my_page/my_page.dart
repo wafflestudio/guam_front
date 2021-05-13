@@ -11,7 +11,7 @@ class MyPage extends StatelessWidget {
         trailing: IconButton(
           icon: Icon(
             Icons.settings,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
       ),
