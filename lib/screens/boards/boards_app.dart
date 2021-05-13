@@ -26,14 +26,14 @@ class BoardsAppScaffold extends StatelessWidget {
         leading: IconButton(
             icon: Icon(
               Icons.menu,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {}
         ),
         trailing: IconButton(
             icon: Icon(
               Icons.notifications_none,
-              color: Colors.white,
+              color: Colors.black,
             ),
             onPressed: () {}
         ),

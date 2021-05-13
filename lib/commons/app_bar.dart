@@ -6,8 +6,8 @@ import 'package:guam_front/main.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic trailing}) {
-  var textColor = HexColor('#f0f0f9');
-  var iconColor = HexColor('#f0f0f9');
+  var textColor = Colors.black;
+  var iconColor = Colors.black;
 
   if (Platform.isAndroid) {
     return AppBar(
@@ -19,6 +19,7 @@ PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic tra
       ),
       leading: leading,
       actions: trailing == null ? [] : [trailing],
+      backgroundColor: Colors.transparent,
       iconTheme: IconThemeData(
         color: iconColor,
       ),
@@ -33,7 +34,7 @@ PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic tra
       ),
       leading: leading,
       trailing: trailing,
-      backgroundColor: MyApp.themeColor,
+      backgroundColor: Colors.transparent,
     );
   }
 }

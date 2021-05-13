@@ -12,9 +12,10 @@ class AlmostFullProjectsList extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          SubHeadings("마감 임박 ⏰"),
+          SubHeadings("⏰ 마감 임박"),
           Container(
-            height: 180,
+            height: 150,
+            padding: EdgeInsets.only(left: 10),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, int idx) => ProjectSquare(projectsProvider.almostFullProjects[idx]),

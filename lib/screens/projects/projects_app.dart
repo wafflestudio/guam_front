@@ -33,7 +33,7 @@ class ProjectsAppScaffold extends StatelessWidget {
           title: '프로젝트',
           trailing: Icon(
             Icons.search,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         body: ProjectsBody(),
