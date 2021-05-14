@@ -17,7 +17,7 @@ class SearchScreen extends StatelessWidget {
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  // SearchForm(),
+                  SearchForm(),
                   Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                   IconButton(
                       icon: Icon(

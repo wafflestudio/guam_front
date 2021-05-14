@@ -43,10 +43,6 @@ class ProjectsAppScaffold extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => SearchScreen())
               );
-              // showSearch(
-              //     context: context,
-              //     delegate: SearchProject(projects, false)
-              // );
             },
           ),
         ),
