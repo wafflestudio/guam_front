@@ -13,6 +13,14 @@ class _SearchFormState extends State<SearchForm> {
   FocusNode focusNode = FocusNode();
   String _searchText = "";
 
+  _SearchFormState() {
+    _filter.addListener(() {
+      setState(() {
+        _searchText = _filter.text;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -59,13 +67,6 @@ class _SearchFormState extends State<SearchForm> {
     );
   }
 
-  _SearchScreenState() {
-    _filter.addListener(() {
-      setState(() {
-        _searchText = _filter.text;
-      });
-    });
-  }
 
   // Widget _buildBody(BuildContext context) {
   //   return StreamBuilder<QuerySnapshot>(

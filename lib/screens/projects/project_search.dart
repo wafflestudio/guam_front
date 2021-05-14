@@ -26,11 +26,11 @@ class SearchScreen extends StatelessWidget {
                         size: 30,
                       ),
                       onPressed: () {
-
+                        /* sort 아이콘 클릭 시 Search Bar 하단에
+                        정렬도구들을 담은 Container가 붙어야함.*/
                       })
                 ],
-              )
-          ),
+              )),
           // _buildBody(context)
         ],
       ),
