@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'kakao_login.dart';
 
 class Auth extends StatelessWidget {
   @override
@@ -25,16 +26,7 @@ class Auth extends StatelessWidget {
                     ),
                   ]
                 ),
-                InkWell(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: Image(
-                      image: AssetImage("assets/buttons/kakao_login_medium_narrow.png"),
-                    ),
-                  ),
-                  onTap: () {},
-                )
+                KakaoLogin(),
               ],
             )
           ],
