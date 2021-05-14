@@ -39,10 +39,14 @@ class ProjectsAppScaffold extends StatelessWidget {
             icon: Icon(Icons.search),
             color: Colors.black,
             onPressed: (){
-              showSearch(
-                  context: context,
-                  delegate: SearchProject(projects)
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchScreen())
               );
+              // showSearch(
+              //     context: context,
+              //     delegate: SearchProject(projects, false)
+              // );
             },
           ),
         ),
