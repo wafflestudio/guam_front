@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
+import 'package:guam_front/screens/projects/project_seach_filter.dart';
 import 'package:guam_front/screens/projects/project_search_form.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -38,16 +39,42 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Row(
                   children: <Widget>[
                     SearchForm(),
-                    IconButton(
+                    RotatedBox(
+                      quarterTurns: isFilterOpen ? 1 : 0,
+                      child: IconButton(
                         icon: Icon(
                           Icons.sort,
                           color: Colors.black,
-                          size: 30,
                         ),
-                        onPressed: _isFilterOpenChange)
+                        onPressed: _isFilterOpenChange,
+                      ),
+                    ),
                   ],
                 )),
-            // _buildBody(context)
+          ],
+        ),
+      ),
+      body: Container(
+        child: Stack(
+          children: <Widget>[
+            Container(color: Colors.white70),
+            Container(
+              child: isFilterOpen ? SearchFilter() : Container(),
+            ),
+            Column(
+              children: <Widget>[
+                SizedBox(width: 20, height: 200),
+                Container(color: Colors.black),
+                Text(
+                  "검색 결과",
+                  style: TextStyle(color: Colors.black),
+                ),
+
+                /* 검색 결과 Body */
+                // _buildBody(context)
+                //
+              ],
+            ),
           ],
         ),
       ),
