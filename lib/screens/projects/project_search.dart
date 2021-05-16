@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
-import 'package:guam_front/screens/projects/project_seach_filter.dart';
+import 'package:guam_front/screens/projects/project_seach_filter_choices.dart';
 import 'package:guam_front/screens/projects/project_search_form.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -13,7 +13,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     isFilterOpen = false;
     super.initState();
   }
@@ -42,12 +41,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     RotatedBox(
                       quarterTurns: isFilterOpen ? 1 : 0,
                       child: IconButton(
-                        icon: Icon(
-                          Icons.sort,
-                          color: Colors.black,
-                        ),
-                        onPressed: _isFilterOpenChange,
-                      ),
+                          icon: Icon(
+                            Icons.sort,
+                            color: Colors.black,
+                          ),
+                          onPressed: _isFilterOpenChange),
                     ),
                   ],
                 )),
@@ -63,7 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             Column(
               children: <Widget>[
-                SizedBox(width: 20, height: 200),
+                SizedBox(width: 20, height: 300),
                 Container(color: Colors.black),
                 Text(
                   "검색 결과",
