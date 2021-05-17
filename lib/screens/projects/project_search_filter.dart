@@ -18,10 +18,10 @@ class _SearchFilterState extends State<SearchFilter> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Wrap(
-            spacing: 15.0,
+            spacing: 20.0,
             children: filters.asMap().entries.map((entry) {
               int idx = entry.key;
-              return buildInputChip(
+              return buildFilterChip(
                 index: idx,
                 label: entry.value['label'],
               );
@@ -31,15 +31,12 @@ class _SearchFilterState extends State<SearchFilter> {
         if (filterInputs.length > 0)
           Column(
             children: <Widget>[
-              Divider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Wrap(
-                  spacing: 10.0,
-                  runSpacing: 5.0,
                   children: filterInputs.asMap().entries.map((entry) {
                     int idx = entry.key;
-                    return buildTechChoiceChip(
+                    return buildChoiceChip(
                       index: idx,
                       label: entry.value,
                       choice: entry.value,
@@ -53,21 +50,23 @@ class _SearchFilterState extends State<SearchFilter> {
     );
   }
 
-  Widget buildInputChip({int index, String label}) {
+  Widget buildFilterChip({int index, String label}) {
     return Transform(
         transform: Matrix4.identity()..scale(1.1),
-        child: InputChip(
+        child: ChoiceChip(
           label: Text(
             label,
             style: TextStyle(
+              fontSize: 15,
               color: Colors.black,
             ),
           ),
-          backgroundColor: Colors.grey[200],
-          side: BorderSide(color: Colors.black45, width: 0.5),
+          backgroundColor: Colors.grey[400],
+          // side: BorderSide(color: Colors.black45, width: 0.5),
           padding: const EdgeInsets.all(5),
+          elevation: 5,
           selected: filterInputs.contains(label),
-          selectedColor: Colors.green[400],
+          selectedColor: Colors.lightGreen,
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
@@ -82,44 +81,7 @@ class _SearchFilterState extends State<SearchFilter> {
         ));
   }
 
-  Widget buildChoiceChip({int index, String label, Color color, String image}) {
-    return Transform(
-        transform: Matrix4.identity()..scale(1.1),
-        child: ChoiceChip(
-          label: Text(
-            label,
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          avatar: (image != null)
-              ? CircleAvatar(
-                  child: Text(
-                    label[0].toUpperCase(),
-                  ),
-                  backgroundColor: Colors.white,
-                  foregroundImage: NetworkImage(image),
-                )
-              : null,
-          backgroundColor: color,
-          padding: const EdgeInsets.all(5),
-          selected: choiceInputs.contains(label),
-          selectedColor: Colors.lightGreen,
-          onSelected: (bool selected) {
-            setState(() {
-              if (selected) {
-                choiceInputs.add(label);
-              } else {
-                choiceInputs.removeWhere((value) {
-                  return value == label;
-                });
-              }
-            });
-          },
-        ));
-  }
-
-  Widget buildTechChoiceChip({int index, String label, String choice}) {
+  Widget buildChoiceChip({int index, String label, String choice}) {
     _selectChoice(choice) {
       switch (choice) {
         case '기술 스택':
@@ -131,18 +93,62 @@ class _SearchFilterState extends State<SearchFilter> {
       }
     }
 
-    return Container(
-        alignment: Alignment.centerLeft,
-        child: Wrap(
-          spacing: 15.0,
-          children: _selectChoice(choice).asMap().entries.map((entry) {
-            int idx = entry.key;
-            return buildChoiceChip(
-                index: idx,
-                label: entry.value['label'],
-                color: Colors.grey[300],
-                image: (choice == '기술 스택') ? entry.value['image'] : null);
-          }).toList(),
+    return Row(
+      children: <Widget>[
+        Expanded(
+            child: SizedBox(
+                height: 50,
+                child: ListView(
+                  padding: EdgeInsets.only(left: 10),
+                  scrollDirection: Axis.horizontal,
+                  children: _selectChoice(choice).asMap().entries.map((entry) {
+                    int idx = entry.key;
+                    return Container(
+                      padding: EdgeInsets.only(right: 15),
+                      child: _buildChoiceChip(
+                          index: idx,
+                          label: entry.value['label'],
+                          image: (choice == '기술 스택')
+                              ? entry.value['image']
+                              : null),
+                    );
+                  }).toList(),
+                )))
+      ],
+    );
+  }
+
+  Widget _buildChoiceChip({int index, String label, String image}) {
+    return Transform(
+        transform: Matrix4.identity()..scale(1.1),
+        child: ChoiceChip(
+          label: Text(
+            label,
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          avatar: (image != null)
+              ? CircleAvatar(
+                  backgroundColor: Colors.white,
+                  foregroundImage: NetworkImage(image),
+                )
+              : null,
+          padding: EdgeInsets.all(5),
+          elevation: 5,
+          selected: choiceInputs.contains(label),
+          selectedColor: Colors.deepPurpleAccent[50],
+          onSelected: (bool selected) {
+            setState(() {
+              if (selected) {
+                choiceInputs.add(label);
+              } else {
+                choiceInputs.removeWhere((value) {
+                  return value == label;
+                });
+              }
+            });
+          },
         ));
   }
 }

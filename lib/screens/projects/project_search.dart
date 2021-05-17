@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
-import 'package:guam_front/screens/projects/project_seach_filter_choices.dart';
+import 'package:guam_front/screens/projects/project_search_filter.dart';
 import 'package:guam_front/screens/projects/project_search_form.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -61,7 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             Column(
               children: <Widget>[
-                SizedBox(width: 20, height: 300),
+                SizedBox(width: 20, height: 400),
                 Container(color: Colors.black),
                 Text(
                   "검색 결과",
