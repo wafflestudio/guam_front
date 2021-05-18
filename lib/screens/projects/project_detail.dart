@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/projects/project_apply.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../commons/app_bar.dart';
 import '../../commons/back.dart';
@@ -153,9 +154,7 @@ class DetailProject extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _columnName(""),
-                            _radioCheckButton(),
-                            _radioCheckButton(),
-                            _radioCheckButton(),
+                            ProjectApply(),
                           ],
                         ),
                         width: size.width * 0.2,
@@ -219,23 +218,9 @@ class DetailProject extends StatelessWidget {
             fontWeight: FontWeight.bold));
   }
 
-  Widget _radioCheckButton() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
-      child: Radio(
-        fillColor: MaterialStateProperty.all<Color>(HexColor("#08951C")),
-        value: 0,
-        groupValue: 0,
-        onChanged: (_) {},
-      ),
-    );
-  }
-
   Widget _percentBar(
     int currentCount,
     int totalCount,
-    /* response 포지션으로 묶은 dictionary 내부에 기술스택, 참가인원 전달해야함.
-     _percentBar의 인자로 포지션을 받아 각 경우에 따른 percent 정도를 산출할 예정.*/
   ) {
     return Padding(
       padding: EdgeInsets.only(top: 15, bottom: 13),
