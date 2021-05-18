@@ -17,10 +17,8 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
   }
 
-  void _isFilterOpenChange() {
-    setState(() {
-      isFilterOpen = !isFilterOpen;
-    });
+  void _toggleIsFilterOpen() {
+    setState(() => isFilterOpen = !isFilterOpen);
   }
 
   @override
@@ -38,14 +36,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Row(
                   children: <Widget>[
                     SearchForm(),
-                    RotatedBox(
-                      quarterTurns: isFilterOpen ? 1 : 0,
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.sort,
-                            color: Colors.black,
-                          ),
-                          onPressed: _isFilterOpenChange),
+                    IconButton(
+                        icon: Icon(
+                          Icons.filter_list,
+                          color: Colors.black,
+                        ),
+                        onPressed: _toggleIsFilterOpen
                     ),
                   ],
                 )),
@@ -56,18 +52,12 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Stack(
           children: <Widget>[
             Container(color: Colors.white70),
-            Container(
-              child: isFilterOpen ? SearchFilter() : Container(),
-            ),
+            if (isFilterOpen) SearchFilter(),
             Column(
               children: <Widget>[
                 SizedBox(width: 20, height: 400),
                 Container(color: Colors.black),
-                Text(
-                  "검색 결과",
-                  style: TextStyle(color: Colors.black),
-                ),
-
+                Text("검색 결과"),
                 /* 검색 결과 Body */
                 // _buildBody(context)
                 //
