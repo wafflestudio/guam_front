@@ -23,10 +23,6 @@ class DetailProject extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            "2021/05/07",
-            style: TextStyle(fontSize: 15, color: Colors.black45),
-          ),
           Container(
             height: 24,
             alignment: Alignment.centerLeft,

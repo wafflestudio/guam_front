@@ -33,7 +33,6 @@ class _ProjectApplyState extends State<ProjectApply> {
         onChanged: (value) {
           setState(() {
             _result = value;
-            print(value);
           });
         },
       ),
