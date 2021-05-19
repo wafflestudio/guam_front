@@ -71,9 +71,7 @@ class _SearchFilterState extends State<SearchFilter> {
       Row(
         children: chips,
       ),
-      (_selectedFilter != null)
-          ? _buildChoiceChip(_selectedFilter)
-          : Container()
+      if (_selectedFilter != null) _buildChoiceChip(_selectedFilter)
     ]);
   }
 
