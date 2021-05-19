@@ -1,4 +1,4 @@
-package com.example.guam_front
+package com.wafflestudio.guam
 
 import io.flutter.embedding.android.FlutterActivity
 
