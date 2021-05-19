@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 
@@ -17,39 +18,50 @@ class KakaoLoginState extends State<KakaoLogin> {
 
   void _initKakaoTalkInstalled() async {
     final installed = await isKakaoTalkInstalled();
-    print("is kakao installed: $installed");
-    setState(() {
-      _isKakaoTalkInstalled = installed;
-    });
+    setState(() => _isKakaoTalkInstalled = installed);
   }
 
-  Future<AccessTokenResponse> _issueAccessToken(String authCode) async {
+  _issueAccessToken(String authCode) async {
     try {
-      var token = await AuthApi.instance.issueAccessToken(authCode);
-      AccessTokenStore.instance.toStore(token);
+      final token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenStore.instance.toStore(token); // Store access token in AccessTokenStore for future API requests.
       return token;
     } catch (e) {
       print(e.toString());
     }
   }
 
+  /*
+  * Kakao login via browser
+  */
   _loginWithKakao() async {
     try {
-      var code = await AuthCodeClient.instance.request();
-      var token = await _issueAccessToken(code);
-      print(token.toString());
+      final authCode = await AuthCodeClient.instance.request();
+      final token = await _issueAccessToken(authCode);
+      print("Access Token: ${token}");
+    } on KakaoAuthException catch (e) {
+      print("Kakao Auth Exception:\n$e");
+    } on KakaoClientException catch (e) {
+      print("Kakao Client Exception:\n$e");
     } catch (e) {
-      print(e.toString());
+      print(e);
     }
   }
 
+  /*
+  * Kakao login via KakaoTalk
+  */
   _loginWithTalk() async {
     try {
-      var code = await AuthCodeClient.instance.requestWithTalk();
-      var token = await _issueAccessToken(code);
-      print(token.toString());
+      final authCode = await AuthCodeClient.instance.requestWithTalk();
+      final token = await _issueAccessToken(authCode);
+      print("Access Token: ${jsonDecode(token.accessToken)}");
+    } on KakaoAuthException catch (e) {
+      print("Kakao Auth Exception:\n$e");
+    } on KakaoClientException catch (e) {
+      print("Kakao Client Exception:\n$e");
     } catch (e) {
-      print(e.toString());
+      print(e);
     }
   }
 
