@@ -33,6 +33,7 @@ dependencies:
   flutter_form_builder: ^6.0.0-nullsafety.1
   intl: ^0.17.0
   flutter_svg: ^0.21.0+1
+  percent_indicator: ^2.1.7+2
 
   # FlutterFire Plugin
   firebase_core: ^0.4.0+9
