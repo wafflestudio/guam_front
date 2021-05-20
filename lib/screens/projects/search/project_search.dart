@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
-import 'package:guam_front/screens/projects/project_search_filter.dart';
-import 'package:guam_front/screens/projects/project_search_form.dart';
-
-import '../../main.dart';
+import 'project_search_filter.dart';
+import 'project_search_form.dart';
 
 class SearchScreen extends StatefulWidget {
   @override

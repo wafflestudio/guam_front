@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/projects/project_search.dart';
+import 'package:guam_front/screens/projects/search/project_search.dart';
 import 'package:provider/provider.dart';
 import '../../commons/app_bar.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../../providers/projects/projects.dart';
-import 'project_search.dart';
+import 'search/project_search.dart';
 import 'projects_body.dart';
 import 'projects_app_floating.dart';
 
