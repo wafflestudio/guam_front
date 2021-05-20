@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'search_filter_chip.dart';
+import 'filter_value_chip.dart';
 
 class SearchFilter extends StatefulWidget {
   final Map filterOptions = {
@@ -22,9 +23,18 @@ class SearchFilter extends StatefulWidget {
 class _SearchFilterState extends State<SearchFilter> {
   Map result = {};
   String selectedKey;
+  List<String> filterValues;
 
-  void selectKey(String key) {
-    setState(() => selectedKey = selectedKey == key ? null : key);
+  void selectKey(String key, List<String> value) {
+    setState(() {
+      selectedKey = selectedKey == key ? null : key;
+      filterValues = value;
+    });
+  }
+
+  void selectValue(String value) {
+    setState(() => result[selectedKey] = value);
+    print(result); // 현재 filter choice 상태를 반영합니다.
   }
 
   @override
@@ -33,17 +43,30 @@ class _SearchFilterState extends State<SearchFilter> {
       child: Column(
         children: [
           Row(
-            children: [...widget.filterOptions.keys.map((e) =>
-                SearchFilterChip(
-                  content: e,
-                  selected: selectedKey == e,
-                  selectKey: selectKey,
-                )
+            children: [...widget.filterOptions.entries.map((e) =>
+              SearchFilterChip(
+                content: e.key,
+                display: result[e.key] != null ? "${e.key}: ${result[e.key]}" : e.key,
+                selected: selectedKey == e.key,
+                selectKey: selectKey,
+                filterValues: e.value
               )
-            ]
+            )]
+          ),
+          if (selectedKey != null) SizedBox(
+            height: 40,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, idx) => FilterValueChip(
+                content: filterValues[idx],
+                selected: result[selectedKey] == filterValues[idx],
+                selectValue: selectValue,
+              ),
+              itemCount: filterValues.length,
+            )
           )
         ],
-      ),
+      )
     );
   }
   //
