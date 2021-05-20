@@ -1,4 +1,4 @@
-def localProperties = new Properties()
+//def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
@@ -7,9 +7,9 @@ if (localPropertiesFile.exists()) {
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
+//if (flutterRoot == null) {
+//    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+//}
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
@@ -38,10 +38,10 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.wafflestudio.guam"
         minSdkVersion 21
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -61,6 +61,9 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -73,7 +76,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
-        classpath 'com.google.gms:google-services:4.3.8'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0'
     }
 }
