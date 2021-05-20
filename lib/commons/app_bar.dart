@@ -19,7 +19,7 @@ PreferredSizeWidget appBar({@required String title, dynamic leading, dynamic tra
       ),
       leading: leading,
       actions: trailing == null ? [] : [trailing],
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       iconTheme: IconThemeData(
         color: iconColor,
       ),
