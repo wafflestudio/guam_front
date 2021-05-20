@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'kakao_login.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import '../../providers/home/home_provider.dart';
+import '../home/home.dart';
 
 class Auth extends StatelessWidget {
   @override
@@ -12,33 +14,13 @@ class Auth extends StatelessWidget {
           future: _initFirebaseApp(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SvgPicture.asset('assets/logos/guam_logo.svg', color: HexColor('#6200EE')),
-                  Column(
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            MaterialButton(
-                              child: Text('회원가입'),
-                              onPressed: () => Navigator.pushNamed(context, '/sign_up'),
-                            ),
-                            MaterialButton(
-                              child: Text('로그인'),
-                              onPressed: () => Navigator.pushNamed(context, '/sign_in'),
-                            ),
-                          ]
-                      ),
-                      KakaoLogin(),
-                    ],
-                  )
-                ],
+              return ChangeNotifierProvider(
+                create: (_) => HomeProvider(),
+                child: Home(),
               );
             } else {
               return Center(
-                child: CircularProgressIndicator(),
+                child: SvgPicture.asset('assets/logos/guam_logo.svg', color: HexColor('#6200EE')),
               );
             }
           },
