@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../user_auth/kakao_login.dart';
 import '../../commons/app_bar.dart';
 import 'my_page_body.dart';
 
@@ -15,7 +16,18 @@ class MyPage extends StatelessWidget {
           ),
         ),
       ),
-      body: MyPageBody(),
+      /*
+      * If User instance not exists.. show Kakao login
+      */
+      body: Container(
+        child: Center(
+          child: KakaoLogin(),
+        ),
+      ),
+      /*
+      * If User instance exists.. show MyPageBody
+      */
+      // body: MyPageBody(),
     );
   }
 }
