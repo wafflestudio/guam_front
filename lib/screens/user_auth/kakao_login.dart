@@ -1,22 +1,25 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import '../../providers/user_auth/authenticate.dart';
+import 'package:provider/provider.dart';
 
 class KakaoLogin extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    KakaoContext.clientId = "367d8cf339e2ba59376ba647c7135dd2";
-    KakaoContext.javascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
-
     return KakaoLoginState();
   }
 }
 
 class KakaoLoginState extends State<KakaoLogin> {
+  Authenticate authProvider;
   bool _isKakaoTalkInstalled;
 
   @override
   void initState() {
+    authProvider = context.read<Authenticate>();
+    KakaoContext.clientId = authProvider.kakaoClientId;
+    KakaoContext.javascriptClientId = authProvider.kakaoJavascriptClientId;
     _initKakaoTalkInstalled();
     super.initState();
   }
@@ -44,6 +47,7 @@ class KakaoLoginState extends State<KakaoLogin> {
       final authCode = await AuthCodeClient.instance.request();
       final token = await _issueAccessToken(authCode);
       print("Access Token: ${token.accessToken}");
+      authProvider.signIn(token.accessToken);
     } on KakaoAuthException catch (e) {
       print("Kakao Auth Exception:\n$e");
     } on KakaoClientException catch (e) {

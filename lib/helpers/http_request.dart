@@ -8,10 +8,11 @@ class HttpRequest {
       ? 'http://10.0.2.2:3000/api/v1/'
       : 'http://127.0.0.1:3000/api/v1/';
 
-  Future get({@required String partialUrl, @required String authToken}) async {
+  Future get({@required String authority, String path, dynamic queryParams, String authToken}) async {
     try {
+      final uri = Uri.http(authority, path, queryParams);
       final response = await http.get(
-        Uri.parse(_baseUrl+partialUrl),
+        uri,
         headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
       );
 
