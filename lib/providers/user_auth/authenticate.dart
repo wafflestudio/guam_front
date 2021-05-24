@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../helpers/http_request.dart';
 
 class Authenticate with ChangeNotifier {
@@ -9,10 +8,8 @@ class Authenticate with ChangeNotifier {
   final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  bool loading = false;
 
-  Authenticate() {
-    // initAuthToken();
-  }
   get kakaoClientId => _kakaoClientId;
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
@@ -20,6 +17,7 @@ class Authenticate with ChangeNotifier {
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
+      toggleLoading();
       await HttpRequest().get(
         authority: "34.84.231.149:8888",
         path: "/kakao",
@@ -31,6 +29,8 @@ class Authenticate with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print(e);
+    } finally {
+      toggleLoading();
     }
   }
 
@@ -42,6 +42,11 @@ class Authenticate with ChangeNotifier {
 
   Future<void> signOut() async {
     await auth.signOut();
+    notifyListeners();
+  }
+
+  void toggleLoading() {
+    loading = !loading;
     notifyListeners();
   }
 }

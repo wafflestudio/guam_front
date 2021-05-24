@@ -9,7 +9,6 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
-    print("User signed in : ${authProvider.userSignedIn()}");
 
     return Scaffold(
       appBar: appBar(
@@ -24,15 +23,17 @@ class MyPage extends StatelessWidget {
       /*
       * If User instance not exists.. show Kakao login
       */
-      body: authProvider.userSignedIn()
-        ? MyPageBody() :
+      body: authProvider.userSignedIn() ?
+        MyPageBody() :
         Container(
           child: Center(
-            child: Column(
-              children: [
-                KakaoLogin(),
-              ],
-            )
+            child: authProvider.loading ?
+              CircularProgressIndicator() :
+              Column(
+                children: [
+                  KakaoLogin(),
+                ],
+              )
           )
         )
       /*

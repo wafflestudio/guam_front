@@ -28,11 +28,11 @@ class Boards with ChangeNotifier {
     renderBoardIdx = (renderBoardIdx + 1) % _boards.length;
   }
 
-  Boards({@required String authToken}) {
-    fetchBoards(authToken);
+  Boards() {
+    fetchBoards();
   }
 
-  Future fetchBoards(String authToken) async {
+  Future fetchBoards() async {
     /* get rid of these fields after axios attachment done and factory */
     Profile sampleUser1 = Profile(
       id: 1,

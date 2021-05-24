@@ -13,7 +13,7 @@ class HttpRequest {
       final uri = Uri.http(authority, path, queryParams);
       final response = await http.get(
         uri,
-        headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+        headers: {'Content-Type': "application/json", 'Authorization': authToken},
       );
 
       if (response.statusCode == 200) {
@@ -28,7 +28,7 @@ class HttpRequest {
     try {
       final response = await http.post(
           Uri.parse(_baseUrl+partialUrl),
-          headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+          headers: {'Content-Type': "application/json", 'Authorization': authToken},
           body: jsonEncode(body)
       );
 
@@ -44,7 +44,7 @@ class HttpRequest {
     try {
       final response = await http.delete(
         Uri.parse(_baseUrl+partialUrl),
-        headers: {'Content-Type': "application/json", 'AUTH-TOKEN': authToken},
+        headers: {'Content-Type': "application/json", 'Authorization': authToken},
       );
 
       if (response.statusCode == 200) {
