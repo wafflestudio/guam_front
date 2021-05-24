@@ -46,8 +46,7 @@ class KakaoLoginState extends State<KakaoLogin> {
     try {
       final authCode = await AuthCodeClient.instance.request();
       final token = await _issueAccessToken(authCode);
-      print("Access Token: ${token.accessToken}");
-      authProvider.signIn(token.accessToken);
+      authProvider.kakaoSignIn(token.accessToken);
     } on KakaoAuthException catch (e) {
       print("Kakao Auth Exception:\n$e");
     } on KakaoClientException catch (e) {
@@ -64,7 +63,7 @@ class KakaoLoginState extends State<KakaoLogin> {
     try {
       final authCode = await AuthCodeClient.instance.requestWithTalk();
       final token = await _issueAccessToken(authCode);
-      print("Access Token: ${jsonDecode(token.accessToken)}");
+      authProvider.kakaoSignIn(token.accessToken);
     } on KakaoAuthException catch (e) {
       print("Kakao Auth Exception:\n$e");
     } on KakaoClientException catch (e) {

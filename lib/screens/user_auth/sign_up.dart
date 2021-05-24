@@ -53,10 +53,10 @@ class SignUp extends StatelessWidget {
                   ),
                   FlatButton(
                       onPressed: () {
-                        if (_formKey.currentState.saveAndValidate()) {
-                          context.read<Authenticate>().signUp(params: _formKey.currentState.value)
-                              .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
-                        }
+                        // if (_formKey.currentState.saveAndValidate()) {
+                        //   context.read<Authenticate>().signUp(params: _formKey.currentState.value)
+                        //       .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
+                        // }
                       },
                       child: const Text('확인')
                   )
