@@ -26,6 +26,7 @@ class HttpRequest {
       final response = await http.post(
         uri,
         headers: {'Content-Type': "application/x-www-form-urlencoded", HttpHeaders.authorizationHeader: authToken},
+        // 현재 원식님 서버만 post content type이 x-www라, 통일되면 다시 application/json으로 바꿔야함.
         body: body,
       );
 

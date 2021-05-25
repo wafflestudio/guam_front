@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../../providers/home/home_provider.dart';
+import '../../providers/user_auth/authenticate.dart';
 import '../home/home.dart';
 
 class Auth extends StatelessWidget {
@@ -14,6 +15,8 @@ class Auth extends StatelessWidget {
           future: _initFirebaseApp(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              context.read<Authenticate>(); // Initialization of user authentication
+
               return ChangeNotifierProvider(
                 create: (_) => HomeProvider(),
                 child: Home(),

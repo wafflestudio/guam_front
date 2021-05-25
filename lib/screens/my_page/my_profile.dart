@@ -12,8 +12,12 @@ class MyProfile extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            // Text(authProvider.me.nickname),
-            Text(authProvider.me.blogUrl),
+            Text('내 프로필 정보 보여주는 페이지', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800)),
+            Text(authProvider.me.nickname ?? ""),
+            Text(authProvider.me.githubUrl ?? ""),
+            Text(authProvider.me.blogUrl ?? ""),
+            Text(authProvider.me.skills ?? ""),
+            Text(authProvider.me.introduction ?? ""),
             SignOut(),
           ],
         ),

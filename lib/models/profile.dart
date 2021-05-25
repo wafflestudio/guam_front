@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 class Profile extends ChangeNotifier {
   final int id;
-  final String nickname;
+  final String nickname; // 원식님이 name 으로 해놔서 바꿔달라고 요청한 상태.
   final String imageUrl;
   final String githubUrl;
   final String blogUrl;

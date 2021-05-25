@@ -10,7 +10,6 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
-    print(authProvider.meExists());
 
     return Scaffold(
       appBar: appBar(
@@ -22,19 +21,15 @@ class MyPage extends StatelessWidget {
           ),
         ),
       ),
-      body: authProvider.userSignedIn() ?
-        authProvider.meExists() ? MyProfile() : MakeProfilePage() :
-        Container(
-          child: Center(
-            child: authProvider.loading ?
-              CircularProgressIndicator() :
-              Column(
-                children: [
-                  KakaoLogin(),
-                ],
-              )
-          )
-        )
+      body: authProvider.loading ?
+        Center(child: CircularProgressIndicator()) :
+        authProvider.userSignedIn() ?
+          authProvider.meExists() ? MyProfile() : MakeProfilePage() :
+          Container(
+            child: Center(
+              child: KakaoLogin(),
+            ),
+          ),
     );
   }
 }
