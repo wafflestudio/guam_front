@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../user_auth/kakao_login.dart';
 import '../../commons/app_bar.dart';
-import 'my_page_body.dart';
+import 'make_profile_page.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
 
@@ -24,7 +24,7 @@ class MyPage extends StatelessWidget {
       * If User instance not exists.. show Kakao login
       */
       body: authProvider.userSignedIn() ?
-        MyPageBody() :
+        authProvider.meExists() ? Container() : MakeProfilePage() :
         Container(
           child: Center(
             child: authProvider.loading ?

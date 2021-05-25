@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../helpers/http_request.dart';
+import '../../models/profile.dart';
 
 class Authenticate with ChangeNotifier {
   final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
   final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  Profile me;
   bool loading = false;
 
   get kakaoClientId => _kakaoClientId;
@@ -25,8 +27,7 @@ class Authenticate with ChangeNotifier {
       ).then((response) async {
         final customToken = jsonDecode(response.body)["customToken"];
         await auth.signInWithCustomToken(customToken);
-        final idToken = await getFirebaseIdToken();
-        print(idToken);
+        await getMyProfile();
       });
       notifyListeners();
     } catch (e) {
@@ -42,6 +43,28 @@ class Authenticate with ChangeNotifier {
     return idToken;
   }
 
+  Future getMyProfile() async {
+    try {
+      String authToken = await getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest().get(
+            path: "/user",
+            authToken: authToken
+        ).then((response) {
+          if (response.statusCode == 400) {
+            // User has no profile
+            print("Set user profile");
+          } else {
+            // Initialize user
+
+          }
+        });
+      }
+    } catch (e) {
+      print("Failed fetching my profile: $e");
+    }
+  }
+
   Future<void> signOut() async {
     await auth.signOut();
     notifyListeners();
@@ -51,4 +74,6 @@ class Authenticate with ChangeNotifier {
     loading = !loading;
     notifyListeners();
   }
+
+  bool meExists() => me != null;
 }

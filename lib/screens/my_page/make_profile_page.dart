@@ -1,17 +1,15 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../user_auth/sign_out.dart';
-import '../../helpers/http_request.dart';
 import '../../providers/user_auth/authenticate.dart';
 
-class MyPageBody extends StatefulWidget {
+class MakeProfilePage extends StatefulWidget {
   @override
-  _MyPageBodyState createState() => _MyPageBodyState();
+  _MakeProfilePageState createState() => _MakeProfilePageState();
 }
 
-class _MyPageBodyState extends State<MyPageBody> {
+class _MakeProfilePageState extends State<MakeProfilePage> {
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
