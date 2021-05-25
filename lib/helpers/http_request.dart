@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'dart:io' show HttpHeaders, Platform;
+import 'dart:io' show HttpHeaders;
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import '../providers/user_auth/authenticate.dart';
 
 class HttpRequest {
   final String baseAuthority = "34.84.231.149:80";
@@ -29,12 +27,10 @@ class HttpRequest {
       final response = await http.post(
         uri,
         headers: {'Content-Type': "application/json", HttpHeaders.authorizationHeader: authToken},
-        body: jsonEncode(body)
+        body: jsonEncode(body),
       );
 
-      if (response.statusCode == 200) {
-        return response;
-      }
+      return response;
     } catch (e) {
       print("Error on POST request: $e");
     }

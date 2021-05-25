@@ -16,6 +16,7 @@ class Authenticate with ChangeNotifier {
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
   bool userSignedIn() => auth.currentUser != null;
+  bool meExists() => me != null;
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
@@ -56,12 +57,29 @@ class Authenticate with ChangeNotifier {
             print("Set user profile");
           } else {
             // Initialize user
+            print("User exists!");
 
           }
         });
       }
     } catch (e) {
       print("Failed fetching my profile: $e");
+    }
+  }
+
+  Future setProfile(dynamic params) async {
+    try {
+      print("Params at set profile: $params");
+      String authToken = await getFirebaseIdToken();
+      if (authToken.isNotEmpty) {
+        await HttpRequest().post(
+          path: "/user",
+          body: params,
+          authToken: authToken
+        ).then((response) => print(response.body));
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -74,6 +92,4 @@ class Authenticate with ChangeNotifier {
     loading = !loading;
     notifyListeners();
   }
-
-  bool meExists() => me != null;
 }

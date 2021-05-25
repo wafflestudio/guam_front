@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../user_auth/sign_out.dart';
 import '../../providers/user_auth/authenticate.dart';
+import 'package:provider/provider.dart';
 
 class MakeProfilePage extends StatefulWidget {
   @override
@@ -12,7 +13,6 @@ class MakeProfilePage extends StatefulWidget {
 class _MakeProfilePageState extends State<MakeProfilePage> {
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
@@ -22,29 +22,31 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final authProvider = context.read<Authenticate>();
+
+    void setProfile(dynamic params) {
+      authProvider.setProfile(params);
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
           alignment: Alignment.center,
-          children: <Widget>[
-            SizedBox(
-                height: 20
-            ),
+          children: [
+            SizedBox(height: 20),
             Container(color: Colors.grey),
             Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  imageProfile(context, size),
-                  Stack(
-                    children: <Widget>[
-                      _inputForm(size),
-                      _authButton(size)
-                    ],
-                  ),
-
-                  Center(child: SignOut()),
-                ]
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                imageProfile(context, size),
+                Stack(
+                  children: [
+                    _inputForm(size),
+                    _authButton(size, setProfile)
+                  ],
+                ),
+                Center(child: SignOut()),
+              ]
             ),
           ],
         ),
@@ -60,7 +62,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           height: 170,
           child: _imageFile == null
               ? Icon(Icons.person, color: Colors.white, size: 130)
-              : FileImage(File(_imageFile.path)),
+              : Image(image: FileImage(File(_imageFile.path)), fit: BoxFit.fill,),
           decoration: BoxDecoration(
             border: Border.all(width: 3, color: Colors.white),
             boxShadow: [
@@ -147,12 +149,8 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   }
 
   void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(
-        source: source,
-    );
-    setState(() {
-      _imageFile = pickedFile;
-    });
+    final pickedFile = await _picker.getImage(source: source);
+    setState(() => _imageFile = pickedFile);
   }
 
   Widget _inputForm(Size size){
@@ -167,7 +165,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           padding: const EdgeInsets.only(
               left: 12, right: 16, top: 12, bottom: 32),
           child: Form(
-            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -231,18 +228,27 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  Widget _authButton(Size size){
+  Widget _authButton(Size size, Function setProfile){
     return Positioned(
       left: size.width*0.15,
       right: size.width*0.15,
       bottom: 0,
       child: RaisedButton(
-          child: Text("저장"),
-          color: Colors.blue,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15)),
-          onPressed: (){
-          }),
+        child: Text("저장"),
+        color: Colors.blue,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)),
+        onPressed: () {
+          final keyMap = {
+            "name": _nicknameController.text,
+            // "imageUrl": _imageFile,
+            "blogUrl": _blogController.text,
+            "githubUrl": _githubIdController.text,
+            "introduction": _introductionController.text,
+          };
+
+          setProfile(keyMap);
+        }),
     );
   }
 }

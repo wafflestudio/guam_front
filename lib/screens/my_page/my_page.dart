@@ -9,6 +9,7 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
+    print(authProvider.meExists());
 
     return Scaffold(
       appBar: appBar(
