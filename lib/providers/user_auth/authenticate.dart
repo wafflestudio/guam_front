@@ -61,7 +61,7 @@ class Authenticate with ChangeNotifier {
             me = Profile.fromJson(json.decode(response.body));
           }
           if (response.statusCode == 400) {
-            print("Set user profile"); // User has no profile
+            print("User doesn't have a profile. Please set one !"); // User has no profile
           }
         });
       }
