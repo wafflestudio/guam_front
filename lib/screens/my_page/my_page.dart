@@ -4,12 +4,13 @@ import '../../commons/app_bar.dart';
 import 'make_profile_page.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
+import 'my_profile.dart';
 
 class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
-    // print(authProvider.meExists());
+    print(authProvider.meExists());
 
     return Scaffold(
       appBar: appBar(
@@ -22,7 +23,7 @@ class MyPage extends StatelessWidget {
         ),
       ),
       body: authProvider.userSignedIn() ?
-        authProvider.meExists() ? Container() : MakeProfilePage() :
+        authProvider.meExists() ? MyProfile() : MakeProfilePage() :
         Container(
           child: Center(
             child: authProvider.loading ?

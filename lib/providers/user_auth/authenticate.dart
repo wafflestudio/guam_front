@@ -15,6 +15,10 @@ class Authenticate with ChangeNotifier {
   get kakaoClientId => _kakaoClientId;
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
+  Authenticate() {
+    getMyProfile();
+  }
+
   bool userSignedIn() => auth.currentUser != null; // 로그인된 유저 존재여부
   bool meExists() => me != null; // 프로필까지 만든 정상 유저인지 여부
 
@@ -40,6 +44,7 @@ class Authenticate with ChangeNotifier {
 
   Future<String> getFirebaseIdToken() async {
     final idToken = await auth.currentUser.getIdToken();
+    print(idToken);
 
     return idToken;
   }
@@ -55,10 +60,10 @@ class Authenticate with ChangeNotifier {
           if (response.statusCode == 400) {
             // User has no profile
             print("Set user profile");
-          } else {
-            // Initialize user
-            print("User exists!");
+          }
 
+          if (response.statusCode == 200) {
+            me = Profile.fromJson(json.decode(response.body));
           }
         });
       }

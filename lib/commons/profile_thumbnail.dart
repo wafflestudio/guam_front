@@ -18,7 +18,7 @@ class ProfileThumbnail extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(profile.profileImage),
+            backgroundImage: NetworkImage(profile.imageUrl),
             backgroundColor: Colors.transparent,
             radius: size,
           ),
