@@ -15,8 +15,8 @@ class Authenticate with ChangeNotifier {
   get kakaoClientId => _kakaoClientId;
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
-  bool userSignedIn() => auth.currentUser != null;
-  bool meExists() => me != null;
+  bool userSignedIn() => auth.currentUser != null; // 로그인된 유저 존재여부
+  bool meExists() => me != null; // 프로필까지 만든 정상 유저인지 여부
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
@@ -69,7 +69,6 @@ class Authenticate with ChangeNotifier {
 
   Future setProfile(dynamic params) async {
     try {
-      print("Params at set profile: $params");
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
         await HttpRequest().post(

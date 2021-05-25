@@ -9,7 +9,7 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
-    print(authProvider.meExists());
+    // print(authProvider.meExists());
 
     return Scaffold(
       appBar: appBar(
@@ -21,9 +21,6 @@ class MyPage extends StatelessWidget {
           ),
         ),
       ),
-      /*
-      * If User instance not exists.. show Kakao login
-      */
       body: authProvider.userSignedIn() ?
         authProvider.meExists() ? Container() : MakeProfilePage() :
         Container(
@@ -37,10 +34,6 @@ class MyPage extends StatelessWidget {
               )
           )
         )
-      /*
-      * If User instance exists.. show MyPageBody
-      */
-      // body: MyPageBody(),
     );
   }
 }
