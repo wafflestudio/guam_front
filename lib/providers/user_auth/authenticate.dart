@@ -19,12 +19,14 @@ class Authenticate with ChangeNotifier {
     try {
       toggleLoading();
       await HttpRequest().get(
-        authority: "34.84.231.149:8888",
+        authority: HttpRequest().kakaoAuthority,
         path: "/kakao",
         queryParams: { "token": kakaoAccessToken },
       ).then((response) async {
         final customToken = jsonDecode(response.body)["customToken"];
         await auth.signInWithCustomToken(customToken);
+        final idToken = await getFirebaseIdToken();
+        print(idToken);
       });
       notifyListeners();
     } catch (e) {
@@ -34,10 +36,10 @@ class Authenticate with ChangeNotifier {
     }
   }
 
-  Future getFirebaseToken() async {
-    var token = await auth.currentUser.getIdToken();
+  Future<String> getFirebaseIdToken() async {
+    final idToken = await auth.currentUser.getIdToken();
 
-    return token.toString();
+    return idToken;
   }
 
   Future<void> signOut() async {

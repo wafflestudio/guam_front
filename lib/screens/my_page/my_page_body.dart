@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../user_auth/sign_out.dart';
-
+import '../../helpers/http_request.dart';
+import '../../providers/user_auth/authenticate.dart';
 
 class MyPageBody extends StatefulWidget {
   @override
