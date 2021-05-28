@@ -16,6 +16,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           title: '프로젝트 만들기',
           leading: Back(),
         ),
-        body: CreateProjectBoard());
+        body: CreateProjectBoardOne());
   }
 }
