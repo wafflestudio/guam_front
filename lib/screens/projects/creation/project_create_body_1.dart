@@ -27,6 +27,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
     'myPosition': '',
     'projectPicture': ''
   };
+  // _input에 입력값들을 차곡차곡 저장하면서 CreateProjectBoardThree까지 전달하고 싶습니다.
 
   void _saveTitle(_projectName) {
     setState(() {
@@ -48,8 +49,9 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
 
   @override
   Widget build(BuildContext context) {
+    print(_input);
     return Padding(
-        padding: EdgeInsets.only(top: 15),
+        padding: EdgeInsets.only(top: 5),
         child: ProjectCreateContainer(
           content: Column(
             children: [
@@ -65,7 +67,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 33, left: 30, bottom: 35),
+                padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   '1. 프로젝트 아웃라인',
@@ -93,7 +95,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
                   ],
                 ),
               )),
-              ProjectStatus(totalPage: 3, currentPage: 2)
+              ProjectStatus(totalPage: 3, currentPage: 1)
             ],
           ),
         ));
@@ -104,7 +106,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            padding: EdgeInsets.only(left: 30, bottom: 13),
+            padding: EdgeInsets.only(left: 30, bottom: 15),
             child: Text('제목',
                 style: TextStyle(
                   fontSize: 18,
@@ -112,12 +114,11 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
                 ))),
         Container(
           padding: EdgeInsets.only(left: 20, right: 20),
-          height: 60,
+          height: 50,
           child: TextFormField(
             onChanged: (_projectName) {
               setState(() {
                 _saveTitle(_projectName);
-                print(_projectName);
               });
             },
             controller: _nameController,
@@ -156,12 +157,12 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
 
   Widget projectPeriod() {
     return Container(
-        padding: EdgeInsets.only(top: 30),
+        padding: EdgeInsets.only(top: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                padding: EdgeInsets.only(left: 30, bottom: 13),
+                padding: EdgeInsets.only(left: 30),
                 child: Text('진행 기간',
                     style: TextStyle(fontSize: 18, color: Colors.white))),
             Row(
@@ -193,40 +194,46 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
                             });
                           }),
                     )),
-                Container(
-                  alignment: Alignment.center,
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1.5,
-                      color: Colors.white24,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    _period.round().toString(),
-                    style: TextStyle(fontSize: 14, color: Colors.white),
-                  ),
-                ),
-                Wrap(children: [
-                  ...widget._periodOptions.entries.map((e) => FilterChip(
-                        label: Text(
-                          '${e.value}',
-                          style: TextStyle(fontSize: 14, color: Colors.white),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.5,
+                          color: Colors.white24,
                         ),
-                        showCheckmark: false,
-                        side: BorderSide(color: Colors.white, width: 0.5),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 2, vertical: 1),
-                        selected: _value == e.key,
-                        selectedColor: HexColor('993EF7FF'),
-                        onSelected: (bool selected) {
-                          setState(() => _value = selected ? e.key : null);
-                          _input['period'] += e.value;
-                        },
-                      ))
-                ])
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        _period.round().toString(),
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                    ),
+                    Wrap(children: [
+                      ...widget._periodOptions.entries.map((e) => FilterChip(
+                            label: Text(
+                              '${e.value}',
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.white),
+                            ),
+                            showCheckmark: false,
+                            side: BorderSide(color: Colors.white, width: 0.5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 2, vertical: 1),
+                            selected: _value == e.key,
+                            selectedColor: HexColor('4694F9'),
+                            onSelected: (bool selected) {
+                              setState(() => _value = selected ? e.key : null);
+                              _input['period'] += e.value;
+                            },
+                          ))
+                    ])
+                  ],
+                )
               ],
             )
           ],

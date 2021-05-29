@@ -22,7 +22,7 @@ class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
         leading: Back(),
       ),
       body: Padding(
-          padding: EdgeInsets.only(top: 15),
+          padding: EdgeInsets.only(top: 5),
           child: ProjectCreateContainer(
             content: Column(
               children: [
@@ -38,7 +38,7 @@ class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 33, left: 30, bottom: 35),
+                  padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '3. 나의 포지션 선택',
@@ -50,7 +50,7 @@ class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 33, left: 30, bottom: 35),
+                  padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '4. 프로젝트 사진 선택',

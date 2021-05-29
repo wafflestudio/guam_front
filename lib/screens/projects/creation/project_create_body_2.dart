@@ -6,21 +6,16 @@ import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
 import 'package:guam_front/screens/projects/creation/project_create_body_3.dart';
 import 'package:guam_front/screens/projects/creation/project_create_filter.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class CreateProjectBoardTwo extends StatefulWidget {
-  final Map _periodOptions = {1: '주', 2: '월'};
-
   @override
   _CreateProjectBoardTwoState createState() => _CreateProjectBoardTwoState();
 }
 
 class _CreateProjectBoardTwoState extends State<CreateProjectBoardTwo> {
-  Map _input = {'title': '', 'period': '', 'description': ''};
 
   @override
   Widget build(BuildContext context) {
-    print(_input);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(

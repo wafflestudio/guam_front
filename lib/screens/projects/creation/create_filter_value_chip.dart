@@ -11,7 +11,7 @@ class CreateFilterValueChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 8),
+      padding: EdgeInsets.only(left: 5),
       child: ChoiceChip(
         label: Text(
           content,

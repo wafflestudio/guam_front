@@ -33,20 +33,23 @@ class TechStackFilter extends StatefulWidget {
 }
 
 class _TechStackFilterState extends State<TechStackFilter> {
-  Map result = {};
   String selectedKey;
   List<String> filterValues;
-  int headCount = 0;
+  Map input = {
+    '백엔드': {'stack': '', 'headcount': 0},
+    '프론트엔드': {'stack': '', 'headcount': 0},
+    '디자이너': {'stack': '', 'headcount': 0},
+  };
 
-  void add() {
+  void add(tech) {
     setState(() {
-      headCount++;
+      input[tech]["headcount"]++;
     });
   }
 
-  void minus() {
+  void minus(tech) {
     setState(() {
-      if (headCount != 0) headCount--;
+      if (input[tech]["headcount"] > 0) input[tech]["headcount"]--;
     });
   }
 
@@ -58,8 +61,8 @@ class _TechStackFilterState extends State<TechStackFilter> {
   }
 
   void selectValue(String value) {
-    setState(() => result[selectedKey] = value);
-    print(result);
+    setState(() => input[selectedKey]["stack"] = value);
+    print(input);
   }
 
   @override
@@ -110,7 +113,7 @@ class _TechStackFilterState extends State<TechStackFilter> {
                         children: [
                           ...filterValues.map((e) => CreateFilterValueChip(
                                 content: e,
-                                selected: result[selectedKey] == e,
+                                selected: input[selectedKey]["stack"] == e,
                                 selectValue: selectValue,
                               ))
                         ],
@@ -153,13 +156,13 @@ class _TechStackFilterState extends State<TechStackFilter> {
               Icons.remove,
               color: Colors.white,
             ),
-            onPressed: minus,
+            onPressed: () => {if (selectedKey != null) minus(selectedKey)},
           ),
         ),
         Container(
           padding: EdgeInsets.all(15),
           child: Text(
-            "$headCount",
+            input[selectedKey]["headcount"].toString(),
             style: TextStyle(fontSize: 18, color: Colors.white),
           ),
         ),
@@ -176,7 +179,9 @@ class _TechStackFilterState extends State<TechStackFilter> {
               Icons.add,
               color: Colors.white,
             ),
-            onPressed: add,
+            onPressed: () => {
+              if (selectedKey != null) add(selectedKey),
+            },
           ),
         ),
       ],
@@ -185,17 +190,16 @@ class _TechStackFilterState extends State<TechStackFilter> {
 
   Widget position() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.95,
-      decoration: BoxDecoration(
-        color: Colors.deepPurple,
-        border: Border.all(color: HexColor("979797")),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          if ((result["백엔드"] == null) &
-              (result["프론트엔드"] == null) &
-              (result["디자이너"] == null))
+        width: MediaQuery.of(context).size.width * 0.95,
+        decoration: BoxDecoration(
+          color: Colors.deepPurple,
+          border: Border.all(color: HexColor("979797")),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(children: [
+          if ((input["백엔드"]["stack"] == '') &
+              (input["프론트엔드"]["stack"] == '') &
+              (input["디자이너"]["stack"] == ''))
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(20),
@@ -204,71 +208,39 @@ class _TechStackFilterState extends State<TechStackFilter> {
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ),
-          if (result["백엔드"] != null)
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "백엔드",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                    Text(
-                      "${result['백엔드']}",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                    Text(
-                      "$headCount",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                  ]),
+          if ((input["백엔드"]["stack"] != '') ||
+              (input["프론트엔드"]["stack"] != '') ||
+              (input["디자이너"]["stack"] != ''))
+            Wrap(
+              children: [
+                ...input.entries.map((e) => (input[e.key.toString()]["stack"]
+                            .toString() !=
+                        '')
+                    ? Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                e.key.toString(),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                              Text(
+                                input[e.key.toString()]["stack"].toString(),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                              Text(
+                                input[e.key.toString()]["headcount"].toString(),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                            ]))
+                    : Container())
+              ],
             ),
-          if (result["프론트엔드"] != null)
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "프론트엔드",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                    Text(
-                      "${result['프론트엔드']}",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                    Text(
-                      "$headCount",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                  ]),
-            ),
-          if (result["디자이너"] != null)
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "디자이너",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                    Text(
-                      "${result['디자이너']}",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                    Text(
-                      "$headCount",
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                  ]),
-            ),
-        ],
-      ),
-    );
+        ]));
   }
 }
