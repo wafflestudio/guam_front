@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'create_filter_chip.dart';
 import 'create_filter_value_chip.dart';
 
@@ -13,7 +14,6 @@ class TechStackFilter extends StatefulWidget {
       'Ruby on Rails',
       'node.js',
       'Laravel',
-      '상관 없음'
     ],
     '프론트엔드': [
       '상관 없음',
@@ -64,54 +64,77 @@ class _TechStackFilterState extends State<TechStackFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
+    return Column(
       children: [
-        Row(children: [
-          ...widget.filterOptions.entries.map((e) => CreateFilterChip(
-              content: e.key,
-              display: e.key,
-              selected: selectedKey == e.key,
-              selectKey: selectKey,
-              filterValues: e.value))
-        ]),
-        if (selectedKey != null)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        Container(
+          padding: const EdgeInsets.fromLTRB(3, 10, 10, 10),
+          decoration: BoxDecoration(
+            color: Colors.deepPurple,
+            border: Border.all(color: HexColor("979797")),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
-                child: Text(
-                  "인원",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+              Row(children: [
+                ...widget.filterOptions.entries.map((e) => CreateFilterChip(
+                    content: e.key,
+                    display: e.key,
+                    selected: selectedKey == e.key,
+                    selectKey: selectKey,
+                    filterValues: e.value))
+              ]),
+              if (selectedKey != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        "인원",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(left: 20),
+                        child: headCounter()),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        "기술 스택",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Wrap(
+                        children: [
+                          ...filterValues.map((e) => CreateFilterValueChip(
+                                content: e,
+                                selected: result[selectedKey] == e,
+                                selectValue: selectValue,
+                              ))
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 20), child: headCounter()),
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 20, 0, 10),
-                child: Text(
-                  "기술 스택",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 10),
-                  child: SizedBox(
-                      height: 40,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, idx) => CreateFilterValueChip(
-                          content: filterValues[idx],
-                          selected: result[selectedKey] == filterValues[idx],
-                          selectValue: selectValue,
-                        ),
-                        itemCount: filterValues.length,
-                      )))
             ],
           ),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 10, left: 30, bottom: 15),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '포지션',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        position(),
       ],
-    ));
+    );
   }
 
   Widget headCounter() {
@@ -157,6 +180,95 @@ class _TechStackFilterState extends State<TechStackFilter> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget position() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.95,
+      decoration: BoxDecoration(
+        color: Colors.deepPurple,
+        border: Border.all(color: HexColor("979797")),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: [
+          if ((result["백엔드"] == null) &
+              (result["프론트엔드"] == null) &
+              (result["디자이너"] == null))
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.all(20),
+              child: Text(
+                "포지션을 선택하여 크루를 구성하세요.",
+                style: TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            ),
+          if (result["백엔드"] != null)
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "백엔드",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                    Text(
+                      "${result['백엔드']}",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                    Text(
+                      "$headCount",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                  ]),
+            ),
+          if (result["프론트엔드"] != null)
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "프론트엔드",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                    Text(
+                      "${result['프론트엔드']}",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                    Text(
+                      "$headCount",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                  ]),
+            ),
+          if (result["디자이너"] != null)
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "디자이너",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                    Text(
+                      "${result['디자이너']}",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                    Text(
+                      "$headCount",
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                  ]),
+            ),
+        ],
+      ),
     );
   }
 }

@@ -61,34 +61,39 @@ class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
                     ),
                   ),
                 ),
-                Container(
-                    padding: EdgeInsets.only(top: 60, bottom: 20),
-                    child: InkWell(
-                      onTap: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Back(),
-                          Container(
-                            alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1.5,
-                                color: Colors.white24,
+                Expanded(
+                    child: Align(
+                        alignment: FractionalOffset.bottomCenter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Back(),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 1.5,
+                                      color: Colors.white24,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Text(
+                                    '생성',
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.grey),
+                                  ),
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Text(
-                              '생성',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
+                            )
+                          ],
+                        ))),
                 ProjectStatus(totalPage: 3, currentPage: 3),
               ],
             ),

@@ -4,8 +4,9 @@ class NextPage extends StatelessWidget {
   final Widget nextPage;
   final String text;
   final double buttonWidth;
+  final Map data;
 
-  NextPage({this.nextPage, this.text, this.buttonWidth});
+  NextPage({this.nextPage, this.text, this.buttonWidth, this.data});
 
   @override
   Widget build(BuildContext context) {

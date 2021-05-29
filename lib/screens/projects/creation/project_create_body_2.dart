@@ -20,6 +20,7 @@ class _CreateProjectBoardTwoState extends State<CreateProjectBoardTwo> {
 
   @override
   Widget build(BuildContext context) {
+    print(_input);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBar(
@@ -27,7 +28,7 @@ class _CreateProjectBoardTwoState extends State<CreateProjectBoardTwo> {
         leading: Back(),
       ),
       body: Padding(
-          padding: EdgeInsets.only(top: 15),
+          padding: EdgeInsets.only(top: 5),
           child: ProjectCreateContainer(
             content: Column(
               children: [
@@ -43,7 +44,7 @@ class _CreateProjectBoardTwoState extends State<CreateProjectBoardTwo> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 33, left: 30, bottom: 35),
+                  padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '2. 인원 및 스택 구성',
@@ -54,26 +55,27 @@ class _CreateProjectBoardTwoState extends State<CreateProjectBoardTwo> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(3,10,10,10),
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurple,
-                      border: Border.all(color: HexColor("979797")),
-                    borderRadius: BorderRadius.circular(20),
+                TechStackFilter(),
+                Expanded(
+                    child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // NextPage(
+                      //   nextPage: CreateProjectBoardOne(),
+                      //   text: '이전',
+                      //   buttonWidth: MediaQuery.of(context).size.width * 0.45,
+                      // ),
+                      Back(),
+                      NextPage(
+                        nextPage: CreateProjectBoardThree(),
+                        text: '다음',
+                        buttonWidth: MediaQuery.of(context).size.width * 0.45,
+                      ),
+                    ],
                   ),
-                  child: TechStackFilter(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Back(),
-                    NextPage(
-                      nextPage: CreateProjectBoardThree(),
-                      text: '다음',
-                      buttonWidth: MediaQuery.of(context).size.width * 0.45,
-                    ),
-                  ],
-                ),
+                )),
                 ProjectStatus(totalPage: 3, currentPage: 2)
               ],
             ),

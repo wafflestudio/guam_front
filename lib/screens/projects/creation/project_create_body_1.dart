@@ -28,10 +28,22 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
     'projectPicture': ''
   };
 
-  @override
-  void dispose() {
-    _projectNameController.dispose();
-    super.dispose();
+  void _saveTitle(_projectName) {
+    setState(() {
+      _input["title"] = _projectName;
+    });
+  }
+
+  void _savePeriod(_projectPeriod) {
+    setState(() {
+      _input["period"] = _projectPeriod;
+    });
+  }
+
+  void _saveDescription(_projectDescription) {
+    setState(() {
+      _input["description"] = _projectDescription;
+    });
   }
 
   @override
@@ -67,12 +79,21 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
               projectTitle(_projectNameController),
               projectPeriod(),
               projectDescription(_projectDescriptionController),
-              NextPage(
-                nextPage: CreateProjectBoardTwo(),
-                text: '다음',
-                buttonWidth: MediaQuery.of(context).size.width * 0.85,
-              ),
-              ProjectStatus(totalPage: 3, currentPage: 1)
+              Expanded(
+                  child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    NextPage(
+                      nextPage: CreateProjectBoardTwo(),
+                      text: '다음',
+                      buttonWidth: MediaQuery.of(context).size.width * 0.45,
+                    ),
+                  ],
+                ),
+              )),
+              ProjectStatus(totalPage: 3, currentPage: 2)
             ],
           ),
         ));
@@ -94,7 +115,10 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
           height: 60,
           child: TextFormField(
             onChanged: (_projectName) {
-              _input['title'] = _projectName;
+              setState(() {
+                _saveTitle(_projectName);
+                print(_projectName);
+              });
             },
             controller: _nameController,
             style: TextStyle(fontSize: 14, color: Colors.white),
@@ -131,7 +155,6 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
   }
 
   Widget projectPeriod() {
-    print(_period);
     return Container(
         padding: EdgeInsets.only(top: 30),
         child: Column(
@@ -163,9 +186,11 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
                           max: 10,
                           divisions: 9,
                           value: _period,
-                          onChanged: (newPeriod) {
-                            setState(() => _period = newPeriod);
-                            _input['period'] = _period.toString();
+                          onChanged: (_newPeriod) {
+                            setState(() {
+                              _period = _newPeriod;
+                              _savePeriod(_newPeriod);
+                            });
                           }),
                     )),
                 Container(
@@ -224,8 +249,9 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
           height: 100,
           child: TextFormField(
             onChanged: (_projectDescription) {
-              print(_projectDescription);
-              _input['description'] = _projectDescription;
+              setState(() {
+                _saveDescription(_projectDescription);
+              });
             },
             controller: _descriptionController,
             style: TextStyle(fontSize: 14, color: Colors.white),
