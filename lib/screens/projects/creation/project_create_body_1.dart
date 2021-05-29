@@ -27,6 +27,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
     'myPosition': '',
     'projectPicture': ''
   };
+
   // _input에 입력값들을 차곡차곡 저장하면서 CreateProjectBoardThree까지 전달하고 싶습니다.
 
   void _saveTitle(_projectName) {

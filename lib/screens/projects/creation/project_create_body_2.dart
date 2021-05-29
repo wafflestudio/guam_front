@@ -13,7 +13,6 @@ class CreateProjectBoardTwo extends StatefulWidget {
 }
 
 class _CreateProjectBoardTwoState extends State<CreateProjectBoardTwo> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
