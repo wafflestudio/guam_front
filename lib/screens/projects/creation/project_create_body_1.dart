@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/commons/next_page.dart';
+import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
+import 'package:guam_front/screens/projects/creation/project_create_body_2.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class CreateProjectBoard extends StatefulWidget {
+class CreateProjectBoardOne extends StatefulWidget {
+  final Map _periodOptions = {1: '주', 2: '월'};
+
   @override
-  _CreateProjectBoardState createState() => _CreateProjectBoardState();
+  _CreateProjectBoardOneState createState() => _CreateProjectBoardOneState();
 }
 
-class _CreateProjectBoardState extends State<CreateProjectBoard> {
+class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
   final _projectNameController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
-  final _periodOptions = {1: '주', 2: '월'};
+  int _value = 1;
   double _period = 1;
-  Map result = {};
+  Map _input = {
+    'title': '',
+    'period': '',
+    'description': '',
+    'backend': {'stack': '', 'headcount': ''},
+    'frontend': {'stack': '', 'headcount': ''},
+    'designer': {'stack': '', 'headcount': ''},
+    'myPosition': '',
+    'projectPicture': ''
+  };
 
   @override
   void dispose() {
@@ -24,7 +38,6 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(top: 15),
-        // child: GreyContainer(
         child: ProjectCreateContainer(
           content: Column(
             children: [
@@ -52,10 +65,14 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
                 ),
               ),
               projectTitle(_projectNameController),
-              projectPeriod(_periodOptions),
+              projectPeriod(),
               projectDescription(_projectDescriptionController),
-              nextPage(),
-              pageState(3, 1)
+              NextPage(
+                nextPage: CreateProjectBoardTwo(),
+                text: '다음',
+                buttonWidth: MediaQuery.of(context).size.width * 0.85,
+              ),
+              ProjectStatus(totalPage: 3, currentPage: 1)
             ],
           ),
         ));
@@ -76,8 +93,8 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
           padding: EdgeInsets.only(left: 20, right: 20),
           height: 60,
           child: TextFormField(
-            onChanged: (projectName) {
-              print(projectName);
+            onChanged: (_projectName) {
+              _input['title'] = _projectName;
             },
             controller: _nameController,
             style: TextStyle(fontSize: 14, color: Colors.white),
@@ -113,7 +130,8 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
     );
   }
 
-  Widget projectPeriod(Map _periodOptions) {
+  Widget projectPeriod() {
+    print(_period);
     return Container(
         padding: EdgeInsets.only(top: 30),
         child: Column(
@@ -147,6 +165,7 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
                           value: _period,
                           onChanged: (newPeriod) {
                             setState(() => _period = newPeriod);
+                            _input['period'] = _period.toString();
                           }),
                     )),
                 Container(
@@ -165,14 +184,24 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
                     style: TextStyle(fontSize: 14, color: Colors.white),
                   ),
                 ),
-                ChoiceChip(
-                    selectedColor: HexColor('3EF7FF'),
-                    label: Text(
-                      '주',
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
-                    selected: true),
-                ChoiceChip(label: Text('월'), selected: true),
+                Wrap(children: [
+                  ...widget._periodOptions.entries.map((e) => FilterChip(
+                        label: Text(
+                          '${e.value}',
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        ),
+                        showCheckmark: false,
+                        side: BorderSide(color: Colors.white, width: 0.5),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 2, vertical: 1),
+                        selected: _value == e.key,
+                        selectedColor: HexColor('993EF7FF'),
+                        onSelected: (bool selected) {
+                          setState(() => _value = selected ? e.key : null);
+                          _input['period'] += e.value;
+                        },
+                      ))
+                ])
               ],
             )
           ],
@@ -194,8 +223,9 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
           padding: EdgeInsets.only(left: 20, right: 20),
           height: 100,
           child: TextFormField(
-            onChanged: (projectName) {
-              print(projectName);
+            onChanged: (_projectDescription) {
+              print(_projectDescription);
+              _input['description'] = _projectDescription;
             },
             controller: _descriptionController,
             style: TextStyle(fontSize: 14, color: Colors.white),
@@ -215,7 +245,7 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
                     color: Colors.white,
                   ),
                 ),
-                hintText: "프로젝트 설명란입니다. ",
+                hintText: "프로젝트 설명란입니다.",
                 hintStyle: TextStyle(fontSize: 14, color: Colors.white)),
             validator: (String value) {
               if (value.isEmpty) {
@@ -228,48 +258,6 @@ class _CreateProjectBoardState extends State<CreateProjectBoard> {
             },
           ),
         )
-      ],
-    );
-  }
-
-  Widget nextPage() {
-    return Container(
-        padding: EdgeInsets.only(top: 60, bottom: 20),
-        child: InkWell(
-          onTap: () {
-            print("asdf");
-          },
-          child: Container(
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width * 0.85,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1.5,
-                color: Colors.white24,
-              ),
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Text(
-              '다음',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
-            ),
-          ),
-        ));
-  }
-
-  Widget pageState(num totalPage, num currentPage) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          width: 10,
-          height: 10,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
       ],
     );
   }
