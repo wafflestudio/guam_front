@@ -9,14 +9,14 @@ class Projects with ChangeNotifier {
   List<Project> _almostFullProjects;
   bool loading = false;
 
-  Projects({@required String authToken}) {
-    fetchProjects(authToken);
+  Projects() {
+    fetchProjects();
   }
 
   List<Project> get projects => _projects;
   List<Project> get almostFullProjects => _almostFullProjects;
 
-  Future fetchProjects(String authToken) async {
+  Future fetchProjects() async {
     try {
       loading = true;
       // await HttpRequest()
