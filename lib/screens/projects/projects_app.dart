@@ -39,17 +39,17 @@ class ProjectsAppScaffold extends StatelessWidget {
               icon: Icon(Icons.add),
               color: Colors.black,
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CreateProjectScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateProjectScreen()));
               }),
           trailing: IconButton(
             icon: Icon(Icons.search),
             color: Colors.black,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SearchScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchScreen()));
             },
           ),
         ),

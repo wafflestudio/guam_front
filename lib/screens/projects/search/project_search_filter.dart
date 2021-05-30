@@ -47,7 +47,6 @@ class _SearchFilterState extends State<SearchFilter> {
                 content: e.key,
                 display: result[e.key] != null ? "${e.key}: ${result[e.key]}" : e.key,
                 selected: selectedKey == e.key,
-                selectedColor: "#08951C",
                 selectKey: selectKey,
                 filterValues: e.value
               )

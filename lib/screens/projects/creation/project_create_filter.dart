@@ -62,7 +62,6 @@ class _TechStackFilterState extends State<TechStackFilter> {
 
   void selectValue(String value) {
     setState(() => input[selectedKey]["stack"] = value);
-    print(input);
   }
 
   @override

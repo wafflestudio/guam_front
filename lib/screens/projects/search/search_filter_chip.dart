@@ -4,7 +4,6 @@ import 'package:hexcolor/hexcolor.dart';
 class SearchFilterChip extends StatelessWidget {
   final String content;
   final String display;
-  final String selectedColor;
   final Function selectKey;
   final bool selected;
   final List<String> filterValues;
@@ -12,7 +11,6 @@ class SearchFilterChip extends StatelessWidget {
   SearchFilterChip(
       {this.content,
       this.display,
-      this.selectedColor,
       this.selectKey,
       this.selected,
       this.filterValues});
@@ -36,7 +34,7 @@ class SearchFilterChip extends StatelessWidget {
               backgroundColor: HexColor("#E9E9E9"),
               side: BorderSide(color: HexColor("#979797"), width: 0.5),
               padding: EdgeInsets.symmetric(horizontal: 3, vertical: 1),
-              selectedColor: HexColor(selectedColor),
+              selectedColor: HexColor("#08951C"),
               onSelected: (val) => selectKey(content, filterValues),
             )),
       ],
