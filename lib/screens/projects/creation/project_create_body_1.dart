@@ -28,8 +28,6 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
     'projectPicture': ''
   };
 
-  // _input에 입력값들을 차곡차곡 저장하면서 CreateProjectBoardThree까지 전달하고 싶습니다.
-
   void _saveTitle(_projectName) {
     setState(() {
       _input["title"] = _projectName;
@@ -91,7 +89,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
                     NextPage(
                       nextPage: CreateProjectBoardTwo(),
                       text: '다음',
-                      buttonWidth: MediaQuery.of(context).size.width * 0.45,
+                      buttonWidth: MediaQuery.of(context).size.width * 0.9,
                     ),
                   ],
                 ),

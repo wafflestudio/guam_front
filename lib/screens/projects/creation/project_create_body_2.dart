@@ -61,11 +61,11 @@ class _CreateProjectBoardTwoState extends State<CreateProjectBoardTwo> {
                       //   text: '이전',
                       //   buttonWidth: MediaQuery.of(context).size.width * 0.45,
                       // ),
-                      Back(),
+                      // Back(),
                       NextPage(
                         nextPage: CreateProjectBoardThree(),
                         text: '다음',
-                        buttonWidth: MediaQuery.of(context).size.width * 0.45,
+                        buttonWidth: MediaQuery.of(context).size.width * 0.9,
                       ),
                     ],
                   ),
