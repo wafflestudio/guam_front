@@ -20,20 +20,20 @@ enum PhotoSelection { yes, no }
 class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
   final isSelected = <bool>[false, false, false];
   final positions = <String>['백엔드', '프론트엔드', '디자이너'];
-  Map _input = {'myPosition': [], 'projectPhoto': ''};
+  Map input = {'myPosition': [], 'projectPhoto': ''};
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   PhotoSelection _character = PhotoSelection.yes;
 
   void _saveMyPosition(idx) {
     setState(() {
-      _input["myPosition"] = positions[idx];
+      input["myPosition"] = positions[idx];
     });
   }
 
   void _saveProjectPhoto(image) {
     setState(() {
-      _input["projectPicture"] = image;
+      input["projectPicture"] = image;
     });
   }
 

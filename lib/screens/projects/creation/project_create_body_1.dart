@@ -17,7 +17,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
   final _projectDescriptionController = TextEditingController();
   int _value = 1;
   double _period = 1;
-  Map _input = {
+  Map input = {
     'title': '',
     'period': '',
     'description': '',
@@ -30,25 +30,24 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
 
   void _saveTitle(_projectName) {
     setState(() {
-      _input["title"] = _projectName;
+      input["title"] = _projectName;
     });
   }
 
   void _savePeriod(_projectPeriod) {
     setState(() {
-      _input["period"] = _projectPeriod;
+      input["period"] = _projectPeriod;
     });
   }
 
   void _saveDescription(_projectDescription) {
     setState(() {
-      _input["description"] = _projectDescription;
+      input["description"] = _projectDescription;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(_input);
     return Padding(
         padding: EdgeInsets.only(top: 5),
         child: ProjectCreateContainer(
@@ -227,7 +226,7 @@ class _CreateProjectBoardOneState extends State<CreateProjectBoardOne> {
                             selectedColor: HexColor('4694F9'),
                             onSelected: (bool selected) {
                               setState(() => _value = selected ? e.key : null);
-                              _input['period'] += e.value;
+                              input['period'] += e.value;
                             },
                           ))
                     ])
