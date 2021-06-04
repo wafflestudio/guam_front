@@ -114,17 +114,22 @@ class ProjectDetailBody extends StatelessWidget {
                   child: ProjectApply(),
                 ),
                 SizedBox(height: size.height * 0.02),
-                TextField(
-                  keyboardType: TextInputType.multiline,
-                  minLines: 3,
-                  maxLines: 10,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText:
-                        "간단히 자기소개를 해주세요. 기술 스택, 개발 경험 등 자세하게 적어주시면 팀 구성에 도움이 된답니다.🚀",
-                    hintStyle: TextStyle(fontSize: 14, color: Colors.black38),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
                   ),
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    minLines: 3,
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText:
+                          "간단히 자기소개를 해주세요. 기술 스택, 개발 경험 등 자세하게 적어주시면 팀 구성에 도움이 된답니다.🚀",
+                      hintStyle: TextStyle(fontSize: 14, color: Colors.black38),
+                    ),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 SizedBox(height: size.height * 0.02),
                 _applyButton(size)
@@ -164,7 +169,8 @@ class ProjectDetailBody extends StatelessWidget {
       child: RaisedButton(
           child: Text(
             '참여하기',
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            style: TextStyle(
+                fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
           ),
           color: HexColor("08951C"),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
