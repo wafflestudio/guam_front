@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/projects/project_detail.dart';
+import 'package:guam_front/screens/projects/detail/project_detail.dart';
 import 'package:intl/intl.dart';
 import '../../models/project.dart';
 import 'package:hexcolor/hexcolor.dart';
