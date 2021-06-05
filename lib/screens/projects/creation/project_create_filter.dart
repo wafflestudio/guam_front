@@ -71,7 +71,6 @@ class _TechStackFilterState extends State<TechStackFilter> {
         Container(
           padding: const EdgeInsets.fromLTRB(3, 10, 10, 10),
           decoration: BoxDecoration(
-            color: Colors.deepPurple,
             border: Border.all(color: HexColor("979797")),
             borderRadius: BorderRadius.circular(20),
           ),
@@ -124,17 +123,24 @@ class _TechStackFilterState extends State<TechStackFilter> {
           ),
         ),
         Container(
-          padding: EdgeInsets.only(top: 10, left: 30, bottom: 15),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            '포지션',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        position(),
+            padding: EdgeInsets.only(top: 10, left: 5, bottom: 15),
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                  child: Text(
+                    '포지션',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                position(),
+              ],
+            )),
       ],
     );
   }
@@ -191,7 +197,6 @@ class _TechStackFilterState extends State<TechStackFilter> {
     return Container(
         width: MediaQuery.of(context).size.width * 0.95,
         decoration: BoxDecoration(
-          color: Colors.deepPurple,
           border: Border.all(color: HexColor("979797")),
           borderRadius: BorderRadius.circular(10),
         ),

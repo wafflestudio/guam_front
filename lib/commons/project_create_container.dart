@@ -14,8 +14,15 @@ class ProjectCreateContainer extends StatelessWidget {
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.deepPurple,
-          // 추후 그라데이션 넣을 예정
+          gradient: new LinearGradient(
+              colors: [
+                HexColor("2B2939"),
+                HexColor("6673AC"),
+              ],
+              begin: FractionalOffset(0.0, 1.0),
+              end: FractionalOffset(0.0, 0.0),
+              stops: [0, 1],
+              tileMode: TileMode.clamp),
           borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
         ),
         child: Container(

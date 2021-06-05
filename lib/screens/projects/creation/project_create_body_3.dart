@@ -75,7 +75,13 @@ class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
                     ),
                   ),
                 ),
-                myPosition(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: HexColor("6B70AA"),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: myPosition(),
+                ),
                 Container(
                   padding: EdgeInsets.only(top: 40, left: 30, bottom: 10),
                   alignment: Alignment.centerLeft,
@@ -88,38 +94,47 @@ class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
                     ),
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    '갤러리에서 찾기',
-                    style: TextStyle(fontSize: 14, color: Colors.white),
+                Theme(
+                  data: Theme.of(context).copyWith(
+                    unselectedWidgetColor: Colors.white,
                   ),
-                  selectedTileColor: Colors.white,
-                  leading: Radio<PhotoSelection>(
-                    value: PhotoSelection.yes,
-                    groupValue: _character,
-                    activeColor: Colors.white,
-                    onChanged: (PhotoSelection value) {
-                      setState(() {
-                        _character = value;
-                      });
-                    },
-                  ),
-                ),
-                myProjectPicture(context, size),
-                ListTile(
-                  title: Text(
-                    '선택하지 않음',
-                    style: TextStyle(fontSize: 14, color: Colors.white),
-                  ),
-                  leading: Radio<PhotoSelection>(
-                    value: PhotoSelection.no,
-                    groupValue: _character,
-                    activeColor: Colors.white,
-                    onChanged: (PhotoSelection value) {
-                      setState(() {
-                        _character = value;
-                      });
-                    },
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(
+                          '갤러리에서 찾기',
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        ),
+                        selectedTileColor: Colors.white,
+                        leading: Radio<PhotoSelection>(
+                          value: PhotoSelection.yes,
+                          groupValue: _character,
+                          activeColor: Colors.white,
+                          onChanged: (PhotoSelection value) {
+                            setState(() {
+                              _character = value;
+                            });
+                          },
+                        ),
+                      ),
+                      myProjectPicture(context, size, _character),
+                      ListTile(
+                        title: Text(
+                          '선택하지 않음',
+                          style: TextStyle(fontSize: 14, color: Colors.white),
+                        ),
+                        leading: Radio<PhotoSelection>(
+                          value: PhotoSelection.no,
+                          groupValue: _character,
+                          activeColor: Colors.white,
+                          onChanged: (PhotoSelection value) {
+                            setState(() {
+                              _character = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
@@ -205,35 +220,38 @@ class _CreateProjectBoardThreeState extends State<CreateProjectBoardThree> {
     );
   }
 
-  Widget myProjectPicture(BuildContext context, Size size) {
-    return Container(
-        padding: EdgeInsets.only(left: 70, bottom: 15),
-        alignment: Alignment.centerLeft,
-        child: InkWell(
-          onTap: () {
-            showModalBottomSheet(
-                context: context, builder: ((builder) => bottomSheet(size)));
-          },
-          child: Container(
-            width: 100,
-            height: 100,
-            child: _imageFile == null
-                ? Icon(Icons.photo, color: Colors.white, size: 100)
-                : Image(
-                    image: FileImage(File(_imageFile.path)),
-                    fit: BoxFit.fill,
-                  ),
-            decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Colors.white),
-              boxShadow: [
-                BoxShadow(
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    color: Colors.black.withOpacity(0.5))
-              ],
+  Widget myProjectPicture(
+      BuildContext context, Size size, PhotoSelection character) {
+    if (_character.index == 0)
+      return Container(
+          padding: EdgeInsets.only(left: 70, bottom: 15),
+          alignment: Alignment.centerLeft,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                  context: context, builder: ((builder) => bottomSheet(size)));
+            },
+            child: Container(
+              width: 100,
+              height: 100,
+              child: _imageFile == null
+                  ? Icon(Icons.photo, color: Colors.white, size: 100)
+                  : Image(
+                      image: FileImage(File(_imageFile.path)),
+                      fit: BoxFit.fill,
+                    ),
+              decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Colors.white),
+                boxShadow: [
+                  BoxShadow(
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      color: Colors.black.withOpacity(0.5))
+                ],
+              ),
             ),
-          ),
-        ));
+          ));
+    if (_character.index == 1) return Container();
   }
 
   Widget bottomSheet(Size size) {

@@ -26,7 +26,8 @@ class CreateFilterChip extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: Colors.white),
             ),
             selected: selected,
-            backgroundColor: Colors.deepPurple,
+            // 아래 backgroundColor를 project_create_container.dart 색과 통일시키고 싶은데 혼자 말썽이네요
+            backgroundColor: HexColor("5E66A6"),
             side: BorderSide(color: HexColor("#979797"), width: 0.5),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             selectedColor: HexColor("#4694F9"),
