@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'search_filter_chip.dart';
 import 'filter_value_chip.dart';
 
@@ -39,33 +40,38 @@ class _SearchFilterState extends State<SearchFilter> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [...widget.filterOptions.entries.map((e) =>
-              SearchFilterChip(
-                content: e.key,
-                display: result[e.key] != null ? "${e.key}: ${result[e.key]}" : e.key,
-                selected: selectedKey == e.key,
-                selectKey: selectKey,
-                filterValues: e.value
-              )
-            )]
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: HexColor("979797"),
           ),
-          if (selectedKey != null) SizedBox(
-            height: 40,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, idx) => FilterValueChip(
-                content: filterValues[idx],
-                selected: result[selectedKey] == filterValues[idx],
-                selectValue: selectValue,
-              ),
-              itemCount: filterValues.length,
-            )
-          )
-        ],
-      )
-    );
+        ),
+        padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+        child: Column(
+          children: [
+            Row(children: [
+              ...widget.filterOptions.entries.map((e) => SearchFilterChip(
+                  content: e.key,
+                  display: result[e.key] != null
+                      ? "${e.key}: ${result[e.key]}"
+                      : e.key,
+                  selected: selectedKey == e.key,
+                  selectKey: selectKey,
+                  filterValues: e.value))
+            ]),
+            if (selectedKey != null)
+              SizedBox(
+                  height: 40,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, idx) => FilterValueChip(
+                      content: filterValues[idx],
+                      selected: result[selectedKey] == filterValues[idx],
+                      selectValue: selectValue,
+                    ),
+                    itemCount: filterValues.length,
+                  ))
+          ],
+        ));
   }
 }
