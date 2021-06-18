@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guam_front/models/project.dart';
-import 'package:guam_front/screens/projects/project_detail.dart';
+import 'package:guam_front/screens/projects/detail/project_detail.dart';
 
 class SearchForm extends StatefulWidget {
   @override
