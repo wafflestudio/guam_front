@@ -155,6 +155,7 @@ class Boards with ChangeNotifier {
       isNotice: true,
     );
 
+    /*
     Thread sampleThread4 = Thread(
       id: 1,
       creator: sampleUser4,
@@ -184,6 +185,8 @@ class Boards with ChangeNotifier {
       createdAt: DateTime.now(),
       isNotice: true,
     );
+    */
+
 
     List<UserProgress> sampleProgresses1 = [
       UserProgress(user: sampleUser1, progress: "k8s deploy infra 구축 & MySQL DB"),
@@ -209,9 +212,6 @@ class Boards with ChangeNotifier {
       sampleThread1,
       sampleThread2,
       sampleThread3,
-      sampleThread4,
-      sampleThread5,
-      sampleThread6,
     ];
     /* Get rid of all the above unnecessary fields */
 

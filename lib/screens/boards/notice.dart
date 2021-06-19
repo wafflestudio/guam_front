@@ -11,7 +11,7 @@ class Notice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: 20),
       child: GreyContainer(
         header: Row(
           children: [

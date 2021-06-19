@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../models/boards/user_progress.dart';
-import '../../commons/grey_container.dart';
-import 'progress.dart';
+import 'iconTitle.dart';
 
 class Progresses extends StatefulWidget {
   final List<UserProgress> progresses;
@@ -35,10 +33,10 @@ class ProgressesState extends State<Progresses> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          progressTitle(),
+          iconTitle(icon: Icons.task_outlined, title: "작업 현황"),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -141,23 +139,6 @@ class ProgressesState extends State<Progresses> {
     );
   }
 }
-
-Widget progressTitle() => Padding(
-  child: Row(
-    children: [
-      Icon(Icons.task_outlined),
-      Padding(padding: EdgeInsets.only(right: 8)),
-      Text(
-        "작업 현황",
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
-      )
-    ],
-  ),
-  padding: EdgeInsets.only(bottom: 12),
-);
 
 Widget positionChip() => DecoratedBox(
   decoration: BoxDecoration(

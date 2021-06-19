@@ -15,7 +15,7 @@ class Thread extends StatelessWidget {
         children: [
           ProfileThumbnail(
             profile: thread.creator,
-            radius: 16,
+            radius: 12,
             showNickname: false,
           ),
           Expanded(
@@ -25,7 +25,8 @@ class Thread extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      thread.content
+                    thread.content,
+                    style: TextStyle(fontSize: 12),
                   )
                 ],
               ),
