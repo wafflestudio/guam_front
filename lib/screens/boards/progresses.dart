@@ -13,7 +13,6 @@ class Progresses extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 12),
       child: GreyContainer(
-        //height: 210,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

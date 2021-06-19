@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../commons/app_bar.dart';
 import '../../providers/boards/boards.dart';
-import '../../providers/user_auth/authenticate.dart';
 import 'boards_body.dart';
 
 class BoardsApp extends StatelessWidget {
@@ -23,6 +22,7 @@ class BoardsAppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: appBar(
         title: '작업실',
+        /*
         leading: IconButton(
             icon: Icon(
               Icons.menu,
@@ -30,6 +30,7 @@ class BoardsAppScaffold extends StatelessWidget {
             ),
             onPressed: () {}
         ),
+         */
         trailing: IconButton(
             icon: Icon(
               Icons.notifications_none,

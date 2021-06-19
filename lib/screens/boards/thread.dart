@@ -10,7 +10,6 @@ class Thread extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 9),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

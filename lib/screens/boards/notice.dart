@@ -13,17 +13,17 @@ class Notice extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 12),
       child: GreyContainer(
-        // height: 115,
+        header: Text(
+          '공지',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '공지',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+
             Thread(notice),
           ],
         ),

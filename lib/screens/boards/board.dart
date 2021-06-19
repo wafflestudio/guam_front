@@ -18,15 +18,11 @@ class Board extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Container(
-        // height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
             BoardTitle(board.title),
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
+              padding: EdgeInsets.all(10),
               child: Column(
                 children: [
                   Notice(board.notice),
