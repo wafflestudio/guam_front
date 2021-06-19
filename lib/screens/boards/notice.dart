@@ -20,13 +20,7 @@ class Notice extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            Thread(notice),
-          ],
-        ),
+        content: Thread(notice),
       )
     );
   }
