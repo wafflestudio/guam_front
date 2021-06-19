@@ -15,7 +15,7 @@ class Thread extends StatelessWidget {
         children: [
           ProfileThumbnail(
             profile: thread.creator,
-            size: 16,
+            radius: 16,
             showNickname: false,
           ),
           Expanded(

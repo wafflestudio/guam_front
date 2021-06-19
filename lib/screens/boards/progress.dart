@@ -16,7 +16,7 @@ class Progress extends StatelessWidget {
         children: [
           ProfileThumbnail(
             profile: progress.user,
-            size: 16,
+            radius: 16,
             showNickname: false,
           ),
           Expanded(
