@@ -28,8 +28,9 @@ class Threads extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ...threads.map((e) => Thread(e)),
+                    Column(children: threads.map((e) => Thread(e)).toList()),
                     DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),

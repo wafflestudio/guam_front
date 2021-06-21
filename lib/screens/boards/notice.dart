@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../commons/grey_container.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
+import '../../commons/profile_thumbnail.dart';
 import 'thread.dart';
 
 class Notice extends StatelessWidget {
@@ -26,8 +27,35 @@ class Notice extends StatelessWidget {
             ),
           ],
         ),
-        content: Thread(notice),
+        content: Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProfileThumbnail(
+                profile: notice.creator,
+                radius: 12,
+                showNickname: false,
+              ),
+              Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 9),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          notice.content,
+                          style: TextStyle(fontSize: 12),
+                        )
+                      ],
+                    ),
+                  )
+              )
+            ],
+          ),
+        ),
       )
     );
   }
 }
+
+
