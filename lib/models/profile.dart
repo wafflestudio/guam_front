@@ -3,12 +3,13 @@ import 'package:flutter/foundation.dart';
 
 class Profile extends ChangeNotifier {
   final int id;
-  final String nickname; // 원식님이 name 으로 해놔서 바꿔달라고 요청한 상태.
+  final String nickname;
   final String imageUrl;
   final String githubUrl;
   final String blogUrl;
-  final String skills;
+  final List<dynamic> skills;
   final String introduction;
+  final bool isProfileSet;
 
   Profile({
     this.id,
@@ -18,18 +19,21 @@ class Profile extends ChangeNotifier {
     this.blogUrl,
     this.skills,
     this.introduction,
+    this.isProfileSet,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> data = json["data"];
+
     return Profile(
-      id: json["id"],
-      nickname: json["nickname"],
-      imageUrl: json["imageUrl"],
-      githubUrl: json["githubUrl"],
-      blogUrl: json["blogUrl"],
-      skills: json["skills"],
-      introduction: json["introduction"],
+      id: data["id"],
+      nickname: data["nickname"],
+      imageUrl: data["imageUrl"],
+      githubUrl: data["githubUrl"],
+      blogUrl: data["blogUrl"],
+      skills: data["skills"],
+      introduction: data["introduction"],
+      isProfileSet: data["isProfileSet"],
     );
   }
-
 }

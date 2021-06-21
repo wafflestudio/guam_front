@@ -2,8 +2,7 @@ import 'dart:io' show HttpHeaders;
 import 'package:http/http.dart' as http;
 
 class HttpRequest {
-  final String baseAuthority = "34.84.231.149:80";
-  final String kakaoAuthority = "34.84.231.149:8888";
+  final String baseAuthority = "13.209.157.42:8080";
 
   Future get({String authority, String path, dynamic queryParams, String authToken}) async {
     try {
@@ -22,6 +21,8 @@ class HttpRequest {
   Future post({String authority, String path, String authToken, dynamic body}) async {
     try {
       final uri = Uri.http(authority ?? baseAuthority, path);
+
+      print(body);
 
       final response = await http.post(
         uri,

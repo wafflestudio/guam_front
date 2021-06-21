@@ -16,7 +16,7 @@ class MyProfile extends StatelessWidget {
             Text(authProvider.me.nickname ?? ""),
             Text(authProvider.me.githubUrl ?? ""),
             Text(authProvider.me.blogUrl ?? ""),
-            Text(authProvider.me.skills ?? ""),
+            //Text(authProvider.me.skills ?? ""),
             Text(authProvider.me.introduction ?? ""),
             SignOut(),
           ],
