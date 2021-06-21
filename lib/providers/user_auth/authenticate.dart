@@ -20,13 +20,12 @@ class Authenticate with ChangeNotifier {
   }
 
   bool userSignedIn() => auth.currentUser != null; // 로그인 된 유저 존재 여부
-  bool meExists() => me != null; // 프로필까지 만든 정상 유저인지 여부
+  bool profileExists() => me != null && me.isProfileSet; // 프로필까지 만든 정상 유저인지 여부
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
       toggleLoading();
       await HttpRequest().get(
-        authority: HttpRequest().kakaoAuthority,
         path: "/kakao",
         queryParams: { "token": kakaoAccessToken },
       ).then((response) async {
@@ -58,10 +57,11 @@ class Authenticate with ChangeNotifier {
             authToken: authToken
         ).then((response) {
           if (response.statusCode == 200) {
+            print(json.decode(response.body)); //
             me = Profile.fromJson(json.decode(response.body));
           }
           if (response.statusCode == 400) {
-            print("User doesn't have a profile. Please set one !"); // User has no profile
+            print("Error loading user profile");
           }
         });
       }

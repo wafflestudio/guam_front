@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'project_search_filter.dart';
 import 'project_search_form.dart';
 
@@ -41,8 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           Icons.filter_list,
                           color: Colors.black,
                         ),
-                        onPressed: _toggleIsFilterOpen
-                    ),
+                        onPressed: _toggleIsFilterOpen),
                   ],
                 )),
           ],
@@ -51,11 +51,22 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Container(
         child: Stack(
           children: <Widget>[
-            Container(color: Colors.white70),
-            if (isFilterOpen) SearchFilter(),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      HexColor("FFB980").withOpacity(0.5),
+                      HexColor("E2AFF3").withOpacity(0.5),
+                    ],
+                    begin: FractionalOffset(0.0, 1.0),
+                    end: FractionalOffset(0.0, 0.0),
+                    stops: [0, 1]),
+              ),
+            ),
             Column(
               children: <Widget>[
-                SizedBox(width: 20, height: 400),
+                if (isFilterOpen) SearchFilter(),
+                SizedBox(width: 20, height: 100),
                 Container(color: Colors.black),
                 Text("검색 결과"),
                 /* 검색 결과 Body */
