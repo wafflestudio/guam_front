@@ -1,9 +1,9 @@
+import 'dart:convert';
 import 'dart:io' show HttpHeaders;
 import 'package:http/http.dart' as http;
 
 class HttpRequest {
-  final String baseAuthority = "34.84.231.149:80";
-  final String kakaoAuthority = "34.84.231.149:8888";
+  final String baseAuthority = "13.209.157.42:8080";
 
   Future get({String authority, String path, dynamic queryParams, String authToken}) async {
     try {
@@ -26,7 +26,7 @@ class HttpRequest {
       final response = await http.post(
         uri,
         headers: {'Content-Type': "application/json", HttpHeaders.authorizationHeader: authToken},
-        body: body,
+        body: jsonEncode(body),
       );
 
       return response;

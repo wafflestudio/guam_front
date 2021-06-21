@@ -24,7 +24,7 @@ class MyPage extends StatelessWidget {
       body: authProvider.loading ?
         Center(child: CircularProgressIndicator()) :
         authProvider.userSignedIn() ?
-          authProvider.meExists() ? MyProfile() : MakeProfilePage() :
+          authProvider.profileExists() ? MyProfile() : MakeProfilePage() :
           Container(
             child: Center(
               child: KakaoLogin(),
