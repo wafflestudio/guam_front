@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io' show HttpHeaders;
 import 'package:http/http.dart' as http;
 
@@ -22,12 +23,10 @@ class HttpRequest {
     try {
       final uri = Uri.http(authority ?? baseAuthority, path);
 
-      print(body);
-
       final response = await http.post(
         uri,
         headers: {'Content-Type': "application/json", HttpHeaders.authorizationHeader: authToken},
-        body: body,
+        body: jsonEncode(body),
       );
 
       return response;
