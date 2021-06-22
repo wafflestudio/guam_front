@@ -54,11 +54,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'myPosition': '',
     'projectPhoto': '',
   };
-  Map positions = {
-    '백엔드': {'stack': '', 'headcount': 0},
-    '프론트엔드': {'stack': '', 'headcount': 0},
-    '디자이너': {'stack': '', 'headcount': 0},
-  };
   final _projectNameController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
   final isSelected = <bool>[false, false, false];
@@ -69,84 +64,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   ImagePicker _picker = ImagePicker();
   PhotoSelection _character = PhotoSelection.yes;
 
-  void saveTitle(_projectName) {
-    setState(() {
-      input["title"] = _projectName;
-    });
-  }
-
-  void savePeriod(_projectPeriod) {
-    setState(() {
-      input["period"] = _projectPeriod;
-    });
-  }
-
-  void saveDescription(_projectDescription) {
-    setState(() {
-      input["description"] = _projectDescription;
-    });
-  }
-
-  void addPage(currentPage) {
-    setState(() {
-      if (currentPage < 4) {
-        input["currentPage"] = currentPage;
-      }
-    });
-  }
-
-  void minusPage(currentPage) {
-    setState(() {
-      input["currentPage"] = currentPage;
-    });
-  }
-
-  void addHeadcount(tech) {
-    setState(() {
-      input[tech]["headcount"]++;
-    });
-  }
-
-  void minusHeadcount(tech) {
-    setState(() {
-      if (input[tech]["headcount"] > 0) input[tech]["headcount"]--;
-    });
-  }
-
-  void selectKey(String key, List<String> value) {
-    setState(() {
-      selectedKey = selectedKey == key ? null : key;
-      filterValues = value;
-    });
-  }
-
-  void selectValue(String value) {
-    setState(() => input[selectedKey]["stack"] = value);
-  }
-
-  void saveMyPosition(idx) {
-    setState(() {
-      input["myPosition"] = positions.keys.toList()[idx];
-    });
-  }
-
-  void saveProjectPhoto(image) {
-    setState(() {
-      input["projectPicture"] = image;
-    });
-  }
-
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
-    setState(() {
-      _imageFile = pickedFile;
-      saveProjectPhoto(_imageFile);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    print(input);
     return Scaffold(
         appBar: appBar(
           title: '프로젝트 만들기',
@@ -799,7 +718,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               (input["디자이너"]["stack"] != ''))
             Wrap(
               children: [
-                ...positions.entries.map((e) => (input[e.key]["stack"]
+                ...widget.filterOptions.entries.map((e) => (input[e.key]
+                                ["stack"]
                             .toString() !=
                         '')
                     ? Container(
@@ -1041,5 +961,80 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         ],
       ),
     );
+  }
+
+  void saveTitle(_projectName) {
+    setState(() {
+      input["title"] = _projectName;
+    });
+  }
+
+  void savePeriod(_projectPeriod) {
+    setState(() {
+      input["period"] = _projectPeriod;
+    });
+  }
+
+  void saveDescription(_projectDescription) {
+    setState(() {
+      input["description"] = _projectDescription;
+    });
+  }
+
+  void addPage(currentPage) {
+    setState(() {
+      if (currentPage < 4) {
+        input["currentPage"] = currentPage;
+      }
+    });
+  }
+
+  void minusPage(currentPage) {
+    setState(() {
+      input["currentPage"] = currentPage;
+    });
+  }
+
+  void addHeadcount(tech) {
+    setState(() {
+      input[tech]["headcount"]++;
+    });
+  }
+
+  void minusHeadcount(tech) {
+    setState(() {
+      if (input[tech]["headcount"] > 0) input[tech]["headcount"]--;
+    });
+  }
+
+  void selectKey(String key, List<String> value) {
+    setState(() {
+      selectedKey = selectedKey == key ? null : key;
+      filterValues = value;
+    });
+  }
+
+  void selectValue(String value) {
+    setState(() => input[selectedKey]["stack"] = value);
+  }
+
+  void saveMyPosition(idx) {
+    setState(() {
+      input["myPosition"] = widget.filterOptions.keys.toList()[idx];
+    });
+  }
+
+  void saveProjectPhoto(image) {
+    setState(() {
+      input["projectPicture"] = image;
+    });
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(source: source);
+    setState(() {
+      _imageFile = pickedFile;
+      saveProjectPhoto(_imageFile);
+    });
   }
 }
