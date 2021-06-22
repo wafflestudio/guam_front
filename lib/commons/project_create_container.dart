@@ -14,7 +14,7 @@ class ProjectCreateContainer extends StatelessWidget {
       height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          gradient: new LinearGradient(
+          gradient: LinearGradient(
               colors: [
                 HexColor("2B2939"),
                 HexColor("6673AC"),

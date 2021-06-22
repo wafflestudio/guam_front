@@ -51,7 +51,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     '백엔드': {'stack': '', 'headcount': 0},
     '프론트엔드': {'stack': '', 'headcount': 0},
     '디자이너': {'stack': '', 'headcount': 0},
-    'myPosition': [],
+    'myPosition': '',
     'projectPhoto': '',
   };
   Map positions = {
@@ -157,12 +157,14 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             child: ProjectCreateContainer(
                 content: Container(
               child: Column(children: [
-                (_currentPage == 1 ? pageOne() : Container()),
-                (_currentPage == 2 ? pageTwo() : Container()),
-                (_currentPage == 3 ? pageThree() : Container()),
+                (_currentPage == 1 ? createProjectPageOne() : Container()),
+                (_currentPage == 2 ? createProjectPageTwo() : Container()),
+                (_currentPage == 3 ? createProjectPageThree() : Container()),
                 Expanded(
-                    child: Align(
-                  alignment: FractionalOffset.bottomCenter,
+                  child: Container(),
+                ),
+                Container(
+                  color: Colors.transparent,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -179,7 +181,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           : Container())
                     ],
                   ),
-                )),
+                ),
                 ProjectStatus(totalPage: 3, currentPage: _currentPage)
               ]),
             ))));
@@ -203,72 +205,191 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 width: 1.5,
                 color: Colors.white24,
               ),
+              gradient: LinearGradient(
+                  colors: [
+                    HexColor("4F34F3"),
+                    HexColor("3EF7FF"),
+                  ],
+                  begin: FractionalOffset(1.0, 0.0),
+                  end: FractionalOffset(0.0, 0.0),
+                  stops: [0, 1],
+                  tileMode: TileMode.clamp),
               borderRadius: BorderRadius.circular(30),
             ),
             child: Text(
               '이전',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ));
   }
 
   Widget nextPage() {
-    return Container(
-        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-        child: InkWell(
-          onTap: () {
-            _currentPage += 1;
-            minusPage(_currentPage);
-          },
-          child: Container(
-            alignment: Alignment.center,
-            width: (_currentPage != 1
-                ? MediaQuery.of(context).size.width * 0.45
-                : MediaQuery.of(context).size.width * 0.9),
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1.5,
-                color: Colors.white24,
-              ),
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Text(
-              '다음',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
-            ),
-          ),
-        ));
+    return (_currentPage == 1 &&
+            input['title'] != '' &&
+            input['description'] != ''
+        ? Container(
+            padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+            child: InkWell(
+                onTap: () {
+                  _currentPage += 1;
+                  minusPage(_currentPage);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: (_currentPage != 1
+                      ? MediaQuery.of(context).size.width * 0.45
+                      : MediaQuery.of(context).size.width * 0.9),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.5,
+                      color: Colors.white24,
+                    ),
+                    gradient: LinearGradient(
+                        colors: [
+                          HexColor("4F34F3"),
+                          HexColor("3EF7FF"),
+                        ],
+                        begin: FractionalOffset(1.0, 0.0),
+                        end: FractionalOffset(0.0, 0.0),
+                        stops: [0, 1],
+                        tileMode: TileMode.clamp),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text(
+                    '다음',
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )))
+        : (_currentPage == 2 &&
+                input['백엔드']['stack'] != '' &&
+                input['프론트엔드']['stack'] != '' &&
+                input['디자이너']['stack'] != ''
+            ? Container(
+                padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+                child: InkWell(
+                    onTap: () {
+                      _currentPage += 1;
+                      minusPage(_currentPage);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: (_currentPage != 1
+                          ? MediaQuery.of(context).size.width * 0.45
+                          : MediaQuery.of(context).size.width * 0.9),
+                      height: 60,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.5,
+                          color: Colors.white24,
+                        ),
+                        gradient: LinearGradient(
+                            colors: [
+                              HexColor("4F34F3"),
+                              HexColor("3EF7FF"),
+                            ],
+                            begin: FractionalOffset(1.0, 0.0),
+                            end: FractionalOffset(0.0, 0.0),
+                            stops: [0, 1],
+                            tileMode: TileMode.clamp),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Text('다음',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                    )))
+            : Container(
+                padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: (_currentPage != 1
+                      ? MediaQuery.of(context).size.width * 0.45
+                      : MediaQuery.of(context).size.width * 0.9),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.5,
+                      color: Colors.white24,
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text('다음',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                      )),
+                ),
+                // )
+              )));
   }
 
   Widget savePage() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-      child: InkWell(
-        onTap: () {},
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * 0.45,
-          height: 60,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1.5,
-              color: Colors.white24,
+    return (_currentPage == 3 && input['myPosition'] != ''
+        ? Container(
+            padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: 60,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1.5,
+                    color: Colors.white24,
+                  ),
+                  gradient: LinearGradient(
+                      colors: [
+                        HexColor("4F34F3"),
+                        HexColor("3EF7FF"),
+                      ],
+                      begin: FractionalOffset(1.0, 0.0),
+                      end: FractionalOffset(0.0, 0.0),
+                      stops: [0, 1],
+                      tileMode: TileMode.clamp),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  '생성',
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Text(
-            '생성',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-        ),
-      ),
-    );
+          )
+        : Container(
+            padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.45,
+              height: 60,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1.5,
+                  color: Colors.white24,
+                ),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Text(
+                '생성',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+            )));
   }
 
   // Page 1
-  Widget pageOne() {
+  Widget createProjectPageOne() {
     return Column(
       children: [
         Container(
@@ -494,7 +615,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   // Page 2
-  Widget pageTwo() {
+  Widget createProjectPageTwo() {
     return Column(
       children: [
         Container(
@@ -710,7 +831,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   // Page 3
-  Widget pageThree() {
+  Widget createProjectPageThree() {
     final Size size = MediaQuery.of(context).size;
 
     return Column(
