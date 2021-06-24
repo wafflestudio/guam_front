@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:guam_front/models/boards/comment.dart';
 import 'dart:convert';
 import '../../models/project.dart';
 import '../../models/boards/thread.dart';
@@ -129,7 +130,30 @@ class Boards with ChangeNotifier {
       id: 1,
       creator: sampleUser1,
       content: "이곳에는 sample user 1이 작성한 자기소개가 들어갑니다. \n ex) 안녕하세요! 저는 Swift / Django 개발자입니다! \n백엔드 개발을 희망합니다 ^_^",
-      comments: [],
+      commentNum: 3,
+      comments: [
+        Comment(
+          id: 1,
+          content: "댓글 1",
+          createdAt: DateTime.now(),
+          creator: sampleUser1,
+          isEdited: false,
+        ),
+        Comment(
+          id: 2,
+          content: "댓글 2",
+          createdAt: DateTime.now(),
+          creator: sampleUser2,
+          isEdited: false,
+        ),
+        Comment(
+          id: 3,
+          content: "댓글 3",
+          createdAt: DateTime.now(),
+          creator: sampleUser3,
+          isEdited: false,
+        )
+      ],
       isEdited: false,
       createdAt: DateTime.now(),
       isNotice: true,
@@ -139,7 +163,23 @@ class Boards with ChangeNotifier {
       id: 1,
       creator: sampleUser2,
       content: "이곳에는 sample user 2가 작성한 자기소개가 들어갑니다. \n ex) Code makes life perfect! 저는 Flutter 개발자입니다 반가워용 ㅎㅎ",
-      comments: [],
+      commentNum: 2,
+      comments: [
+        Comment(
+          id: 4,
+          content: "댓글 4",
+          createdAt: DateTime.now(),
+          creator: sampleUser1,
+          isEdited: false,
+        ),
+        Comment(
+          id: 5,
+          content: "댓글 5",
+          createdAt: DateTime.now(),
+          creator: sampleUser2,
+          isEdited: false,
+        ),
+      ],
       isEdited: false,
       createdAt: DateTime.now(),
       isNotice: true,
@@ -149,44 +189,38 @@ class Boards with ChangeNotifier {
       id: 1,
       creator: sampleUser3,
       content: "이곳에는 sample user 3가 작성한 자기소개가 들어갑니다",
+      commentNum: 0,
       comments: [],
       isEdited: false,
       createdAt: DateTime.now(),
       isNotice: true,
     );
 
-    /*
     Thread sampleThread4 = Thread(
       id: 1,
-      creator: sampleUser4,
-      content: "이곳에는 sample user 4가 작성한 자기소개가 들어갑니다.",
-      comments: [],
+      creator: sampleUser2,
+      content: "샘플 스레드 샘플 스레드 샘플 스레드 샘플 스레드 샘플 스레드 샘플 스레드 샘플 스레드 샘플 스레드",
+      commentNum: 2,
+      comments: [
+        Comment(
+          id: 4,
+          content: "댓글 4",
+          createdAt: DateTime.now(),
+          creator: sampleUser1,
+          isEdited: false,
+        ),
+        Comment(
+          id: 5,
+          content: "댓글 5",
+          createdAt: DateTime.now(),
+          creator: sampleUser2,
+          isEdited: false,
+        ),
+      ],
       isEdited: false,
       createdAt: DateTime.now(),
       isNotice: true,
     );
-
-    Thread sampleThread5 = Thread(
-      id: 1,
-      creator: sampleUser5,
-      content: "이곳에는 sample user 5가 작성한 자기소개가 들어갑니다.",
-      comments: [],
-      isEdited: false,
-      createdAt: DateTime.now(),
-      isNotice: true,
-    );
-
-    Thread sampleThread6 = Thread(
-      id: 1,
-      creator: sampleUser6,
-      content: "이곳에는 sample user 6가 작성한 자기소개가 들어갑니다.",
-      comments: [],
-      isEdited: false,
-      createdAt: DateTime.now(),
-      isNotice: true,
-    );
-    */
-
 
     List<UserProgress> sampleProgresses1 = [
       UserProgress(user: sampleUser1, progress: "k8s deploy infra 구축 & MySQL DB"),
@@ -212,6 +246,11 @@ class Boards with ChangeNotifier {
       sampleThread1,
       sampleThread2,
       sampleThread3,
+      sampleThread4,
+      sampleThread1,
+      sampleThread2,
+      sampleThread3,
+      sampleThread4,
     ];
     /* Get rid of all the above unnecessary fields */
 

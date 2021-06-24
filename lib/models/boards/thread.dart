@@ -11,6 +11,7 @@ class Thread extends ChangeNotifier {
   final bool isEdited;
   final DateTime createdAt;
   final bool isNotice;
+  final int commentNum;
 
   Thread({
     this.id,
@@ -20,5 +21,6 @@ class Thread extends ChangeNotifier {
     this.isEdited,
     this.createdAt,
     this.isNotice, // 공지인 thread: server side에서 boards 내려줄 때 field로 받기
+    this.commentNum,
   });
 }

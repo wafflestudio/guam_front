@@ -19,7 +19,7 @@ class Threads extends StatelessWidget {
           iconTitle(icon: Icons.comment_outlined, title: "스레드"),
           SizedBox(
             width: double.infinity,
-            height: 319, // temp
+            height: 320, // temp
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -30,7 +30,15 @@ class Threads extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(children: threads.map((e) => Thread(e)).toList()),
+                    SizedBox(
+                      height: 264, // temp: threads container 300 - textfield 36
+                      child: ListView.builder(
+                        itemBuilder: (context, idx) => Thread(threads[idx]),
+                        itemCount: threads.length,
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                      ),
+                    ),
                     DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
