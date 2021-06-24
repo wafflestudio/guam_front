@@ -29,18 +29,32 @@ class ThreadPage extends StatelessWidget {
         appBar: appBar(title: "스레드"),
         body: Container(
           height: double.infinity,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-              child: Column(
-                children: [
-                  threadContainer(thread),
-                  commentsContainer(thread),
-                  ThreadTextField(),
-                ],
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    child: Column(
+                      children: [
+                        threadContainer(thread),
+                        Padding(
+                          child: commentsContainer(thread),
+                          padding: EdgeInsets.only(bottom: 36),
+                        ),
+                      ],
+                    ),
+                  )
               ),
-            )
-          ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 20
+                ),
+                alignment: Alignment.bottomCenter,
+                child: ThreadTextField(),
+              )
+            ],
+          )
         ),
       )
     );
@@ -87,9 +101,7 @@ Widget commentsContainer(Thread thread) {
           icon: Icons.message_outlined,
           title: "${thread.comments.length}개의 답글"
         ),
-        Column(
-          children: thread.comments.map((e) => Comment(e)).toList(),
-        )
+        Column(children: thread.comments.map((e) => Comment(e)).toList(),)
       ],
     ),
   );
