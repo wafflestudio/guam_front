@@ -5,6 +5,9 @@ import '../../commons/app_bar.dart';
 import '../../models/boards/thread.dart';
 import '../../commons/circular_border_container.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'iconTitle.dart';
+import '../../commons/thread_text_field.dart';
+import 'comment.dart';
 
 class ThreadPage extends StatelessWidget {
   final Thread thread;
@@ -22,6 +25,7 @@ class ThreadPage extends StatelessWidget {
         ),
       ),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: appBar(title: "스레드"),
         body: Container(
           height: double.infinity,
@@ -30,13 +34,14 @@ class ThreadPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
               child: Column(
                 children: [
-                  threadContainer(thread)
+                  threadContainer(thread),
+                  commentsContainer(thread),
+                  ThreadTextField(),
                 ],
               ),
             )
           ),
         ),
-        backgroundColor: Colors.transparent,
       )
     );
   }
@@ -70,6 +75,23 @@ Widget threadContainer(Thread thread) {
       ],
     ),
     contentColor: Color.fromRGBO(246, 228, 173, 0.6),
+  );
+}
+
+Widget commentsContainer(Thread thread) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+    child: Column(
+      children: [
+        iconTitle(
+          icon: Icons.message_outlined,
+          title: "${thread.comments.length}개의 답글"
+        ),
+        Column(
+          children: thread.comments.map((e) => Comment(e)).toList(),
+        )
+      ],
+    ),
   );
 }
 

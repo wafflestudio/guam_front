@@ -130,7 +130,7 @@ class Boards with ChangeNotifier {
       id: 1,
       creator: sampleUser1,
       content: "이곳에는 sample user 1이 작성한 자기소개가 들어갑니다. \n ex) 안녕하세요! 저는 Swift / Django 개발자입니다! \n백엔드 개발을 희망합니다 ^_^",
-      commentNum: 3,
+      commentNum: 6,
       comments: [
         Comment(
           id: 1,
@@ -148,9 +148,30 @@ class Boards with ChangeNotifier {
         ),
         Comment(
           id: 3,
-          content: "댓글 3",
+          content: "빛나는 커리어 전반에 대한 의심처럼 느껴지는데다, 경기 도중 루틴이 깨지기 때문이다. 상대팀 감독이 투수의 흐름을 끊기 위해 악용할 소지가 다분하다. 슈어저는 조 지라디 필라델피아 필리스 감독과 그라운드 위 설전을 벌이기도 했다. 그런가 하면 타일러 글래스노우(탬파베이 레이스)처럼 그간의 이물질 사용을 시인하며 공인구 변경 및 개선을 요구하는 선수도 있다.",
           createdAt: DateTime.now(),
           creator: sampleUser3,
+          isEdited: false,
+        ),
+        Comment(
+          id: 6,
+          content: "그럼에도 불구하고 오타니의 얼굴에는 환한 미소가 가득했다. 오타니의 웃음에 전염된 건지, 심판진의 분위기도 화기애애했다. 오타니는 마운드를 내려가면서까지 심판들과 농담을 주고받는 색다른 광경을 연출했다. NBC스포츠는 '전날 슈어저와 달리 오타니는 부정투구 검사를 즐기는 것 같았다. 시종일관 웃음이 가득했다'고 표현했다.",
+          createdAt: DateTime.now(),
+          creator: sampleUser1,
+          isEdited: false,
+        ),
+        Comment(
+          id: 7,
+          content: "빅리그 역사에 남을 '이도류'의 해를 보내고 있는 오타니 쇼헤이(LA 에인절스)는 어떨까. 오타니는 최고 160㎞의 직구와 커터, 슬라이더, 포크볼까지 구사한다. 올시즌 3승1패 평균자책점 2점대의 호성적을 거두고 있다. '부정투구' 검사를 피해갈 수는 없다.",
+          createdAt: DateTime.now(),
+          creator: sampleUser2,
+          isEdited: false,
+        ),
+        Comment(
+          id: 8,
+          content: "빛나는 커리어 전반에 대한 의심처럼 느껴지는데다, 경기 도중 루틴이 깨지기 때문이다. 상대팀 감독이 투수의 흐름을 끊기 위해 악용할 소지가 다분하다. 슈어저는 조 지라디 필라델피아 필리스 감독과 그라운드 위 설전을 벌이기도 했다. 그런가 하면 타일러 글래스노우(탬파베이 레이스)처럼 그간의 이물질 사용을 시인하며 공인구 변경 및 개선을 요구하는 선수도 있다.",
+          createdAt: DateTime.now(),
+          creator: sampleUser2,
           isEdited: false,
         )
       ],
