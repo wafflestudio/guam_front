@@ -3,6 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import '../../commons/profile_thumbnail.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
+import 'thread_page.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
@@ -21,51 +22,56 @@ class Thread extends StatelessWidget {
           )
         )
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ProfileThumbnail(
-            profile: thread.creator,
-            radius: 12,
-            showNickname: false,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 9),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    thread.content,
-                    style: TextStyle(fontSize: 12),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 6),
-                    child: Row(
-                      children: [
-                        if (thread.commentNum != 0) Text(
-                          "댓글 +${thread.commentNum}",
-                          style: TextStyle(
-                              fontSize: 12
-                          ),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ThreadPage(thread)));
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ProfileThumbnail(
+              profile: thread.creator,
+              radius: 12,
+              showNickname: false,
+            ),
+            Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 9),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        thread.content,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 6),
+                        child: Row(
+                          children: [
+                            if (thread.commentNum != 0) Text(
+                              "댓글 +${thread.commentNum}",
+                              style: TextStyle(
+                                  fontSize: 12
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              DateFormat("M월 d일 hh:mm").format(thread.createdAt).toString(),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: HexColor("#818181"),
+                              ),
+                            )
+                          ],
                         ),
-                        Spacer(),
-                        Text(
-                          DateFormat("M월 d일 hh:mm").format(thread.createdAt).toString(),
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: HexColor("#818181"),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      )
+                    ],
+                  ),
+                )
             )
-          )
-        ],
-      ),
+          ],
+        ),
+      )
     );
   }
 }

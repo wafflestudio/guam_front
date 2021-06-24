@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class GreyContainer extends StatelessWidget {
+class CircularBorderContainer extends StatelessWidget {
   final Widget header;
   final Widget content;
+  final Color headerColor;
+  final Color contentColor;
 
-  GreyContainer({this.header, this.content});
+  CircularBorderContainer({this.header, this.content, this.headerColor, this.contentColor});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: HexColor('#EBEBEB'),
-          borderRadius: BorderRadius.circular(5),
-        ),
         child: Column(
           children: [
             if (header != null)
@@ -24,7 +22,7 @@ class GreyContainer extends StatelessWidget {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.vertical(top: Radius.circular(5)),
-                    color: Color.fromRGBO(155, 155, 155, 0.3),
+                    color: headerColor?? Color.fromRGBO(155, 155, 155, 0.3),
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -39,7 +37,11 @@ class GreyContainer extends StatelessWidget {
               child: content,
             ),
           ],
-        )
+        ),
+        decoration: BoxDecoration(
+          color: contentColor ?? HexColor('#EBEBEB'),
+          borderRadius: BorderRadius.circular(5),
+        ),
       ),
     );
   }

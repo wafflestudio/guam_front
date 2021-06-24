@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../commons/grey_container.dart';
+import '../../commons/circular_border_container.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
 import '../../commons/profile_thumbnail.dart';
 import 'thread.dart';
@@ -13,7 +13,7 @@ class Notice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 20),
-      child: GreyContainer(
+      child: CircularBorderContainer(
         header: Row(
           children: [
             Icon(Icons.notifications),

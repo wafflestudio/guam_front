@@ -14,8 +14,6 @@ class Board extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final boardsProvider = context.read<Boards>();
-
     return SingleChildScrollView(
       child: Container(
         child: Column(
