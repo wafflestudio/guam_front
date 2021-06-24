@@ -23,9 +23,6 @@ class ProjectsApp extends StatelessWidget {
 class ProjectsAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<String> projects =
-        List.generate(10, (index) => "Project $index");
-
     return DecoratedBox(
       decoration: BoxDecoration(
           image: DecorationImage(
