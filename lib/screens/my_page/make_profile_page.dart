@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:guam_front/commons/app_bar.dart';
+import 'package:guam_front/models/profile.dart';
 import 'package:image_picker/image_picker.dart';
-import '../user_auth/sign_out.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'package:provider/provider.dart';
 
@@ -11,13 +12,26 @@ class MakeProfilePage extends StatefulWidget {
 }
 
 class _MakeProfilePageState extends State<MakeProfilePage> {
-  PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
   final TextEditingController _hashtagController = TextEditingController();
+
+  PickedFile _imageFile;
+  Profile me;
+
+  @override
+  void initState() {
+    me = context.read<Authenticate>().me;
+    _nicknameController.text = me.nickname;
+    _blogController.text = me.blogUrl;
+    _githubIdController.text = me.githubUrl;
+    _introductionController.text = me.introduction;
+    //_hashtagController.text = me.skills;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +43,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     }
 
     return Scaffold(
+      appBar: appBar(title: "프로필 수정"),
       body: SingleChildScrollView(
         child: Stack(
           alignment: Alignment.center,
@@ -45,7 +60,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                     _authButton(size, setProfile)
                   ],
                 ),
-                Center(child: SignOut()),
               ]
             ),
           ],
