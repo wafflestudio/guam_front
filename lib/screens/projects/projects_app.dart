@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import '../../commons/app_bar.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../../providers/projects/projects.dart';
+import 'creation/project_create.dart';
 import 'search/project_search.dart';
 import 'projects_body.dart';
-import 'projects_app_floating.dart';
 
 class ProjectsApp extends StatelessWidget {
   @override
@@ -25,31 +25,34 @@ class ProjectsAppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/backgrounds/projects-bg.png"),
-          fit: BoxFit.cover,
-        )
-      ),
+          image: DecorationImage(
+        image: AssetImage("assets/backgrounds/projects-bg.png"),
+        fit: BoxFit.cover,
+      )),
       child: Scaffold(
         appBar: appBar(
           title: '프로젝트',
+          leading: IconButton(
+              icon: Icon(Icons.add),
+              color: Colors.black,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateProjectScreen()));
+              }),
           trailing: IconButton(
             icon: Icon(Icons.search),
             color: Colors.black,
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SearchScreen())
-              );
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchScreen()));
             },
           ),
         ),
         body: ProjectsBody(),
-        floatingActionButton: ProjectsAppFloating(),
         backgroundColor: Colors.transparent,
       ),
     );
   }
 }
-
-

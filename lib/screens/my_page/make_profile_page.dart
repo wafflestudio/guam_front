@@ -240,7 +240,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             borderRadius: BorderRadius.circular(15)),
         onPressed: () {
           final keyMap = {
-            "name": _nicknameController.text,
+            "nickname": _nicknameController.text,
             // "imageUrl": _imageFile,
             "blogUrl": _blogController.text,
             "githubUrl": _githubIdController.text,
