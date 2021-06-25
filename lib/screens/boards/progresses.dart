@@ -36,7 +36,7 @@ class ProgressesState extends State<Progresses> {
       padding: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          iconTitle(icon: Icons.task_outlined, title: "작업 현황"),
+          iconTitle(icon: Icons.file_present, title: "작업 현황"),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
