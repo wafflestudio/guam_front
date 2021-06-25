@@ -57,7 +57,6 @@ class Authenticate with ChangeNotifier {
             authToken: authToken
         ).then((response) {
           if (response.statusCode == 200) {
-            print(json.decode(response.body)); //
             me = Profile.fromJson(json.decode(response.body));
           }
           if (response.statusCode == 400) {
@@ -74,16 +73,26 @@ class Authenticate with ChangeNotifier {
 
   Future setProfile(dynamic params) async {
     try {
+      toggleLoading();
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
         await HttpRequest().post(
           path: "/user",
           body: params,
           authToken: authToken
-        );
+        ).then((response) {
+            if (response.statusCode == 200) {
+              getMyProfile();
+            }
+        }).then((response) {
+          print("Successfully updated profile.");
+          notifyListeners();
+        });
       }
     } catch (e) {
       print(e);
+    } finally {
+      toggleLoading();
     }
   }
 
