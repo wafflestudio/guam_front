@@ -293,7 +293,7 @@ class Boards with ChangeNotifier {
           title: "지그재그 카피앱 만들기",
           isRecruiting: false,
           notice: sampleNotice2,
-          progresses: sampleProgresses2,
+          progresses: sampleProgresses1,
           threads: sampleThreads,
         ),
         Project(
@@ -301,7 +301,7 @@ class Boards with ChangeNotifier {
           title: "제 2의 GUAM 만들기",
           isRecruiting: false,
           notice: sampleNotice3,
-          progresses: sampleProgresses3,
+          progresses: sampleProgresses1,
           threads: sampleThreads,
         ),
       ];
