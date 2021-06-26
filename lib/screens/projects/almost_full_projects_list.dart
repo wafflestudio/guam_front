@@ -16,9 +16,9 @@ class AlmostFullProjectsList extends StatelessWidget {
           Container(
             height: 150,
             padding: EdgeInsets.only(left: 10),
-            child: projectsProvider.loading ?
-            Center(child: CircularProgressIndicator()) :
-            ListView.builder(
+            child: projectsProvider.loading ? Center(
+              child: CircularProgressIndicator()
+            ) : ListView.builder(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, int idx) => ProjectSquare(projectsProvider.almostFullProjects[idx]),
               itemCount: projectsProvider.almostFullProjects.length,
