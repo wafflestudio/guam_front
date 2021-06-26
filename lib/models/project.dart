@@ -17,6 +17,7 @@ class Project extends ChangeNotifier {
   final int frontHeadCount;
   final String backFramework;
   final int backHeadCount;
+  final int designHeadCount;
 
   /* parameters needed for boards tab */
   final Thread notice;
@@ -25,8 +26,8 @@ class Project extends ChangeNotifier {
 
   Project({
     @required this.id,
-    @required this.title,
-    @required this.isRecruiting, // isRecruiting ? appear on projects tab
+    this.title,
+    this.isRecruiting, // isRecruiting ? appear on projects tab
     this.description,
     this.time,
     this.difficulty,
@@ -36,6 +37,7 @@ class Project extends ChangeNotifier {
     this.frontHeadCount,
     this.backFramework,
     this.backHeadCount,
+    this.designHeadCount,
     this.notice,
     this.progresses,
     this.threads,
@@ -45,16 +47,17 @@ class Project extends ChangeNotifier {
     return Project(
       id: json['id'],
       title: json['title'],
-      isRecruiting: json['isRecruiting'],
       description: json['description'],
+      thumbnail: json['thumbnail'],
+      isRecruiting: json['isRecruiting'],
       time: json['time'],
       difficulty: json['difficulty'],
-      thumbnail: json['thumbnail'],
       devType: json['devType'],
       frontFramework: json['frontFramework'],
-      frontHeadCount: json['frontHeadCount'],
+      frontHeadCount: json['frontLeftCnt'],
       backFramework: json['backFramework'],
-      backHeadCount: json['backHeadCount'],
+      backHeadCount: json['backLeftCnt'],
+      designHeadCount: json['designLeftCnt']
     );
   }
 }

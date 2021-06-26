@@ -13,7 +13,10 @@ class ProjectsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Projects()),
+        ChangeNotifierProxyProvider<Authenticate, Projects>(
+          create: (_) => Projects(),
+          update: (_, authProvider, projectsProvider) => projectsProvider..authProvider = authProvider,
+        )
       ],
       child: ProjectsAppScaffold(),
     );
