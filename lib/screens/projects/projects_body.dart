@@ -8,7 +8,7 @@ class ProjectsBody extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          AlmostFullProjectsList(),
+          //AlmostFullProjectsList(),
           ProjectsList(),
         ],
       ),

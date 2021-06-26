@@ -7,7 +7,7 @@ import 'project_square.dart';
 class AlmostFullProjectsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final projectsProvider = context.read<Projects>();
+    final projectsProvider = context.watch<Projects>();
 
     return Container(
       child: Column(
@@ -16,7 +16,9 @@ class AlmostFullProjectsList extends StatelessWidget {
           Container(
             height: 150,
             padding: EdgeInsets.only(left: 10),
-            child: ListView.builder(
+            child: projectsProvider.loading ?
+            Center(child: CircularProgressIndicator()) :
+            ListView.builder(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, int idx) => ProjectSquare(projectsProvider.almostFullProjects[idx]),
               itemCount: projectsProvider.almostFullProjects.length,
