@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import '../user_auth/authenticate.dart';
 import '../../models/project.dart';
 import '../../helpers/http_request.dart';
+import '../../helpers/decode_ko.dart';
 
 class Projects with ChangeNotifier {
   Authenticate _authProvider; // post 등은 이 authProvider에 들어있는 firebaseToken으로 날리시면 됩니다.
@@ -27,7 +28,9 @@ class Projects with ChangeNotifier {
         path: "/project/list",
       ).then((response) {
         if (response.statusCode == 200) {
-          final List<dynamic> jsonList = json.decode(response.body)["data"];
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+          print(jsonList.toString());
           _projects = jsonList.map((e) => Project.fromJson(e)).toList();
         }
       });
@@ -36,7 +39,8 @@ class Projects with ChangeNotifier {
         path: "/project/tab",
       ).then((response) {
         if (response.statusCode == 200) {
-          final List<dynamic> jsonList = json.decode(response.body)["data"];
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
           _almostFullProjects = jsonList.map((e) => Project.fromJson(e)).toList();
         }
       });
