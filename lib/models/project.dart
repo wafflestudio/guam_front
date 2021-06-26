@@ -57,7 +57,7 @@ class Project extends ChangeNotifier {
       frontHeadCount: json['frontLeftCnt'],
       backFramework: json['backFramework'],
       backHeadCount: json['backLeftCnt'],
-      designHeadCount: json["designLeftCnt"]
+      designHeadCount: json['designLeftCnt']
     );
   }
 }
