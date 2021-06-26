@@ -86,7 +86,6 @@ class Authenticate with ChangeNotifier {
             }
         }).then((response) {
           print("Successfully updated profile.");
-          notifyListeners();
         });
       }
     } catch (e) {
