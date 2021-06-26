@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../helpers/http_request.dart';
 import '../../models/profile.dart';
+import '../../helpers/decode_ko.dart';
 
 class Authenticate with ChangeNotifier {
   final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
@@ -57,7 +58,8 @@ class Authenticate with ChangeNotifier {
             authToken: authToken
         ).then((response) {
           if (response.statusCode == 200) {
-            me = Profile.fromJson(json.decode(response.body));
+            final jsonUtf8 = decodeKo(response);
+            me = Profile.fromJson(json.decode(jsonUtf8));
           }
           if (response.statusCode == 400) {
             print("Error loading user profile");
@@ -75,6 +77,7 @@ class Authenticate with ChangeNotifier {
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
+      print(authToken);
       if (authToken.isNotEmpty) {
         await HttpRequest().post(
           path: "/user",
