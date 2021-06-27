@@ -22,9 +22,9 @@ class ProjectToBeCreated with ChangeNotifier {
   Future createProject(dynamic projectInfo) async {
     try {
       loading = true;
-
+      String authToken = await _authProvider.getFirebaseIdToken();
       await HttpRequest()
-          .post(path: "/project", body: projectInfo)
+          .post(path: "/project", body: projectInfo, authToken: authToken)
           .then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
