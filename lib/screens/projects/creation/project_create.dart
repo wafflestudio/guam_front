@@ -2,17 +2,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
+import 'package:guam_front/providers/projects/projectToBeCreated.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../../commons/app_bar.dart';
 import '../../../commons/back.dart';
 import 'create_filter_chip.dart';
 import 'create_filter_value_chip.dart';
 
 class CreateProjectScreen extends StatefulWidget {
-  final Map periodOptions = {1: '주', 2: '월'};
-  final Map filterOptions = {
-    '백엔드': [
+  final Map _periodOptions = {1: '주', 2: '월'};
+  final Map _filterOptions = {
+    'back': [
       '상관 없음',
       'SpringBoot',
       'JPA',
@@ -22,7 +24,7 @@ class CreateProjectScreen extends StatefulWidget {
       'node.js',
       'Laravel',
     ],
-    '프론트엔드': [
+    'front': [
       '상관 없음',
       'React JS',
       'React TS',
@@ -32,7 +34,7 @@ class CreateProjectScreen extends StatefulWidget {
       'Flutter',
       'Angular',
     ],
-    '디자이너': ['상관 없음', 'Adobe XD', 'Figma', 'Sketch']
+    'design': ['상관 없음', 'Adobe XD', 'Figma', 'Sketch']
   };
 
   @override
@@ -48,11 +50,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'title': '',
     'period': 1,
     'description': '',
-    '백엔드': {'stack': '', 'headcount': 0},
-    '프론트엔드': {'stack': '', 'headcount': 0},
-    '디자이너': {'stack': '', 'headcount': 0},
+    'back': {'stack': '', 'headcount': 0},
+    'front': {'stack': '', 'headcount': 0},
+    'design': {'stack': '', 'headcount': 0},
     'myPosition': '',
-    'projectPhoto': '',
+    'thumbnail': '',
   };
   final _projectNameController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
@@ -66,6 +68,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final projectToBeCreatedProvider = context.read<ProjectToBeCreated>();
+    void createProject(dynamic params) {
+      projectToBeCreatedProvider.createProject(params);
+    }
+
     return Scaffold(
         appBar: appBar(
           title: '프로젝트 만들기',
@@ -95,7 +102,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           : Container()),
                       (_currentPage == 3
                           ? Row(
-                              children: [previousPage(), savePage()],
+                              children: [
+                                previousPage(),
+                                savePage(createProject)
+                              ],
                             )
                           : Container())
                     ],
@@ -188,9 +198,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   ),
                 )))
         : (_currentPage == 2 &&
-                input['백엔드']['stack'] != '' &&
-                input['프론트엔드']['stack'] != '' &&
-                input['디자이너']['stack'] != ''
+                input['back']['stack'] != '' &&
+                input['front']['stack'] != '' &&
+                input['design']['stack'] != ''
             ? Container(
                 padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
                 child: InkWell(
@@ -251,12 +261,27 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               )));
   }
 
-  Widget savePage() {
+  Widget savePage(Function createProject) {
+    print(input);
     return (_currentPage == 3 && input['myPosition'] != ''
         ? Container(
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                final projectInfo = {
+                  "title": input['title'],
+                  "period": input['period'],
+                  "description": input['description'],
+                  "backLeftCnt": input['back']['headcount'],
+                  "designLeftCnt": input['design']['headcount'],
+                  "frontLeftCnt": input['front']['headcount'],
+                  "myPosition": input['myPosition'],
+                  "thumbnail": input['thumbnail'],
+                };
+                createProject(projectInfo);
+                print("Project Created!");
+                print(input);
+              },
               child: Container(
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width * 0.45,
@@ -452,7 +477,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       ),
                     ),
                     Wrap(children: [
-                      ...widget.periodOptions.entries.map((e) => FilterChip(
+                      ...widget._periodOptions.entries.map((e) => FilterChip(
                             label: Text(
                               '${e.value}',
                               style:
@@ -577,7 +602,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           child: Column(
             children: [
               Row(children: [
-                ...widget.filterOptions.entries.map((e) => CreateFilterChip(
+                ...widget._filterOptions.entries.map((e) => CreateFilterChip(
                     content: e.key,
                     display: e.key,
                     selected: selectedKey == e.key,
@@ -702,9 +727,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(children: [
-          if ((input["백엔드"]["stack"] == '') &
-              (input["프론트엔드"]["stack"] == '') &
-              (input["디자이너"]["stack"] == ''))
+          if ((input["back"]["stack"] == '') &
+              (input["front"]["stack"] == '') &
+              (input["design"]["stack"] == ''))
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(20),
@@ -713,12 +738,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ),
-          if ((input["백엔드"]["stack"] != '') ||
-              (input["프론트엔드"]["stack"] != '') ||
-              (input["디자이너"]["stack"] != ''))
+          if ((input["back"]["stack"] != '') ||
+              (input["front"]["stack"] != '') ||
+              (input["design"]["stack"] != ''))
             Wrap(
               children: [
-                ...widget.filterOptions.entries.map((e) => (input[e.key]
+                ...widget._filterOptions.entries.map((e) => (input[e.key]
                                 ["stack"]
                             .toString() !=
                         '')
@@ -1020,13 +1045,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   void saveMyPosition(idx) {
     setState(() {
-      input["myPosition"] = widget.filterOptions.keys.toList()[idx];
+      input["myPosition"] = widget._filterOptions.keys.toList()[idx];
     });
   }
 
   void saveProjectPhoto(image) {
     setState(() {
-      input["projectPicture"] = image;
+      input["thumbnail"] = image;
     });
   }
 
