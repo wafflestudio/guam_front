@@ -7,7 +7,7 @@ import '../../helpers/http_request.dart';
 import '../../helpers/decode_ko.dart';
 
 class Projects with ChangeNotifier {
-  Authenticate _authProvider; // Post 등은 이 authProvider 에 들어있는 firebaseToken 을 참조하여 날리시면 됩니다.
+  Authenticate _authProvider;
   List<Project> _projects;
   List<Project> _almostFullProjects;
   bool loading = false;
@@ -17,16 +17,20 @@ class Projects with ChangeNotifier {
   }
 
   List<Project> get projects => _projects;
+
   List<Project> get almostFullProjects => _almostFullProjects;
+
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
 
   Future fetchProjects() async {
     try {
       loading = true;
 
-      await HttpRequest().get(
+      await HttpRequest()
+          .get(
         path: "/project/list",
-      ).then((response) {
+      )
+          .then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
@@ -34,13 +38,16 @@ class Projects with ChangeNotifier {
         }
       });
 
-      await HttpRequest().get(
+      await HttpRequest()
+          .get(
         path: "/project/tab",
-      ).then((response) {
+      )
+          .then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-          _almostFullProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+          _almostFullProjects =
+              jsonList.map((e) => Project.fromJson(e)).toList();
         }
       });
 
