@@ -12,6 +12,7 @@ import 'create_filter_chip.dart';
 import 'create_filter_value_chip.dart';
 
 class CreateProjectScreen extends StatefulWidget {
+
   final Map _periodOptions = {1: '주', 2: '월'};
   final Map _filterOptions = {
     'back': [
