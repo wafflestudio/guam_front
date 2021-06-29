@@ -15,7 +15,8 @@ class ProjectsApp extends StatelessWidget {
       providers: [
         ChangeNotifierProxyProvider<Authenticate, Projects>(
           create: (_) => Projects(),
-          update: (_, authProvider, projectsProvider) => projectsProvider..authProvider = authProvider,
+          update: (_, authProvider, projectsProvider) =>
+              projectsProvider..authProvider = authProvider,
         )
       ],
       child: ProjectsAppScaffold(),
@@ -42,7 +43,13 @@ class ProjectsAppScaffold extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CreateProjectScreen()));
+                      builder: (context) =>
+                          // ListenableProvider<Projects>.value(
+                          //   value: context.read<Projects>(),
+                          //   child: CreateProjectScreen(),
+                          // )
+                          CreateProjectScreen(),
+                    ));
               }),
           trailing: IconButton(
             icon: Icon(Icons.search),
