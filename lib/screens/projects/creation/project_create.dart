@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
-import 'package:guam_front/providers/projects/projectToBeCreated.dart';
+import 'package:guam_front/providers/projects/projects.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -68,9 +68,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final projectToBeCreatedProvider = context.read<ProjectToBeCreated>();
     void createProject(dynamic params) {
-      projectToBeCreatedProvider.createProject(params);
+      context.read<Projects>().createProject(params);
     }
 
     return Scaffold(
@@ -262,7 +261,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   Widget savePage(Function createProject) {
-    print(input);
     return (_currentPage == 3 && input['myPosition'] != ''
         ? Container(
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
@@ -278,9 +276,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   "myPosition": input['myPosition'],
                   "thumbnail": input['thumbnail'],
                 };
+                print(input);
                 createProject(projectInfo);
                 print("Project Created!");
-                print(input);
               },
               child: Container(
                 alignment: Alignment.center,
