@@ -3,6 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
 import 'screens/user_auth/auth.dart';
+import 'providers/stacks/stacks.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          // First-most providers to be initialized
           ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
+          ChangeNotifierProvider<Stacks>(
+            create: (_) => Stacks(),
+            lazy: false,
+          ),
         ],
         child: MaterialApp(
           initialRoute: '/',
