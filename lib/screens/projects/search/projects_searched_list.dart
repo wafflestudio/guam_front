@@ -15,7 +15,7 @@ class ProjectsSearchedList extends StatelessWidget {
         SubHeadings("🔎 검색 결과"),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: projectsProvider.loading
+            child: projectsProvider.loading && projectsProvider.success
                 ? Center(child: CircularProgressIndicator())
                 : Column(
                     children: [

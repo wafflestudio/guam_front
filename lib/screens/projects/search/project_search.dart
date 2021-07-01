@@ -90,13 +90,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     stops: [0, 1]),
               ),
             ),
-            Column(
+            SingleChildScrollView(
+                child: Column(
               children: <Widget>[
                 if (isFilterOpen) searchFilter(widget.stacksProvider),
                 Container(color: Colors.black),
                 ProjectsSearchedList(widget.projectsProvider)
               ],
-            ),
+            )),
           ],
         ),
       ),

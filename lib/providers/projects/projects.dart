@@ -13,6 +13,7 @@ class Projects with ChangeNotifier {
   List<Project> _almostFullProjects;
   List<Project> _filteredProjects;
   bool loading = false;
+  bool success = false;
 
   Projects() {
     fetchProjects();
@@ -70,8 +71,8 @@ class Projects with ChangeNotifier {
       await HttpRequest()
           .get(path: "/project/search", queryParams: queryParams)
           .then((response) {
-        print(response.statusCode);
         if (response.statusCode == 200) {
+          success = true;
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
           _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
