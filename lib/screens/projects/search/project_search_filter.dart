@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'search_filter_chip.dart';
 import 'filter_value_chip.dart';
 
 class SearchFilter extends StatefulWidget {
-  final Map filterOptions = {
-    '기술 스택': [
-      'Flutter',
-      'SpringBoot',
-      'Django',
-      'React',
-      'Swift',
-      'ReactNative'
-    ],
-    '포지션': ['백엔드', '프론트엔드', '디자이너'],
-    '활동 기간': ['1개월 미만', '3개월 미만', '6개월 미만', '6개월 이상']
-  };
+  final Stacks stacksProvider;
+
+  SearchFilter(this.stacksProvider);
 
   @override
   _SearchFilterState createState() => _SearchFilterState();
@@ -39,6 +31,13 @@ class _SearchFilterState extends State<SearchFilter> {
 
   @override
   Widget build(BuildContext context) {
+    final Map filterOptions = {
+      '기술 스택': List<String>.from(
+          widget.stacksProvider.stacks.map((stack) => stack.name)),
+      '포지션': ['백엔드', '프론트엔드', '디자이너'],
+      '활동 기간': ['1개월 미만', '3개월 미만', '6개월 미만', '6개월 이상']
+    };
+
     return Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -50,7 +49,7 @@ class _SearchFilterState extends State<SearchFilter> {
         child: Column(
           children: [
             Row(children: [
-              ...widget.filterOptions.entries.map((e) => SearchFilterChip(
+              ...filterOptions.entries.map((e) => SearchFilterChip(
                   content: e.key,
                   display: result[e.key] != null
                       ? "${e.key}: ${result[e.key]}"

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
+import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'project_search_filter.dart';
 import 'project_search_form.dart';
 
 class SearchScreen extends StatefulWidget {
+  final Stacks stacksProvider;
+
+  SearchScreen(this.stacksProvider);
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -65,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             Column(
               children: <Widget>[
-                if (isFilterOpen) SearchFilter(),
+                if (isFilterOpen) SearchFilter(widget.stacksProvider),
                 SizedBox(width: 20, height: 100),
                 Container(color: Colors.black),
                 Text("검색 결과"),

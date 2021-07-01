@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+            <key>NSAllowsArbitraryLoads</key>
+            <true/>
+    </dict>
 	<key>KAKAO_APP_KEY</key>
 	<string>367d8cf339e2ba59376ba647c7135dd2</string>
 	<key>CFBundleDevelopmentRegion</key>
