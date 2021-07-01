@@ -5,19 +5,21 @@ import 'package:guam_front/commons/project_create_container.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import '../../../commons/app_bar.dart';
 import '../../../commons/back.dart';
 import 'create_filter_chip.dart';
 import 'create_filter_value_chip.dart';
 
 class CreateProjectScreen extends StatefulWidget {
+  final Projects projectProvider;
+
+  CreateProjectScreen(this.projectProvider);
 
   final Map _periodOptions = {1: '주', 2: '월'};
   final Map _filterOptions = {
     'back': [
       '상관 없음',
-      'SpringBoot',
+      'Spring',
       'JPA',
       'Django',
       'express',
@@ -69,10 +71,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void createProject(dynamic params) {
-      context.read<Projects>().createProject(params);
-    }
-
     return Scaffold(
         appBar: appBar(
           title: '프로젝트 만들기',
@@ -104,7 +102,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           ? Row(
                               children: [
                                 previousPage(),
-                                savePage(createProject)
+                                savePage(widget.projectProvider.createProject)
                               ],
                             )
                           : Container())
@@ -276,10 +274,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   "frontLeftCnt": input['front']['headcount'],
                   "myPosition": input['myPosition'],
                   "thumbnail": input['thumbnail'],
+                  "techStackIds": [4, 5, 6]
                 };
                 print(input);
                 createProject(projectInfo);
-                print("Project Created!");
               },
               child: Container(
                 alignment: Alignment.center,
