@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
+import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
+import 'package:guam_front/screens/projects/search/project_search_form.dart';
+import 'package:guam_front/screens/projects/search/projects_searched_list.dart';
+import 'package:guam_front/screens/projects/search/search_filter_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'project_search_filter.dart';
-import 'project_search_form.dart';
+import 'filter_value_chip.dart';
 
 class SearchScreen extends StatefulWidget {
   final Stacks stacksProvider;
+  final Projects projectsProvider;
 
-  SearchScreen(this.stacksProvider);
+  SearchScreen(this.stacksProvider, this.projectsProvider);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -16,6 +20,11 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   bool isFilterOpen;
+  Map result = {};
+  String selectedKey;
+  List<String> filterValues;
+  TextEditingController _filter = TextEditingController();
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -27,8 +36,20 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() => isFilterOpen = !isFilterOpen);
   }
 
+  void selectKey(String key, List<String> value) {
+    setState(() {
+      selectedKey = selectedKey == key ? null : key;
+      filterValues = value;
+    });
+  }
+
+  void selectValue(String value) {
+    setState(() => result[selectedKey] = value);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(widget.projectsProvider.filteredProjects);
     return Scaffold(
       /* customizing하신 appBar의 경우, text 자리에 string만 가능한
        상태라서 임시방편으로 AppBar 사용했습니다. */
@@ -41,7 +62,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 color: Colors.white,
                 child: Row(
                   children: <Widget>[
-                    SearchForm(),
+                    // searchForm(),
+                    SearchForm(result, widget.projectsProvider),
                     IconButton(
                         icon: Icon(
                           Icons.filter_list,
@@ -70,18 +92,58 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             Column(
               children: <Widget>[
-                if (isFilterOpen) SearchFilter(widget.stacksProvider),
-                SizedBox(width: 20, height: 100),
+                if (isFilterOpen) searchFilter(widget.stacksProvider),
                 Container(color: Colors.black),
-                Text("검색 결과"),
-                /* 검색 결과 Body */
-                // _buildBody(context)
-                //
+                ProjectsSearchedList(widget.projectsProvider)
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget searchFilter(Stacks stacksProvider) {
+    final Map filterOptions = {
+      '기술 스택': List<String>.from(
+          widget.stacksProvider.stacks.map((stack) => stack.name)),
+      '포지션': ['백엔드', '프론트엔드', '디자이너'],
+      '활동 기간': ['1개월 미만', '3개월 미만', '6개월 미만', '6개월 이상']
+    };
+
+    return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: HexColor("979797"),
+          ),
+        ),
+        padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+        child: Column(
+          children: [
+            Row(children: [
+              ...filterOptions.entries.map((e) => SearchFilterChip(
+                  content: e.key,
+                  display: result[e.key] != null
+                      ? "${e.key}: ${result[e.key]}"
+                      : e.key,
+                  selected: selectedKey == e.key,
+                  selectKey: selectKey,
+                  filterValues: e.value))
+            ]),
+            if (selectedKey != null)
+              SizedBox(
+                  height: 40,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, idx) => FilterValueChip(
+                      content: filterValues[idx],
+                      selected: result[selectedKey] == filterValues[idx],
+                      selectValue: selectValue,
+                    ),
+                    itemCount: filterValues.length,
+                  ))
+          ],
+        ));
   }
 }

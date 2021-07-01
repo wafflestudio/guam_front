@@ -48,8 +48,8 @@ class ProjectsAppScaffold extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => CreateProjectScreen()));
                 }),
-            trailing: ProjectSearchButton(context.watch<Stacks>())
-            ),
+            trailing: ProjectSearchButton(
+                context.watch<Stacks>(), context.watch<Projects>())),
         body: ProjectsBody(),
         backgroundColor: Colors.transparent,
       ),

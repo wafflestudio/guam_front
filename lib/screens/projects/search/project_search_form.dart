@@ -1,9 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:guam_front/models/project.dart';
-import 'package:guam_front/screens/projects/detail/project_detail.dart';
+import 'package:guam_front/providers/projects/projects.dart';
 
 class SearchForm extends StatefulWidget {
+  final Map<dynamic, dynamic> result;
+  final Projects projectsProvider;
+
+  SearchForm(this.result, this.projectsProvider);
+
   @override
   _SearchFormState createState() => _SearchFormState();
 }
@@ -11,15 +14,8 @@ class SearchForm extends StatefulWidget {
 class _SearchFormState extends State<SearchForm> {
   final TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode();
-  String _searchText = "";
 
-  _SearchFormState() {
-    _filter.addListener(() {
-      setState(() {
-        _searchText = _filter.text;
-      });
-    });
-  }
+  Map get results => widget.result;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +28,15 @@ class _SearchFormState extends State<SearchForm> {
         ),
         autofocus: true,
         controller: _filter,
+        onSubmitted: (e) {
+          final searchInfo = {
+            "keyword": _filter.text,
+            "stacks": results['기술 스택'],
+            "position": results['포지션'],
+            "period": results['활동 기간'],
+          };
+          widget.projectsProvider.searchProjects(searchInfo);
+        },
         decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -49,7 +54,7 @@ class _SearchFormState extends State<SearchForm> {
                     ),
                     onPressed: () {
                       _filter.clear();
-                      _searchText = "";
+                      // _searchText = "";
                     })
                 : Container(),
             hintText: '검색',
@@ -66,43 +71,4 @@ class _SearchFormState extends State<SearchForm> {
       ),
     );
   }
-
-
-  // Widget _buildBody(BuildContext context) {
-  //   return StreamBuilder<QuerySnapshot>(
-  //     stream: /* Projects 검색 결과 */ ,
-  //     builder: (context, snapshot) {
-  //       if (!snapshot.hasData) return LinearProgressIndicator();
-  //       return _buildList(context, snapshot.data.documents);
-  //     },
-  //   );
-  // }
-  //
-  // Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-  //   List<DocumentSnapshot> searchResults = [];
-  //   for (DocumentSnapshot d in snapshot) {
-  //     if (d.data.toString().contains(_searchText)) {
-  //       searchResults.add(d);
-  //     }
-  //   }
-  //
-  //   return Expanded(
-  //     child: GridView.count(
-  //         crossAxisCount: 1,
-  //         childAspectRatio: 2 / 3,
-  //         padding: EdgeInsets.all(3),
-  //         children: searchResults
-  //             .map((data) => _buildListItem(context, data))
-  //             .toList()),
-  //   );
-  // }
-  //
-  // Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-  //   return InkWell(
-  //       // child: Image.network(),
-  //       onTap: () {
-  //     Navigator.push(context,
-  //         MaterialPageRoute(builder: (context) => DetailProject(project)));
-  //   });
-  // }
 }
