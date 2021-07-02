@@ -45,29 +45,26 @@ class _SearchFormState extends State<SearchForm> {
               color: Colors.black,
               size: 25,
             ),
-            suffixIcon: focusNode.hasFocus
-                ? IconButton(
-                    icon: Icon(
-                      Icons.cancel,
-                      color: Colors.black,
-                      size: 20,
-                    ),
-                    onPressed: () {
-                      _filter.clear();
-                      // _searchText = "";
-                    })
-                : Container(),
+            suffixIcon: !focusNode.hasFocus
+                ? Container()
+                : IconButton(
+                  icon: Icon(
+                    Icons.cancel,
+                    color: Colors.black,
+                    size: 20,
+                  ),
+                onPressed: () => _filter.clear()),
             hintText: '검색',
             labelStyle: TextStyle(color: Colors.black45),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
+              borderSide: BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
             enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
+              borderSide: BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
             border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.all(Radius.circular(10)))),
+              borderSide: BorderSide(color: Colors.transparent),
+              borderRadius: BorderRadius.all(Radius.circular(10)))),
       ),
     );
   }
