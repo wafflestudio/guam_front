@@ -7,16 +7,18 @@ import 'sub_headings.dart';
 class ProjectsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final projectsProvider = context.read<Projects>();
+    final projectsProvider = context.watch<Projects>();
 
     return Column(
       children: [
         SubHeadings("🖐 신규 프로젝트"),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
+          child: projectsProvider.loading ? Center(
+            child: CircularProgressIndicator()
+          ) : Column(
             children: [...projectsProvider.projects.map((e) => ProjectBanner(e))],
-          ),
+          )
         ),
       ],
     );

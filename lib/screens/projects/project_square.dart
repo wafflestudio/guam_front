@@ -27,7 +27,8 @@ class ProjectSquare extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(project.thumbnail),
+                      // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
+                      image: project.thumbnail != "" ? NetworkImage(project.thumbnail) : AssetImage("assets/images/project-square-default.jpeg"),
                       fit: BoxFit.fill,
                     ),
                     borderRadius: BorderRadius.circular(5)
