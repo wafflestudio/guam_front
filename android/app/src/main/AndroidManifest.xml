@@ -9,7 +9,11 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="guam_front"
         android:icon="@mipmap/ic_launcher"
+<<<<<<< HEAD
         android:usesCleartextTraffic="true">
+=======
+        android:usesCleartextTraffic="true"> <!-- temp code to delete after https -->
+>>>>>>> d6430c444c5400f58d777f88e459973a3717a451
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

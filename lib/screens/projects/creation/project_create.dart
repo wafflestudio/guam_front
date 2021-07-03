@@ -276,7 +276,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   "thumbnail": input['thumbnail'],
                   "techStackIds": [4, 5, 6]
                 };
-                print(input);
+                print(projectInfo);
                 createProject(projectInfo);
               },
               child: Container(

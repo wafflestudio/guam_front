@@ -10,6 +10,7 @@ class Projects with ChangeNotifier {
   Authenticate _authProvider;
   List<Project> _projects;
   List<Project> _almostFullProjects;
+  List<Project> _filteredProjects;
   Project _projectToBeCreated;
   bool loading = false;
 
@@ -21,6 +22,8 @@ class Projects with ChangeNotifier {
 
   List<Project> get almostFullProjects => _almostFullProjects;
 
+  List<Project> get filteredProjects => _filteredProjects;
+
   Project get projectToBeCreated => _projectToBeCreated;
 
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
@@ -29,11 +32,7 @@ class Projects with ChangeNotifier {
     try {
       loading = true;
 
-      await HttpRequest()
-          .get(
-        path: "/project/list",
-      )
-          .then((response) {
+      await HttpRequest().get(path: "/project/list").then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
@@ -51,6 +50,37 @@ class Projects with ChangeNotifier {
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
           _almostFullProjects =
               jsonList.map((e) => Project.fromJson(e)).toList();
+        }
+      });
+
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future searchProjects(dynamic queryParams) async {
+    try {
+      loading = true;
+
+      await HttpRequest()
+          .get(path: "/project/search", queryParams: queryParams)
+          .then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+          _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+        }
+        if (response.statusCode == 401) {
+          print("프로젝트를 검색하려면 로그인이 필요합니다.");
+        }
+        if (response.statusCode == 403) {
+          print("검색 권한이 없습니다.");
+        }
+        if (response.statusCode == 404) {
+          print("검색된 결과가 존재하지 않습니다.");
         }
       });
 
