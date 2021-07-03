@@ -26,8 +26,6 @@ class Boards with ChangeNotifier {
     notifyListeners();
   }
 
-  set authProvider(Authenticate authProvider) => _authProvider = authProvider;
-
   void prev() {
     renderBoardIdx = (renderBoardIdx - 1) % _boards.length;
   }
@@ -37,7 +35,7 @@ class Boards with ChangeNotifier {
   }
 
   Boards(Authenticate authProvider) {
-    this.authProvider = authProvider;
+    _authProvider = authProvider;    
     fetchBoardIds();
   }
 

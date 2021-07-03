@@ -19,6 +19,7 @@ class Board extends StatelessWidget {
         child: Column(
           children: [
             BoardTitle(board.title),
+            /*
             Padding(
               padding: EdgeInsets.all(10),
               child: Column(
@@ -29,6 +30,7 @@ class Board extends StatelessWidget {
                 ],
               ),
             )
+             */
           ],
         ),
       )
