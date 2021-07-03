@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/project.dart';
 import 'notice.dart';
-import 'progresses.dart';
+import 'tasks.dart';
 import 'threads.dart';
 import 'package:provider/provider.dart';
 import '../../providers/boards/boards.dart';
@@ -17,7 +17,6 @@ class Board extends StatelessWidget {
     Boards boardsProvider = context.watch<Boards>();
 
     if (!board.hasBoardData()) {
-      print("No data board id: ${board.id}");
       boardsProvider.fetchBoard(board.id);
     }
 
@@ -31,7 +30,7 @@ class Board extends StatelessWidget {
               child: Column(
                 children: [
                   //Notice(board.notice),
-                  Progresses(board.progresses),
+                  Tasks(board.tasks),
                   //Threads(board.threads),
                 ],
               ),

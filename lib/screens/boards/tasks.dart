@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
-import '../../models/boards/user_progress.dart';
+import '../../models/boards/user_task.dart';
 import 'iconTitle.dart';
 
-class Progresses extends StatefulWidget {
-  final List<UserProgress> progresses;
+class Tasks extends StatefulWidget {
+  final List<UserTask> tasks;
 
-  Progresses(this.progresses);
+  Tasks(this.tasks);
 
   @override
-  State<StatefulWidget> createState() => ProgressesState();
+  State<StatefulWidget> createState() => TasksState();
 }
 
-class ProgressesState extends State<Progresses> {
+class TasksState extends State<Tasks> {
   int selectedUserId; // 일단 임시로 첫 번째 사람으로 set. 최종으론 내 아이디로 init. 내 작업현황이 가장 먼저 뜨게 할 것임.
-  List<UserProgress> unselectedUsers;
+  List<UserTask> unselectedUsers;
 
   @override
   void initState() {
     super.initState();
-    selectedUserId = widget.progresses.first.user.id;
-    unselectedUsers = widget.progresses.where((e) => e.user.id != selectedUserId).toList();
+    selectedUserId = widget.tasks.first.user.id;
+    unselectedUsers = widget.tasks.where((e) => e.user.id != selectedUserId).toList();
   }
 
   void selectUser(int userId) {
     setState(() {
       selectedUserId = userId;
-      unselectedUsers = widget.progresses.where((e) => e.user.id != selectedUserId).toList();
+      unselectedUsers = widget.tasks.where((e) => e.user.id != selectedUserId).toList();
     });
   }
 
@@ -36,7 +36,7 @@ class ProgressesState extends State<Progresses> {
       padding: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          iconTitle(icon: Icons.file_present, title: "작업 현황"),
+          iconTitle(icon: Icons.assignment_outlined, title: "작업 현황"),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -55,7 +55,7 @@ class ProgressesState extends State<Progresses> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ProfileThumbnail(
-                                profile: widget.progresses.firstWhere((e) => e.user.id == selectedUserId).user,
+                                profile: widget.tasks.firstWhere((e) => e.user.id == selectedUserId).user,
                                 radius: 12,
                                 showNickname: true,
                                 textColor: Colors.white,

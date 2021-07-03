@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import '../../models/boards/user_progress.dart';
+// import '../../models/boards/user_task.dart';
 // import '../../commons/profile_thumbnail.dart';
 //
 // class Progress extends StatelessWidget {

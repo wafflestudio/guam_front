@@ -4,7 +4,7 @@ import 'package:guam_front/models/boards/comment.dart';
 import 'dart:convert';
 import '../../models/project.dart';
 import '../../models/boards/thread.dart';
-import '../../models/boards/user_progress.dart';
+import '../../models/boards/user_task.dart';
 import '../../models/project.dart';
 import '../../models/profile.dart';
 import '../../helpers/http_request.dart';

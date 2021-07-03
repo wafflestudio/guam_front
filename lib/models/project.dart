@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../models/boards/thread.dart';
-import '../models/boards/user_progress.dart';
-import '../helpers/http_request.dart';
+import '../models/boards/user_task.dart';
 
 class Project extends ChangeNotifier {
   final int id;
@@ -22,7 +21,7 @@ class Project extends ChangeNotifier {
 
   /* parameters needed for boards tab */
   final Thread notice;
-  final List<UserProgress> progresses;
+  final List<UserTask> tasks;
   final List<Thread> threads;
 
   Project({
@@ -40,15 +39,15 @@ class Project extends ChangeNotifier {
     this.backHeadCount,
     this.designHeadCount,
     this.notice,
-    this.progresses,
+    this.tasks,
     this.threads,
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
-    List<UserProgress> progresses;
+    List<UserTask> tasks;
 
     if (json['tasks'] != null) {
-      progresses = [...json['tasks'].map((e) => UserProgress.fromJson(e))];
+      tasks = [...json['tasks'].map((e) => UserTask.fromJson(e))];
     }
 
     return Project(
@@ -66,11 +65,11 @@ class Project extends ChangeNotifier {
       backHeadCount: json['backLeftCnt'],
       designHeadCount: json['designLeftCnt'],
       // field for boards
-      progresses: progresses
+      tasks: tasks
     );
   }
 
   bool hasBoardData() {
-    return title != null || progresses != null || threads != null;
+    return title != null || tasks != null || threads != null;
   }
 }
