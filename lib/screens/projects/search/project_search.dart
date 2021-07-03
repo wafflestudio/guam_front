@@ -56,8 +56,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /* customizing하신 appBar의 경우, text 자리에 string만 가능한
-       상태라서 임시방편으로 AppBar 사용했습니다. */
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: Back(),

@@ -30,11 +30,7 @@ class Projects with ChangeNotifier {
     try {
       loading = true;
 
-      await HttpRequest()
-          .get(
-        path: "/project/list",
-      )
-          .then((response) {
+      await HttpRequest().get(path: "/project/list").then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
