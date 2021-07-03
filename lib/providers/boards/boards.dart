@@ -41,6 +41,7 @@ class Boards with ChangeNotifier {
 
   Future fetchBoardIds() async {
     try {
+      print("Fetching board ids");
       loading = true;
 
       if (_authProvider.userSignedIn()) {
@@ -53,17 +54,17 @@ class Boards with ChangeNotifier {
           _boards = jsonList.map((e) => Project.fromJson({ "id": e })).toList();
         });
       }
-
-      loading = false;
     } catch (e) {
       print(e);
     } finally {
+      print("Fetching board ids -- DONE");
       notifyListeners();
     }
   }
 
   Future fetchBoard(int id) async {
     try {
+      print("Fetching boards");
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
@@ -77,19 +78,31 @@ class Boards with ChangeNotifier {
           boards[renderBoardIdx] = Project.fromJson(jsonData);
       });
 
+      await fetchThreads(id);
+
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+      print("Fetching boards -- DONE");
+    }
+  }
+
+  Future fetchThreads(int id) async {
+    try {
+      loading = true;
+      String authToken = await _authProvider.getFirebaseIdToken();
+
       await HttpRequest()
         .get(
-        path: "project/$id/threads",
-        authToken: authToken,
-        ).then((response) {
-          final jsonUtf8 = decodeKo(response);
-          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
-          print("Start converting threads");
-          final List<Thread> threads = [...jsonData["content"].map((e) => Thread.fromJson(e))];
-          print("Made threads");
-          print(threads);
-          boards[renderBoardIdx].threads = threads;
-          print("Finished converting threads");
+          path: "project/$id/threads",
+          authToken: authToken,
+      ).then((response) {
+        final jsonUtf8 = decodeKo(response);
+        final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+        final List<Thread> threads = [...jsonData["content"].map((e) => Thread.fromJson(e))];
+        boards[renderBoardIdx].threads = threads;
       });
 
       loading = false;
@@ -98,5 +111,10 @@ class Boards with ChangeNotifier {
     } finally {
       notifyListeners();
     }
+  }
+
+  void toggleLoading() {
+    loading = !loading;
+    notifyListeners();
   }
 }
