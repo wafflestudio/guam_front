@@ -2,6 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/app_bar.dart';
 import 'package:guam_front/models/profile.dart';
+import 'package:guam_front/screens/my_page/profile_filter_chip.dart';
+import 'package:guam_front/screens/projects/creation/create_filter_value_chip.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +20,36 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
-  final TextEditingController _hashtagController = TextEditingController();
+  final Map filterOptions = {
+    '백엔드': [
+      '상관 없음',
+      'SpringBoot',
+      'JPA',
+      'Django',
+      'express',
+      'Ruby on Rails',
+      'node.js',
+      'Laravel',
+    ],
+    '프론트엔드': [
+      '상관 없음',
+      'React JS',
+      'React TS',
+      'Swift',
+      'Android',
+      'React Native',
+      'Flutter',
+      'Angular',
+    ],
+    '디자이너': ['상관 없음', 'Adobe XD', 'Figma', 'Sketch']
+  };
+  Map techStacks = {
+    '백엔드': {'stack': '', 'headcount': 0},
+    '프론트엔드': {'stack': '', 'headcount': 0},
+    '디자이너': {'stack': '', 'headcount': 0},
+  };
+  String selectedKey;
+  List<String> filterValues;
 
   PickedFile _imageFile;
   Profile me;
@@ -26,11 +58,21 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   void initState() {
     me = context.read<Authenticate>().me;
     _nicknameController.text = me.nickname;
-    _blogController.text = me.blogUrl;
     _githubIdController.text = me.githubUrl;
+    _blogController.text = me.blogUrl;
     _introductionController.text = me.introduction;
-    //_hashtagController.text = me.skills;
     super.initState();
+  }
+
+  void selectKey(String key, List<String> value) {
+    setState(() {
+      selectedKey = selectedKey == key ? null : key;
+      filterValues = value;
+    });
+  }
+
+  void selectValue(String value) {
+    setState(() => techStacks[selectedKey]["stack"] = value);
   }
 
   @override
@@ -43,81 +85,76 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     }
 
     return Scaffold(
-      appBar: appBar(title: "프로필 수정"),
-      body: SingleChildScrollView(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            SizedBox(height: 20),
-            Container(color: Colors.grey),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+        appBar: appBar(title: "프로필 수정"),
+        body: SingleChildScrollView(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(height: 20),
+              Container(color: Colors.grey),
+              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 imageProfile(context, size),
-                Stack(
-                  children: [
-                    _inputForm(size),
-                    _authButton(size, setProfile)
-                  ],
-                ),
-              ]
-            ),
-          ],
-        ),
-      )
-    );
+                _profileInto(size),
+                _authButton(size, setProfile)
+              ]),
+            ],
+          ),
+        ));
   }
 
   Widget imageProfile(BuildContext context, Size size) {
     return Center(
-      child: Stack(children: <Widget>[
-        Container(
-          width: 150,
-          height: 170,
-          child: _imageFile == null
-              ? Icon(Icons.person, color: Colors.white, size: 130)
-              : Image(image: FileImage(File(_imageFile.path)), fit: BoxFit.fill,),
-          decoration: BoxDecoration(
-            border: Border.all(width: 3, color: Colors.white),
-            boxShadow: [
-              BoxShadow(
-                spreadRadius: 2,
-                blurRadius: 10,
-                color: Colors.black.withOpacity(0.5)
-              )
-            ],
-            shape: BoxShape.circle
-          ),
-        ),
-        Positioned(
-          bottom: 15,
+        child: Stack(children: <Widget>[
+      Container(
+        width: 110,
+        height: 110,
+        child: _imageFile == null
+            ? Icon(Icons.person, color: Colors.white, size: 100)
+            : Image(
+                image: FileImage(File(_imageFile.path)),
+                fit: BoxFit.fill,
+              ),
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+              blurRadius: 1,
+              color: Colors.black.withOpacity(0.5),
+              offset: Offset(0, 7))
+        ], shape: BoxShape.circle),
+      ),
+      Positioned(
+          bottom: 0,
           right: 0,
           child: InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: ((builder) => bottomSheet(size))
-              );
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: ((builder) => bottomSheet(size)));
               },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(
+              child: Container(
+                decoration: BoxDecoration(
                   color: Colors.white,
-                  width: 2,
-                )
-              ),
-              child: Icon(
-              Icons.camera_alt_sharp,
-              color: Colors.black,
-              size: 30,
-            ),
-            )
-          )
-        )
-      ])
-    );
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 1,
+                  ),
+                  gradient: LinearGradient(
+                      colors: [
+                        HexColor("4F34F3"),
+                        HexColor("3EF7FF"),
+                      ],
+                      begin: FractionalOffset(1.0, 0.0),
+                      end: FractionalOffset(0.0, 0.0),
+                      stops: [0, 1],
+                      tileMode: TileMode.clamp),
+                ),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              )))
+    ]));
   }
 
   Widget bottomSheet(Size size) {
@@ -139,23 +176,21 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           SizedBox(
             height: 25,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextButton.icon(
-                icon: Icon(Icons.camera),
-                onPressed: () {
-                  takePhoto(ImageSource.camera);
-                },
-                label: Text("카메라"),
-              ),
-              TextButton.icon(
-                icon: Icon(Icons.image),
-                onPressed: () {
-                  takePhoto(ImageSource.gallery);
-                },
-                label: Text("갤러리"),
-              ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            TextButton.icon(
+              icon: Icon(Icons.camera),
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              label: Text("카메라"),
+            ),
+            TextButton.icon(
+              icon: Icon(Icons.image),
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              label: Text("갤러리"),
+            ),
           ])
         ],
       ),
@@ -167,102 +202,156 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     setState(() => _imageFile = pickedFile);
   }
 
-  Widget _inputForm(Size size){
-    return Padding(
-      padding: EdgeInsets.all(size.width*0.05),
-      child: Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16)
-        ),
-        elevation: 15,
-        child: Padding(
-          padding: const EdgeInsets.only(
-              left: 12, right: 16, top: 12, bottom: 32),
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TextFormField(
-                  controller: _nicknameController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.account_circle),
-                    labelText: "닉네임",
-                  ),
-                  validator: (String value){
-                    if(value.isEmpty){
-                      return "Please write your nickname.";
-                    }
-                    if(value.length>2){
-                      return "A nickname should be at least 2 letters.";
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _blogController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.public),
-                    labelText: "지식블로그",
-                  ),
-                ),
-                TextFormField(
-                  controller: _githubIdController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.desktop_mac),
-                    labelText: "GitHub 아이디",
-                  ),
-                ),
-                Container(height: 15,),
-                TextField(
-                  maxLines: 3,
-                  controller: _introductionController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.message),
-                    border: OutlineInputBorder(),
-                    hintText: '나를 소개해주세요.',
-                    labelText: '자기소개',
-                  ),
-                ),
-                Container(height: 15,),
-                TextField(
-                  maxLines: 3,
-                  controller: _hashtagController,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.tag),
-                    border: OutlineInputBorder(),
-                    hintText: '#Flutter #SpringBoot #k8s',
-                    labelText: '관심분야',
-                  ),
-                ),
-              ],
-            ),
-          ),
+  Widget _profileInto(Size size) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+      child: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _inputForm(_nicknameController, '닉네임', '닉네임을 입력하세요.', 1),
+            _inputForm(
+                _githubIdController, 'GitHub ID', 'GitHub ID를 입력하세요.', 1),
+            _inputForm(_blogController, '웹사이트', 'Website', 1),
+            _inputForm(
+                _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
+            _techStacksFilter()
+          ],
         ),
       ),
     );
   }
 
-  Widget _authButton(Size size, Function setProfile){
-    return Positioned(
-      left: size.width*0.15,
-      right: size.width*0.15,
-      bottom: 0,
-      child: RaisedButton(
-        child: Text("저장"),
-        color: Colors.blue,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15)),
-        onPressed: () {
+  Widget _inputForm(TextEditingController textController, String label,
+      String hint, int maxLines) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Container(
+          padding: EdgeInsets.only(left: 10, bottom: 3),
+          child: Text(label,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ))),
+      Container(
+        padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+        child: TextFormField(
+          maxLines: maxLines,
+          controller: textController,
+          style: TextStyle(fontSize: 14, color: Colors.black),
+          decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+              hintText: hint,
+              hintStyle: TextStyle(fontSize: 14, color: Colors.grey)),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return "입력하지 않았습니다.";
+            }
+            if (value.length > 2) {
+              return "최소한 두 글자 이상이어야 합니다.";
+            }
+            return null;
+          },
+        ),
+      )
+    ]);
+  }
+
+  Widget _techStacksFilter() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+            padding: EdgeInsets.only(left: 10, bottom: 3),
+            child: Text("기술 스택",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ))),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          ...filterOptions.entries.map((e) => ProfileFilterChip(
+              content: e.key,
+              display: e.key,
+              selected: selectedKey == e.key,
+              selectKey: selectKey,
+              filterValues: e.value))
+        ]),
+        if (selectedKey != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.only(left: 10),
+                child: Wrap(
+                  children: [
+                    ...filterValues.map((e) => CreateFilterValueChip(
+                          content: e,
+                          selected: techStacks[selectedKey]["stack"] == e,
+                          selectValue: selectValue,
+                        ))
+                  ],
+                ),
+              )
+            ],
+          ),
+      ],
+    );
+  }
+
+  Widget _authButton(Size size, Function setProfile) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
+      child: InkWell(
+        onTap: () {
           final keyMap = {
             "nickname": _nicknameController.text,
-            // "imageUrl": _imageFile,
             "blogUrl": _blogController.text,
             "githubUrl": _githubIdController.text,
             "introduction": _introductionController.text,
           };
-
           setProfile(keyMap);
-        }),
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width * 0.85,
+          height: 50,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1.5,
+              color: Colors.white24,
+            ),
+            gradient: LinearGradient(
+                colors: [
+                  HexColor("4F34F3"),
+                  HexColor("3EF7FF"),
+                ],
+                begin: FractionalOffset(1.0, 0.0),
+                end: FractionalOffset(0.0, 0.0),
+                stops: [0, 1],
+                tileMode: TileMode.clamp),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            '저장하기',
+            style: TextStyle(
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
     );
   }
 }
