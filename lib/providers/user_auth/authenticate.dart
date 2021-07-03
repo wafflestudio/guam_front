@@ -59,7 +59,8 @@ class Authenticate with ChangeNotifier {
         ).then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            me = Profile.fromJson(json.decode(jsonUtf8));
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+            me = Profile.fromJson(jsonData);
           }
           if (response.statusCode == 400) {
             print("Error loading user profile");

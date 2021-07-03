@@ -35,7 +35,7 @@ class Boards with ChangeNotifier {
   }
 
   Boards(Authenticate authProvider) {
-    _authProvider = authProvider;    
+    _authProvider = authProvider;
     fetchBoardIds();
   }
 
@@ -53,6 +53,30 @@ class Boards with ChangeNotifier {
           _boards = jsonList.map((e) => Project.fromJson({ "id": e })).toList();
         });
       }
+
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future fetchBoard(int id) async {
+    try {
+      print("Start fetching board");
+
+      loading = true;
+
+      await HttpRequest()
+        .get(
+          path: "/project/$id",
+          authToken: await _authProvider.getFirebaseIdToken()
+        ).then((response) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          boards[renderBoardIdx] = Project.fromJson(jsonData);
+      });
 
       loading = false;
     } catch (e) {

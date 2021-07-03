@@ -23,17 +23,15 @@ class Profile extends ChangeNotifier {
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
-    Map<String, dynamic> data = json["data"];
-
     return Profile(
-      id: data["id"],
-      nickname: data["nickname"],
-      imageUrl: data["imageUrl"],
-      githubUrl: data["githubUrl"],
-      blogUrl: data["blogUrl"],
-      skills: data["skills"],
-      introduction: data["introduction"],
-      isProfileSet: data["isProfileSet"],
+      id: json["id"],
+      nickname: json["nickname"],
+      imageUrl: json["imageUrl"],
+      githubUrl: json["githubUrl"],
+      blogUrl: json["blogUrl"],
+      skills: json["skills"],
+      introduction: json["introduction"],
+      isProfileSet: json["isProfileSet"],
     );
   }
 }

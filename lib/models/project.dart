@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../models/boards/thread.dart';
 import '../models/boards/user_progress.dart';
+import '../helpers/http_request.dart';
 
 class Project extends ChangeNotifier {
   final int id;
@@ -44,6 +45,12 @@ class Project extends ChangeNotifier {
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
+    List<UserProgress> progresses;
+
+    if (json['tasks'] != null) {
+      progresses = [...json['tasks'].map((e) => UserProgress.fromJson(e))];
+    }
+
     return Project(
       id: json['id'],
       title: json['title'],
@@ -57,7 +64,13 @@ class Project extends ChangeNotifier {
       frontHeadCount: json['frontLeftCnt'],
       backFramework: json['backFramework'],
       backHeadCount: json['backLeftCnt'],
-      designHeadCount: json['designLeftCnt']
+      designHeadCount: json['designLeftCnt'],
+      // field for boards
+      progresses: progresses
     );
+  }
+
+  bool hasBoardData() {
+    return title != null || progresses != null || threads != null;
   }
 }
