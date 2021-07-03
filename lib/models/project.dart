@@ -22,7 +22,7 @@ class Project extends ChangeNotifier {
   /* parameters needed for boards tab */
   final Thread notice;
   final List<UserTask> tasks;
-  final List<Thread> threads;
+  List<Thread> threads;
 
   Project({
     @required this.id,
@@ -42,6 +42,8 @@ class Project extends ChangeNotifier {
     this.tasks,
     this.threads,
   });
+
+  set (List<Thread> _threads) => threads = _threads;
 
   factory Project.fromJson(Map<String, dynamic> json) {
     List<UserTask> tasks;

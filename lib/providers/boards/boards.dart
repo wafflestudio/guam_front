@@ -64,18 +64,32 @@ class Boards with ChangeNotifier {
 
   Future fetchBoard(int id) async {
     try {
-      print("Start fetching board");
-
       loading = true;
+      String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
         .get(
           path: "/project/$id",
-          authToken: await _authProvider.getFirebaseIdToken()
+          authToken: authToken
         ).then((response) {
           final jsonUtf8 = decodeKo(response);
           final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
           boards[renderBoardIdx] = Project.fromJson(jsonData);
+      });
+
+      await HttpRequest()
+        .get(
+        path: "project/$id/threads",
+        authToken: authToken,
+        ).then((response) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          print("Start converting threads");
+          final List<Thread> threads = [...jsonData["content"].map((e) => Thread.fromJson(e))];
+          print("Made threads");
+          print(threads);
+          boards[renderBoardIdx].threads = threads;
+          print("Finished converting threads");
       });
 
       loading = false;

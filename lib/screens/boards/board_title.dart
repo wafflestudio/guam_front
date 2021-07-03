@@ -25,13 +25,13 @@ class BoardTitle extends StatelessWidget {
                 child: ColoredBox(
                   color: HexColor('#8EFFA0'),
                   child: Center(
-                    child: title != null ? Text(
+                    child: Text(
                       title,
                       style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w700
                       ),
-                    ) : CircularProgressIndicator()
+                    )
                   ),
                 )
             ),

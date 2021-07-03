@@ -8,19 +8,29 @@ class Thread extends ChangeNotifier {
   final Profile creator;
   final String content;
   final List<Comment> comments;
-  final bool isEdited;
+  final int commentSize;
   final DateTime createdAt;
-  final bool isNotice;
-  final int commentNum;
+  final DateTime modifiedAt;
 
   Thread({
     this.id,
     this.creator,
     this.content,
     this.comments,
-    this.isEdited,
+    this.commentSize,
     this.createdAt,
-    this.isNotice, // 공지인 thread: server side에서 boards 내려줄 때 field로 받기
-    this.commentNum,
+    this.modifiedAt
   });
+
+  factory Thread.fromJson(Map<String, dynamic> json) {
+    return Thread(
+      id: json["id"],
+      creator: Profile.fromJson(json["creator"]),
+      content: json["content"],
+      //comments:
+      commentSize: json["commentSize"],
+      createdAt: DateTime.parse(json["createdAt"]),
+      modifiedAt: DateTime.parse(json["modifiedAt"])
+    );
+  }
 }

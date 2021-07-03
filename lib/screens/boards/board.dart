@@ -22,21 +22,23 @@ class Board extends StatelessWidget {
 
     return SingleChildScrollView(
       child: Container(
-        child: Column(
-          children: [
-            BoardTitle(board.title),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  //Notice(board.notice),
-                  Tasks(board.tasks),
-                  //Threads(board.threads),
-                ],
-              ),
-            )
-          ],
-        ),
+        child: boardsProvider.loading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+              children: [
+                BoardTitle(board.title),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      //Notice(board.notice),
+                      Tasks(board.tasks),
+                      Threads(board.threads),
+                    ],
+                  ),
+                )
+              ],
+        )
       )
     );
   }

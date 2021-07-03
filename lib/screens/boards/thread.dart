@@ -48,8 +48,8 @@ class Thread extends StatelessWidget {
                         padding: EdgeInsets.only(top: 6),
                         child: Row(
                           children: [
-                            if (thread.commentNum != 0) Text(
-                              "댓글 +${thread.commentNum}",
+                            if (thread.commentSize != 0) Text(
+                              "댓글 +${thread.commentSize}",
                               style: TextStyle(
                                   fontSize: 12
                               ),
