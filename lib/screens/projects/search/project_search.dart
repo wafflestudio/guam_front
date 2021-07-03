@@ -20,6 +20,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   bool isFilterOpen;
+  bool isSubmitted;
   Map result = {};
   String selectedKey;
   List<String> filterValues;
@@ -29,11 +30,16 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     isFilterOpen = false;
+    isSubmitted = false;
     super.initState();
   }
 
   void _toggleIsFilterOpen() {
     setState(() => isFilterOpen = !isFilterOpen);
+  }
+
+  void toggleIsSubmitted() {
+    setState(() => isSubmitted = !isSubmitted);
   }
 
   void selectKey(String key, List<String> value) {
@@ -49,7 +55,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.projectsProvider.filteredProjects);
     return Scaffold(
       /* customizing하신 appBar의 경우, text 자리에 string만 가능한
        상태라서 임시방편으로 AppBar 사용했습니다. */
@@ -59,11 +64,12 @@ class _SearchScreenState extends State<SearchScreen> {
         title: Column(
           children: <Widget>[
             Container(
+                height: 36,
                 color: Colors.white,
                 child: Row(
                   children: <Widget>[
-                    // searchForm(),
-                    SearchForm(result, widget.projectsProvider),
+                    SearchForm(
+                        result, widget.projectsProvider, toggleIsSubmitted),
                     IconButton(
                         icon: Icon(
                           Icons.filter_list,
@@ -95,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen> {
               children: <Widget>[
                 if (isFilterOpen) searchFilter(widget.stacksProvider),
                 Container(color: Colors.black),
-                ProjectsSearchedList(widget.projectsProvider)
+                ProjectsSearchedList(widget.projectsProvider, isSubmitted)
               ],
             )),
           ],
@@ -130,7 +136,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       : e.key,
                   selected: selectedKey == e.key,
                   selectKey: selectKey,
-                  filterValues: e.value))
+                  filterValues: e.value)),
             ]),
             if (selectedKey != null)
               SizedBox(
@@ -143,7 +149,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       selectValue: selectValue,
                     ),
                     itemCount: filterValues.length,
-                  ))
+                  )),
           ],
         ));
   }

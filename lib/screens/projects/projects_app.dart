@@ -49,7 +49,7 @@ class ProjectsAppScaffold extends StatelessWidget {
                           builder: (context) => CreateProjectScreen()));
                 }),
             trailing: ProjectSearchButton(
-                context.watch<Stacks>(), context.watch<Projects>())),
+                context.read<Stacks>(), context.watch<Projects>())),
         body: ProjectsBody(),
         backgroundColor: Colors.transparent,
       ),

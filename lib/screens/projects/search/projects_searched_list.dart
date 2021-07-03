@@ -5,8 +5,9 @@ import '../sub_headings.dart';
 
 class ProjectsSearchedList extends StatelessWidget {
   final Projects projectsProvider;
+  final bool isSubmitted;
 
-  ProjectsSearchedList(this.projectsProvider);
+  ProjectsSearchedList(this.projectsProvider, this.isSubmitted);
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +15,18 @@ class ProjectsSearchedList extends StatelessWidget {
       children: [
         SubHeadings("🔎 검색 결과"),
         Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: projectsProvider.loading && projectsProvider.success
-                ? Center(child: CircularProgressIndicator())
-                : Column(
-                    children: [
-                      ...projectsProvider.projects.map((e) => ProjectBanner(e))
-                    ],
-                  )),
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: projectsProvider.loading
+              ? Center(child: CircularProgressIndicator())
+              : (isSubmitted
+                  ? Column(
+                      children: [
+                        ...projectsProvider.filteredProjects
+                            .map((e) => ProjectBanner(e))
+                      ],
+                    )
+                  : Text("검색 결과 없음")),
+        )
       ],
     );
   }
