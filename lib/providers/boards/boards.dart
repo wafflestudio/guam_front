@@ -279,32 +279,32 @@ class Boards with ChangeNotifier {
     try {
       loading = true;
       // http request for my boards
-      _boards = [
-        Project(
-          id: 1,
-          title: "유튜브 제작하기",
-          isRecruiting: false,
-          notice: sampleNotice1,
-          progresses: sampleProgresses1,
-          threads: sampleThreads,
-        ),
-        Project(
-          id: 2,
-          title: "지그재그 카피앱 만들기",
-          isRecruiting: false,
-          notice: sampleNotice2,
-          progresses: sampleProgresses1,
-          threads: sampleThreads,
-        ),
-        Project(
-          id: 3,
-          title: "제 2의 GUAM 만들기",
-          isRecruiting: false,
-          notice: sampleNotice3,
-          progresses: sampleProgresses1,
-          threads: sampleThreads,
-        ),
-      ];
+      // _boards = [
+      //   Project(
+      //     id: 1,
+      //     title: "유튜브 제작하기",
+      //     isRecruiting: false,
+      //     notice: sampleNotice1,
+      //     progresses: sampleProgresses1,
+      //     threads: sampleThreads,
+      //   ),
+      //   Project(
+      //     id: 2,
+      //     title: "지그재그 카피앱 만들기",
+      //     isRecruiting: false,
+      //     notice: sampleNotice2,
+      //     progresses: sampleProgresses1,
+      //     threads: sampleThreads,
+      //   ),
+      //   Project(
+      //     id: 3,
+      //     title: "제 2의 GUAM 만들기",
+      //     isRecruiting: false,
+      //     notice: sampleNotice3,
+      //     progresses: sampleProgresses1,
+      //     threads: sampleThreads,
+      //   ),
+      // ];
 
       loading = false;
     } catch (e) {
