@@ -10,6 +10,7 @@ import '../../models/profile.dart';
 import '../../helpers/http_request.dart';
 import '../user_auth/authenticate.dart';
 import '../../helpers/decode_ko.dart';
+import 'package:http/http.dart' as http;
 
 class Boards with ChangeNotifier {
   Authenticate _authProvider;
@@ -20,6 +21,7 @@ class Boards with ChangeNotifier {
 
   get boards => _boards;
   get renderBoardIdx => _renderBoardIdx;
+  get currentBoard => boards[renderBoardIdx];
 
   set renderBoardIdx(idx) {
     _renderBoardIdx = idx;
@@ -132,4 +134,29 @@ class Boards with ChangeNotifier {
       print(e);
     }
   }
+
+  Future postThread(dynamic body) async {
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      /*
+      * 진우님이 Authorization 코드 넣기 전까지 temp code
+      * Authorization 으로 header 에 넣게 되면 "USER-ID" 필요 없어지므로 HttpRequest() 사용
+      * */
+      final path = "/thread/create/${currentBoard.id}";
+      final uri = Uri.http(HttpRequest().baseAuthority, path);
+      await http
+        .post(
+          uri,
+          headers: {'Content-Type': "application/json", "USER-ID": "${_authProvider.me.id}"},
+          body: json.encode(body)
+      ).then((response) {
+        if (response.statusCode == 200) print("스레드가 등록되었습니다.");
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
 }
