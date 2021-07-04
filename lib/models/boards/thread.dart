@@ -27,7 +27,11 @@ class Thread extends ChangeNotifier {
   factory Thread.fromJson(Map<String, dynamic> json) {
     return Thread(
       id: json["id"],
-      creator: Profile.fromJson(json["creator"]),
+      creator: Profile.fromJson({
+        "id": json["creatorId"],
+        "nickname": json["creatorNickname"],
+        "imageUrl": json["creatorImageUrl"],
+      }),
       content: json["content"],
       commentSize: json["commentSize"],
       createdAt: DateTime.parse(json["createdAt"]),

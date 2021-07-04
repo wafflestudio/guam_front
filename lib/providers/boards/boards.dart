@@ -100,8 +100,8 @@ class Boards with ChangeNotifier {
           authToken: authToken,
       ).then((response) {
         final jsonUtf8 = decodeKo(response);
-        final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
-        final List<Thread> threads = [...jsonData["content"].map((e) => Thread.fromJson(e))];
+        final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
+        final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
         boards[renderBoardIdx].threads = threads;
       });
 
