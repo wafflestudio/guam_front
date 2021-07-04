@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/boards/boards.dart';
 
-class ThreadTextField extends StatefulWidget {
+class CommonTextField extends StatefulWidget {
+  final Function onTap;
+
+  CommonTextField({this.onTap});
+
   @override
-  State<StatefulWidget> createState() => _ThreadTextFieldState();
+  State<StatefulWidget> createState() => _CommonTextFieldState();
 }
 
-class _ThreadTextFieldState extends State<ThreadTextField> {
+class _CommonTextFieldState extends State<CommonTextField> {
   final _threadTextFieldController = TextEditingController();
 
   @override
@@ -18,8 +20,6 @@ class _ThreadTextFieldState extends State<ThreadTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final boardsProvider = context.read<Boards>();
-
     return DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -40,9 +40,10 @@ class _ThreadTextFieldState extends State<ThreadTextField> {
               IconButton(
                 icon: Icon(Icons.send_outlined),
                 onPressed: () async {
-                  await boardsProvider.postThread({
+                  await widget.onTap({
                     "value": _threadTextFieldController.text
                   }).then((value) {
+                    print(value);
                     if (value == true) {
                       _threadTextFieldController.clear();
                       FocusScope.of(context).unfocus();

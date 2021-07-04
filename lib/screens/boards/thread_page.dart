@@ -6,7 +6,7 @@ import '../../models/boards/thread.dart';
 import '../../commons/circular_border_container.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'iconTitle.dart';
-import '../../commons/thread_text_field.dart';
+import '../../commons/common_text_field.dart';
 import 'comment.dart';
 import 'package:provider/provider.dart';
 import '../../providers/boards/boards.dart';
@@ -67,7 +67,7 @@ class ThreadPage extends StatelessWidget {
                   horizontal: 20
                 ),
                 alignment: Alignment.bottomCenter,
-                child: ThreadTextField(),
+                //child: ThreadTextField(),
               )
             ],
           )
