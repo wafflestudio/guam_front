@@ -39,9 +39,14 @@ class _ThreadTextFieldState extends State<ThreadTextField> {
               ),
               IconButton(
                 icon: Icon(Icons.send_outlined),
-                onPressed: () {
-                  boardsProvider.postThread({
+                onPressed: () async {
+                  await boardsProvider.postThread({
                     "value": _threadTextFieldController.text
+                  }).then((value) {
+                    if (value == true) {
+                      _threadTextFieldController.clear();
+                      FocusScope.of(context).unfocus();
+                    }
                   });
                 },
               )
