@@ -7,7 +7,7 @@ class Thread extends ChangeNotifier {
   final int id;
   final Profile creator;
   final String content;
-  final List<Comment> comments;
+  List<Comment> comments;
   final int commentSize;
   final DateTime createdAt;
   final DateTime modifiedAt;
@@ -22,15 +22,22 @@ class Thread extends ChangeNotifier {
     this.modifiedAt
   });
 
+  set (List<Comment> _comments) => comments = _comments;
+
   factory Thread.fromJson(Map<String, dynamic> json) {
     return Thread(
       id: json["id"],
       creator: Profile.fromJson(json["creator"]),
       content: json["content"],
-      //comments:
       commentSize: json["commentSize"],
       createdAt: DateTime.parse(json["createdAt"]),
       modifiedAt: DateTime.parse(json["modifiedAt"])
     );
+  }
+
+  bool hasFullThreadData() => comments != null;
+
+  Future fetchComments(Future comments) async {
+    comments = await comments;
   }
 }

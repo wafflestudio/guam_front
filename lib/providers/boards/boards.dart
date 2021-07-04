@@ -62,7 +62,7 @@ class Boards with ChangeNotifier {
     }
   }
 
-  Future fetchBoard(int id) async {
+  Future fetchBoard(int projectId) async {
     try {
       print("Fetching boards");
       loading = true;
@@ -70,7 +70,7 @@ class Boards with ChangeNotifier {
 
       await HttpRequest()
         .get(
-          path: "/project/$id",
+          path: "/project/$projectId",
           authToken: authToken
         ).then((response) {
           final jsonUtf8 = decodeKo(response);
@@ -78,7 +78,7 @@ class Boards with ChangeNotifier {
           boards[renderBoardIdx] = Project.fromJson(jsonData);
       });
 
-      await fetchThreads(id);
+      await fetchThreads(projectId);
 
       loading = false;
     } catch (e) {
@@ -89,14 +89,14 @@ class Boards with ChangeNotifier {
     }
   }
 
-  Future fetchThreads(int id) async {
+  Future fetchThreads(int projectId) async {
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
         .get(
-          path: "project/$id/threads",
+          path: "project/$projectId/threads",
           authToken: authToken,
       ).then((response) {
         final jsonUtf8 = decodeKo(response);
@@ -113,8 +113,23 @@ class Boards with ChangeNotifier {
     }
   }
 
-  void toggleLoading() {
-    loading = !loading;
-    notifyListeners();
+  Future fetchFullThread(int threadId) async {
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .get(
+          path: "/thread/$threadId",
+          authToken: authToken
+      ).then((response) {
+        final jsonUtf8 = decodeKo(response);
+        final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+        final List<Comment> comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
+        print("Fetching full thread -- DONE");
+        return comments;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }

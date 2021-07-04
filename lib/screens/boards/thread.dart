@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/providers/boards/boards.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import '../../commons/profile_thumbnail.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
 import 'thread_page.dart';
+import 'package:provider/provider.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
@@ -24,7 +26,15 @@ class Thread extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ThreadPage(thread)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) {
+              return ThreadPage(
+                boardsProvider: context.read<Boards>(),
+                thread: thread,
+              );
+            })
+          );
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

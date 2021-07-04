@@ -8,11 +8,14 @@ import 'package:hexcolor/hexcolor.dart';
 import 'iconTitle.dart';
 import '../../commons/thread_text_field.dart';
 import 'comment.dart';
+import 'package:provider/provider.dart';
+import '../../providers/boards/boards.dart';
 
 class ThreadPage extends StatelessWidget {
+  final Boards boardsProvider;
   final Thread thread;
 
-  ThreadPage(this.thread);
+  ThreadPage({this.boardsProvider, this.thread});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,10 @@ class ThreadPage extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: appBar(title: "스레드"),
+        //appBar: appBar(title: "스레드"),
+        appBar: AppBar(
+          title: Text("스레드"),
+        ),
         body: Container(
           height: double.infinity,
           child: Stack(
@@ -38,10 +44,20 @@ class ThreadPage extends StatelessWidget {
                       children: [
                         threadContainer(thread),
                         Padding(
-                          child: commentsContainer(thread),
                           padding: EdgeInsets.only(bottom: 36),
+                          child: FutureBuilder(
+                            future: boardsProvider.fetchFullThread(thread.id),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                thread.fetchComments(snapshot.data);
+                                return commentsContainer(thread);
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            },
+                          ),
                         ),
-                      ],
+                      ]
                     ),
                   )
               ),
@@ -64,6 +80,7 @@ class ThreadPage extends StatelessWidget {
 Widget threadContainer(Thread thread) {
   return CircularBorderContainer(
     content: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: 10),
@@ -99,7 +116,7 @@ Widget commentsContainer(Thread thread) {
       children: [
         iconTitle(
           icon: Icons.message_outlined,
-          title: "${thread.comments.length}개의 답글"
+          title: "${thread.commentSize}개의 답글" // possible error !!
         ),
         Column(children: thread.comments.map((e) => Comment(e)).toList(),)
       ],
