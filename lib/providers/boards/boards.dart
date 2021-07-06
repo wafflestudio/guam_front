@@ -43,7 +43,6 @@ class Boards with ChangeNotifier {
 
   Future fetchBoardIds() async {
     try {
-      print("Fetching board ids");
       loading = true;
 
       if (_authProvider.userSignedIn()) {
@@ -59,14 +58,12 @@ class Boards with ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      print("Fetching board ids -- DONE");
       notifyListeners();
     }
   }
 
   Future fetchBoard(int projectId) async {
     try {
-      print("Fetching boards");
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
@@ -87,7 +84,6 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       notifyListeners();
-      print("Fetching boards -- DONE");
     }
   }
 
