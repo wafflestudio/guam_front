@@ -2,19 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<<<<<<< HEAD
-=======
     <!-- temp code to delete after https -->
->>>>>>> d6430c444c5400f58d777f88e459973a3717a451
     <key>NSAppTransportSecurity</key>
     <dict>
             <key>NSAllowsArbitraryLoads</key>
             <true/>
     </dict>
-<<<<<<< HEAD
-=======
     <!-- Delete until here -->
->>>>>>> d6430c444c5400f58d777f88e459973a3717a451
 	<key>KAKAO_APP_KEY</key>
 	<string>367d8cf339e2ba59376ba647c7135dd2</string>
 	<key>CFBundleDevelopmentRegion</key>
