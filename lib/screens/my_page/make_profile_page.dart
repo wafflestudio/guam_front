@@ -39,6 +39,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
   @override
   void initState() {
+    me = context.read<Authenticate>().me;
     _nicknameController.text = me.nickname;
     _githubIdController.text = me.githubUrl;
     _blogController.text = me.blogUrl;
