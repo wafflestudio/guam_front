@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../commons/app_bar.dart';
+import '../../commons/custom_app_bar.dart';
 import '../../providers/boards/boards.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'boards_body.dart';
@@ -30,7 +30,7 @@ class BoardsAppScaffold extends StatelessWidget {
             )
         ),
         child: Scaffold(
-          appBar: appBar(
+          appBar: CustomAppBar(
             title: '작업실',
             /*
         leading: IconButton(

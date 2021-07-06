@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/search/project_search_button.dart';
 import 'package:provider/provider.dart';
-import '../../commons/app_bar.dart';
+import '../../commons/custom_app_bar.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../../providers/projects/projects.dart';
 import 'creation/project_create.dart';
@@ -37,7 +37,7 @@ class ProjectsAppScaffold extends StatelessWidget {
         fit: BoxFit.cover,
       )),
       child: Scaffold(
-        appBar: appBar(
+        appBar: CustomAppBar(
             title: '프로젝트',
             leading: IconButton(
                 icon: Icon(Icons.add),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../user_auth/kakao_login.dart';
-import '../../commons/app_bar.dart';
+import '../../commons/custom_app_bar.dart';
 import 'make_profile_page.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
@@ -12,7 +12,7 @@ class MyPage extends StatelessWidget {
     final authProvider = context.watch<Authenticate>();
 
     return Scaffold(
-      appBar: appBar(
+      appBar: CustomAppBar(
         title: "프로필",
         trailing: IconButton(
           icon: Icon(

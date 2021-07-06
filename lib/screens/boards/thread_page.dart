@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../commons/profile_thumbnail.dart';
-import '../../commons/app_bar.dart';
+import '../../commons/custom_app_bar.dart';
+import '../../commons/back.dart';
 import '../../models/boards/thread.dart';
 import '../../commons/circular_border_container.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -42,9 +43,9 @@ class _ThreadPageState extends State<ThreadPage> {
         ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          //appBar: appBar(title: "스레드"),
-          appBar: AppBar(
-            title: Text("스레드"),
+          appBar: CustomAppBar(
+            title: "스레드",
+            leading: Back(),
           ),
           body: Container(
               height: double.infinity,
