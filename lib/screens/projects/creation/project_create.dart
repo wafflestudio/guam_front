@@ -4,7 +4,7 @@ import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../commons/app_bar.dart';
+import '../../../commons/custom_app_bar.dart';
 import '../../../commons/back.dart';
 import 'create_filter_chip.dart';
 import 'create_filter_value_chip.dart';
@@ -67,7 +67,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar(
+        appBar: CustomAppBar(
           title: '프로젝트 만들기',
           leading: Back(),
         ),
