@@ -25,6 +25,12 @@ class ThreadPage extends StatefulWidget {
 class _ThreadPageState extends State<ThreadPage> {
   Future<dynamic> comments;
 
+  void fetchFullThread() {
+    setState(() {
+      comments = widget.boardsProvider.fetchFullThread(widget.thread.id);
+    });
+  }
+
   @override
   void initState() {
     comments = widget.boardsProvider.fetchFullThread(widget.thread.id);
@@ -33,6 +39,15 @@ class _ThreadPageState extends State<ThreadPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future postComment(dynamic body) async {
+      return await widget.boardsProvider.postComment(widget.thread.id, body)
+        .then((successful) {
+          if (successful) fetchFullThread();
+          return successful;
+        });
+    }
+
     return DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -65,7 +80,6 @@ class _ThreadPageState extends State<ThreadPage> {
                                     if (snapshot.hasData) {
                                       return commentsContainer(snapshot.data);
                                     } else {
-                                      //print(snapshot.hasData);
                                       return CircularProgressIndicator();
                                     }
                                   },
@@ -81,7 +95,7 @@ class _ThreadPageState extends State<ThreadPage> {
                         horizontal: 20
                     ),
                     alignment: Alignment.bottomCenter,
-                    //child: ThreadTextField(),
+                    child: CommonTextField(onTap: postComment),
                   )
                 ],
               )
@@ -132,7 +146,7 @@ Widget commentsContainer(List<CommentModel.Comment> comments) {
           icon: Icons.message_outlined,
           title: "${comments.length}개의 답글"
         ),
-        Column(children: comments.map((e) => Comment(e)).toList(),)
+        Column(children: comments.map((e) => Comment(e)).toList())
       ],
     ),
   );

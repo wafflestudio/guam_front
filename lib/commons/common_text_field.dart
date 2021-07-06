@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CommonTextField extends StatefulWidget {
   final Function onTap;
 
-  CommonTextField({this.onTap});
+  CommonTextField({@required this.onTap});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();

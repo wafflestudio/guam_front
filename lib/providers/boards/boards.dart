@@ -168,4 +168,32 @@ class Boards with ChangeNotifier {
       fetchThreads(currentBoard.id);
     }
   }
+
+  Future postComment(int threadId, dynamic body) async {
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      bool res = false;
+      /*
+      * 진우님이 Authorization 코드 넣기 전까지 temp code
+      * Authorization 으로 header 에 넣게 되면 "USER-ID" 필요 없어지므로 HttpRequest() 사용
+      * */
+      final path = "/comment/create/$threadId";
+      final uri = Uri.http(HttpRequest().baseAuthority, path);
+      await http
+        .post(
+          uri,
+          headers: {'Content-Type': "application/json", "USER-ID": "${_authProvider.me.id}"},
+          body: json.encode(body)
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("커멘트가 등록되었습니다.");
+          res = true;
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    }
+  }
 }
