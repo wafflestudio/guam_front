@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:guam_front/commons/app_bar.dart';
+import 'package:guam_front/commons/custom_app_bar.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/my_page/profile_filter_chip.dart';
@@ -94,14 +94,16 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     }
 
     return Scaffold(
-        appBar: appBar(title: "프로필 수정"),
-        body: SingleChildScrollView(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(height: 20),
-              Container(color: Colors.grey),
-              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      appBar: CustomAppBar(title: "프로필 수정"),
+      body: SingleChildScrollView(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(height: 20),
+            Container(color: Colors.grey),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
                 imageProfile(context, size),
                 _profileInfo(size, techStacks),
                 _authButton(size, setProfile)
