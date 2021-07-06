@@ -3,7 +3,7 @@ import 'dart:io' show HttpHeaders;
 import 'package:http/http.dart' as http;
 
 class HttpRequest {
-  final String baseAuthority = "13.209.157.42:8080";
+  final String baseAuthority = "15.164.72.46:8080";
 
   Future get({String authority, String path, dynamic queryParams, String authToken}) async {
     try {

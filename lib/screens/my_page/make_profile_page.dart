@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:guam_front/commons/app_bar.dart';
+import 'package:guam_front/commons/custom_app_bar.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../providers/user_auth/authenticate.dart';
@@ -43,7 +43,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     }
 
     return Scaffold(
-      appBar: appBar(title: "프로필 수정"),
+      appBar: CustomAppBar(title: "프로필 수정"),
       body: SingleChildScrollView(
         child: Stack(
           alignment: Alignment.center,

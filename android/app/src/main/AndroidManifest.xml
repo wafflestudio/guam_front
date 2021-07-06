@@ -10,10 +10,14 @@
         android:label="guam_front"
         android:icon="@mipmap/ic_launcher"
 <<<<<<< HEAD
+<<<<<<< HEAD
         android:usesCleartextTraffic="true">
 =======
         android:usesCleartextTraffic="true"> <!-- temp code to delete after https -->
 >>>>>>> d6430c444c5400f58d777f88e459973a3717a451
+=======
+        android:usesCleartextTraffic="true"> <!-- temp code to delete after https -->
+>>>>>>> e0655ce47e994ac8ad2a6d04eae0cb98206b6a40
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

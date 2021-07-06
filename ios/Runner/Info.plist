@@ -3,18 +3,26 @@
 <plist version="1.0">
 <dict>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <!-- temp code to delete after https -->
 >>>>>>> d6430c444c5400f58d777f88e459973a3717a451
+=======
+    <!-- temp code to delete after https -->
+>>>>>>> e0655ce47e994ac8ad2a6d04eae0cb98206b6a40
     <key>NSAppTransportSecurity</key>
     <dict>
             <key>NSAllowsArbitraryLoads</key>
             <true/>
     </dict>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <!-- Delete until here -->
 >>>>>>> d6430c444c5400f58d777f88e459973a3717a451
+=======
+    <!-- Delete until here -->
+>>>>>>> e0655ce47e994ac8ad2a6d04eae0cb98206b6a40
 	<key>KAKAO_APP_KEY</key>
 	<string>367d8cf339e2ba59376ba647c7135dd2</string>
 	<key>CFBundleDevelopmentRegion</key>

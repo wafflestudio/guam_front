@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/screens/projects/detail/project_detail_body.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../../commons/app_bar.dart';
+import '../../../commons/custom_app_bar.dart';
 import '../../../commons/back.dart';
 import '../../../models/project.dart';
 
@@ -15,7 +15,7 @@ class DetailProject extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: appBar(
+      appBar: CustomAppBar(
         title: "프로젝트 신청하기",
         leading: Back(),
       ),
