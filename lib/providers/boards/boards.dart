@@ -4,13 +4,9 @@ import 'package:guam_front/models/boards/comment.dart';
 import 'dart:convert';
 import '../../models/project.dart';
 import '../../models/boards/thread.dart';
-import '../../models/boards/user_task.dart';
-import '../../models/project.dart';
-import '../../models/profile.dart';
 import '../../helpers/http_request.dart';
 import '../user_auth/authenticate.dart';
 import '../../helpers/decode_ko.dart';
-import 'package:http/http.dart' as http;
 
 class Boards with ChangeNotifier {
   Authenticate _authProvider;
@@ -46,13 +42,14 @@ class Boards with ChangeNotifier {
       loading = true;
 
       if (_authProvider.userSignedIn()) {
-        await HttpRequest().get(
-          path: "user/project/ids",
-          authToken: await _authProvider.getFirebaseIdToken()
-        ).then((response) {
-          final jsonUtf8 = decodeKo(response);
-          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-          _boards = jsonList.map((e) => Project.fromJson({ "id": e })).toList();
+        await HttpRequest()
+          .get(
+            path: "user/project/ids",
+            authToken: await _authProvider.getFirebaseIdToken()
+          ).then((response) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+            _boards = jsonList.map((e) => Project.fromJson({ "id": e })).toList();
         });
       }
     } catch (e) {
@@ -139,18 +136,14 @@ class Boards with ChangeNotifier {
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
-      /*
-      * 진우님이 Authorization 코드 넣기 전까지 temp code
-      * Authorization 으로 header 에 넣게 되면 "USER-ID" 필요 없어지므로 HttpRequest() 사용
-      * */
-      final path = "/thread/create/${currentBoard.id}";
-      final uri = Uri.http(HttpRequest().baseAuthority, path);
-      await http
+
+      await HttpRequest()
         .post(
-          uri,
-          headers: {'Content-Type': "application/json", "USER-ID": "${_authProvider.me.id}"},
-          body: json.encode(body)
+          path: "/thread/create/${currentBoard.id}",
+          authToken: authToken,
+          body: body
       ).then((response) {
+        print(response.statusCode);
         if (response.statusCode == 200) {
           print("스레드가 등록되었습니다.");
           res = true;
@@ -169,17 +162,12 @@ class Boards with ChangeNotifier {
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
-      /*
-      * 진우님이 Authorization 코드 넣기 전까지 temp code
-      * Authorization 으로 header 에 넣게 되면 "USER-ID" 필요 없어지므로 HttpRequest() 사용
-      * */
-      final path = "/comment/create/$threadId";
-      final uri = Uri.http(HttpRequest().baseAuthority, path);
-      await http
+
+      await HttpRequest()
         .post(
-          uri,
-          headers: {'Content-Type': "application/json", "USER-ID": "${_authProvider.me.id}"},
-          body: json.encode(body)
+          authToken: authToken,
+          path: "/comment/create/$threadId",
+          body: body
       ).then((response) {
         if (response.statusCode == 200) {
           print("커멘트가 등록되었습니다.");
