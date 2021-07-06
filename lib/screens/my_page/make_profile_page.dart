@@ -2,14 +2,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/app_bar.dart';
 import 'package:guam_front/models/profile.dart';
+import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/my_page/profile_filter_chip.dart';
-import 'package:guam_front/screens/projects/creation/create_filter_value_chip.dart';
+import 'package:guam_front/screens/my_page/profile_filter_value_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'package:provider/provider.dart';
 
 class MakeProfilePage extends StatefulWidget {
+  final Stacks stacksProvider;
+
+  MakeProfilePage(this.stacksProvider);
+
   @override
   _MakeProfilePageState createState() => _MakeProfilePageState();
 }
@@ -20,33 +25,11 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
-  final Map filterOptions = {
-    '백엔드': [
-      '상관 없음',
-      'SpringBoot',
-      'JPA',
-      'Django',
-      'express',
-      'Ruby on Rails',
-      'node.js',
-      'Laravel',
-    ],
-    '프론트엔드': [
-      '상관 없음',
-      'React JS',
-      'React TS',
-      'Swift',
-      'Android',
-      'React Native',
-      'Flutter',
-      'Angular',
-    ],
-    '디자이너': ['상관 없음', 'Adobe XD', 'Figma', 'Sketch']
-  };
-  Map techStacks = {
-    '백엔드': {'stack': '', 'headcount': 0},
-    '프론트엔드': {'stack': '', 'headcount': 0},
-    '디자이너': {'stack': '', 'headcount': 0},
+
+  Map techStacksInfo = {
+    '백엔드': [],
+    '프론트엔드': [],
+    '디자이너': [],
   };
   String selectedKey;
   List<String> filterValues;
@@ -56,7 +39,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
   @override
   void initState() {
-    me = context.read<Authenticate>().me;
     _nicknameController.text = me.nickname;
     _githubIdController.text = me.githubUrl;
     _blogController.text = me.blogUrl;
@@ -72,11 +54,38 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   }
 
   void selectValue(String value) {
-    setState(() => techStacks[selectedKey]["stack"] = value);
+    setState(() => techStacksInfo[selectedKey].add(value));
   }
 
   @override
   Widget build(BuildContext context) {
+    print(techStacksInfo);
+    var techStacks = Map.fromIterable(
+        List<dynamic>.from(
+                widget.stacksProvider.stacks.map((stack) => stack.position))
+            .toSet()
+            .toList(),
+        key: (v) => v,
+        value: (v) => []);
+
+    List<dynamic>.from(widget.stacksProvider.stacks.map((stack) => {
+          {techStacks[stack.position].add(stack.name)}
+        }));
+
+    techStacks.keys.forEach(
+        (key) => {techStacks[key] = List<String>.from(techStacks[key])});
+
+    techStacksInfo.keys.forEach((key) =>
+        {techStacksInfo[key] = List<String>.from(techStacksInfo[key])});
+
+    techStacks['백엔드'] = techStacks['BACKEND'];
+    techStacks['프론트엔드'] = techStacks['FRONTEND'];
+    techStacks['디자이너'] = techStacks['DESIGNER'];
+    techStacks.remove('UNKNOWN');
+    techStacks.remove('BACKEND');
+    techStacks.remove('FRONTEND');
+    techStacks.remove('DESIGNER');
+
     final Size size = MediaQuery.of(context).size;
     final authProvider = context.read<Authenticate>();
 
@@ -94,7 +103,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               Container(color: Colors.grey),
               Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 imageProfile(context, size),
-                _profileInto(size),
+                _profileInfo(size, techStacks),
                 _authButton(size, setProfile)
               ]),
             ],
@@ -202,7 +211,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     setState(() => _imageFile = pickedFile);
   }
 
-  Widget _profileInto(Size size) {
+  Widget _profileInfo(Size size, Map<dynamic, List<dynamic>> techStacks) {
     return Container(
       padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
       child: Form(
@@ -215,7 +224,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             _inputForm(_blogController, '웹사이트', 'Website', 1),
             _inputForm(
                 _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
-            _techStacksFilter()
+            _techStacksFilter(techStacks)
           ],
         ),
       ),
@@ -270,7 +279,8 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     ]);
   }
 
-  Widget _techStacksFilter() {
+  Widget _techStacksFilter(Map<dynamic, List<dynamic>> techStacks) {
+    List<String> selectedReportList = [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -283,7 +293,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                   color: Colors.black,
                 ))),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ...filterOptions.entries.map((e) => ProfileFilterChip(
+          ...techStacks.entries.map((e) => ProfileFilterChip(
               content: e.key,
               display: e.key,
               selected: selectedKey == e.key,
@@ -295,17 +305,17 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.only(left: 10),
-                child: Wrap(
-                  children: [
-                    ...filterValues.map((e) => CreateFilterValueChip(
-                          content: e,
-                          selected: techStacks[selectedKey]["stack"] == e,
-                          selectValue: selectValue,
-                        ))
-                  ],
-                ),
-              )
+                  padding: EdgeInsets.only(left: 10),
+                  child: Container(
+                    child: TechStacksMultiSelectChip(
+                      techStacks[selectedKey],
+                      onSelectionChanged: (selectedList) {
+                        setState(() {
+                          selectedReportList = selectedList;
+                        });
+                      },
+                    ),
+                  ))
             ],
           ),
       ],

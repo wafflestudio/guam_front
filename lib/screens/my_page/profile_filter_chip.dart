@@ -20,7 +20,6 @@ class ProfileFilterChip extends StatelessWidget {
     return Container(
         child: ChoiceChip(
       shape: RoundedRectangleBorder(
-        // borderRadius: BorderRadius.all(Radius.circular(10))
         borderRadius: (display == '백엔드')
             ? BorderRadius.only(
                 topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
