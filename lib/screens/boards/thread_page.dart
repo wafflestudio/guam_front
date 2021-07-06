@@ -8,71 +8,84 @@ import 'package:hexcolor/hexcolor.dart';
 import 'iconTitle.dart';
 import '../../commons/common_text_field.dart';
 import 'comment.dart';
-import 'package:provider/provider.dart';
 import '../../providers/boards/boards.dart';
+import '../../models/boards/comment.dart' as CommentModel;
 
-class ThreadPage extends StatelessWidget {
+class ThreadPage extends StatefulWidget {
   final Boards boardsProvider;
   final Thread thread;
 
   ThreadPage({this.boardsProvider, this.thread});
 
   @override
+  State<StatefulWidget> createState() => _ThreadPageState();
+}
+
+class _ThreadPageState extends State<ThreadPage> {
+  Future<dynamic> comments;
+
+  @override
+  void initState() {
+    comments = widget.boardsProvider.fetchFullThread(widget.thread.id);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        image: DecorationImage(
-            image: AssetImage("assets/backgrounds/thread-page-bg.png"),
-            fit: BoxFit.cover
+        decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+              image: AssetImage("assets/backgrounds/thread-page-bg.png"),
+              fit: BoxFit.cover
+          ),
         ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        //appBar: appBar(title: "스레드"),
-        appBar: AppBar(
-          title: Text("스레드"),
-        ),
-        body: Container(
-          height: double.infinity,
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                    child: Column(
-                      children: [
-                        threadContainer(thread),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 36),
-                          child: FutureBuilder(
-                            future: boardsProvider.fetchFullThread(thread.id),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                thread.fetchComments(snapshot.data);
-                                return commentsContainer(thread);
-                              } else {
-                                return CircularProgressIndicator();
-                              }
-                            },
-                          ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          //appBar: appBar(title: "스레드"),
+          appBar: AppBar(
+            title: Text("스레드"),
+          ),
+          body: Container(
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        child: Column(
+                            children: [
+                              threadContainer(widget.thread),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 36),
+                                child: FutureBuilder<List<CommentModel.Comment>>(
+                                  future: comments,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return commentsContainer(snapshot.data);
+                                    } else {
+                                      //print(snapshot.hasData);
+                                      return CircularProgressIndicator();
+                                    }
+                                  },
+                                ),
+                              ),
+                            ]
                         ),
-                      ]
+                      )
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 20
                     ),
+                    alignment: Alignment.bottomCenter,
+                    //child: ThreadTextField(),
                   )
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 20
-                ),
-                alignment: Alignment.bottomCenter,
-                //child: ThreadTextField(),
+                ],
               )
-            ],
-          )
-        ),
-      )
+          ),
+        )
     );
   }
 }
@@ -109,16 +122,16 @@ Widget threadContainer(Thread thread) {
   );
 }
 
-Widget commentsContainer(Thread thread) {
+Widget commentsContainer(List<CommentModel.Comment> comments) {
   return Padding(
     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
     child: Column(
       children: [
         iconTitle(
           icon: Icons.message_outlined,
-          title: "${thread.commentSize}개의 답글" // possible error !!
+          title: "${comments.length}개의 답글"
         ),
-        Column(children: thread.comments.map((e) => Comment(e)).toList(),)
+        Column(children: comments.map((e) => Comment(e)).toList(),)
       ],
     ),
   );

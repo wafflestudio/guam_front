@@ -115,7 +115,11 @@ class Boards with ChangeNotifier {
     }
   }
 
-  Future fetchFullThread(int threadId) async {
+  Future<List<Comment>> fetchFullThread(int threadId) async {
+    // Should return comments and `Images` also, when server code is done.
+    // Temporally, only return comments.
+    List<Comment> comments;
+
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
 
@@ -126,13 +130,13 @@ class Boards with ChangeNotifier {
       ).then((response) {
         final jsonUtf8 = decodeKo(response);
         final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
-        final List<Comment> comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
-        print("Fetching full thread -- DONE");
-        return comments;
+        comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
       });
     } catch (e) {
       print(e);
     }
+
+    return comments;
   }
 
   Future postThread(dynamic body) async {
@@ -164,6 +168,4 @@ class Boards with ChangeNotifier {
       fetchThreads(currentBoard.id);
     }
   }
-
-
 }

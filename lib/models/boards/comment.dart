@@ -23,7 +23,11 @@ class Comment extends ChangeNotifier {
     return Comment(
       id: json["id"],
       threadId: json["threadId"],
-      creator: Profile.fromJson(json["creator"]),
+      creator: Profile.fromJson({
+        "id": json["creatorId"],
+        "nickname": json["creatorNickname"],
+        "imageUrl": json["creatorImageUrl"],
+      }),
       content: json["content"],
       createdAt: DateTime.parse(json["createdAt"]),
       modifiedAt: DateTime.parse(json["modifiedAt"])

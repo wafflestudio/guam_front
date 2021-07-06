@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../profile.dart';
-import 'comment.dart';
 
 class Thread extends ChangeNotifier {
+  /*
+  Below are fields initialized by boardsProvider.fetchThreads().
+  Comments, Images are required only in ThreadPage,
+  so it is requested by different method boardsProvider.fetchFullThread(),
+  and thus is not preserved after widget disposed.
+   */
   final int id;
   final Profile creator;
   final String content;
-  List<Comment> comments;
   final int commentSize;
   final DateTime createdAt;
   final DateTime modifiedAt;
@@ -16,13 +20,10 @@ class Thread extends ChangeNotifier {
     this.id,
     this.creator,
     this.content,
-    this.comments,
     this.commentSize,
     this.createdAt,
     this.modifiedAt
   });
-
-  set (List<Comment> _comments) => comments = _comments;
 
   factory Thread.fromJson(Map<String, dynamic> json) {
     return Thread(
@@ -37,11 +38,5 @@ class Thread extends ChangeNotifier {
       createdAt: DateTime.parse(json["createdAt"]),
       modifiedAt: DateTime.parse(json["modifiedAt"])
     );
-  }
-
-  bool hasFullThreadData() => comments != null;
-
-  Future fetchComments(Future comments) async {
-    comments = await comments;
   }
 }

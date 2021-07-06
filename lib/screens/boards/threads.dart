@@ -15,16 +15,7 @@ class Threads extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Future postThread(dynamic body) async {
-      bool res = false;
-
-      await context.read<Boards>().postThread(body).then((value) {
-        print("Value at threads: $value");
-        res = value;
-      });
-
-      return res;
-    }
+    Future postThread(dynamic body) async => await context.read<Boards>().postThread(body);
 
     return Padding(
       padding: EdgeInsets.only(bottom: 12),
@@ -53,9 +44,7 @@ class Threads extends StatelessWidget {
                         physics: ClampingScrollPhysics(),
                       ),
                     ),
-                    CommonTextField(
-                      onTap: postThread
-                    ),
+                    CommonTextField(onTap: postThread),
                   ],
                 ),
               )

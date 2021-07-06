@@ -40,15 +40,13 @@ class _CommonTextFieldState extends State<CommonTextField> {
               IconButton(
                 icon: Icon(Icons.send_outlined),
                 onPressed: () async {
-                  await widget.onTap({
-                    "value": _threadTextFieldController.text
-                  }).then((value) {
-                    print(value);
-                    if (value == true) {
-                      _threadTextFieldController.clear();
-                      FocusScope.of(context).unfocus();
-                    }
-                  });
+                  await widget.onTap({"value": _threadTextFieldController.text})
+                    .then((successful) {
+                      if (successful) {
+                        _threadTextFieldController.clear();
+                        FocusScope.of(context).unfocus();
+                      }
+                    });
                 },
               )
             ],
