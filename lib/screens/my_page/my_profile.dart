@@ -12,27 +12,28 @@ class MyProfile extends StatelessWidget {
     final stacksProvider = context.read<Stacks>();
 
     return Container(
-        child: Center(
-      child: Column(
-        children: [
-          Text(authProvider.me.nickname ?? ""),
-          Text(authProvider.me.githubUrl ?? ""),
-          Text(authProvider.me.blogUrl ?? ""),
-          //Text(authProvider.me.skills ?? ""),
-          Text(authProvider.me.introduction ?? ""),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                child: Text("프로필 수정"),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MakeProfilePage(stacksProvider))),
-              ),
-              SignOut(),
-            ],
-          )
-        ],
-      ),
-    ));
+      child: Center(
+        child: Column(
+          children: [
+            Text(authProvider.me.nickname ?? ""),
+            Text(authProvider.me.githubUrl ?? ""),
+            Text(authProvider.me.blogUrl ?? ""),
+            //Text(authProvider.me.skills ?? ""),
+            Text(authProvider.me.introduction ?? ""),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  child: Text("프로필 수정"),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MakeProfilePage(stacksProvider))),
+                ),
+                SignOut(),
+              ],
+            )
+          ],
+        ),
+      )
+    );
   }
 }
