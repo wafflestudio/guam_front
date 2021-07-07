@@ -3,7 +3,7 @@ import '../../commons/circular_border_container.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
 import '../../commons/profile_thumbnail.dart';
 import 'package:provider/provider.dart';
-import '../../../providers/boards/boards.dart';
+import '../../providers/boards/boards.dart';
 
 class Notice extends StatelessWidget {
   final ThreadModel.Thread notice;
