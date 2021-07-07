@@ -23,7 +23,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
     return DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: Colors.white,
+          color: Color.fromRGBO(151, 151, 151, 0.5),
         ),
         child: Container(
           height: 36,

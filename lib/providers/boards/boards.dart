@@ -15,6 +15,12 @@ class Boards with ChangeNotifier {
   int _renderBoardIdx = 0;
   bool loading = false;
 
+  Map<int, Color> renderBoardColor = {
+    0: Color.fromRGBO(112, 255, 0, 0.6),
+    1: Color.fromRGBO(0, 141, 232, 0.6),
+    2: Color.fromRGBO(255, 179, 116, 1),
+  };
+
   get boards => _boards;
   get renderBoardIdx => _renderBoardIdx;
   get currentBoard => boards[renderBoardIdx];

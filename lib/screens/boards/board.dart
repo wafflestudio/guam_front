@@ -6,6 +6,8 @@ import 'threads.dart';
 import 'package:provider/provider.dart';
 import '../../providers/boards/boards.dart';
 import 'board_title/board_title.dart';
+import '../../models/boards/thread.dart';
+import '../../models/profile.dart';
 
 class Board extends StatelessWidget {
   final Project board;
@@ -20,6 +22,15 @@ class Board extends StatelessWidget {
       boardsProvider.fetchBoard(board.id);
     }
 
+    Thread sampleNotice = Thread(
+      id: 1,
+      creator: Profile(
+        id: 999,
+        nickname: "sample",
+      ),
+      content: "공지 서버 코드 올라오기 전 샘플"
+    );
+
     return !boardsProvider.loading
         ? SingleChildScrollView(
             child: Container(
@@ -30,7 +41,8 @@ class Board extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        //Notice(board.notice),
+                        // Notice(board.notice),
+                        Notice(sampleNotice), // temp code before 지혁님 배포
                         Tasks(board.tasks),
                         Threads(board.threads),
                       ],

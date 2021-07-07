@@ -9,12 +9,6 @@ class BoardTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final boardsProvider = context.read<Boards>();
 
-    Map<int, Color> renderBoardColor = {
-      0: Color.fromRGBO(112, 255, 0, 0.6),
-      1: Color.fromRGBO(0, 141, 232, 0.6),
-      2: Color.fromRGBO(255, 179, 116, 1),
-    };
-
     return Padding(
       padding: EdgeInsets.all(10),
       child: Container(
@@ -24,8 +18,8 @@ class BoardTitle extends StatelessWidget {
           children: [
             ...boardsProvider.boards.asMap().keys.map((idx) {
               return boardsProvider.renderBoardIdx == idx
-                  ? ExpandedTitleContainer(color: renderBoardColor[idx], idx: idx)
-                  : UnexpandedTitleContainer(color: renderBoardColor[idx], idx: idx);
+                  ? ExpandedTitleContainer(color: boardsProvider.renderBoardColor[idx], idx: idx)
+                  : UnexpandedTitleContainer(color: boardsProvider.renderBoardColor[idx], idx: idx);
             })
           ],
         ),

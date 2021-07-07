@@ -28,7 +28,7 @@ class Threads extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Color.fromRGBO(255, 255, 255, 0.5),
+                color: Color.fromRGBO(255, 255, 227, 1),
               ),
               child: Padding(
                 padding: EdgeInsets.all(10),
