@@ -26,7 +26,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
-
+  List<String> selectedReportList = [];
   Map techStacksInfo = {
     '백엔드': [],
     '프론트엔드': [],
@@ -45,6 +45,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     _githubIdController.text = me.githubUrl;
     _blogController.text = me.blogUrl;
     _introductionController.text = me.introduction;
+    selectedReportList = List<String>.from(me.skills);
     super.initState();
   }
 
@@ -113,58 +114,70 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   }
 
   Widget imageProfile(BuildContext context, Size size) {
-    return Center(
-        child: Stack(children: <Widget>[
-      Container(
-        width: 110,
-        height: 110,
-        child: _imageFile == null
-            ? Icon(Icons.person, color: Colors.white, size: 100)
-            : Image(
-                image: FileImage(File(_imageFile.path)),
-                fit: BoxFit.fill,
-              ),
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-              blurRadius: 1,
-              color: Colors.black.withOpacity(0.5),
-              offset: Offset(0, 7))
-        ], shape: BoxShape.circle),
-      ),
-      Positioned(
-          bottom: 0,
-          right: 0,
-          child: InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: ((builder) => bottomSheet(size)));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 1,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+            padding: EdgeInsets.fromLTRB(25, 20, 0, 0),
+            child: Text("프로필 사진 선택",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black))),
+        Center(
+            child: Stack(children: <Widget>[
+          Container(
+            width: 110,
+            height: 110,
+            child: _imageFile == null
+                ? Icon(Icons.person, color: Colors.white, size: 100)
+                : Image(
+                    image: FileImage(File(_imageFile.path)),
+                    fit: BoxFit.fill,
                   ),
-                  gradient: LinearGradient(
-                      colors: [
-                        HexColor("4F34F3"),
-                        HexColor("3EF7FF"),
-                      ],
-                      begin: FractionalOffset(1.0, 0.0),
-                      end: FractionalOffset(0.0, 0.0),
-                      stops: [0, 1],
-                      tileMode: TileMode.clamp),
-                ),
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              )))
-    ]));
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                  blurRadius: 1,
+                  color: Colors.black.withOpacity(0.5),
+                  offset: Offset(0, 7))
+            ], shape: BoxShape.circle),
+          ),
+          Positioned(
+              bottom: 0,
+              right: 0,
+              child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet(size)));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 1,
+                      ),
+                      gradient: LinearGradient(
+                          colors: [
+                            HexColor("4F34F3"),
+                            HexColor("3EF7FF"),
+                          ],
+                          begin: FractionalOffset(1.0, 0.0),
+                          end: FractionalOffset(0.0, 0.0),
+                          stops: [0, 1],
+                          tileMode: TileMode.clamp),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  )))
+        ])),
+      ],
+    );
   }
 
   Widget bottomSheet(Size size) {
@@ -214,12 +227,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
   Widget _profileInfo(Size size, Map<dynamic, List<dynamic>> techStacks) {
     return Container(
-      padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+      padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
       child: Form(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _inputForm(_nicknameController, '닉네임', '닉네임을 입력하세요.', 1),
+            _inputForm(_nicknameController, '별명', '닉네임을 입력하세요.', 1),
             _inputForm(
                 _githubIdController, 'GitHub ID', 'GitHub ID를 입력하세요.', 1),
             _inputForm(_blogController, '웹사이트', 'Website', 1),
@@ -281,7 +294,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   }
 
   Widget _techStacksFilter(Map<dynamic, List<dynamic>> techStacks) {
-    List<String> selectedReportList = [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -333,6 +345,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             "blogUrl": _blogController.text,
             "githubUrl": _githubIdController.text,
             "introduction": _introductionController.text,
+            "skills": selectedReportList
           };
           setProfile(keyMap);
         },
