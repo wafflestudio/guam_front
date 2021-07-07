@@ -30,7 +30,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   List<String> filterValues;
   Map input = {
     'title': '',
-    'period': 1,
+    'period': -1,
     'description': '',
     '백엔드': {'id': 0, 'stack': '', 'headcount': 0},
     '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
@@ -163,6 +163,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   Widget nextPage() {
     return (_currentPage == 1 &&
             input['title'] != '' &&
+            input['period'] != -1 &&
             input['description'] != ''
         ? Container(
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
