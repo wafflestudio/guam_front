@@ -17,8 +17,6 @@ class CreateProjectScreen extends StatefulWidget {
 
   CreateProjectScreen(this.projectProvider, this.stacksProvider);
 
-  final Map _periodOptions = {1: '주', 2: '월'};
-
   @override
   _CreateProjectScreenState createState() => _CreateProjectScreenState();
 }
@@ -40,10 +38,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   };
   final _projectNameController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
-  final isSelected = <bool>[false, false, false, false];
+  final periodSelected = <bool>[false, false, false, false];
+  final positionSelected = <bool>[false, false, false];
   int _currentPage = 1;
-  int _value = 1;
-  double _period = 1;
   PickedFile _imageFile;
   ImagePicker _picker = ImagePicker();
   PhotoSelection _character = PhotoSelection.yes;
@@ -108,7 +105,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           ? Row(
                               children: [
                                 previousPage(),
-                                savePage(widget.projectProvider.createProject)
+                                savePage(widget.projectProvider.createProject, context)
                               ],
                             )
                           : Container())
@@ -266,7 +263,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               )));
   }
 
-  Widget savePage(Function createProject) {
+  Widget savePage(Function createProject, BuildContext context) {
     _setTechStackIdx(String techStack, String position) {
       print(widget.stacksProvider.stacks.map((e) => {
             if (techStack == e.name) {input[position]['id'] = e.id}
@@ -305,6 +302,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   ]
                 };
                 createProject(projectInfo);
+                Navigator.pop(context);
               },
               child: Container(
                 alignment: Alignment.center,
@@ -452,7 +450,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 padding: EdgeInsets.only(left: 10, bottom: 10),
                 child: Text('진행 기간',
                     style: TextStyle(fontSize: 18, color: Colors.white))),
-            myPeriod(),
+            _selectPeriod()
           ],
         ));
   }
@@ -823,7 +821,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 
-  Widget myPeriod() {
+  Widget _selectPeriod() {
     return ToggleButtons(
       fillColor: HexColor("4694F9").withOpacity(0.5),
       borderColor: Colors.white,
@@ -831,11 +829,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       borderRadius: BorderRadius.circular(10),
       borderWidth: 0.3,
       constraints: BoxConstraints(minWidth: 95, minHeight: 40),
-      isSelected: isSelected,
+      isSelected: periodSelected,
       onPressed: (idx) {
         setState(() {
-          for (int i = 0; i < isSelected.length; i++) {
-            isSelected[i] = i == idx;
+          for (int i = 0; i < periodSelected.length; i++) {
+            periodSelected[i] = i == idx;
           }
           savePeriod(idx);
         });
@@ -881,11 +879,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       borderRadius: BorderRadius.circular(10),
       borderWidth: 0.3,
       constraints: BoxConstraints(minWidth: 120, minHeight: 40),
-      isSelected: isSelected,
+      isSelected: positionSelected,
       onPressed: (idx) {
         setState(() {
-          for (int i = 0; i < isSelected.length; i++) {
-            isSelected[i] = i == idx;
+          for (int i = 0; i < positionSelected.length; i++) {
+            positionSelected[i] = i == idx;
           }
           saveMyPosition(idx, filterOptions);
         });
