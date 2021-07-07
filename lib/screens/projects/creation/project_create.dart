@@ -32,9 +32,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'title': '',
     'period': 1,
     'description': '',
-    '백엔드': {'stack': '', 'headcount': 0},
-    '프론트엔드': {'stack': '', 'headcount': 0},
-    '디자이너': {'stack': '', 'headcount': 0},
+    '백엔드': {'id': 0, 'stack': '', 'headcount': 0},
+    '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
+    '디자이너': {'id': 0, 'stack': '', 'headcount': 0},
     'myPosition': '',
     'thumbnail': '',
   };
@@ -52,18 +52,18 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   Widget build(BuildContext context) {
     var _filterOptions = Map.fromIterable(
         List<dynamic>.from(
-            widget.stacksProvider.stacks.map((stack) => stack.position))
+                widget.stacksProvider.stacks.map((stack) => stack.position))
             .toSet()
             .toList(),
         key: (v) => v,
         value: (v) => []);
 
     List<dynamic>.from(widget.stacksProvider.stacks.map((stack) => {
-      {_filterOptions[stack.position].add(stack.name)}
-    }));
+          {_filterOptions[stack.position].add(stack.name)}
+        }));
 
-    _filterOptions.keys.forEach(
-            (key) => {_filterOptions[key] = List<String>.from(_filterOptions[key])});
+    _filterOptions.keys.forEach((key) =>
+        {_filterOptions[key] = List<String>.from(_filterOptions[key])});
 
     _filterOptions['백엔드'] = _filterOptions['BACKEND'];
     _filterOptions['프론트엔드'] = _filterOptions['FRONTEND'];
@@ -84,8 +84,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 content: Container(
               child: Column(children: [
                 (_currentPage == 1 ? createProjectPageOne() : Container()),
-                (_currentPage == 2 ? createProjectPageTwo(_filterOptions) : Container()),
-                (_currentPage == 3 ? createProjectPageThree(_filterOptions) : Container()),
+                (_currentPage == 2
+                    ? createProjectPageTwo(_filterOptions)
+                    : Container()),
+                (_currentPage == 3
+                    ? createProjectPageThree(_filterOptions)
+                    : Container()),
                 Expanded(
                   child: Container(),
                 ),
@@ -262,6 +266,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   Widget savePage(Function createProject) {
+    _setTechStackIdx(String techStack, String position) {
+      print(widget.stacksProvider.stacks.map((e) => {
+            if (techStack == e.name) {input[position]['id'] = e.id}
+          }));
+      return input[position]['id'];
+    }
+
     return (_currentPage == 3 && input['myPosition'] != ''
         ? Container(
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
@@ -269,14 +280,28 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               onTap: () {
                 final projectInfo = {
                   "title": input['title'],
-                  "period": input['period'],
+                  "due": 0,
                   "description": input['description'],
-                  "backLeftCnt": input['back']['headcount'],
-                  "designLeftCnt": input['design']['headcount'],
-                  "frontLeftCnt": input['front']['headcount'],
+                  "backLeftCnt": input['백엔드']['headcount'],
+                  "designLeftCnt": input['디자이너']['headcount'],
+                  "frontLeftCnt": input['프론트엔드']['headcount'],
                   "myPosition": input['myPosition'],
                   "thumbnail": input['thumbnail'],
-                  "techStackIds": [4, 5, 6]
+                  "techStackIds": [
+                    {
+                      "first": _setTechStackIdx(input['백엔드']['stack'], '백엔드'),
+                      "second": "BACKEND"
+                    },
+                    {
+                      "first":
+                          _setTechStackIdx(input['프론트엔드']['stack'], '프론트엔드'),
+                      "second": "FRONTEND"
+                    },
+                    {
+                      "first": _setTechStackIdx(input['디자이너']['stack'], '디자이너'),
+                      "second": "DESIGNER"
+                    }
+                  ]
                 };
                 print(projectInfo);
                 createProject(projectInfo);
@@ -647,7 +672,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ),
         ),
         Container(
-            padding: EdgeInsets.only(top: 10, left: 5, bottom: 15),
+            padding: EdgeInsets.only(top: 10, left: 5, bottom: 5),
             alignment: Alignment.centerLeft,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -742,8 +767,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               (input["디자이너"]["stack"] != ''))
             Wrap(
               children: [
-                ...filterOptions.entries.map((e) => (input[e.key]
-                                ["stack"]
+                ...filterOptions.entries.map((e) => (input[e.key]["stack"]
                             .toString() !=
                         '')
                     ? Container(

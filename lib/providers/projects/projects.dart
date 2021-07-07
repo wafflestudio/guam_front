@@ -100,6 +100,7 @@ class Projects with ChangeNotifier {
         await HttpRequest()
             .post(path: "/project", body: projectInfo, authToken: authToken)
             .then((response) {
+          print(response.statusCode);
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             _projectToBeCreated = json.decode(jsonUtf8)["data"];
