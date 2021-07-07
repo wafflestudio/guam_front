@@ -40,7 +40,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   };
   final _projectNameController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
-  final isSelected = <bool>[false, false, false];
+  final isSelected = <bool>[false, false, false, false];
   int _currentPage = 1;
   int _value = 1;
   double _period = 1;
@@ -280,7 +280,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               onTap: () {
                 final projectInfo = {
                   "title": input['title'],
-                  "due": 0,
+                  "due": input['period'],
                   "description": input['description'],
                   "backLeftCnt": input['백엔드']['headcount'],
                   "designLeftCnt": input['디자이너']['headcount'],
@@ -303,7 +303,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     }
                   ]
                 };
-                print(projectInfo);
                 createProject(projectInfo);
               },
               child: Container(
@@ -449,80 +448,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                padding: EdgeInsets.only(left: 30),
+                padding: EdgeInsets.only(left: 10, bottom: 10),
                 child: Text('진행 기간',
                     style: TextStyle(fontSize: 18, color: Colors.white))),
-            Row(
-              children: [
-                Container(
-                    padding: EdgeInsets.only(left: 7),
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    child: SliderTheme(
-                      data: SliderThemeData(
-                          trackHeight: 1.5,
-                          activeTrackColor: HexColor('7EE7E6'),
-                          thumbColor: Colors.white,
-                          inactiveTrackColor: Colors.white24,
-                          activeTickMarkColor: Colors.white,
-                          valueIndicatorColor: Colors.white,
-                          valueIndicatorTextStyle:
-                              TextStyle(color: Colors.black, fontSize: 14),
-                          thumbShape:
-                              RoundSliderThumbShape(enabledThumbRadius: 12)),
-                      child: Slider(
-                          min: 1,
-                          max: 10,
-                          divisions: 9,
-                          value: _period,
-                          onChanged: (_newPeriod) {
-                            setState(() {
-                              _period = _newPeriod;
-                              savePeriod(_newPeriod);
-                            });
-                          }),
-                    )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.5,
-                          color: Colors.white24,
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        _period.round().toString(),
-                        style: TextStyle(fontSize: 14, color: Colors.white),
-                      ),
-                    ),
-                    Wrap(children: [
-                      ...widget._periodOptions.entries.map((e) => FilterChip(
-                            label: Text(
-                              '${e.value}',
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.white),
-                            ),
-                            showCheckmark: false,
-                            side: BorderSide(color: Colors.white, width: 0.5),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2, vertical: 1),
-                            selected: _value == e.key,
-                            selectedColor: HexColor('4694F9'),
-                            onSelected: (bool selected) {
-                              setState(() => _value = selected ? e.key : null);
-                              input['period'] += e.value;
-                            },
-                          ))
-                    ])
-                  ],
-                )
-              ],
-            )
+            myPeriod(),
           ],
         ));
   }
@@ -893,6 +822,56 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 
+  Widget myPeriod() {
+    return ToggleButtons(
+      fillColor: HexColor("4694F9").withOpacity(0.5),
+      borderColor: Colors.white,
+      selectedBorderColor: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      borderWidth: 0.3,
+      constraints: BoxConstraints(minWidth: 95, minHeight: 40),
+      isSelected: isSelected,
+      onPressed: (idx) {
+        setState(() {
+          for (int i = 0; i < isSelected.length; i++) {
+            isSelected[i] = i == idx;
+          }
+          savePeriod(idx);
+        });
+      },
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            '1개월 미만',
+            style: TextStyle(fontSize: 14, color: Colors.white),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            '3개월 미만',
+            style: TextStyle(fontSize: 14, color: Colors.white),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            '6개월 미만',
+            style: TextStyle(fontSize: 14, color: Colors.white),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Text(
+            '6개월 이상',
+            style: TextStyle(fontSize: 14, color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget myPosition(Map<dynamic, List<dynamic>> filterOptions) {
     return ToggleButtons(
       fillColor: HexColor("4694F9").withOpacity(0.5),
@@ -1017,9 +996,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     });
   }
 
-  void savePeriod(_projectPeriod) {
+  void savePeriod(idx) {
     setState(() {
-      input["period"] = _projectPeriod;
+      input["period"] = idx;
     });
   }
 
