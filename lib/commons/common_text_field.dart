@@ -20,38 +20,51 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Color.fromRGBO(151, 151, 151, 0.5),
-        ),
-        child: Container(
-          height: 36,
-          padding: EdgeInsets.symmetric(horizontal: 6),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _threadTextFieldController,
-                  decoration: null,
-                  style: TextStyle(fontSize: 12),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.send_outlined),
-                onPressed: () async {
-                  await widget.onTap({"content": _threadTextFieldController.text})
-                    .then((successful) {
-                      if (successful) {
-                        _threadTextFieldController.clear();
-                        FocusScope.of(context).unfocus();
-                      }
-                    });
-                },
-              )
-            ],
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+          minHeight: 36
+      ),
+      child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Color.fromRGBO(151, 151, 151, 0.5),
           ),
-        )
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _threadTextFieldController,
+                    decoration: null,
+                    maxLines: null,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+                Container(
+                  constraints: BoxConstraints(
+                    maxHeight: 24,
+                    maxWidth: 24
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.send_outlined),
+                    padding: EdgeInsets.all(0),
+                    onPressed: () async {
+                      await widget.onTap({"content": _threadTextFieldController.text})
+                          .then((successful) {
+                        if (successful) {
+                          _threadTextFieldController.clear();
+                          FocusScope.of(context).unfocus();
+                        }
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+      ),
     );
   }
 }

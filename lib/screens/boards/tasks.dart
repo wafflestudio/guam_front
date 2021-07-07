@@ -48,7 +48,7 @@ class TasksState extends State<Tasks> {
                 Expanded(
                     child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(85, 88, 255, 0.8),
+                          color: Color.fromRGBO(85, 88, 255, 1),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Padding(
@@ -106,7 +106,7 @@ class TasksState extends State<Tasks> {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Color.fromRGBO(123, 116, 232, 0.5),
+                color: Color.fromRGBO(85, 88, 255, 0.5),
               ),
               child: Padding(
                 padding: EdgeInsets.all(10),

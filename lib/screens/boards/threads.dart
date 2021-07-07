@@ -24,7 +24,7 @@ class Threads extends StatelessWidget {
           iconTitle(icon: Icons.comment_outlined, title: "스레드"),
           SizedBox(
             width: double.infinity,
-            height: 520, // temp
+            //height: 520, // temp
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),

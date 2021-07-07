@@ -151,7 +151,6 @@ class Boards with ChangeNotifier {
           authToken: authToken,
           body: body
       ).then((response) {
-        print(response.statusCode);
         if (response.statusCode == 200) {
           print("스레드가 등록되었습니다.");
           res = true;
