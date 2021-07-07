@@ -32,7 +32,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
         actions: trailing == null
             ? []
-            : [Material(color: Colors.transparent, child: leading)],
+            : [Material(color: Colors.transparent, child: trailing)],
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(
           color: iconColor,
