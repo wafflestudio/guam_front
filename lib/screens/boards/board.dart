@@ -5,7 +5,7 @@ import 'tasks.dart';
 import 'threads.dart';
 import 'package:provider/provider.dart';
 import '../../providers/boards/boards.dart';
-import 'board_title.dart';
+import 'board_title/board_title.dart';
 
 class Board extends StatelessWidget {
   final Project board;
@@ -25,7 +25,7 @@ class Board extends StatelessWidget {
             child: Container(
               child: Column(
                 children: [
-                  BoardTitle(board.title),
+                  BoardTitle(),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Column(

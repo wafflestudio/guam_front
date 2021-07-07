@@ -24,6 +24,7 @@ class Boards with ChangeNotifier {
     notifyListeners();
   }
 
+  /* Deprecated code used for boards navigation.
   void prev() {
     renderBoardIdx = (renderBoardIdx - 1) % _boards.length;
   }
@@ -31,6 +32,7 @@ class Boards with ChangeNotifier {
   void next() {
     renderBoardIdx = (renderBoardIdx + 1) % _boards.length;
   }
+   */
 
   Boards(Authenticate authProvider) {
     _authProvider = authProvider;

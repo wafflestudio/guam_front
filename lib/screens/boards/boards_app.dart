@@ -32,15 +32,13 @@ class BoardsAppScaffold extends StatelessWidget {
         child: Scaffold(
           appBar: CustomAppBar(
             title: '작업실',
-            /*
-        leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.black,
+            leading: IconButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                ),
+                onPressed: () {}
             ),
-            onPressed: () {}
-        ),
-         */
             trailing: IconButton(
                 icon: Icon(
                   Icons.notifications_none,
