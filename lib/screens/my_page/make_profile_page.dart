@@ -96,20 +96,26 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
     return Scaffold(
         appBar: CustomAppBar(title: "프로필 수정", leading: Back()),
-        body: SingleChildScrollView(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(height: 20),
-              Container(color: Colors.grey),
-              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                imageProfile(context, size),
-                _profileInfo(size, techStacks),
-                _authButton(size, setProfile)
-              ]),
-            ],
-          ),
-        ));
+        body: DecoratedBox(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage("assets/backgrounds/profile-bg-1.png"),
+              fit: BoxFit.cover,
+            )),
+            child: SingleChildScrollView(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(height: 20),
+                  Container(color: Colors.grey),
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    imageProfile(context, size),
+                    _profileInfo(size, techStacks),
+                    _authButton(size, setProfile)
+                  ]),
+                ],
+              ),
+            )));
   }
 
   Widget imageProfile(BuildContext context, Size size) {
@@ -136,13 +142,14 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                       image: FileImage(File(_imageFile.path)),
                       fit: BoxFit.fill,
                     )),
-            decoration: _imageFile == null ?
-                BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      blurRadius: 1,
-                      color: Colors.black.withOpacity(0.5),
-                      offset: Offset(0, 7))
-                ], shape: BoxShape.circle) : BoxDecoration(),
+            decoration: _imageFile == null
+                ? BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        blurRadius: 1,
+                        color: Colors.black.withOpacity(0.5),
+                        offset: Offset(0, 7))
+                  ], shape: BoxShape.circle)
+                : BoxDecoration(),
           ),
           Positioned(
               bottom: 0,
