@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
-import '../../models/boards/user_progress.dart';
+import '../../models/boards/user_task.dart';
 import 'iconTitle.dart';
+import 'task.dart';
 
-class Progresses extends StatefulWidget {
-  final List<UserProgress> progresses;
+class Tasks extends StatefulWidget {
+  final List<UserTask> tasks;
 
-  Progresses(this.progresses);
+  Tasks(this.tasks);
 
   @override
-  State<StatefulWidget> createState() => ProgressesState();
+  State<StatefulWidget> createState() => TasksState();
 }
 
-class ProgressesState extends State<Progresses> {
+class TasksState extends State<Tasks> {
   int selectedUserId; // 일단 임시로 첫 번째 사람으로 set. 최종으론 내 아이디로 init. 내 작업현황이 가장 먼저 뜨게 할 것임.
-  List<UserProgress> unselectedUsers;
+  UserTask selectedUserTask;
+  List<UserTask> unselectedUsers;
 
   @override
   void initState() {
     super.initState();
-    selectedUserId = widget.progresses.first.user.id;
-    unselectedUsers = widget.progresses.where((e) => e.user.id != selectedUserId).toList();
+    selectedUserId = widget.tasks.first.user.id;
+    selectedUserTask = widget.tasks.firstWhere((e) => e.user.id == selectedUserId);
+    unselectedUsers = widget.tasks.where((e) => e.user.id != selectedUserId).toList();
   }
 
   void selectUser(int userId) {
     setState(() {
       selectedUserId = userId;
-      unselectedUsers = widget.progresses.where((e) => e.user.id != selectedUserId).toList();
+      selectedUserTask = widget.tasks.firstWhere((e) => e.user.id == selectedUserId);
+      unselectedUsers = widget.tasks.where((e) => e.user.id != selectedUserId).toList();
     });
   }
 
@@ -36,7 +40,7 @@ class ProgressesState extends State<Progresses> {
       padding: EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
-          iconTitle(icon: Icons.file_present, title: "작업 현황"),
+          iconTitle(icon: Icons.assignment_outlined, title: "작업 현황"),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -44,7 +48,7 @@ class ProgressesState extends State<Progresses> {
                 Expanded(
                     child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(85, 88, 255, 0.8),
+                          color: Color.fromRGBO(85, 88, 255, 1),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Padding(
@@ -55,12 +59,12 @@ class ProgressesState extends State<Progresses> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ProfileThumbnail(
-                                profile: widget.progresses.firstWhere((e) => e.user.id == selectedUserId).user,
+                                profile: selectedUserTask.user,
                                 radius: 12,
                                 showNickname: true,
                                 textColor: Colors.white,
                               ),
-                              positionChip(),
+                              positionChip(position: selectedUserTask.position),
                             ],
                           ),
                         )
@@ -97,50 +101,41 @@ class ProgressesState extends State<Progresses> {
             ),
           ),
           Padding(padding: EdgeInsets.only(bottom: 10)),
-          SizedBox(
+          Container(
             width: double.infinity,
-            height: 132, // temp,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Color.fromRGBO(123, 116, 232, 0.5),
+                color: Color.fromRGBO(85, 88, 255, 0.5),
               ),
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(bottom: 8),
-                      width: double.infinity,
-                      height: 74,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
-                        ),
+                    Task(task: selectedUserTask),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          progressDropdownButton(),
+                          Padding(padding: EdgeInsets.only(right: 10)),
+                          addProgressButton(),
+                        ],
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        progressDropdownButton(),
-                        Padding(padding: EdgeInsets.only(right: 10)),
-                        addProgressButton(),
-                      ],
                     )
                   ],
                 ),
               )
             )
           )
-
         ],
       ),
     );
   }
 }
 
-Widget positionChip() => DecoratedBox(
+Widget positionChip({@required String position}) => DecoratedBox(
   decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(15),
     color: Colors.white
@@ -148,7 +143,7 @@ Widget positionChip() => DecoratedBox(
   child: Padding(
     padding: EdgeInsets.all(5),
     child: Text(
-      "Backend/Server",
+      position,
       style: TextStyle(fontSize: 10),
     ), // temp
   ),
