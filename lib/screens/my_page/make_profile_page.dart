@@ -46,7 +46,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     _githubIdController.text = me.githubUrl;
     _blogController.text = me.blogUrl;
     _introductionController.text = me.introduction;
-    selectedReportList = List<String>.from(me.skills);
     super.initState();
   }
 
