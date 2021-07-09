@@ -25,6 +25,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
+  final isSelected = <bool>[false, false, false];
   List<String> selectedReportList = [];
   Map techStacksInfo = {
     '백엔드': <String>[],
@@ -58,6 +59,17 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
   void selectValue(String value) {
     setState(() => techStacksInfo[selectedKey].add(value));
+  }
+
+  void selectPosition(idx) {
+    setState(() {
+      selectedKey = techStacksInfo.keys.toList()[idx];
+    });
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(source: source);
+    setState(() => _imageFile = pickedFile);
   }
 
   @override
@@ -118,16 +130,19 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             height: 110,
             child: _imageFile == null
                 ? Icon(Icons.person, color: Colors.white, size: 100)
-                : Image(
-                    image: FileImage(File(_imageFile.path)),
-                    fit: BoxFit.fill,
-                  ),
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  blurRadius: 1,
-                  color: Colors.black.withOpacity(0.5),
-                  offset: Offset(0, 7))
-            ], shape: BoxShape.circle),
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image(
+                      image: FileImage(File(_imageFile.path)),
+                      fit: BoxFit.fill,
+                    )),
+            decoration: _imageFile == null ?
+                BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      blurRadius: 1,
+                      color: Colors.black.withOpacity(0.5),
+                      offset: Offset(0, 7))
+                ], shape: BoxShape.circle) : BoxDecoration(),
           ),
           Positioned(
               bottom: 0,
@@ -207,11 +222,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
-    setState(() => _imageFile = pickedFile);
-  }
-
   Widget _profileInfo(Size size, Map<dynamic, List<dynamic>> techStacks) {
     return Container(
       padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
@@ -222,7 +232,8 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             _inputForm("", _nicknameController, '별명', '닉네임을 입력하세요.', 1),
             _inputForm("assets/images/github-icon.png", _githubIdController,
                 'GitHub ID', 'GitHub ID를 입력하세요.', 1),
-            _inputForm("assets/images/browser-icon.png", _blogController, '웹사이트', 'Website', 1),
+            _inputForm("assets/images/browser-icon.png", _blogController,
+                '웹사이트', 'Website', 1),
             _inputForm(
                 "", _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
             _techStacksFilter(techStacks)
@@ -240,15 +251,15 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           child: Row(
             children: [
               if (image != "")
-                  Row(
-                    children: [
-                      Image(
-                        width: 20,
-                        image: AssetImage(image),
-                      ),
-                      Text(" ")
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Image(
+                      width: 20,
+                      image: AssetImage(image),
+                    ),
+                    Text(" ")
+                  ],
+                ),
               Text(label,
                   style: TextStyle(
                     fontSize: 16,
@@ -329,14 +340,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  void _savePosition(idx) {
-    setState(() {
-      selectedKey = techStacksInfo.keys.toList()[idx];
-    });
-  }
-
-  final isSelected = <bool>[false, false, false];
-
   Widget positionSelection() {
     return Container(
       padding: EdgeInsets.only(left: 10),
@@ -354,7 +357,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             for (int i = 0; i < isSelected.length; i++) {
               isSelected[i] = i == idx;
             }
-            _savePosition(idx);
+            selectPosition(idx);
           });
         },
         children: [
