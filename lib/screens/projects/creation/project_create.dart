@@ -105,7 +105,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           ? Row(
                               children: [
                                 previousPage(),
-                                savePage(widget.projectProvider.createProject, context)
+                                savePage(widget.projectProvider.createProject,
+                                    context)
                               ],
                             )
                           : Container())
@@ -551,52 +552,57 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             border: Border.all(color: HexColor("979797")),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Column(
-            children: [
-              Row(children: [
-                ...filterOptions.entries.map((e) => CreateFilterChip(
-                    content: e.key,
-                    display: e.key,
-                    selected: selectedKey == e.key,
-                    selectKey: selectKey,
-                    filterValues: e.value))
-              ]),
-              if (selectedKey != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      child: Text(
-                        "인원",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.3,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(children: [
+                    ...filterOptions.entries.map((e) => CreateFilterChip(
+                        content: e.key,
+                        display: e.key,
+                        selected: selectedKey == e.key,
+                        selectKey: selectKey,
+                        filterValues: e.value))
+                  ]),
+                  if (selectedKey != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                          child: Text(
+                            "인원",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(left: 20),
+                            child: headCounter()),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                          child: Text(
+                            "기술 스택",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Wrap(
+                            children: [
+                              ...filterValues.map((e) => CreateFilterValueChip(
+                                    content: e,
+                                    selected: input[selectedKey]["stack"] == e,
+                                    selectValue: selectValue,
+                                  ))
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                    Container(
-                        padding: EdgeInsets.only(left: 20),
-                        child: headCounter()),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      child: Text(
-                        "기술 스택",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Wrap(
-                        children: [
-                          ...filterValues.map((e) => CreateFilterValueChip(
-                                content: e,
-                                selected: input[selectedKey]["stack"] == e,
-                                selectValue: selectValue,
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
         Container(
@@ -822,52 +828,57 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   Widget _selectPeriod() {
-    return ToggleButtons(
-      fillColor: HexColor("4694F9").withOpacity(0.5),
-      borderColor: Colors.white,
-      selectedBorderColor: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      borderWidth: 0.3,
-      constraints: BoxConstraints(minWidth: 95, minHeight: 40),
-      isSelected: periodSelected,
-      onPressed: (idx) {
-        setState(() {
-          for (int i = 0; i < periodSelected.length; i++) {
-            periodSelected[i] = i == idx;
-          }
-          savePeriod(idx);
-        });
-      },
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '1개월 미만',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: ToggleButtons(
+        fillColor: HexColor("4694F9").withOpacity(0.5),
+        borderColor: Colors.white,
+        selectedBorderColor: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        borderWidth: 0.3,
+        constraints: BoxConstraints(
+            minWidth: (MediaQuery.of(context).size.width * 0.85) / 4,
+            minHeight: 40),
+        isSelected: periodSelected,
+        onPressed: (idx) {
+          setState(() {
+            for (int i = 0; i < periodSelected.length; i++) {
+              periodSelected[i] = i == idx;
+            }
+            savePeriod(idx);
+          });
+        },
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              '1개월 미만',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '3개월 미만',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              '3개월 미만',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '6개월 미만',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              '6개월 미만',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '6개월 이상',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              '6개월 이상',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
