@@ -883,45 +883,49 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   Widget myPosition(Map<dynamic, List<dynamic>> filterOptions) {
-    return ToggleButtons(
-      fillColor: HexColor("4694F9").withOpacity(0.5),
-      borderColor: Colors.white,
-      selectedBorderColor: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      borderWidth: 0.3,
-      constraints: BoxConstraints(minWidth: 120, minHeight: 40),
-      isSelected: positionSelected,
-      onPressed: (idx) {
-        setState(() {
-          for (int i = 0; i < positionSelected.length; i++) {
-            positionSelected[i] = i == idx;
-          }
-          saveMyPosition(idx, filterOptions);
-        });
-      },
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '백엔드',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+    return Container(
+      child: ToggleButtons(
+        fillColor: HexColor("4694F9").withOpacity(0.5),
+        borderColor: Colors.white,
+        selectedBorderColor: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        borderWidth: 0.3,
+        constraints: BoxConstraints(
+            minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
+            minHeight: 40),
+        isSelected: positionSelected,
+        onPressed: (idx) {
+          setState(() {
+            for (int i = 0; i < positionSelected.length; i++) {
+              positionSelected[i] = i == idx;
+            }
+            saveMyPosition(idx, filterOptions);
+          });
+        },
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              '백엔드',
+              style: TextStyle(fontSize: 14, color: Colors.white),
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '프론트엔드',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              '프론트엔드',
+              style: TextStyle(fontSize: 14, color: Colors.white),
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '디자이너',
-            style: TextStyle(fontSize: 14, color: Colors.white),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text(
+              '디자이너',
+              style: TextStyle(fontSize: 14, color: Colors.white),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
