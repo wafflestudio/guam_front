@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/models/profile.dart';
+import 'package:guam_front/providers/user_auth/authenticate.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 
 class ProfileFilterValueChip extends StatefulWidget {
   final List<String> techStacks;
@@ -13,6 +16,14 @@ class ProfileFilterValueChip extends StatefulWidget {
 
 class _ProfileFilterValueChipState extends State<ProfileFilterValueChip> {
   List<String> selectedChoices = [];
+  Profile me;
+
+  @override
+  void initState() {
+    me = context.read<Authenticate>().me;
+    selectedChoices = List<String>.from(me.skills);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
