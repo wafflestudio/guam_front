@@ -75,47 +75,47 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           title: '프로젝트 만들기',
           leading: Back(),
         ),
-        body: Padding(
-            padding: EdgeInsets.only(top: 5),
-            child: ProjectCreateContainer(
-                content: Container(
-              child: Column(children: [
-                (_currentPage == 1 ? createProjectPageOne() : Container()),
-                (_currentPage == 2
-                    ? createProjectPageTwo(_filterOptions)
-                    : Container()),
-                (_currentPage == 3
-                    ? createProjectPageThree(_filterOptions)
-                    : Container()),
-                Expanded(
-                  child: Container(),
-                ),
-                Container(
-                  color: Colors.transparent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      (_currentPage == 1 ? nextPage() : Container()),
-                      (_currentPage == 2
-                          ? Row(
-                              children: [previousPage(), nextPage()],
-                            )
-                          : Container()),
-                      (_currentPage == 3
-                          ? Row(
-                              children: [
-                                previousPage(),
-                                savePage(widget.projectProvider.createProject,
-                                    context)
-                              ],
-                            )
-                          : Container())
-                    ],
-                  ),
-                ),
-                ProjectStatus(totalPage: 3, currentPage: _currentPage)
-              ]),
-            ))));
+        body: SingleChildScrollView(
+          child: Container(
+              //height: double.infinity,
+              //margin: MediaQuery.of(context).viewInsets,
+              padding: EdgeInsets.only(top: 5),
+              child: ProjectCreateContainer(
+                  content: Column(
+                      children: [
+                        if (_currentPage == 1) createProjectPageOne(),
+                        if (_currentPage == 2) createProjectPageTwo(_filterOptions),
+                        if (_currentPage == 3) createProjectPageThree(_filterOptions),
+                        Column(
+                          children: [
+                            Container(
+                              color: Colors.transparent,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (_currentPage == 1) nextPage(),
+                                  if (_currentPage == 2) Row(
+                                      children: [
+                                        previousPage(),
+                                        nextPage()
+                                      ]
+                                  ),
+                                  if (_currentPage == 3) Row(
+                                    children: [
+                                      previousPage(),
+                                      savePage(widget.projectProvider.createProject, context)
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            ProjectStatus(totalPage: 3, currentPage: _currentPage)
+                          ],
+                        )
+                      ])
+              )),
+        )
+    );
   }
 
   // Page 이동
@@ -124,8 +124,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
         child: InkWell(
           onTap: () {
-            _currentPage -= 1;
-            minusPage(_currentPage);
+            setState(() {
+              _currentPage -= 1;
+            });
           },
           child: Container(
             alignment: Alignment.center,
@@ -167,8 +168,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
             child: InkWell(
                 onTap: () {
-                  _currentPage += 1;
-                  minusPage(_currentPage);
+                  setState(() {
+                    _currentPage += 1;
+                  });
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -208,8 +210,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
                 child: InkWell(
                     onTap: () {
-                      _currentPage += 1;
-                      minusPage(_currentPage);
+                      setState(() {
+                        _currentPage += 1;
+                      });
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -359,41 +362,37 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   // Page 1
   Widget createProjectPageOne() {
-    return SizedBox(
-      height: MediaQuery.of(context).viewInsets.bottom > 0
-          ? MediaQuery.of(context).size.height * 0.3
-          : MediaQuery.of(context).size.height * 0.6,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: Container(
-                width: 100,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+    return Container(
+      //margin: MediaQuery.of(context).viewInsets,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: Container(
+              width: 100,
+              height: 5,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '1. 프로젝트 아웃라인',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '1. 프로젝트 아웃라인',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            projectTitle(_projectNameController),
-            projectPeriod(),
-            projectDescription(_projectDescriptionController),
-          ],
-        ),
+          ),
+          projectTitle(_projectNameController),
+          projectPeriod(),
+          projectDescription(_projectDescriptionController),
+        ],
       ),
     );
   }
@@ -561,58 +560,53 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             border: Border.all(color: HexColor("979797")),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(children: [
-                    ...filterOptions.entries.map((e) => CreateFilterChip(
-                        content: e.key,
-                        display: e.key,
-                        selected: selectedKey == e.key,
-                        selectKey: selectKey,
-                        filterValues: e.value))
-                  ]),
-                  if (selectedKey != null)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                          child: Text(
-                            "인원",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                        Container(
-                            padding: EdgeInsets.only(left: 20),
-                            child: headCounter()),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                          child: Text(
-                            "기술 스택",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Wrap(
-                            children: [
-                              ...filterValues.map((e) => CreateFilterValueChip(
-                                    content: e,
-                                    selected: input[selectedKey]["stack"] == e,
-                                    selectValue: selectValue,
-                                  ))
-                            ],
-                          ),
-                        )
-                      ],
+          child: Column(
+            children: [
+              Row(children: [
+                ...filterOptions.entries.map((e) => CreateFilterChip(
+                    content: e.key,
+                    display: e.key,
+                    selected: selectedKey == e.key,
+                    selectKey: selectKey,
+                    filterValues: e.value))
+              ]),
+              if (selectedKey != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        "인원",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
                     ),
-                ],
-              ),
-            ),
-          ),
+                    Container(
+                        padding: EdgeInsets.only(left: 20),
+                        child: headCounter()),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        "기술 스택",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Wrap(
+                        children: [
+                          ...filterValues.map((e) => CreateFilterValueChip(
+                            content: e,
+                            selected: input[selectedKey]["stack"] == e,
+                            selectValue: selectValue,
+                          ))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+            ],
+          )
         ),
         Container(
             padding: EdgeInsets.only(top: 10, left: 5, bottom: 5),
@@ -1028,20 +1022,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   void saveDescription(_projectDescription) {
     setState(() {
       input["description"] = _projectDescription;
-    });
-  }
-
-  void addPage(currentPage) {
-    setState(() {
-      if (currentPage < 4) {
-        input["currentPage"] = currentPage;
-      }
-    });
-  }
-
-  void minusPage(currentPage) {
-    setState(() {
-      input["currentPage"] = currentPage;
     });
   }
 
