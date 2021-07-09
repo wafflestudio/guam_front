@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class TechStacksMultiSelectChip extends StatefulWidget {
-  final List<String> reportList;
+class ProfileFilterValueChip extends StatefulWidget {
+  final List<String> techStacks;
   final Function(List<String>) onSelectionChanged;
 
-  TechStacksMultiSelectChip(this.reportList, {this.onSelectionChanged});
+  ProfileFilterValueChip(this.techStacks, this.onSelectionChanged);
 
   @override
-  _TechStacksMultiSelectChipState createState() =>
-      _TechStacksMultiSelectChipState();
+  _ProfileFilterValueChipState createState() => _ProfileFilterValueChipState();
 }
 
-class _TechStacksMultiSelectChipState extends State<TechStacksMultiSelectChip> {
+class _ProfileFilterValueChipState extends State<ProfileFilterValueChip> {
   List<String> selectedChoices = [];
 
   @override
@@ -24,7 +23,7 @@ class _TechStacksMultiSelectChipState extends State<TechStacksMultiSelectChip> {
 
   _buildChoiceList() {
     List<Widget> choices = [];
-    widget.reportList.forEach((item) {
+    widget.techStacks.forEach((item) {
       choices.add(Container(
         padding: const EdgeInsets.all(2.0),
         child: ChoiceChip(

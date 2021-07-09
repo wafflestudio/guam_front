@@ -320,9 +320,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               Container(
                   padding: EdgeInsets.only(left: 10),
                   child: Container(
-                    child: TechStacksMultiSelectChip(
+                    child: ProfileFilterValueChip(
                       techStacks[selectedKey],
-                      onSelectionChanged: (selectedList) {
+                      (selectedList) {
                         setState(() {
                           selectedReportList = selectedList;
                         });
