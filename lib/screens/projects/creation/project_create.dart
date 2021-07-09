@@ -457,7 +457,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                padding: EdgeInsets.only(left: 10, bottom: 10),
+                padding: EdgeInsets.only(left: 25, bottom: 10),
                 child: Text('진행 기간',
                     style: TextStyle(fontSize: 18, color: Colors.white))),
             _selectPeriod()
