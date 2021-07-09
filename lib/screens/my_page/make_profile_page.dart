@@ -219,12 +219,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _inputForm(_nicknameController, '별명', '닉네임을 입력하세요.', 1),
+            _inputForm("", _nicknameController, '별명', '닉네임을 입력하세요.', 1),
+            _inputForm("assets/images/github-icon.png", _githubIdController,
+                'GitHub ID', 'GitHub ID를 입력하세요.', 1),
+            _inputForm("assets/images/browser-icon.png", _blogController, '웹사이트', 'Website', 1),
             _inputForm(
-                _githubIdController, 'GitHub ID', 'GitHub ID를 입력하세요.', 1),
-            _inputForm(_blogController, '웹사이트', 'Website', 1),
-            _inputForm(
-                _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
+                "", _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
             _techStacksFilter(techStacks)
           ],
         ),
@@ -232,17 +232,31 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  Widget _inputForm(TextEditingController textController, String label,
-      String hint, int maxLines) {
+  Widget _inputForm(String image, TextEditingController textController,
+      String label, String hint, int maxLines) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
           padding: EdgeInsets.only(left: 10, bottom: 3),
-          child: Text(label,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ))),
+          child: Row(
+            children: [
+              if (image != "")
+                  Row(
+                    children: [
+                      Image(
+                        width: 20,
+                        image: AssetImage(image),
+                      ),
+                      Text(" ")
+                    ],
+                  ),
+              Text(label,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  )),
+            ],
+          )),
       Container(
         padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
         child: TextFormField(
@@ -350,9 +364,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               '백엔드',
               style: (selectedKey == '백엔드')
                   ? TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)
                   : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
@@ -362,9 +376,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               '프론트엔드',
               style: (selectedKey == '프론트엔드')
                   ? TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)
                   : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
@@ -374,9 +388,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               '디자이너',
               style: (selectedKey == '디자이너')
                   ? TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)
                   : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
