@@ -75,18 +75,18 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           title: '프로젝트 만들기',
           leading: Back(),
         ),
-        body: Container(
-            height: double.infinity,
-            padding: EdgeInsets.only(top: 5),
-            child: ProjectCreateContainer(
-                content: Stack(
-                    children: [
-                      if (_currentPage == 1) createProjectPageOne(),
-                      if (_currentPage == 2) createProjectPageTwo(_filterOptions),
-                      if (_currentPage == 3) createProjectPageThree(_filterOptions),
-                      Positioned(
-                        bottom: 0,
-                        child: Column(
+        body: SingleChildScrollView(
+          child: Container(
+              //height: double.infinity,
+              //margin: MediaQuery.of(context).viewInsets,
+              padding: EdgeInsets.only(top: 5),
+              child: ProjectCreateContainer(
+                  content: Column(
+                      children: [
+                        if (_currentPage == 1) createProjectPageOne(),
+                        if (_currentPage == 2) createProjectPageTwo(_filterOptions),
+                        if (_currentPage == 3) createProjectPageThree(_filterOptions),
+                        Column(
                           children: [
                             Container(
                               color: Colors.transparent,
@@ -111,10 +111,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                             ),
                             ProjectStatus(totalPage: 3, currentPage: _currentPage)
                           ],
-                        ),
-                      )
-                    ])
-            )));
+                        )
+                      ])
+              )),
+        )
+    );
   }
 
   // Page 이동
@@ -361,39 +362,37 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   // Page 1
   Widget createProjectPageOne() {
-    return SingleChildScrollView(
-      child: Container(
-        margin: MediaQuery.of(context).viewInsets,
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: Container(
-                width: 100,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+    return Container(
+      //margin: MediaQuery.of(context).viewInsets,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: Container(
+              width: 100,
+              height: 5,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '1. 프로젝트 아웃라인',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '1. 프로젝트 아웃라인',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            projectTitle(_projectNameController),
-            projectPeriod(),
-            projectDescription(_projectDescriptionController),
-          ],
-        ),
+          ),
+          projectTitle(_projectNameController),
+          projectPeriod(),
+          projectDescription(_projectDescriptionController),
+        ],
       ),
     );
   }
