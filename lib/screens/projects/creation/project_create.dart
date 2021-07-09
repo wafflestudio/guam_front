@@ -560,58 +560,53 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             border: Border.all(color: HexColor("979797")),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(children: [
-                    ...filterOptions.entries.map((e) => CreateFilterChip(
-                        content: e.key,
-                        display: e.key,
-                        selected: selectedKey == e.key,
-                        selectKey: selectKey,
-                        filterValues: e.value))
-                  ]),
-                  if (selectedKey != null)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                          child: Text(
-                            "인원",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                        Container(
-                            padding: EdgeInsets.only(left: 20),
-                            child: headCounter()),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                          child: Text(
-                            "기술 스택",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Wrap(
-                            children: [
-                              ...filterValues.map((e) => CreateFilterValueChip(
-                                    content: e,
-                                    selected: input[selectedKey]["stack"] == e,
-                                    selectValue: selectValue,
-                                  ))
-                            ],
-                          ),
-                        )
-                      ],
+          child: Column(
+            children: [
+              Row(children: [
+                ...filterOptions.entries.map((e) => CreateFilterChip(
+                    content: e.key,
+                    display: e.key,
+                    selected: selectedKey == e.key,
+                    selectKey: selectKey,
+                    filterValues: e.value))
+              ]),
+              if (selectedKey != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        "인원",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
                     ),
-                ],
-              ),
-            ),
-          ),
+                    Container(
+                        padding: EdgeInsets.only(left: 20),
+                        child: headCounter()),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        "기술 스택",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Wrap(
+                        children: [
+                          ...filterValues.map((e) => CreateFilterValueChip(
+                            content: e,
+                            selected: input[selectedKey]["stack"] == e,
+                            selectValue: selectValue,
+                          ))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+            ],
+          )
         ),
         Container(
             padding: EdgeInsets.only(top: 10, left: 5, bottom: 5),
