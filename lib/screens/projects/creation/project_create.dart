@@ -47,28 +47,18 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _filterOptions = Map.fromIterable(
-        List<dynamic>.from(
-                widget.stacksProvider.stacks.map((stack) => stack.position))
-            .toSet()
-            .toList(),
-        key: (v) => v,
-        value: (v) => []);
+    var _filterOptions = {
+      'BACKEND': <String>[],
+      'DESIGNER': <String>[],
+      'FRONTEND': <String>[]
+    };
 
-    List<dynamic>.from(widget.stacksProvider.stacks.map((stack) => {
-          {_filterOptions[stack.position].add(stack.name)}
-        }));
+    widget.stacksProvider.stacks
+        .forEach((e) => _filterOptions[e.position].add(e.name));
 
-    _filterOptions.keys.forEach((key) =>
-        {_filterOptions[key] = List<String>.from(_filterOptions[key])});
-
-    _filterOptions['백엔드'] = _filterOptions['BACKEND'];
-    _filterOptions['프론트엔드'] = _filterOptions['FRONTEND'];
-    _filterOptions['디자이너'] = _filterOptions['DESIGNER'];
-    _filterOptions.remove('UNKNOWN');
-    _filterOptions.remove('BACKEND');
-    _filterOptions.remove('FRONTEND');
-    _filterOptions.remove('DESIGNER');
+    _filterOptions['백엔드'] = _filterOptions.remove('BACKEND');
+    _filterOptions['프론트엔드'] = _filterOptions.remove('FRONTEND');
+    _filterOptions['디자이너'] = _filterOptions.remove('DESIGNER');
 
     return Scaffold(
         appBar: CustomAppBar(
