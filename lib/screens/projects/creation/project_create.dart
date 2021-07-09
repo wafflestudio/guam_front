@@ -240,7 +240,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                               fontWeight: FontWeight.bold)),
                     )))
             : Container(
-                padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+                padding: MediaQuery.of(context).viewInsets.bottom > 0
+                    ? EdgeInsets.fromLTRB(5, 10, 5, 10)
+                    : EdgeInsets.fromLTRB(5, 60, 5, 20),
                 child: Container(
                   alignment: Alignment.center,
                   width: (_currentPage != 1
@@ -357,35 +359,42 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   // Page 1
   Widget createProjectPageOne() {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          child: Container(
-            width: 100,
-            height: 5,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+    return SizedBox(
+      height: MediaQuery.of(context).viewInsets.bottom > 0
+          ? MediaQuery.of(context).size.height * 0.3
+          : MediaQuery.of(context).size.height * 0.6,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: Container(
+                width: 100,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            '1. 프로젝트 아웃라인',
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+            Container(
+              padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '1. 프로젝트 아웃라인',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+            projectTitle(_projectNameController),
+            projectPeriod(),
+            projectDescription(_projectDescriptionController),
+          ],
         ),
-        projectTitle(_projectNameController),
-        projectPeriod(),
-        projectDescription(_projectDescriptionController),
-      ],
+      ),
     );
   }
 
