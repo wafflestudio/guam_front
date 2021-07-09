@@ -75,13 +75,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           title: '프로젝트 만들기',
           leading: Back(),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-              //height: double.infinity,
-              //margin: MediaQuery.of(context).viewInsets,
-              padding: EdgeInsets.only(top: 5),
-              child: ProjectCreateContainer(
-                  content: Column(
+        body: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(top: 5),
+            child: ProjectCreateContainer(
+              content: SingleChildScrollView(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (_currentPage == 1) createProjectPageOne(),
                         if (_currentPage == 2) createProjectPageTwo(_filterOptions),
@@ -113,8 +113,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           ],
                         )
                       ])
-              )),
-        )
+              ),
+            ))
     );
   }
 
