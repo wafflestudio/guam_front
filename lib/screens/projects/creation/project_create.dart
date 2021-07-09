@@ -75,47 +75,46 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           title: '프로젝트 만들기',
           leading: Back(),
         ),
-        body: Padding(
+        body: Container(
+            height: double.infinity,
             padding: EdgeInsets.only(top: 5),
             child: ProjectCreateContainer(
-                content: Container(
-              child: Column(children: [
-                (_currentPage == 1 ? createProjectPageOne() : Container()),
-                (_currentPage == 2
-                    ? createProjectPageTwo(_filterOptions)
-                    : Container()),
-                (_currentPage == 3
-                    ? createProjectPageThree(_filterOptions)
-                    : Container()),
-                Expanded(
-                  child: Container(),
-                ),
-                Container(
-                  color: Colors.transparent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                content: Stack(
                     children: [
-                      (_currentPage == 1 ? nextPage() : Container()),
-                      (_currentPage == 2
-                          ? Row(
-                              children: [previousPage(), nextPage()],
-                            )
-                          : Container()),
-                      (_currentPage == 3
-                          ? Row(
-                              children: [
-                                previousPage(),
-                                savePage(widget.projectProvider.createProject,
-                                    context)
-                              ],
-                            )
-                          : Container())
-                    ],
-                  ),
-                ),
-                ProjectStatus(totalPage: 3, currentPage: _currentPage)
-              ]),
-            ))));
+                      if (_currentPage == 1) createProjectPageOne(),
+                      if (_currentPage == 2) createProjectPageTwo(_filterOptions),
+                      if (_currentPage == 3) createProjectPageThree(_filterOptions),
+                      Positioned(
+                        bottom: 0,
+                        child: Column(
+                          children: [
+                            Container(
+                              color: Colors.transparent,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (_currentPage == 1) nextPage(),
+                                  if (_currentPage == 2) Row(
+                                      children: [
+                                        previousPage(),
+                                        nextPage()
+                                      ]
+                                  ),
+                                  if (_currentPage == 3) Row(
+                                    children: [
+                                      previousPage(),
+                                      savePage(widget.projectProvider.createProject, context)
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            ProjectStatus(totalPage: 3, currentPage: _currentPage)
+                          ],
+                        ),
+                      )
+                    ])
+            )));
   }
 
   // Page 이동
@@ -124,8 +123,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
         child: InkWell(
           onTap: () {
-            _currentPage -= 1;
-            minusPage(_currentPage);
+            setState(() {
+              _currentPage -= 1;
+            });
           },
           child: Container(
             alignment: Alignment.center,
@@ -167,8 +167,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
             child: InkWell(
                 onTap: () {
-                  _currentPage += 1;
-                  minusPage(_currentPage);
+                  setState(() {
+                    _currentPage += 1;
+                  });
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -208,8 +209,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
                 child: InkWell(
                     onTap: () {
-                      _currentPage += 1;
-                      minusPage(_currentPage);
+                      setState(() {
+                        _currentPage += 1;
+                      });
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -359,11 +361,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   // Page 1
   Widget createProjectPageOne() {
-    return SizedBox(
-      height: MediaQuery.of(context).viewInsets.bottom > 0
-          ? MediaQuery.of(context).size.height * 0.3
-          : MediaQuery.of(context).size.height * 0.6,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        margin: MediaQuery.of(context).viewInsets,
         child: Column(
           children: [
             Container(
@@ -1028,20 +1028,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   void saveDescription(_projectDescription) {
     setState(() {
       input["description"] = _projectDescription;
-    });
-  }
-
-  void addPage(currentPage) {
-    setState(() {
-      if (currentPage < 4) {
-        input["currentPage"] = currentPage;
-      }
-    });
-  }
-
-  void minusPage(currentPage) {
-    setState(() {
-      input["currentPage"] = currentPage;
     });
   }
 
