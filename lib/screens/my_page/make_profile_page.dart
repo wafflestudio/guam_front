@@ -28,10 +28,11 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   final TextEditingController _introductionController = TextEditingController();
   List<String> selectedReportList = [];
   Map techStacksInfo = {
-    '백엔드': [],
-    '프론트엔드': [],
-    '디자이너': [],
+    '백엔드': <String>[],
+    '프론트엔드': <String>[],
+    '디자이너': <String>[],
   };
+
   String selectedKey;
   List<String> filterValues;
 
@@ -62,31 +63,18 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    var techStacks = Map.fromIterable(
-        List<dynamic>.from(
-                widget.stacksProvider.stacks.map((stack) => stack.position))
-            .toSet()
-            .toList(),
-        key: (v) => v,
-        value: (v) => []);
+    var techStacks = {
+      'BACKEND': <String>[],
+      'DESIGNER': <String>[],
+      'FRONTEND': <String>[]
+    };
 
-    List<dynamic>.from(widget.stacksProvider.stacks.map((stack) => {
-          {techStacks[stack.position].add(stack.name)}
-        }));
+    widget.stacksProvider.stacks
+        .forEach((e) => techStacks[e.position].add(e.name));
 
-    techStacks.keys.forEach(
-        (key) => {techStacks[key] = List<String>.from(techStacks[key])});
-
-    techStacksInfo.keys.forEach((key) =>
-        {techStacksInfo[key] = List<String>.from(techStacksInfo[key])});
-
-    techStacks['백엔드'] = techStacks['BACKEND'];
-    techStacks['프론트엔드'] = techStacks['FRONTEND'];
-    techStacks['디자이너'] = techStacks['DESIGNER'];
-    techStacks.remove('UNKNOWN');
-    techStacks.remove('BACKEND');
-    techStacks.remove('FRONTEND');
-    techStacks.remove('DESIGNER');
+    techStacks['백엔드'] = techStacks.remove('BACKEND');
+    techStacks['프론트엔드'] = techStacks.remove('FRONTEND');
+    techStacks['디자이너'] = techStacks.remove('DESIGNER');
 
     final Size size = MediaQuery.of(context).size;
     final authProvider = context.read<Authenticate>();
