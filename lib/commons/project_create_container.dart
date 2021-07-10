@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ProjectCreateContainer extends StatelessWidget {
-  final double height;
   final Widget content;
 
-  ProjectCreateContainer({this.height, this.content});
+  ProjectCreateContainer({this.content});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: height,
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(

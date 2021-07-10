@@ -13,7 +13,7 @@ class ProjectStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     var pageList = Iterable<int>.generate(totalPage).toList();
     return Container(
-      height: MediaQuery.of(context).size.height * 0.1,
+      height: MediaQuery.of(context).size.height * 0.05,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(pageList.length, (idx) {

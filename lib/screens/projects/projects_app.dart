@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../commons/custom_app_bar.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../../providers/projects/projects.dart';
-import 'creation/project_create.dart';
+import 'creation/project_create_button.dart';
 import 'projects_body.dart';
 
 class ProjectsApp extends StatelessWidget {
@@ -39,15 +39,8 @@ class ProjectsAppScaffold extends StatelessWidget {
       child: Scaffold(
         appBar: CustomAppBar(
             title: '프로젝트',
-            leading: IconButton(
-                icon: Icon(Icons.add),
-                color: Colors.black,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CreateProjectScreen()));
-                }),
+            leading: ProjectCreateButton(
+                context.watch<Projects>(), context.read<Stacks>()),
             trailing: ProjectSearchButton(
                 context.read<Stacks>(), context.watch<Projects>())),
         body: ProjectsBody(),
