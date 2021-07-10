@@ -73,39 +73,32 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if (_currentPage == 1) createProjectPageOne(),
-                        if (_currentPage == 2) createProjectPageTwo(_filterOptions),
-                        if (_currentPage == 3) createProjectPageThree(_filterOptions),
-                        Column(
-                          children: [
-                            Container(
-                              color: Colors.transparent,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (_currentPage == 1) nextPage(),
-                                  if (_currentPage == 2) Row(
-                                      children: [
-                                        previousPage(),
-                                        nextPage()
-                                      ]
-                                  ),
-                                  if (_currentPage == 3) Row(
-                                    children: [
-                                      previousPage(),
-                                      savePage(widget.projectProvider.createProject, context)
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            ProjectStatus(totalPage: 3, currentPage: _currentPage)
-                          ],
-                        )
-                      ])
-              ),
-            ))
-    );
+                    if (_currentPage == 1) createProjectPageOne(),
+                    if (_currentPage == 2) createProjectPageTwo(_filterOptions),
+                    if (_currentPage == 3)
+                      createProjectPageThree(_filterOptions),
+                    Column(
+                      children: [
+                        Container(
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (_currentPage == 1) nextPage(),
+                              if (_currentPage == 2)
+                                Row(children: [previousPage(), nextPage()]),
+                              if (_currentPage == 3)
+                                Row(
+                                  children: [previousPage(), savePage(context)],
+                                )
+                            ],
+                          ),
+                        ),
+                        ProjectStatus(totalPage: 3, currentPage: _currentPage)
+                      ],
+                    )
+                  ])),
+            )));
   }
 
   // Page 이동
@@ -259,12 +252,17 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               )));
   }
 
-  Widget savePage(Function createProject, BuildContext context) {
-    _setTechStackIdx(String techStack, String position) {
-      print(widget.stacksProvider.stacks.map((e) => {
-            if (techStack == e.name) {input[position]['id'] = e.id}
-          }));
-      return input[position]['id'];
+  Widget savePage(BuildContext context) {
+    Future createProject(dynamic body) async {
+      return await widget.projectProvider
+          .createProject(body)
+          .then((successful) {
+        if (successful) {
+          Navigator.pop(context);
+          widget.projectProvider.fetchProjects();
+        }
+        return successful;
+      });
     }
 
     return (_currentPage == 3 && input['myPosition'] != ''
@@ -283,22 +281,21 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   "thumbnail": input['thumbnail'],
                   "techStackIds": [
                     {
-                      "first": _setTechStackIdx(input['백엔드']['stack'], '백엔드'),
+                      "first": setTechStackIdx(input['백엔드']['stack'], '백엔드'),
                       "second": "BACKEND"
                     },
                     {
                       "first":
-                          _setTechStackIdx(input['프론트엔드']['stack'], '프론트엔드'),
+                          setTechStackIdx(input['프론트엔드']['stack'], '프론트엔드'),
                       "second": "FRONTEND"
                     },
                     {
-                      "first": _setTechStackIdx(input['디자이너']['stack'], '디자이너'),
+                      "first": setTechStackIdx(input['디자이너']['stack'], '디자이너'),
                       "second": "DESIGNER"
                     }
                   ]
                 };
                 createProject(projectInfo);
-                Navigator.pop(context);
               },
               child: Container(
                 alignment: Alignment.center,
@@ -545,59 +542,58 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(3, 10, 10, 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: HexColor("979797")),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            children: [
-              Row(children: [
-                ...filterOptions.entries.map((e) => CreateFilterChip(
-                    content: e.key,
-                    display: e.key,
-                    selected: selectedKey == e.key,
-                    selectKey: selectKey,
-                    filterValues: e.value))
-              ]),
-              if (selectedKey != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      child: Text(
-                        "인원",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+            padding: const EdgeInsets.fromLTRB(3, 10, 10, 10),
+            decoration: BoxDecoration(
+              border: Border.all(color: HexColor("979797")),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+                Row(children: [
+                  ...filterOptions.entries.map((e) => CreateFilterChip(
+                      content: e.key,
+                      display: e.key,
+                      selected: selectedKey == e.key,
+                      selectKey: selectKey,
+                      filterValues: e.value))
+                ]),
+                if (selectedKey != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                        child: Text(
+                          "인원",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
-                    ),
-                    Container(
-                        padding: EdgeInsets.only(left: 20),
-                        child: headCounter()),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      child: Text(
-                        "기술 스택",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      Container(
+                          padding: EdgeInsets.only(left: 20),
+                          child: headCounter()),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                        child: Text(
+                          "기술 스택",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Wrap(
-                        children: [
-                          ...filterValues.map((e) => CreateFilterValueChip(
-                            content: e,
-                            selected: input[selectedKey]["stack"] == e,
-                            selectValue: selectValue,
-                          ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-            ],
-          )
-        ),
+                      Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Wrap(
+                          children: [
+                            ...filterValues.map((e) => CreateFilterValueChip(
+                                  content: e,
+                                  selected: input[selectedKey]["stack"] == e,
+                                  selectValue: selectValue,
+                                ))
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+              ],
+            )),
         Container(
             padding: EdgeInsets.only(top: 10, left: 5, bottom: 5),
             alignment: Alignment.centerLeft,
@@ -1056,5 +1052,14 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       _imageFile = pickedFile;
       saveProjectPhoto(_imageFile);
     });
+  }
+
+  setTechStackIdx(String techStack, String position) {
+    setState(() {
+      widget.stacksProvider.stacks.forEach((e) => {
+            if (techStack == e.name) {input[position]['id'] = e.id}
+          });
+    });
+    return input[position]['id'];
   }
 }
