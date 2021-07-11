@@ -14,50 +14,60 @@ class _ProjectApplyState extends State<ProjectApply> {
 
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(
-      fillColor: HexColor("08951C"),
-      borderColor: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      borderWidth: 0.3,
-      constraints: BoxConstraints(minWidth: 125, minHeight: 36),
-      isSelected: isSelected,
-      onPressed: (idx) {
-        setState(() {
-          for (int i = 0; i < isSelected.length; i++) {
-            isSelected[i] = i == idx;
-          }
-        });
-      },
-      children: [
-        // positions.map 으로 Padding Widget을 뿌려보려고 했는데 잘 안되네요..
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '백엔드',
-            style: TextStyle(
-                fontSize: 14,
-                color: isSelected[0] ? Colors.white: HexColor("707070")),
-          ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 15),
+      child: Container(
+        decoration: BoxDecoration(
+            color: HexColor("F3EEE9"),
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: ToggleButtons(
+          fillColor: HexColor("08951C"),
+          borderColor: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          borderWidth: 0.3,
+          constraints: BoxConstraints(
+              minWidth:
+                  MediaQuery.of(context).size.width * 0.9 / positions.length,
+              minHeight: 36),
+          isSelected: isSelected,
+          onPressed: (idx) {
+            setState(() {
+              for (int i = 0; i < isSelected.length; i++) {
+                isSelected[i] = i == idx;
+              }
+            });
+          },
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '백엔드',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: isSelected[0] ? Colors.white : HexColor("707070")),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '프론트엔드',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: isSelected[1] ? Colors.white : HexColor("707070")),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '디자이너',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: isSelected[2] ? Colors.white : HexColor("707070")),
+              ),
+            ),
+          ],
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '프론트엔드',
-            style: TextStyle(
-                fontSize: 14,
-                color: isSelected[1] ? Colors.white: HexColor("707070")),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(
-            '디자이너',
-            style: TextStyle(
-                fontSize: 14,
-                color: isSelected[2] ? Colors.white: HexColor("707070")),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
