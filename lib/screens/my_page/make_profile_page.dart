@@ -8,7 +8,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/user_auth/authenticate.dart';
-import 'my_profile_image.dart';
+import 'my_profile/my_profile_image.dart';
 
 class MakeProfilePage extends StatefulWidget {
   final Stacks stacksProvider;
