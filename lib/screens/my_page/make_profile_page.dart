@@ -8,7 +8,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/user_auth/authenticate.dart';
-import 'my_profile_image.dart';
+import 'my_profile/my_profile_image.dart';
 
 class MakeProfilePage extends StatefulWidget {
   final Stacks stacksProvider;
@@ -133,7 +133,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             _inputForm("assets/images/github-icon.png", _githubIdController,
                 'GitHub ID', 'GitHub ID를 입력하세요.', 1),
             _inputForm("assets/images/browser-icon.png", _blogController,
-                '웹사이트', 'Website', 1),
+                '웹사이트', 'https://wafflestudio.com', 1),
             _inputForm(
                 "", _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
             _techStacksFilter(techStacks)

@@ -34,6 +34,7 @@ dependencies:
   intl: ^0.17.0
   flutter_svg: ^0.21.0+1
   percent_indicator: ^2.1.7+2
+  url_launcher: ^6.0.9
 
   # FlutterFire Plugin
   firebase_core: 1.2.0

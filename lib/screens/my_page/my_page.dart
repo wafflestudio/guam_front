@@ -6,7 +6,7 @@ import '../../commons/custom_app_bar.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../user_auth/kakao_login.dart';
 import 'make_profile_page.dart';
-import 'my_profile.dart';
+import 'my_profile/my_profile.dart';
 
 class MyPage extends StatelessWidget {
   @override
