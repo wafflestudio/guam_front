@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/my_page/my_profile/my_profile_image.dart';
+import 'package:guam_front/screens/my_page/my_profile/my_profile_top.dart';
 import 'package:guam_front/screens/my_page/my_profile/my_profile_link.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';

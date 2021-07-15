@@ -10,6 +10,7 @@ class MyProfileLink extends StatelessWidget {
   _launchURL(String url) async =>
       await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 
+
   @override
   Widget build(BuildContext context) {
     return Padding(
