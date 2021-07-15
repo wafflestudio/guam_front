@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../screens/projects/projects_app.dart';
 import '../../screens/boards/boards_app.dart';
-import '../../screens/my_page/my_page.dart';
+import '../../screens/my_page/my_page_app.dart';
 
 class HomeProvider with ChangeNotifier {
   int _idx = 0;
