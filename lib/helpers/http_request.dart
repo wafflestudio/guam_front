@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io' show HttpHeaders;
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class HttpRequest {
   final String baseAuthority = "15.164.72.46:8080";
@@ -32,6 +33,22 @@ class HttpRequest {
       return response;
     } catch (e) {
       print("Error on POST request: $e");
+    }
+  }
+
+  Future postMultipart({String authority, String path, String authToken, Map<String, dynamic> fields, dynamic files}) async {
+    try {
+      final uri = Uri.http(authority ?? baseAuthority, path);
+
+      MultipartRequest request = MultipartRequest("POST", uri);
+      request.headers['Authorization'] = authToken;
+      fields.entries.forEach((e) => request.fields[e.key] = e.value);
+
+      final response = await request.send();
+
+      return response;
+    } catch (e) {
+      print("Error on POST Multipart request: $e");
     }
   }
 

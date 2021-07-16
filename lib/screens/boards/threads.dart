@@ -15,7 +15,8 @@ class Threads extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Future postThread(dynamic body) async => await context.read<Boards>().postThread(body);
+    Future postThread({Map<String, dynamic> fields, dynamic files}) async =>
+      await context.read<Boards>().postThread(fields: fields, files: files);
 
     return Padding(
       padding: EdgeInsets.only(bottom: 12),

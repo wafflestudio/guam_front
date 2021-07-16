@@ -36,10 +36,13 @@ class _ThreadPageState extends State<ThreadPage> {
   @override
   Widget build(BuildContext context) {
 
-    Future postComment(dynamic body) async {
-      print('??');
-      return await widget.boardsProvider.postComment(widget.thread.id, body)
-        .then((successful) {
+    Future postComment({Map<String, dynamic> fields, dynamic files}) async {
+
+      return await widget.boardsProvider.postComment(
+        threadId: widget.thread.id,
+        fields: fields,
+        files: files,
+      ).then((successful) {
           if (successful) fetchFullThread();
           return successful;
         });

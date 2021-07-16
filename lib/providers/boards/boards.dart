@@ -142,16 +142,17 @@ class Boards with ChangeNotifier {
     return comments;
   }
 
-  Future postThread(dynamic body) async {
+  Future postThread({Map<String, dynamic> fields, dynamic files}) async {
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
 
       await HttpRequest()
-        .post(
+        .postMultipart(
           path: "/thread/create/${currentBoard.id}",
           authToken: authToken,
-          body: body
+          fields: fields,
+          files: files,
       ).then((response) {
         print(response.statusCode);
         if (response.statusCode == 200) {
@@ -192,16 +193,17 @@ class Boards with ChangeNotifier {
     }
   }
 
-  Future postComment(int threadId, dynamic body) async {
+  Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
 
       await HttpRequest()
-        .post(
+        .postMultipart(
           authToken: authToken,
           path: "/comment/create/$threadId",
-          body: body
+          fields: fields,
+          files: files,
       ).then((response) {
         if (response.statusCode == 200) {
           print("커멘트가 등록되었습니다.");

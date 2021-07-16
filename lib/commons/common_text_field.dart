@@ -51,8 +51,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     icon: Icon(Icons.send_outlined),
                     padding: EdgeInsets.all(0),
                     onPressed: () async {
-                      await widget.onTap({"content": _threadTextFieldController.text})
-                          .then((successful) {
+                      await widget.onTap(
+                        fields: {"content": _threadTextFieldController.text},
+                        //files
+                      ).then((successful) {
                         if (successful) {
                           _threadTextFieldController.clear();
                           FocusScope.of(context).unfocus();
