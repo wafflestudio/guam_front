@@ -17,6 +17,8 @@ class Thread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(thread.threadImages);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -69,6 +71,17 @@ class Thread extends StatelessWidget {
                     Text(
                       thread.content,
                       style: TextStyle(fontSize: 12),
+                    ),
+                    // Thread Images Max Grid: 4
+                    if (thread.threadImages.isNotEmpty) GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: thread.threadImages.length < 4 ? thread.threadImages.length : 4,
+                      childAspectRatio: 1,
+                      children: [
+                        Container(
+                          color: Colors.red,
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 6),

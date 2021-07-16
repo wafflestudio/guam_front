@@ -29,12 +29,6 @@ class Thread extends ChangeNotifier {
   });
 
   factory Thread.fromJson(Map<String, dynamic> json) {
-    List<ThreadCommentImage> threadImages;
-
-    if (json["threadImages"] != null) {
-      threadImages = [...json["threadImages"].map((e) => ThreadCommentImage.fromJson(e))];
-    }
-
     return Thread(
       id: json["id"],
       creator: Profile.fromJson({
@@ -43,7 +37,7 @@ class Thread extends ChangeNotifier {
         "imageUrl": json["creatorImageUrl"],
       }),
       content: json["content"],
-      threadImages: threadImages,
+      threadImages: [...json["threadImages"].map((e) => ThreadCommentImage.fromJson(e))],
       commentSize: json["commentSize"],
       createdAt: DateTime.parse(json["createdAt"]),
       modifiedAt: DateTime.parse(json["modifiedAt"])
