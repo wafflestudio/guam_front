@@ -45,7 +45,10 @@ class Comment extends StatelessWidget {
               ],
             ),
           ),
-          Text(comment.content),
+          Padding(
+            padding: EdgeInsets.only(bottom: comment.commentImages.isNotEmpty ? 10 : 0),
+            child: Text(comment.content),
+          ),
           if (comment.commentImages.isNotEmpty) ThreadCommentImages(images: comment.commentImages)
         ],
       )
