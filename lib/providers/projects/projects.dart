@@ -7,11 +7,11 @@ import '../../helpers/http_request.dart';
 import '../../helpers/decode_ko.dart';
 
 class Projects with ChangeNotifier {
-  Authenticate
-      _authProvider; // Post 등은 이 authProvider 에 들어있는 firebaseToken 을 참조하여 날리시면 됩니다.
+  Authenticate _authProvider;
   List<Project> _projects;
   List<Project> _almostFullProjects;
   List<Project> _filteredProjects;
+  Project _projectToBeCreated;
   bool loading = false;
 
   Projects() {
@@ -23,6 +23,8 @@ class Projects with ChangeNotifier {
   List<Project> get almostFullProjects => _almostFullProjects;
 
   List<Project> get filteredProjects => _filteredProjects;
+
+  Project get projectToBeCreated => _projectToBeCreated;
 
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
 
@@ -87,6 +89,47 @@ class Projects with ChangeNotifier {
       print(e);
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future createProject(dynamic projectInfo) async {
+    try {
+      _authProvider.toggleLoading();
+      String authToken = await _authProvider.getFirebaseIdToken();
+      bool res = false;
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+            .post(path: "/project", body: projectInfo, authToken: authToken)
+            .then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            _projectToBeCreated = json.decode(jsonUtf8)["data"];
+            print("프로젝트가 생성되었습니다.");
+            res = true;
+          }
+          if (response.statusCode == 400) {
+            print("불충분한 정보입니다");
+          }
+          if (response.statusCode == 401) {
+            print("프로젝트를 생성하려면 로그인이 필요합니다.");
+            // alert message confirm 후 redirect 시키기
+            // context 사용하지 않고 navigation 구현하는 GetX라는 라이브러리도 있네요.
+            // Get.to(MyPage())
+          }
+          if (response.statusCode == 403) {
+            print("최대 3개의 프로젝트에만 참여할 수 있습니다.");
+          }
+          if (response.statusCode == 404) {
+            print("프로젝트 생성에 필요한 정보를 모두 채워야 합니다.");
+          }
+        });
+      }
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      _authProvider.toggleLoading();
     }
   }
 }
