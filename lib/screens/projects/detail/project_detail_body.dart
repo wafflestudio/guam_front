@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/projects/detail/project_apply.dart';
+import 'package:guam_front/providers/projects/projects.dart';
+import 'package:guam_front/screens/projects/detail/project_detail_apply.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -7,8 +8,9 @@ import '../../../models/project.dart';
 
 class ProjectDetailBody extends StatelessWidget {
   final Project project;
+  final Projects projectsProvider;
 
-  ProjectDetailBody(this.project);
+  ProjectDetailBody(this.project, this.projectsProvider);
 
   @override
   Widget build(BuildContext context) {
@@ -131,36 +133,7 @@ class ProjectDetailBody extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: [
-                  ProjectApply(),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 15),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        minLines: 3,
-                        maxLines: 10,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText:
-                              "간단히 자기소개를 해주세요. 기술 스택, 개발 경험 등 자세하게 적어주시면 팀 구성에 도움이 된답니다.🚀",
-                          hintStyle:
-                              TextStyle(fontSize: 14, color: Colors.black38),
-                        ),
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  _applyButton(size)
-                ],
-              )),
+          ProjectDetailApply(project, projectsProvider),
         ]),
       ),
     ]);
@@ -188,22 +161,6 @@ class ProjectDetailBody extends StatelessWidget {
           '$text',
           style: TextStyle(height: 1, fontSize: 14),
         ));
-  }
-
-  Widget _applyButton(Size size) {
-    return Container(
-      width: size.width,
-      height: size.height * 0.05,
-      child: RaisedButton(
-          child: Text(
-            '참여하기',
-            style: TextStyle(
-                fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          color: HexColor("08951C"),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          onPressed: () {}),
-    );
   }
 
   Widget _columnName(String attribute) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail_body.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -8,8 +9,9 @@ import '../../../models/project.dart';
 
 class DetailProject extends StatelessWidget {
   final Project project;
+  final Projects projectsProvider;
 
-  DetailProject(this.project);
+  DetailProject(this.project, this.projectsProvider);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,8 @@ class DetailProject extends StatelessWidget {
                           style: TextStyle(fontSize: 14)))
                 ]),
                 Container(
-                    width: double.maxFinite, child: ProjectDetailBody(project))
+                    width: double.maxFinite,
+                    child: ProjectDetailBody(project, projectsProvider))
               ]))),
         ]));
   }

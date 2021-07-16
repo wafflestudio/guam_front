@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ProjectApply extends StatefulWidget {
-  const ProjectApply({Key key}) : super(key: key);
+  final Function onSelectionChanged;
+
+  ProjectApply(this.onSelectionChanged);
 
   @override
   _ProjectApplyState createState() => _ProjectApplyState();
@@ -35,6 +37,7 @@ class _ProjectApplyState extends State<ProjectApply> {
               for (int i = 0; i < isSelected.length; i++) {
                 isSelected[i] = i == idx;
               }
+              widget.onSelectionChanged(idx);
             });
           },
           children: [

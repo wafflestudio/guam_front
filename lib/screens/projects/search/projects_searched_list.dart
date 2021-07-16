@@ -22,7 +22,7 @@ class ProjectsSearchedList extends StatelessWidget {
                   ? Column(
                       children: [
                         ...projectsProvider.filteredProjects
-                            .map((e) => ProjectBanner(e))
+                            .map((e) => ProjectBanner(e, projectsProvider))
                       ],
                     )
                   : Text("검색 결과 없음")),
