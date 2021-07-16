@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
@@ -6,8 +7,9 @@ import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../commons/custom_app_bar.dart';
+
 import '../../../commons/back.dart';
+import '../../../commons/custom_app_bar.dart';
 import 'create_filter_chip.dart';
 import 'create_filter_value_chip.dart';
 
@@ -257,10 +259,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       return await widget.projectProvider
           .createProject(body)
           .then((successful) {
-        if (successful) {
-          Navigator.pop(context);
-          widget.projectProvider.fetchProjects();
-        }
+        Navigator.pop(context);
+        widget.projectProvider.fetchProjects();
         return successful;
       });
     }
@@ -1036,7 +1036,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   void saveMyPosition(idx, Map<dynamic, List<dynamic>> filterOptions) {
     setState(() {
-      input["myPosition"] = filterOptions.keys.toList()[idx];
+      input["myPosition"] = ['BACKEND', 'FRONTEND', 'DESIGNER'][idx];
     });
   }
 
