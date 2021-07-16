@@ -36,14 +36,13 @@ class ProjectDetailBody extends StatelessWidget {
     return Column(children: [
       Container(
         decoration: BoxDecoration(
-          color: HexColor("FEF2E4"),
+          color: HexColor("#FFFFFF").withOpacity(0.8),
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(30),
             topLeft: Radius.circular(30),
           ),
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-            Widget>[
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             padding: EdgeInsets.fromLTRB(15, 5, 0, 0),
             child: Column(
@@ -171,10 +170,7 @@ class ProjectDetailBody extends StatelessWidget {
             fontWeight: FontWeight.bold));
   }
 
-  Widget _percentBar(
-    int currentCount,
-    int totalCount,
-  ) {
+  Widget _percentBar(int currentCount, int totalCount) {
     return Padding(
       padding: EdgeInsets.only(top: 5, bottom: 3),
       child: LinearPercentIndicator(

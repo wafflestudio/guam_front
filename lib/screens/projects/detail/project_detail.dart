@@ -25,12 +25,13 @@ class DetailProject extends StatelessWidget {
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [
-                      HexColor("FEF2E4"),
-                      HexColor("D5D7DE"),
+                      HexColor("#FFFFFF").withOpacity(0.8),
+                      HexColor("#FEF2E4"),
+                      HexColor("#D5D7DE"),
                     ],
                     begin: FractionalOffset(0.0, 0.4),
                     end: FractionalOffset(0.0, 0.0),
-                    stops: [0, 1],
+                    stops: [0, 0.5, 1],
                     tileMode: TileMode.clamp)),
           ),
           Container(
