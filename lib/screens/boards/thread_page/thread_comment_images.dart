@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../../models/boards/thread_comment_image.dart';
 import 'thread_comment_image_container.dart';
 
 class ThreadCommentImages extends StatelessWidget {
   final List<ThreadCommentImage> images;
+  final int maxRenderImgCnt = 4;
 
   ThreadCommentImages({@required this.images});
 
@@ -13,13 +16,17 @@ class ThreadCommentImages extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 10),
       child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: images.length < 4 ? images.length : 4,
+            crossAxisCount: min(images.length, maxRenderImgCnt),
             crossAxisSpacing: 10,
             childAspectRatio: 1,
           ),
           shrinkWrap: true,
-          itemCount: images.length < 4 ? images.length : 4,
-          itemBuilder: (_, idx) => ThreadCommentImageContainer(img: images[idx])
+          itemCount: min(images.length, maxRenderImgCnt),
+          itemBuilder: (_, idx) => ThreadCommentImageContainer(
+            img: images[idx],
+            blur: images.length > maxRenderImgCnt && idx == maxRenderImgCnt - 1,
+            hiddenImgCnt: images.length - maxRenderImgCnt
+          )
       ),
     );
   }

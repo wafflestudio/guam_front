@@ -10,7 +10,6 @@ import 'thread_page/thread_page.dart';
 import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
 import 'bottom_modal/bottom_modal_content.dart';
-import 'thread_page/thread_comment_image_container.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
