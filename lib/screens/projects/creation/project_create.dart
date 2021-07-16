@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
@@ -6,8 +7,9 @@ import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../commons/custom_app_bar.dart';
+
 import '../../../commons/back.dart';
+import '../../../commons/custom_app_bar.dart';
 import 'create_filter_chip.dart';
 import 'create_filter_value_chip.dart';
 
@@ -76,7 +78,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     if (_currentPage == 1) createProjectPageOne(),
                     if (_currentPage == 2) createProjectPageTwo(_filterOptions),
                     if (_currentPage == 3)
-                      createProjectPageThree(_filterOptions),
+                      createProjectPageThree(),
                     Column(
                       children: [
                         Container(
@@ -257,10 +259,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       return await widget.projectProvider
           .createProject(body)
           .then((successful) {
-        if (successful) {
-          Navigator.pop(context);
-          widget.projectProvider.fetchProjects();
-        }
+        Navigator.pop(context);
+        widget.projectProvider.fetchProjects();
         return successful;
       });
     }
@@ -722,7 +722,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   }
 
   // Page 3
-  Widget createProjectPageThree(Map<dynamic, List<dynamic>> filterOptions) {
+  Widget createProjectPageThree() {
     final Size size = MediaQuery.of(context).size;
 
     return Column(
@@ -755,7 +755,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             color: HexColor("6B70AA"),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: myPosition(filterOptions),
+          child: myPosition(),
         ),
         Container(
           padding: EdgeInsets.only(top: 40, left: 30, bottom: 10),
@@ -871,7 +871,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 
-  Widget myPosition(Map<dynamic, List<dynamic>> filterOptions) {
+  Widget myPosition() {
     return Container(
       child: ToggleButtons(
         fillColor: HexColor("4694F9").withOpacity(0.5),
@@ -888,7 +888,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             for (int i = 0; i < positionSelected.length; i++) {
               positionSelected[i] = i == idx;
             }
-            saveMyPosition(idx, filterOptions);
+            saveMyPosition(idx);
           });
         },
         children: [
@@ -1034,9 +1034,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     setState(() => input[selectedKey]["stack"] = value);
   }
 
-  void saveMyPosition(idx, Map<dynamic, List<dynamic>> filterOptions) {
+  void saveMyPosition(idx) {
     setState(() {
-      input["myPosition"] = filterOptions.keys.toList()[idx];
+      input["myPosition"] = ['BACKEND', 'FRONTEND', 'DESIGNER'][idx];
     });
   }
 
