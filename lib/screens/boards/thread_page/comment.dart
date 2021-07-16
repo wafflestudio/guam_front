@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../commons/profile_thumbnail.dart';
+import '../../../commons/profile_thumbnail.dart';
 import 'package:intl/intl.dart';
-import '../../models/boards/comment.dart' as CommentModel;
+import '../../../models/boards/comment.dart' as CommentModel;
 
 class Comment extends StatelessWidget {
   final CommentModel.Comment comment;

@@ -116,6 +116,8 @@ class Boards with ChangeNotifier {
     }
   }
 
+  // threads provider 로 분리하는 게 어떨지?
+
   Future<List<Comment>> fetchFullThread(int threadId) async {
     // Should return comments and `Images` also, when server code is done.
     // Temporally, only return comments.
@@ -151,6 +153,7 @@ class Boards with ChangeNotifier {
           authToken: authToken,
           body: body
       ).then((response) {
+        print(response.statusCode);
         if (response.statusCode == 200) {
           print("스레드가 등록되었습니다.");
           res = true;
@@ -162,6 +165,30 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       fetchThreads(currentBoard.id);
+    }
+  }
+
+  Future setNotice(int threadId) async {
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+      bool res = false;
+
+      await HttpRequest()
+          .post(
+          path: "/project/${currentBoard.id}/notice/$threadId",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("공지가 등록되었습니다.");
+          res = true;
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      // reload..
     }
   }
 
