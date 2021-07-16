@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:guam_front/models/profile.dart';
 
 import '../models/boards/thread.dart';
 import '../models/boards/user_task.dart';
@@ -15,8 +16,12 @@ class Project extends ChangeNotifier {
   final String due;
   final String thumbnail;
   final int backHeadCount;
+  final int backLeftCount;
   final int designHeadCount;
+  final int designLeftCount;
   final int frontHeadCount;
+  final int frontLeftCount;
+  final Profile leader;
   final List<StackModel.Stack> techStacks;
 
   /* parameters needed for boards tab */
@@ -32,8 +37,12 @@ class Project extends ChangeNotifier {
     this.due,
     this.thumbnail,
     this.backHeadCount,
+    this.backLeftCount,
     this.designHeadCount,
+    this.designLeftCount,
     this.frontHeadCount,
+    this.frontLeftCount,
+    this.leader,
     this.techStacks,
     this.notice,
     this.tasks,
@@ -45,6 +54,7 @@ class Project extends ChangeNotifier {
   factory Project.fromJson(Map<String, dynamic> json) {
     List<UserTask> tasks;
     List<StackModel.Stack> techStacks;
+    Profile leader;
 
     if (json['tasks'] != null) {
       tasks = [...json['tasks'].map((e) => UserTask.fromJson(e))];
@@ -54,6 +64,9 @@ class Project extends ChangeNotifier {
       ...json['techStacks'].map((e) => StackModel.Stack.fromJson(e))
     ];
 
+    if (json['leaderProfile'] != null)
+      leader = Profile.fromJson(json['leaderProfile']);
+
     return Project(
         id: json['id'],
         title: json['title'],
@@ -61,11 +74,14 @@ class Project extends ChangeNotifier {
         thumbnail: json['thumbnail'],
         isRecruiting: json['isRecruiting'],
         due: json['due'],
-        backHeadCount: json['backLeftCnt'],
-        designHeadCount: json['designLeftCnt'],
-        frontHeadCount: json['frontLeftCnt'],
+        backHeadCount: json['backHeadCnt'],
+        backLeftCount: json['backLeftCnt'],
+        designHeadCount: json['designHeadCnt'],
+        designLeftCount: json['designLeftCnt'],
+        frontHeadCount: json['frontHeadCnt'],
+        frontLeftCount: json['frontLeftCnt'],
+        leader: leader,
         techStacks: techStacks,
-        // field for boards
         tasks: tasks);
   }
 

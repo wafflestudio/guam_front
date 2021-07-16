@@ -45,7 +45,10 @@ class DetailProject extends StatelessWidget {
                             decoration: BoxDecoration(
                                 boxShadow: [BoxShadow(color: Colors.blue)],
                                 shape: BoxShape.circle)),
-                        Text("  waffle0112",
+                        Text(
+                            project.leader != null
+                                ? project.leader.nickname
+                                : "",
                             style: TextStyle(fontSize: 12, color: Colors.black))
                       ])),
                   Container(
