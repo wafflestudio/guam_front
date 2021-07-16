@@ -15,6 +15,7 @@ class ThreadCommentImages extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: GridView.builder(
+          padding: EdgeInsets.all(0),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: min(images.length, maxRenderImgCnt),
             crossAxisSpacing: 10,

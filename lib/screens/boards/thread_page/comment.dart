@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/boards/thread_page/thread_comment_images.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../commons/profile_thumbnail.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +45,8 @@ class Comment extends StatelessWidget {
               ],
             ),
           ),
-          Text(comment.content)
+          Text(comment.content),
+          if (comment.commentImages.isNotEmpty) ThreadCommentImages(images: comment.commentImages)
         ],
       )
     );

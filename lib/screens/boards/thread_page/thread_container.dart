@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../commons/circular_border_container.dart';
 import '../../../models/boards/thread.dart';
 import '../../../commons/profile_thumbnail.dart';
+import 'thread_comment_images.dart';
 
 class ThreadContainer extends StatelessWidget {
   final Thread thread;
@@ -36,7 +37,11 @@ class ThreadContainer extends StatelessWidget {
               ],
             ),
           ),
-          Text(thread.content)
+          Padding(
+            padding: EdgeInsets.only(bottom: thread.threadImages.isNotEmpty ? 10 : 0),
+            child: Text(thread.content),
+          ),
+          if (thread.threadImages.isNotEmpty) ThreadCommentImages(images: thread.threadImages),
         ],
       ),
       contentColor: Color.fromRGBO(246, 228, 173, 0.6),
