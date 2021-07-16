@@ -15,19 +15,20 @@ class ThreadCommentImages extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: GridView.builder(
-          padding: EdgeInsets.all(0),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: min(images.length, maxRenderImgCnt),
-            crossAxisSpacing: 10,
-            childAspectRatio: 1,
-          ),
-          shrinkWrap: true,
-          itemCount: min(images.length, maxRenderImgCnt),
-          itemBuilder: (_, idx) => ThreadCommentImageContainer(
-            img: images[idx],
-            blur: images.length > maxRenderImgCnt && idx == maxRenderImgCnt - 1,
-            hiddenImgCnt: images.length - maxRenderImgCnt
-          )
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(0),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: min(images.length, maxRenderImgCnt),
+          crossAxisSpacing: 10,
+          childAspectRatio: 1,
+        ),
+        shrinkWrap: true,
+        itemCount: min(images.length, maxRenderImgCnt),
+        itemBuilder: (_, idx) => ThreadCommentImageContainer(
+          img: images[idx],
+          blur: images.length > maxRenderImgCnt && idx == maxRenderImgCnt - 1,
+          hiddenImgCnt: images.length - maxRenderImgCnt
+        )
       ),
     );
   }
