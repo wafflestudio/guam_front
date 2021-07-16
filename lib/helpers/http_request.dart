@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 
 class HttpRequest {
   final String baseAuthority = "15.164.72.46:8080";
+  final String s3BaseAuthority = "https://guam.s3.ap-northeast-2.amazonaws.com/";
 
   Future get({String authority, String path, dynamic queryParams, String authToken}) async {
     try {
