@@ -35,6 +35,7 @@ class _ThreadPageState extends State<ThreadPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.thread.threadImages);
 
     Future postComment({Map<String, dynamic> fields, dynamic files}) async {
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import '../profile.dart';
+import 'thread_comment_image.dart';
 
 class Thread extends ChangeNotifier {
   /*
@@ -12,6 +13,7 @@ class Thread extends ChangeNotifier {
   final int id;
   final Profile creator;
   final String content;
+  final List<ThreadCommentImage> threadImages;
   final int commentSize;
   final DateTime createdAt;
   final DateTime modifiedAt;
@@ -20,12 +22,19 @@ class Thread extends ChangeNotifier {
     this.id,
     this.creator,
     this.content,
+    this.threadImages,
     this.commentSize,
     this.createdAt,
     this.modifiedAt
   });
 
   factory Thread.fromJson(Map<String, dynamic> json) {
+    List<ThreadCommentImage> threadImages;
+
+    if (json["threadImages"] != null) {
+      threadImages = [...json["threadImages"].map((e) => ThreadCommentImage.fromJson(e))];
+    }
+
     return Thread(
       id: json["id"],
       creator: Profile.fromJson({
@@ -34,6 +43,7 @@ class Thread extends ChangeNotifier {
         "imageUrl": json["creatorImageUrl"],
       }),
       content: json["content"],
+      threadImages: threadImages,
       commentSize: json["commentSize"],
       createdAt: DateTime.parse(json["createdAt"]),
       modifiedAt: DateTime.parse(json["modifiedAt"])
