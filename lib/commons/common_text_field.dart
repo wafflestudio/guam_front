@@ -113,7 +113,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                       onPressed: () async {
                         await widget.onTap(
                           fields: {"content": _threadTextFieldController.text},
-                          //files
+                          files: [...imageFileList.map((e) => File(e.path))],
                         ).then((successful) {
                           if (successful) {
                             _threadTextFieldController.clear();

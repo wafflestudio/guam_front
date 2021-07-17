@@ -147,6 +147,8 @@ class Boards with ChangeNotifier {
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
 
+      print("Files: $files");
+
       await HttpRequest()
         .postMultipart(
           path: "/thread/create/${currentBoard.id}",
@@ -154,7 +156,6 @@ class Boards with ChangeNotifier {
           fields: fields,
           files: files,
       ).then((response) {
-        print(response.statusCode);
         if (response.statusCode == 200) {
           print("스레드가 등록되었습니다.");
           res = true;

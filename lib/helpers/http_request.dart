@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:io' show HttpHeaders;
+import 'dart:io' show File, HttpHeaders;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:async/async.dart';
 
 class HttpRequest {
   final String baseAuthority = "15.164.72.46:8080";
@@ -37,15 +38,26 @@ class HttpRequest {
     }
   }
 
-  Future postMultipart({String authority, String path, String authToken, Map<String, dynamic> fields, dynamic files}) async {
+  Future postMultipart({String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files}) async {
     try {
       final uri = Uri.http(authority ?? baseAuthority, path);
 
       MultipartRequest request = MultipartRequest("POST", uri);
       request.headers['Authorization'] = authToken;
       fields.entries.forEach((e) => request.fields[e.key] = e.value);
+      files.forEach((e) async {
+        final multipartFile = http.MultipartFile(
+          "img",
+          e.readAsBytes().asStream(),
+          e.lengthSync(),
+          filename: e.path.split("/").last,
+        );
+
+        request.files.add(multipartFile);
+      });
 
       final response = await request.send();
+      print(response.statusCode);
 
       return response;
     } catch (e) {
