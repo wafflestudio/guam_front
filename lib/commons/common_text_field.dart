@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'common_icon_button.dart';
 
 class CommonTextField extends StatefulWidget {
   final Function onTap;
@@ -27,7 +28,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
       child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Color.fromRGBO(151, 151, 151, 0.5),
+            color: Colors.white,
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
@@ -42,26 +43,28 @@ class _CommonTextFieldState extends State<CommonTextField> {
                     style: TextStyle(fontSize: 14),
                   ),
                 ),
-                Container(
-                  constraints: BoxConstraints(
-                    maxHeight: 24,
-                    maxWidth: 24
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.send_outlined),
-                    padding: EdgeInsets.all(0),
-                    onPressed: () async {
-                      await widget.onTap(
-                        fields: {"content": _threadTextFieldController.text},
-                        //files
-                      ).then((successful) {
-                        if (successful) {
-                          _threadTextFieldController.clear();
-                          FocusScope.of(context).unfocus();
-                        }
-                      });
-                    },
-                  ),
+                Row(
+                  children: [
+                    CommonIconButton(
+                      icon: Icons.add_a_photo,
+                      onPressed: null,
+                    ),
+                    Padding(padding: EdgeInsets.only(right: 10)),
+                    CommonIconButton(
+                      icon: Icons.send_outlined,
+                      onPressed: () async {
+                        await widget.onTap(
+                          fields: {"content": _threadTextFieldController.text},
+                          //files
+                        ).then((successful) {
+                          if (successful) {
+                            _threadTextFieldController.clear();
+                            FocusScope.of(context).unfocus();
+                          }
+                        });
+                      },
+                    ),
+                  ],
                 )
               ],
             ),
