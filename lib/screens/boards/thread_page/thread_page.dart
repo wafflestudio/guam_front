@@ -36,7 +36,6 @@ class _ThreadPageState extends State<ThreadPage> {
   @override
   Widget build(BuildContext context) {
     Future postComment({Map<String, dynamic> fields, dynamic files}) async {
-
       return await widget.boardsProvider.postComment(
         threadId: widget.thread.id,
         fields: fields,
@@ -62,42 +61,39 @@ class _ThreadPageState extends State<ThreadPage> {
             leading: Back(),
           ),
           body: Container(
-              height: double.infinity,
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                      child: Padding(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                      child: Container(
                         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                         child: Column(
-                            children: [
-                              ThreadContainer(thread: widget.thread),
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 36),
-                                child: FutureBuilder<List<CommentModel.Comment>>(
-                                  future: comments,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return CommentsContainer(comments: snapshot.data);
-                                    } else {
-                                      return CircularProgressIndicator();
-                                    }
-                                  },
-                                ),
+                          children: [
+                            ThreadContainer(thread: widget.thread),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 36),
+                              child: FutureBuilder<List<CommentModel.Comment>>(
+                                future: comments,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return CommentsContainer(comments: snapshot.data);
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
                               ),
-                            ]
+                            ),
+                          ]
                         ),
                       )
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 20
-                    ),
-                    alignment: Alignment.bottomCenter,
-                    child: CommonTextField(onTap: postComment),
-                  )
-                ],
-              )
+                ),
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: CommonTextField(onTap: postComment),
+                )
+              ]
+            ),
           ),
         )
     );

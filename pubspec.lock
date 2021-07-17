@@ -551,13 +551,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  xfile:
-    dependency: "direct main"
-    description:
-      name: xfile
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   xml:
     dependency: transitive
     description:

@@ -18,7 +18,13 @@ class CommentsContainer extends StatelessWidget {
               icon: Icons.message_outlined,
               title: "${comments.length}개의 답글"
           ),
-          Column(children: comments.map((e) => Comment(e)).toList())
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: comments.length,
+            itemBuilder: (_, idx) => Comment(comments[idx]),
+          )
+          //Column(children: comments.map((e) => Comment(e)).toList())
         ],
       ),
     );
