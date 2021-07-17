@@ -15,6 +15,15 @@ class DetailProject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(project.id);
+    // print(project.thumbnail);
+    // print(project.techStacks[1]);
+    // print(project.leader);
+    // print(project.due);
+    // print(project.description);
+
+    print(projectsProvider.projectToBeApplied);
+
     return Scaffold(
         appBar: CustomAppBar(
           title: "프로젝트",

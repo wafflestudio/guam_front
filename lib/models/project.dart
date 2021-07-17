@@ -81,7 +81,7 @@ class Project extends ChangeNotifier {
         designLeftCount: json['designLeftCnt'],
         frontHeadCount: json['frontHeadCnt'],
         frontLeftCount: json['frontLeftCnt'],
-        leader: json['leaderProfile'],
+        leader: leader,
         techStacks: techStacks,
         tasks: tasks);
   }

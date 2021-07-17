@@ -12,6 +12,7 @@ class Projects with ChangeNotifier {
   List<Project> _almostFullProjects;
   List<Project> _filteredProjects;
   Project _projectToBeCreated;
+  Project _projectToBeApplied;
   bool loading = false;
 
   Projects() {
@@ -25,6 +26,8 @@ class Projects with ChangeNotifier {
   List<Project> get filteredProjects => _filteredProjects;
 
   Project get projectToBeCreated => _projectToBeCreated;
+
+  Project get projectToBeApplied => _projectToBeApplied;
 
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
 
@@ -53,6 +56,24 @@ class Projects with ChangeNotifier {
         }
       });
 
+      loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future getProject(int projectId) async {
+    try {
+      loading = true;
+
+      await HttpRequest().get(path: "/project/$projectId").then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          _projectToBeApplied = json.decode(jsonUtf8)["data"];
+        }
+      });
       loading = false;
     } catch (e) {
       print(e);
