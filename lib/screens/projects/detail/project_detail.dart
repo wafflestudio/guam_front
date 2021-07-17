@@ -43,13 +43,22 @@ class DetailProject extends StatelessWidget {
                       padding: EdgeInsets.only(left: 10, top: 10),
                       child: Row(children: [
                         Container(
-                            child: Icon(Icons.person,
-                                color: Colors.white, size: 24),
+                            child: project.leader != null &&
+                                    project.leader.imageUrl != null
+                                ? CircleAvatar(
+                                    radius: 12,
+                                    backgroundImage:
+                                        NetworkImage(project.leader.imageUrl),
+                                    backgroundColor: Colors.transparent,
+                                  )
+                                : Icon(Icons.person,
+                                    color: Colors.white, size: 24),
                             decoration: BoxDecoration(
                                 boxShadow: [BoxShadow(color: Colors.blue)],
                                 shape: BoxShape.circle)),
                         Text(
-                            project.leader != null
+                            project.leader != null &&
+                                    project.leader.nickname != null
                                 ? project.leader.nickname
                                 : "",
                             style: TextStyle(fontSize: 12, color: Colors.black))

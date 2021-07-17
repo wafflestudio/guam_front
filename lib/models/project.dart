@@ -64,8 +64,9 @@ class Project extends ChangeNotifier {
       ...json['techStacks'].map((e) => StackModel.Stack.fromJson(e))
     ];
 
-    if (json['leaderProfile'] != null)
-      leader = Profile.fromJson(json['leaderProfile']);
+    json['leaderProfile'] != null
+        ? leader = Profile.fromJson(json['leaderProfile'])
+        : leader = null;
 
     return Project(
         id: json['id'],
@@ -80,7 +81,7 @@ class Project extends ChangeNotifier {
         designLeftCount: json['designLeftCnt'],
         frontHeadCount: json['frontHeadCnt'],
         frontLeftCount: json['frontLeftCnt'],
-        leader: leader,
+        leader: json['leaderProfile'],
         techStacks: techStacks,
         tasks: tasks);
   }
