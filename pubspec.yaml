@@ -41,7 +41,7 @@ dependencies:
   firebase_auth: 1.2.0
   cloud_firestore: 2.2.0
 
-  # Profile Image Picker
+  # Image Picker
   image_picker: ^0.7.4
   flutter_slidable: ^0.6.0
   transparent_image: ^2.0.0
