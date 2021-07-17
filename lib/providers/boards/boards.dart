@@ -119,8 +119,6 @@ class Boards with ChangeNotifier {
   // threads provider 로 분리하는 게 어떨지?
 
   Future<List<Comment>> fetchFullThread(int threadId) async {
-    // Should return comments and `Images` also, when server code is done.
-    // Temporally, only return comments.
     List<Comment> comments;
 
     try {
@@ -171,12 +169,13 @@ class Boards with ChangeNotifier {
   }
 
   Future setNotice(int threadId) async {
+    bool res = false;
+
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       await HttpRequest()
-          .post(
+        .put(
           path: "/project/${currentBoard.id}/notice/$threadId",
           authToken: authToken,
       ).then((response) {
@@ -190,7 +189,32 @@ class Boards with ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      // reload..
+      if (res) fetchBoard(currentBoard.id);
+    }
+  }
+
+  Future deleteThread(int threadId) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "/thread/$threadId",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("스레드가 삭제되었습니다.");
+          res = true;
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
     }
   }
 

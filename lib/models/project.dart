@@ -20,7 +20,7 @@ class Project extends ChangeNotifier {
   final int designHeadCount;
 
   /* parameters needed for boards tab */
-  final Thread notice;
+  Thread notice;
   final List<UserTask> tasks;
   List<Thread> threads;
 
@@ -46,7 +46,12 @@ class Project extends ChangeNotifier {
   set (List<Thread> _threads) => threads = _threads;
 
   factory Project.fromJson(Map<String, dynamic> json) {
+    Thread notice;
     List<UserTask> tasks;
+
+    if (json['noticeThread'] != null) {
+      notice = Thread.fromJson(json['noticeThread']);
+    }
 
     if (json['tasks'] != null) {
       tasks = [...json['tasks'].map((e) => UserTask.fromJson(e))];
@@ -66,8 +71,8 @@ class Project extends ChangeNotifier {
       backFramework: json['backFramework'],
       backHeadCount: json['backLeftCnt'],
       designHeadCount: json['designLeftCnt'],
-      // field for boards
-      tasks: tasks
+      notice: notice,
+      tasks: tasks,
     );
   }
 

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io' show File, HttpHeaders;
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:async/async.dart';
 
 class HttpRequest {
   final String baseAuthority = "15.164.72.46:8080";
@@ -62,6 +61,22 @@ class HttpRequest {
       return response;
     } catch (e) {
       print("Error on POST Multipart request: $e");
+    }
+  }
+
+  Future put({String authority, String path, String authToken, dynamic body}) async {
+    try {
+      final uri = Uri.http(authority ?? baseAuthority, path);
+
+      final response = await http.put(
+        uri,
+        headers: {'Content-Type': "application/json", HttpHeaders.authorizationHeader: authToken},
+        body: jsonEncode(body),
+      );
+
+      return response;
+    } catch (e) {
+      print("Error on PUT request: $e");
     }
   }
 

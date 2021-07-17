@@ -22,15 +22,6 @@ class Board extends StatelessWidget {
       boardsProvider.fetchBoard(board.id);
     }
 
-    Thread sampleNotice = Thread(
-      id: 1,
-      creator: Profile(
-        id: 999,
-        nickname: "sample",
-      ),
-      content: "공지 서버 코드 올라오기 전 샘플"
-    );
-
     return !boardsProvider.loading
         ? SingleChildScrollView(
             child: Container(
@@ -42,7 +33,7 @@ class Board extends StatelessWidget {
                     child: Column(
                       children: [
                         // Notice(board.notice),
-                        Notice(sampleNotice), // temp code before 지혁님 배포
+                        Notice(board.notice), // temp code before 지혁님 배포
                         Tasks(board.tasks),
                         Threads(board.threads),
                       ],

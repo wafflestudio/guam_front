@@ -18,13 +18,15 @@ class Thread extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Boards boardsProvider = context.read<Boards>();
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) {
             return ThreadPage(
-              boardsProvider: context.read<Boards>(),
+              boardsProvider: boardsProvider,
               thread: thread,
             );
           })
@@ -34,12 +36,12 @@ class Thread extends StatelessWidget {
         if (Platform.isAndroid) {
           showMaterialModalBottomSheet(
             context: context,
-            builder: (_) => BottomModalContent()
+            builder: (_) => BottomModalContent(boardsProvider: boardsProvider, threadId: thread.id)
           );
         } else {
           showCupertinoModalBottomSheet(
             context: context,
-            builder: (_) => BottomModalContent()
+            builder: (_) => BottomModalContent(boardsProvider: boardsProvider, threadId: thread.id)
           );
         }
       },
