@@ -37,7 +37,7 @@ class ThreadContainer extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
+          if (thread.content != null && thread.content != "") Padding(
             padding: EdgeInsets.only(bottom: thread.threadImages.isNotEmpty ? 10 : 0),
             child: Text(thread.content),
           ),

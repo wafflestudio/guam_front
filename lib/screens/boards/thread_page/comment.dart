@@ -73,7 +73,7 @@ class Comment extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
+              if (comment.content != null && comment.content != "") Padding(
                 padding: EdgeInsets.only(bottom: comment.commentImages.isNotEmpty ? 10 : 0),
                 child: Text(comment.content),
               ),
