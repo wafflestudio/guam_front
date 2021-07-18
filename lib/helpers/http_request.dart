@@ -56,7 +56,6 @@ class HttpRequest {
       });
 
       final response = await request.send();
-      print(response.statusCode);
 
       return response;
     } catch (e) {
@@ -83,7 +82,7 @@ class HttpRequest {
   Future delete({String authority, String path, String authToken}) async {
     try {
       final uri = Uri.http(authority ?? baseAuthority, path);
-      final response = await http.post(
+      final response = await http.delete(
           uri,
           headers: {'Content-Type': "application/json", HttpHeaders.authorizationHeader: authToken},
       );

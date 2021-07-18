@@ -20,6 +20,18 @@ class Thread extends StatelessWidget {
   Widget build(BuildContext context) {
     Boards boardsProvider = context.read<Boards>();
 
+    Future setNotice() async {
+      await boardsProvider.setNotice(thread.id).then((res) {
+        if (res) Navigator.of(context).pop();
+      });
+    }
+
+    Future deleteThread() async {
+      await boardsProvider.deleteThread(thread.id).then((res) {
+        if (res) Navigator.of(context).pop();
+      });
+    }
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -36,12 +48,12 @@ class Thread extends StatelessWidget {
         if (Platform.isAndroid) {
           showMaterialModalBottomSheet(
             context: context,
-            builder: (_) => BottomModalContent(boardsProvider: boardsProvider, threadId: thread.id)
+            builder: (_) => BottomModalContent(setFunc: setNotice, deleteFunc: deleteThread)
           );
         } else {
           showCupertinoModalBottomSheet(
             context: context,
-            builder: (_) => BottomModalContent(boardsProvider: boardsProvider, threadId: thread.id)
+              builder: (_) => BottomModalContent(setFunc: setNotice, deleteFunc: deleteThread)
           );
         }
       },

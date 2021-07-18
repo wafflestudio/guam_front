@@ -241,4 +241,27 @@ class Boards with ChangeNotifier {
       print(e);
     }
   }
+
+  Future deleteComment(int commentId) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "/comment/$commentId",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("답글이 삭제되었습니다.");
+          res = true;
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    }
+  }
 }

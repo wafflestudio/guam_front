@@ -46,6 +46,13 @@ class _ThreadPageState extends State<ThreadPage> {
         });
     }
 
+    Future deleteComment(int commentId) async {
+      return await widget.boardsProvider.deleteComment(commentId).then((successful) {
+        if (successful) fetchFullThread();
+        return successful;
+      });
+    }
+
     return DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -76,7 +83,10 @@ class _ThreadPageState extends State<ThreadPage> {
                                 future: comments,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    return CommentsContainer(comments: snapshot.data);
+                                    return CommentsContainer(
+                                      comments: snapshot.data,
+                                      deleteComment: deleteComment,
+                                    );
                                   } else {
                                     return CircularProgressIndicator();
                                   }
