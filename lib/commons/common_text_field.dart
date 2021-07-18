@@ -116,6 +116,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                           files: [...imageFileList.map((e) => File(e.path))],
                         ).then((successful) {
                           if (successful) {
+                            imageFileList.clear();
                             _threadTextFieldController.clear();
                             FocusScope.of(context).unfocus();
                           }
