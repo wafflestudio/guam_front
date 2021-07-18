@@ -5,6 +5,10 @@ import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
+import 'package:guam_front/screens/projects/creation/page_one/project_create_page_one.dart';
+import 'package:guam_front/screens/projects/creation/page_one/project_create_description.dart';
+import 'package:guam_front/screens/projects/creation/page_one/project_create_period.dart';
+import 'package:guam_front/screens/projects/creation/page_one/project_create_title.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -62,44 +66,56 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     _filterOptions['프론트엔드'] = _filterOptions.remove('FRONTEND');
     _filterOptions['디자이너'] = _filterOptions.remove('DESIGNER');
 
+    print(input);
+
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 만들기',
           leading: Back(),
         ),
         body: Container(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
             padding: EdgeInsets.only(top: 5),
             child: ProjectCreateContainer(
               content: SingleChildScrollView(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                    if (_currentPage == 1) createProjectPageOne(),
-                    if (_currentPage == 2) createProjectPageTwo(_filterOptions),
-                    if (_currentPage == 3)
-                      createProjectPageThree(),
-                    Column(
-                      children: [
-                        Container(
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (_currentPage == 1) nextPage(),
-                              if (_currentPage == 2)
-                                Row(children: [previousPage(), nextPage()]),
-                              if (_currentPage == 3)
-                                Row(
-                                  children: [previousPage(), savePage(context)],
-                                )
-                            ],
-                          ),
-                        ),
-                        ProjectStatus(totalPage: 3, currentPage: _currentPage)
-                      ],
-                    )
-                  ])),
+                        if (_currentPage == 1) ProjectCreatePageOne(
+                          input, periodSelected, _projectNameController,
+                          _projectDescriptionController,),
+                        if (_currentPage == 2) createProjectPageTwo(
+                            _filterOptions),
+                        if (_currentPage == 3)
+                          createProjectPageThree(),
+                        Column(
+                          children: [
+                            Container(
+                              color: Colors.transparent,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (_currentPage == 1) nextPage(),
+                                  if (_currentPage == 2)
+                                    Row(children: [previousPage(), nextPage()]),
+                                  if (_currentPage == 3)
+                                    Row(
+                                      children: [
+                                        previousPage(),
+                                        savePage(context)
+                                      ],
+                                    )
+                                ],
+                              ),
+                            ),
+                            ProjectStatus(
+                                totalPage: 3, currentPage: _currentPage)
+                          ],
+                        )
+                      ])),
             )));
   }
 
@@ -115,7 +131,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           },
           child: Container(
             alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width * 0.45,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.45,
             height: 60,
             decoration: BoxDecoration(
               border: Border.all(
@@ -146,112 +165,133 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   Widget nextPage() {
     return (_currentPage == 1 &&
-            input['title'] != '' &&
-            input['period'] != -1 &&
-            input['description'] != ''
+        input['title'] != '' &&
+        input['period'] != -1 &&
+        input['description'] != ''
         ? Container(
-            padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-            child: InkWell(
-                onTap: () {
-                  setState(() {
-                    _currentPage += 1;
-                  });
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: (_currentPage != 1
-                      ? MediaQuery.of(context).size.width * 0.45
-                      : MediaQuery.of(context).size.width * 0.9),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1.5,
-                      color: Colors.white24,
-                    ),
-                    gradient: LinearGradient(
-                        colors: [
-                          HexColor("4F34F3"),
-                          HexColor("3EF7FF"),
-                        ],
-                        begin: FractionalOffset(1.0, 0.0),
-                        end: FractionalOffset(0.0, 0.0),
-                        stops: [0, 1],
-                        tileMode: TileMode.clamp),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text(
-                    '다음',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )))
-        : (_currentPage == 2 &&
-                input['백엔드']['stack'] != '' &&
-                input['프론트엔드']['stack'] != '' &&
-                input['디자이너']['stack'] != ''
-            ? Container(
-                padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-                child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        _currentPage += 1;
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: (_currentPage != 1
-                          ? MediaQuery.of(context).size.width * 0.45
-                          : MediaQuery.of(context).size.width * 0.9),
-                      height: 60,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.5,
-                          color: Colors.white24,
-                        ),
-                        gradient: LinearGradient(
-                            colors: [
-                              HexColor("4F34F3"),
-                              HexColor("3EF7FF"),
-                            ],
-                            begin: FractionalOffset(1.0, 0.0),
-                            end: FractionalOffset(0.0, 0.0),
-                            stops: [0, 1],
-                            tileMode: TileMode.clamp),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Text('다음',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
-                    )))
-            : Container(
-                padding: MediaQuery.of(context).viewInsets.bottom > 0
-                    ? EdgeInsets.fromLTRB(5, 10, 5, 10)
-                    : EdgeInsets.fromLTRB(5, 60, 5, 20),
-                child: Container(
-                  alignment: Alignment.center,
-                  width: (_currentPage != 1
-                      ? MediaQuery.of(context).size.width * 0.45
-                      : MediaQuery.of(context).size.width * 0.9),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1.5,
-                      color: Colors.white24,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text('다음',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
-                      )),
+        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+        child: InkWell(
+            onTap: () {
+              setState(() {
+                _currentPage += 1;
+              });
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: (_currentPage != 1
+                  ? MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.45
+                  : MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.9),
+              height: 60,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1.5,
+                  color: Colors.white24,
                 ),
-                // )
-              )));
+                gradient: LinearGradient(
+                    colors: [
+                      HexColor("4F34F3"),
+                      HexColor("3EF7FF"),
+                    ],
+                    begin: FractionalOffset(1.0, 0.0),
+                    end: FractionalOffset(0.0, 0.0),
+                    stops: [0, 1],
+                    tileMode: TileMode.clamp),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Text(
+                '다음',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            )))
+        : (_currentPage == 2 &&
+        input['백엔드']['stack'] != '' &&
+        input['프론트엔드']['stack'] != '' &&
+        input['디자이너']['stack'] != ''
+        ? Container(
+        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+        child: InkWell(
+            onTap: () {
+              setState(() {
+                _currentPage += 1;
+              });
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: (_currentPage != 1
+                  ? MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.45
+                  : MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.9),
+              height: 60,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1.5,
+                  color: Colors.white24,
+                ),
+                gradient: LinearGradient(
+                    colors: [
+                      HexColor("4F34F3"),
+                      HexColor("3EF7FF"),
+                    ],
+                    begin: FractionalOffset(1.0, 0.0),
+                    end: FractionalOffset(0.0, 0.0),
+                    stops: [0, 1],
+                    tileMode: TileMode.clamp),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Text('다음',
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold)),
+            )))
+        : Container(
+      padding: MediaQuery
+          .of(context)
+          .viewInsets
+          .bottom > 0
+          ? EdgeInsets.fromLTRB(5, 10, 5, 10)
+          : EdgeInsets.fromLTRB(5, 60, 5, 20),
+      child: Container(
+        alignment: Alignment.center,
+        width: (_currentPage != 1
+            ? MediaQuery
+            .of(context)
+            .size
+            .width * 0.45
+            : MediaQuery
+            .of(context)
+            .size
+            .width * 0.9),
+        height: 60,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1.5,
+            color: Colors.white24,
+          ),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Text('다음',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey,
+            )),
+      ),
+      // )
+    )));
   }
 
   Widget savePage(BuildContext context) {
@@ -267,244 +307,127 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
     return (_currentPage == 3 && input['myPosition'] != ''
         ? Container(
-            padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-            child: InkWell(
-              onTap: () {
-                final projectInfo = {
-                  "title": input['title'],
-                  "due": input['period'],
-                  "description": input['description'],
-                  "backLeftCnt": input['백엔드']['headcount'],
-                  "designLeftCnt": input['디자이너']['headcount'],
-                  "frontLeftCnt": input['프론트엔드']['headcount'],
-                  "myPosition": input['myPosition'],
-                  "thumbnail": input['thumbnail'],
-                  "techStackIds": [
-                    {
-                      "first": setTechStackIdx(input['백엔드']['stack'], '백엔드'),
-                      "second": "BACKEND"
-                    },
-                    {
-                      "first":
-                          setTechStackIdx(input['프론트엔드']['stack'], '프론트엔드'),
-                      "second": "FRONTEND"
-                    },
-                    {
-                      "first": setTechStackIdx(input['디자이너']['stack'], '디자이너'),
-                      "second": "DESIGNER"
-                    }
-                  ]
-                };
-                createProject(projectInfo);
+      padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+      child: InkWell(
+        onTap: () {
+          final projectInfo = {
+            "title": input['title'],
+            "due": input['period'],
+            "description": input['description'],
+            "backLeftCnt": input['백엔드']['headcount'],
+            "designLeftCnt": input['디자이너']['headcount'],
+            "frontLeftCnt": input['프론트엔드']['headcount'],
+            "myPosition": input['myPosition'],
+            "thumbnail": input['thumbnail'],
+            "techStackIds": [
+              {
+                "first": setTechStackIdx(input['백엔드']['stack'], '백엔드'),
+                "second": "BACKEND"
               },
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.45,
-                height: 60,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1.5,
-                    color: Colors.white24,
-                  ),
-                  gradient: LinearGradient(
-                      colors: [
-                        HexColor("4F34F3"),
-                        HexColor("3EF7FF"),
-                      ],
-                      begin: FractionalOffset(1.0, 0.0),
-                      end: FractionalOffset(0.0, 0.0),
-                      stops: [0, 1],
-                      tileMode: TileMode.clamp),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Text(
-                  '생성',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
+              {
+                "first":
+                setTechStackIdx(input['프론트엔드']['stack'], '프론트엔드'),
+                "second": "FRONTEND"
+              },
+              {
+                "first": setTechStackIdx(input['디자이너']['stack'], '디자이너'),
+                "second": "DESIGNER"
+              }
+            ]
+          };
+          createProject(projectInfo);
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width * 0.45,
+          height: 60,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1.5,
+              color: Colors.white24,
             ),
-          )
+            gradient: LinearGradient(
+                colors: [
+                  HexColor("4F34F3"),
+                  HexColor("3EF7FF"),
+                ],
+                begin: FractionalOffset(1.0, 0.0),
+                end: FractionalOffset(0.0, 0.0),
+                stops: [0, 1],
+                tileMode: TileMode.clamp),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            '생성',
+            style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    )
         : Container(
-            padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-            child: Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.45,
-              height: 60,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1.5,
-                  color: Colors.white24,
-                ),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                '생성',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
-              ),
-            )));
+        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
+        child: Container(
+          alignment: Alignment.center,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width * 0.45,
+          height: 60,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1.5,
+              color: Colors.white24,
+            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            '생성',
+            style: TextStyle(fontSize: 18, color: Colors.grey),
+          ),
+        )));
   }
 
   // Page 1
-  Widget createProjectPageOne() {
-    return Container(
-      //margin: MediaQuery.of(context).viewInsets,
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Container(
-              width: 100,
-              height: 5,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '1. 프로젝트 아웃라인',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          projectTitle(_projectNameController),
-          projectPeriod(),
-          projectDescription(_projectDescriptionController),
-        ],
-      ),
-    );
-  }
-
-  Widget projectTitle(TextEditingController _nameController) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-            padding: EdgeInsets.only(left: 30, bottom: 15),
-            child: Text('제목',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ))),
-        Container(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          height: 50,
-          child: TextFormField(
-            onChanged: (_projectName) {
-              saveTitle(_projectName);
-            },
-            controller: _nameController,
-            style: TextStyle(fontSize: 14, color: Colors.white),
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white24,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                hintText: "프로젝트 이름을 입력하세요.",
-                hintStyle: TextStyle(fontSize: 14, color: Colors.white)),
-            validator: (String value) {
-              if (value.isEmpty) {
-                return "프로젝트 이름을 입력하지 않았습니다.";
-              }
-              if (value.length > 2) {
-                return "프로젝트 이름은 최소한 두 글자 이상이어야 합니다.";
-              }
-              return null;
-            },
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget projectPeriod() {
-    return Container(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                padding: EdgeInsets.only(left: 25, bottom: 10),
-                child: Text('진행 기간',
-                    style: TextStyle(fontSize: 18, color: Colors.white))),
-            _selectPeriod()
-          ],
-        ));
-  }
-
-  Widget projectDescription(TextEditingController _descriptionController) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-            padding: EdgeInsets.only(left: 30, top: 20, bottom: 13),
-            child: Text('설명',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ))),
-        Container(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          height: 100,
-          child: TextFormField(
-            onChanged: (_projectDescription) {
-              setState(() {
-                saveDescription(_projectDescription);
-              });
-            },
-            controller: _descriptionController,
-            style: TextStyle(fontSize: 14, color: Colors.white),
-            maxLines: 6,
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white24,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                hintText: "프로젝트 설명란입니다.",
-                hintStyle: TextStyle(fontSize: 14, color: Colors.white)),
-            validator: (String value) {
-              if (value.isEmpty) {
-                return "프로젝트 설명을 입력하지 않았습니다.";
-              }
-              if (value.length > 10) {
-                return "프로젝트 설명은 최소한 열 글자 이상이어야 합니다.";
-              }
-              return null;
-            },
-          ),
-        )
-      ],
-    );
-  }
+  // Widget createProjectPageOne() {
+  //   return Container(
+  //     child: Column(
+  //       children: [
+  //         Container(
+  //           alignment: Alignment.center,
+  //           child: Container(
+  //             width: 100,
+  //             height: 5,
+  //             decoration: BoxDecoration(
+  //               color: Colors.white,
+  //               borderRadius: BorderRadius.circular(10),
+  //             ),
+  //           ),
+  //         ),
+  //         Container(
+  //           padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
+  //           alignment: Alignment.centerLeft,
+  //           child: Text(
+  //             '1. 프로젝트 아웃라인',
+  //             style: TextStyle(
+  //               fontSize: 24,
+  //               color: Colors.white,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //         ),
+  //         ProjectCreateTitle(input, _projectNameController),
+  //         ProjectCreatePeriod(input, periodSelected),
+  //         ProjectCreateDescription(input, _projectDescriptionController),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   // Page 2
   Widget createProjectPageTwo(Map<dynamic, List<dynamic>> _filterOptions) {
@@ -550,12 +473,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             child: Column(
               children: [
                 Row(children: [
-                  ...filterOptions.entries.map((e) => CreateFilterChip(
-                      content: e.key,
-                      display: e.key,
-                      selected: selectedKey == e.key,
-                      selectKey: selectKey,
-                      filterValues: e.value))
+                  ...filterOptions.entries.map((e) =>
+                      CreateFilterChip(
+                          content: e.key,
+                          display: e.key,
+                          selected: selectedKey == e.key,
+                          selectKey: selectKey,
+                          filterValues: e.value))
                 ]),
                 if (selectedKey != null)
                   Column(
@@ -582,7 +506,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         padding: EdgeInsets.only(left: 10),
                         child: Wrap(
                           children: [
-                            ...filterValues.map((e) => CreateFilterValueChip(
+                            ...filterValues.map((e) =>
+                                CreateFilterValueChip(
                                   content: e,
                                   selected: input[selectedKey]["stack"] == e,
                                   selectValue: selectValue,
@@ -634,7 +559,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               color: Colors.white,
             ),
             onPressed: () =>
-                {if (selectedKey != null) minusHeadcount(selectedKey)},
+            {if (selectedKey != null) minusHeadcount(selectedKey)},
           ),
         ),
         Container(
@@ -657,7 +582,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               Icons.add,
               color: Colors.white,
             ),
-            onPressed: () => {
+            onPressed: () =>
+            {
               if (selectedKey != null) addHeadcount(selectedKey),
             },
           ),
@@ -668,15 +594,18 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   Widget position(Map<dynamic, List<dynamic>> filterOptions) {
     return Container(
-        width: MediaQuery.of(context).size.width * 0.95,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width * 0.95,
         decoration: BoxDecoration(
           border: Border.all(color: HexColor("979797")),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(children: [
           if ((input["백엔드"]["stack"] == '') &
-              (input["프론트엔드"]["stack"] == '') &
-              (input["디자이너"]["stack"] == ''))
+          (input["프론트엔드"]["stack"] == '') &
+          (input["디자이너"]["stack"] == ''))
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(20),
@@ -690,31 +619,32 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               (input["디자이너"]["stack"] != ''))
             Wrap(
               children: [
-                ...filterOptions.entries.map((e) => (input[e.key]["stack"]
-                            .toString() !=
-                        '')
+                ...filterOptions.entries.map((e) =>
+                (input[e.key]["stack"]
+                    .toString() !=
+                    '')
                     ? Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                e.key.toString(),
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                              Text(
-                                input[e.key.toString()]["stack"].toString(),
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                              Text(
-                                input[e.key.toString()]["headcount"].toString(),
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                            ]))
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            e.key.toString(),
+                            style: TextStyle(
+                                fontSize: 14, color: Colors.white),
+                          ),
+                          Text(
+                            input[e.key.toString()]["stack"].toString(),
+                            style: TextStyle(
+                                fontSize: 14, color: Colors.white),
+                          ),
+                          Text(
+                            input[e.key.toString()]["headcount"].toString(),
+                            style: TextStyle(
+                                fontSize: 14, color: Colors.white),
+                          ),
+                        ]))
                     : Container())
               ],
             ),
@@ -723,7 +653,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   // Page 3
   Widget createProjectPageThree() {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery
+        .of(context)
+        .size;
 
     return Column(
       children: [
@@ -816,61 +748,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 
-  Widget _selectPeriod() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: ToggleButtons(
-        fillColor: HexColor("4694F9").withOpacity(0.5),
-        borderColor: Colors.white,
-        selectedBorderColor: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        borderWidth: 0.3,
-        constraints: BoxConstraints(
-            minWidth: (MediaQuery.of(context).size.width * 0.85) / 4,
-            minHeight: 40),
-        isSelected: periodSelected,
-        onPressed: (idx) {
-          setState(() {
-            for (int i = 0; i < periodSelected.length; i++) {
-              periodSelected[i] = i == idx;
-            }
-            savePeriod(idx);
-          });
-        },
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '1개월 미만',
-              style: TextStyle(fontSize: 12, color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '3개월 미만',
-              style: TextStyle(fontSize: 12, color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '6개월 미만',
-              style: TextStyle(fontSize: 12, color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '6개월 이상',
-              style: TextStyle(fontSize: 12, color: Colors.white),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget myPosition() {
     return Container(
       child: ToggleButtons(
@@ -880,7 +757,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         borderRadius: BorderRadius.circular(10),
         borderWidth: 0.3,
         constraints: BoxConstraints(
-            minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
+            minWidth: (MediaQuery
+                .of(context)
+                .size
+                .width * 0.85) / 3,
             minHeight: 40),
         isSelected: positionSelected,
         onPressed: (idx) {
@@ -918,8 +798,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 
-  Widget myProjectPicture(
-      BuildContext context, Size size, PhotoSelection character) {
+  Widget myProjectPicture(BuildContext context, Size size,
+      PhotoSelection character) {
     if (_character.index == 0)
       return Container(
           padding: EdgeInsets.only(left: 70, bottom: 15),
@@ -935,9 +815,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               child: _imageFile == null
                   ? Icon(Icons.photo, color: Colors.white, size: 100)
                   : Image(
-                      image: FileImage(File(_imageFile.path)),
-                      fit: BoxFit.fill,
-                    ),
+                image: FileImage(File(_imageFile.path)),
+                fit: BoxFit.fill,
+              ),
               decoration: BoxDecoration(
                 border: Border.all(width: 1, color: Colors.white),
                 boxShadow: [
@@ -993,24 +873,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 
-  void saveTitle(_projectName) {
-    setState(() {
-      input["title"] = _projectName;
-    });
-  }
-
-  void savePeriod(idx) {
-    setState(() {
-      input["period"] = idx;
-    });
-  }
-
-  void saveDescription(_projectDescription) {
-    setState(() {
-      input["description"] = _projectDescription;
-    });
-  }
-
   void addHeadcount(tech) {
     setState(() {
       input[tech]["headcount"]++;
@@ -1056,9 +918,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   setTechStackIdx(String techStack, String position) {
     setState(() {
-      widget.stacksProvider.stacks.forEach((e) => {
-            if (techStack == e.name) {input[position]['id'] = e.id}
-          });
+      widget.stacksProvider.stacks.forEach((e) =>
+      {
+        if (techStack == e.name) {input[position]['id'] = e.id}
+      });
     });
     return input[position]['id'];
   }
