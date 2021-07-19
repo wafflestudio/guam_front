@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class ProjectCreateTitle extends StatefulWidget {
   final Map input;
-  final TextEditingController _nameController;
+  final TextEditingController _projectNameController;
+  final Function onChanged;
 
-  ProjectCreateTitle(this.input, this._nameController);
+  ProjectCreateTitle(this.input, this._projectNameController, {@required this.onChanged});
 
   @override
   _ProjectCreateTitleState createState() => _ProjectCreateTitleState();
@@ -19,6 +20,7 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.input["title"]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,9 +36,11 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
           height: 50,
           child: TextFormField(
             onChanged: (_projectName) {
+              if(widget.input["title"] != '') widget.onChanged();
+              print(1);
               saveTitle(_projectName);
             },
-            controller: widget._nameController,
+            controller: widget._projectNameController,
             style: TextStyle(fontSize: 14, color: Colors.white),
             decoration: InputDecoration(
                 filled: true,

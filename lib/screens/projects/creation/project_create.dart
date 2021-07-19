@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:guam_front/commons/next_page.dart';
 import 'package:guam_front/commons/page_status.dart';
+import 'package:guam_front/commons/previous_page.dart';
 import 'package:guam_front/commons/project_create_container.dart';
+import 'package:guam_front/commons/save_page.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/creation/page_one/project_create_page_one.dart';
-import 'package:guam_front/screens/projects/creation/page_one/project_create_description.dart';
-import 'package:guam_front/screens/projects/creation/page_one/project_create_period.dart';
-import 'package:guam_front/screens/projects/creation/page_one/project_create_title.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -66,235 +66,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     _filterOptions['프론트엔드'] = _filterOptions.remove('FRONTEND');
     _filterOptions['디자이너'] = _filterOptions.remove('DESIGNER');
 
-    print(input);
-
-    return Scaffold(
-        appBar: CustomAppBar(
-          title: '프로젝트 만들기',
-          leading: Back(),
-        ),
-        body: Container(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
-            padding: EdgeInsets.only(top: 5),
-            child: ProjectCreateContainer(
-              content: SingleChildScrollView(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (_currentPage == 1) ProjectCreatePageOne(
-                          input, periodSelected, _projectNameController,
-                          _projectDescriptionController,),
-                        if (_currentPage == 2) createProjectPageTwo(
-                            _filterOptions),
-                        if (_currentPage == 3)
-                          createProjectPageThree(),
-                        Column(
-                          children: [
-                            Container(
-                              color: Colors.transparent,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (_currentPage == 1) nextPage(),
-                                  if (_currentPage == 2)
-                                    Row(children: [previousPage(), nextPage()]),
-                                  if (_currentPage == 3)
-                                    Row(
-                                      children: [
-                                        previousPage(),
-                                        savePage(context)
-                                      ],
-                                    )
-                                ],
-                              ),
-                            ),
-                            ProjectStatus(
-                                totalPage: 3, currentPage: _currentPage)
-                          ],
-                        )
-                      ])),
-            )));
-  }
-
-  // Page 이동
-  Widget previousPage() {
-    return Container(
-        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _currentPage -= 1;
-            });
-          },
-          child: Container(
-            alignment: Alignment.center,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.45,
-            height: 60,
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1.5,
-                color: Colors.white24,
-              ),
-              gradient: LinearGradient(
-                  colors: [
-                    HexColor("4F34F3"),
-                    HexColor("3EF7FF"),
-                  ],
-                  begin: FractionalOffset(1.0, 0.0),
-                  end: FractionalOffset(0.0, 0.0),
-                  stops: [0, 1],
-                  tileMode: TileMode.clamp),
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Text(
-              '이전',
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ));
-  }
-
-  Widget nextPage() {
-    return (_currentPage == 1 &&
-        input['title'] != '' &&
-        input['period'] != -1 &&
-        input['description'] != ''
-        ? Container(
-        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-        child: InkWell(
-            onTap: () {
-              setState(() {
-                _currentPage += 1;
-              });
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: (_currentPage != 1
-                  ? MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.45
-                  : MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.9),
-              height: 60,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1.5,
-                  color: Colors.white24,
-                ),
-                gradient: LinearGradient(
-                    colors: [
-                      HexColor("4F34F3"),
-                      HexColor("3EF7FF"),
-                    ],
-                    begin: FractionalOffset(1.0, 0.0),
-                    end: FractionalOffset(0.0, 0.0),
-                    stops: [0, 1],
-                    tileMode: TileMode.clamp),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                '다음',
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-            )))
-        : (_currentPage == 2 &&
-        input['백엔드']['stack'] != '' &&
-        input['프론트엔드']['stack'] != '' &&
-        input['디자이너']['stack'] != ''
-        ? Container(
-        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-        child: InkWell(
-            onTap: () {
-              setState(() {
-                _currentPage += 1;
-              });
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: (_currentPage != 1
-                  ? MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.45
-                  : MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.9),
-              height: 60,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1.5,
-                  color: Colors.white24,
-                ),
-                gradient: LinearGradient(
-                    colors: [
-                      HexColor("4F34F3"),
-                      HexColor("3EF7FF"),
-                    ],
-                    begin: FractionalOffset(1.0, 0.0),
-                    end: FractionalOffset(0.0, 0.0),
-                    stops: [0, 1],
-                    tileMode: TileMode.clamp),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text('다음',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold)),
-            )))
-        : Container(
-      padding: MediaQuery
-          .of(context)
-          .viewInsets
-          .bottom > 0
-          ? EdgeInsets.fromLTRB(5, 10, 5, 10)
-          : EdgeInsets.fromLTRB(5, 60, 5, 20),
-      child: Container(
-        alignment: Alignment.center,
-        width: (_currentPage != 1
-            ? MediaQuery
-            .of(context)
-            .size
-            .width * 0.45
-            : MediaQuery
-            .of(context)
-            .size
-            .width * 0.9),
-        height: 60,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.5,
-            color: Colors.white24,
-          ),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Text('다음',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-            )),
-      ),
-      // )
-    )));
-  }
-
-  Widget savePage(BuildContext context) {
     Future createProject(dynamic body) async {
       return await widget.projectProvider
           .createProject(body)
@@ -305,129 +76,71 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       });
     }
 
-    return (_currentPage == 3 && input['myPosition'] != ''
-        ? Container(
-      padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-      child: InkWell(
-        onTap: () {
-          final projectInfo = {
-            "title": input['title'],
-            "due": input['period'],
-            "description": input['description'],
-            "backLeftCnt": input['백엔드']['headcount'],
-            "designLeftCnt": input['디자이너']['headcount'],
-            "frontLeftCnt": input['프론트엔드']['headcount'],
-            "myPosition": input['myPosition'],
-            "thumbnail": input['thumbnail'],
-            "techStackIds": [
-              {
-                "first": setTechStackIdx(input['백엔드']['stack'], '백엔드'),
-                "second": "BACKEND"
-              },
-              {
-                "first":
-                setTechStackIdx(input['프론트엔드']['stack'], '프론트엔드'),
-                "second": "FRONTEND"
-              },
-              {
-                "first": setTechStackIdx(input['디자이너']['stack'], '디자이너'),
-                "second": "DESIGNER"
-              }
-            ]
-          };
-          createProject(projectInfo);
-        },
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width * 0.45,
-          height: 60,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1.5,
-              color: Colors.white24,
-            ),
-            gradient: LinearGradient(
-                colors: [
-                  HexColor("4F34F3"),
-                  HexColor("3EF7FF"),
-                ],
-                begin: FractionalOffset(1.0, 0.0),
-                end: FractionalOffset(0.0, 0.0),
-                stops: [0, 1],
-                tileMode: TileMode.clamp),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Text(
-            '생성',
-            style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.bold),
-          ),
+    return Scaffold(
+        appBar: CustomAppBar(
+          title: '프로젝트 만들기',
+          leading: Back(),
         ),
-      ),
-    )
-        : Container(
-        padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width * 0.45,
-          height: 60,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1.5,
-              color: Colors.white24,
-            ),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Text(
-            '생성',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-        )));
+        body: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(top: 5),
+            child: ProjectCreateContainer(
+              content: SingleChildScrollView(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    if (_currentPage == 1)
+                      ProjectCreatePageOne(
+                        input,
+                        periodSelected,
+                        _projectNameController,
+                        _projectDescriptionController,
+                      ),
+                    if (_currentPage == 2) createProjectPageTwo(_filterOptions),
+                    if (_currentPage == 3) createProjectPageThree(),
+                    Column(
+                      children: [
+                        Container(
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (_currentPage != 1)
+                                PreviousPage(
+                                  page: _currentPage,
+                                  onTap: () {
+                                    setState(() {
+                                      _currentPage--;
+                                    });
+                                  },
+                                ),
+                              if (_currentPage != 3)
+                              NextPage(
+                                page: _currentPage,
+                                onTap: () {
+                                  setState(() {
+                                    _currentPage++;
+                                  });
+                                },
+                              ),
+                              if (_currentPage == 3)
+                                SavePage(
+                                  page: _currentPage,
+                                  onTap: () {
+                                    setState(() {
+                                      print(1);
+                                    });
+                                  },
+                                ),
+                             ],
+                          ),
+                        ),
+                        ProjectStatus(totalPage: 3, currentPage: _currentPage)
+                      ],
+                    )
+                  ])),
+            )));
   }
-
-  // Page 1
-  // Widget createProjectPageOne() {
-  //   return Container(
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           alignment: Alignment.center,
-  //           child: Container(
-  //             width: 100,
-  //             height: 5,
-  //             decoration: BoxDecoration(
-  //               color: Colors.white,
-  //               borderRadius: BorderRadius.circular(10),
-  //             ),
-  //           ),
-  //         ),
-  //         Container(
-  //           padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
-  //           alignment: Alignment.centerLeft,
-  //           child: Text(
-  //             '1. 프로젝트 아웃라인',
-  //             style: TextStyle(
-  //               fontSize: 24,
-  //               color: Colors.white,
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //           ),
-  //         ),
-  //         ProjectCreateTitle(input, _projectNameController),
-  //         ProjectCreatePeriod(input, periodSelected),
-  //         ProjectCreateDescription(input, _projectDescriptionController),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   // Page 2
   Widget createProjectPageTwo(Map<dynamic, List<dynamic>> _filterOptions) {
@@ -473,13 +186,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             child: Column(
               children: [
                 Row(children: [
-                  ...filterOptions.entries.map((e) =>
-                      CreateFilterChip(
-                          content: e.key,
-                          display: e.key,
-                          selected: selectedKey == e.key,
-                          selectKey: selectKey,
-                          filterValues: e.value))
+                  ...filterOptions.entries.map((e) => CreateFilterChip(
+                      content: e.key,
+                      display: e.key,
+                      selected: selectedKey == e.key,
+                      selectKey: selectKey,
+                      filterValues: e.value))
                 ]),
                 if (selectedKey != null)
                   Column(
@@ -506,8 +218,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         padding: EdgeInsets.only(left: 10),
                         child: Wrap(
                           children: [
-                            ...filterValues.map((e) =>
-                                CreateFilterValueChip(
+                            ...filterValues.map((e) => CreateFilterValueChip(
                                   content: e,
                                   selected: input[selectedKey]["stack"] == e,
                                   selectValue: selectValue,
@@ -559,7 +270,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               color: Colors.white,
             ),
             onPressed: () =>
-            {if (selectedKey != null) minusHeadcount(selectedKey)},
+                {if (selectedKey != null) minusHeadcount(selectedKey)},
           ),
         ),
         Container(
@@ -582,8 +293,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               Icons.add,
               color: Colors.white,
             ),
-            onPressed: () =>
-            {
+            onPressed: () => {
               if (selectedKey != null) addHeadcount(selectedKey),
             },
           ),
@@ -594,18 +304,15 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   Widget position(Map<dynamic, List<dynamic>> filterOptions) {
     return Container(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width * 0.95,
+        width: MediaQuery.of(context).size.width * 0.95,
         decoration: BoxDecoration(
           border: Border.all(color: HexColor("979797")),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(children: [
           if ((input["백엔드"]["stack"] == '') &
-          (input["프론트엔드"]["stack"] == '') &
-          (input["디자이너"]["stack"] == ''))
+              (input["프론트엔드"]["stack"] == '') &
+              (input["디자이너"]["stack"] == ''))
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(20),
@@ -619,32 +326,31 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               (input["디자이너"]["stack"] != ''))
             Wrap(
               children: [
-                ...filterOptions.entries.map((e) =>
-                (input[e.key]["stack"]
-                    .toString() !=
-                    '')
+                ...filterOptions.entries.map((e) => (input[e.key]["stack"]
+                            .toString() !=
+                        '')
                     ? Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            e.key.toString(),
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.white),
-                          ),
-                          Text(
-                            input[e.key.toString()]["stack"].toString(),
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.white),
-                          ),
-                          Text(
-                            input[e.key.toString()]["headcount"].toString(),
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.white),
-                          ),
-                        ]))
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                e.key.toString(),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                              Text(
+                                input[e.key.toString()]["stack"].toString(),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                              Text(
+                                input[e.key.toString()]["headcount"].toString(),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                            ]))
                     : Container())
               ],
             ),
@@ -653,9 +359,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   // Page 3
   Widget createProjectPageThree() {
-    final Size size = MediaQuery
-        .of(context)
-        .size;
+    final Size size = MediaQuery.of(context).size;
 
     return Column(
       children: [
@@ -757,10 +461,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         borderRadius: BorderRadius.circular(10),
         borderWidth: 0.3,
         constraints: BoxConstraints(
-            minWidth: (MediaQuery
-                .of(context)
-                .size
-                .width * 0.85) / 3,
+            minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
             minHeight: 40),
         isSelected: positionSelected,
         onPressed: (idx) {
@@ -798,8 +499,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     );
   }
 
-  Widget myProjectPicture(BuildContext context, Size size,
-      PhotoSelection character) {
+  Widget myProjectPicture(
+      BuildContext context, Size size, PhotoSelection character) {
     if (_character.index == 0)
       return Container(
           padding: EdgeInsets.only(left: 70, bottom: 15),
@@ -815,9 +516,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               child: _imageFile == null
                   ? Icon(Icons.photo, color: Colors.white, size: 100)
                   : Image(
-                image: FileImage(File(_imageFile.path)),
-                fit: BoxFit.fill,
-              ),
+                      image: FileImage(File(_imageFile.path)),
+                      fit: BoxFit.fill,
+                    ),
               decoration: BoxDecoration(
                 border: Border.all(width: 1, color: Colors.white),
                 boxShadow: [
@@ -918,10 +619,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   setTechStackIdx(String techStack, String position) {
     setState(() {
-      widget.stacksProvider.stacks.forEach((e) =>
-      {
-        if (techStack == e.name) {input[position]['id'] = e.id}
-      });
+      widget.stacksProvider.stacks.forEach((e) => {
+            if (techStack == e.name) {input[position]['id'] = e.id}
+          });
     });
     return input[position]['id'];
   }
