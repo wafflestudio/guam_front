@@ -213,7 +213,7 @@ class Boards with ChangeNotifier {
           authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("공지가 등록되었습니다.");
+          print("스레드가 고정되었습니다.");
           res = true;
         } else {
           throw new Exception();
@@ -269,7 +269,7 @@ class Boards with ChangeNotifier {
           files: files,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("커멘트가 등록되었습니다.");
+          print("답글이 등록되었습니다.");
           res = true;
         } else {
           throw new Exception();

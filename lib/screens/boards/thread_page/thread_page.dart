@@ -53,6 +53,21 @@ class _ThreadPageState extends State<ThreadPage> {
         });
     }
 
+    Future editCommentContent({int id, Map<String, dynamic> fields}) async =>
+        await widget.boardsProvider.editCommentContent(
+          commentId: id,
+          fields: fields
+        ).then((successful) {
+          if (successful) {
+            setState(() {
+              this.editTargetComment = null;
+            });
+            fetchFullThread();
+
+            return successful;
+          }
+        });
+
     Future deleteComment(int commentId) async {
       return await widget.boardsProvider.deleteComment(commentId).then((successful) {
         if (successful) fetchFullThread();
@@ -108,7 +123,10 @@ class _ThreadPageState extends State<ThreadPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(20),
-                  child: CommonTextField(onTap: postComment),
+                  child: CommonTextField(
+                    onTap: editTargetComment == null ? postComment : editCommentContent,
+                    editTarget: editTargetComment ?? null,
+                  ),
                 )
               ]
             ),
