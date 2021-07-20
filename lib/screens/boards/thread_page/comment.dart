@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/boards/thread_page/thread_comment_images.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import '../../../commons/profile_thumbnail.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import '../../../models/boards/comment.dart' as CommentModel;
 import 'dart:io' show Platform;
+import '../../../commons/profile_thumbnail.dart';
+import '../../../models/boards/comment.dart' as CommentModel;
+import '../../../providers/boards/boards.dart';
 import '../bottom_modal/bottom_modal_content.dart';
+import 'thread_comment_images.dart';
 
 class Comment extends StatelessWidget {
   final CommentModel.Comment comment;
@@ -19,32 +21,34 @@ class Comment extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        if (Platform.isAndroid) {
-          showMaterialModalBottomSheet(
-            context: context,
-            builder: (_) => BottomModalContent(
-              editFunc: () {
-                switchToEditMode(editTargetComment: comment);
-                Navigator.of(context).pop(); // pops Modal Bottom Content Widget
-              },
-              deleteFunc: () => deleteComment(comment.id).then((val) {
-                if (val) Navigator.of(context).pop();
-              })
-            )
-          );
-        } else {
-          showCupertinoModalBottomSheet(
-            context: context,
-            builder: (_) => BottomModalContent(
-                editFunc: () {
-                  switchToEditMode(editTargetComment: comment);
-                  Navigator.of(context).pop(); // pops Modal Bottom Content Widget
-                },
-              deleteFunc: () => deleteComment(comment.id).then((val) {
-                if (val) Navigator.of(context).pop();
-              })
-            )
-          );
+        if (context.read<Boards>().isMe(comment.creator.id)) {
+          if (Platform.isAndroid) {
+            showMaterialModalBottomSheet(
+                context: context,
+                builder: (_) => BottomModalContent(
+                    editFunc: () {
+                      switchToEditMode(editTargetComment: comment);
+                      Navigator.of(context).pop(); // pops Modal Bottom Content Widget
+                    },
+                    deleteFunc: () => deleteComment(comment.id).then((val) {
+                      if (val) Navigator.of(context).pop();
+                    })
+                )
+            );
+          } else {
+            showCupertinoModalBottomSheet(
+                context: context,
+                builder: (_) => BottomModalContent(
+                    editFunc: () {
+                      switchToEditMode(editTargetComment: comment);
+                      Navigator.of(context).pop(); // pops Modal Bottom Content Widget
+                    },
+                    deleteFunc: () => deleteComment(comment.id).then((val) {
+                      if (val) Navigator.of(context).pop();
+                    })
+                )
+            );
+          }
         }
       },
       child: Container(

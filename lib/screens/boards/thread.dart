@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/providers/boards/boards.dart';
-import 'package:guam_front/screens/boards/thread_page/thread_comment_images.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
+import '../../providers/boards/boards.dart';
+import '../../providers/user_auth/authenticate.dart';
 import '../../commons/profile_thumbnail.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
 import 'thread_page/thread_page.dart';
-import 'package:provider/provider.dart';
-import 'dart:io' show Platform;
+import 'thread_page/thread_comment_images.dart';
 import 'bottom_modal/bottom_modal_content.dart';
 
 class Thread extends StatelessWidget {
@@ -38,38 +39,43 @@ class Thread extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) {
-            return ThreadPage(
-              boardsProvider: boardsProvider,
-              thread: thread,
+            return ChangeNotifierProvider.value(
+              value: boardsProvider,
+              child: ThreadPage(
+                boardsProvider: boardsProvider,
+                thread: thread,
+              ),
             );
           })
         );
       },
       onLongPress: () {
-        if (Platform.isAndroid) {
-          showMaterialModalBottomSheet(
-            context: context,
-            builder: (_) => BottomModalContent(
-              setFunc: setNotice,
-              editFunc: () {
-                switchToEditMode(editTargetThread: thread);
-                Navigator.of(context).pop();
-              },
-              deleteFunc: deleteThread
-            )
-          );
-        } else {
-          showCupertinoModalBottomSheet(
-            context: context,
-              builder: (_) => BottomModalContent(
-                setFunc: setNotice,
-                editFunc: () {
-                  switchToEditMode(editTargetThread: thread);
-                  Navigator.of(context).pop();
-                },
-                deleteFunc: deleteThread
-            )
-          );
+        if (context.read<Authenticate>().me.id == thread.creator.id) {
+          if (Platform.isAndroid) {
+            showMaterialModalBottomSheet(
+                context: context,
+                builder: (_) => BottomModalContent(
+                    setFunc: setNotice,
+                    editFunc: () {
+                      switchToEditMode(editTargetThread: thread);
+                      Navigator.of(context).pop();
+                    },
+                    deleteFunc: deleteThread
+                )
+            );
+          } else {
+            showCupertinoModalBottomSheet(
+                context: context,
+                builder: (_) => BottomModalContent(
+                    setFunc: setNotice,
+                    editFunc: () {
+                      switchToEditMode(editTargetThread: thread);
+                      Navigator.of(context).pop();
+                    },
+                    deleteFunc: deleteThread
+                )
+            );
+          }
         }
       },
       child: Container(

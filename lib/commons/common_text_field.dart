@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'common_icon_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:io';
 import '../helpers/pick_image.dart';
 import '../commons/image_thumbnail.dart';
-import 'dart:io';
+import 'common_icon_button.dart';
 
 class CommonTextField extends StatefulWidget {
   final Function onTap;

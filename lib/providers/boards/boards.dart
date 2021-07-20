@@ -25,6 +25,8 @@ class Boards with ChangeNotifier {
   get renderBoardIdx => _renderBoardIdx;
   get currentBoard => boards[renderBoardIdx];
 
+  bool isMe(int userId) => _authProvider.me.id == userId;
+
   set renderBoardIdx(idx) {
     _renderBoardIdx = idx;
     notifyListeners();

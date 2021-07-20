@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/boards/thread.dart';
+import 'package:provider/provider.dart';
+import '../../commons/common_text_field.dart';
+import '../../providers/boards/boards.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
 import 'thread.dart';
 import 'iconTitle.dart';
-import '../../commons/common_text_field.dart';
-import 'package:provider/provider.dart';
-import '../../providers/boards/boards.dart';
 
 class Threads extends StatefulWidget {
   final List<ThreadModel.Thread> threads;
