@@ -141,11 +141,10 @@ class Boards with ChangeNotifier {
   }
 
   Future postThread({Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
-
-      print("Files: $files");
 
       await HttpRequest()
         .postMultipart(
@@ -164,7 +163,35 @@ class Boards with ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      fetchThreads(currentBoard.id);
+      if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
+  Future editThreadContent({int threadId, Map<String, dynamic> fields}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .put(
+          path: "/thread/$threadId/content",
+          authToken: authToken,
+          body: fields,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("스레드가 수정되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
     }
   }
 
