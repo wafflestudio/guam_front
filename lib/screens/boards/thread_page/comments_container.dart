@@ -4,10 +4,11 @@ import 'comment.dart';
 import '../iconTitle.dart';
 
 class CommentsContainer extends StatelessWidget {
+  final Function switchToEditMode;
   final Function deleteComment;
   final List<CommentModel.Comment> comments;
 
-  CommentsContainer({@required this.comments, @required this.deleteComment});
+  CommentsContainer({@required this.comments, @required this.switchToEditMode, @required this.deleteComment});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,11 @@ class CommentsContainer extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: comments.length,
-            itemBuilder: (_, idx) => Comment(comment: comments[idx], deleteComment: deleteComment),
+            itemBuilder: (_, idx) => Comment(
+              comment: comments[idx],
+              switchToEditMode: switchToEditMode,
+              deleteComment: deleteComment
+            ),
           )
         ],
       ),

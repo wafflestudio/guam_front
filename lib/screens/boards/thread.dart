@@ -51,7 +51,10 @@ class Thread extends StatelessWidget {
             context: context,
             builder: (_) => BottomModalContent(
               setFunc: setNotice,
-              editFunc: () => switchToEditMode(editTargetThread: thread),
+              editFunc: () {
+                switchToEditMode(editTargetThread: thread);
+                Navigator.of(context).pop();
+              },
               deleteFunc: deleteThread
             )
           );
@@ -60,7 +63,10 @@ class Thread extends StatelessWidget {
             context: context,
               builder: (_) => BottomModalContent(
                 setFunc: setNotice,
-                editFunc: () => switchToEditMode(editTargetThread: thread),
+                editFunc: () {
+                  switchToEditMode(editTargetThread: thread);
+                  Navigator.of(context).pop();
+                },
                 deleteFunc: deleteThread
             )
           );

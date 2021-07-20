@@ -19,11 +19,10 @@ class Threads extends StatefulWidget {
 class ThreadsState extends State<Threads> {
   ThreadModel.Thread editTargetThread;
 
-  void switchToEditMode({ThreadModel.Thread editTargetThread}) {
+  void switchToEditMode({@required ThreadModel.Thread editTargetThread}) {
     setState(() {
       this.editTargetThread = editTargetThread;
     });
-    Navigator.of(context).pop(); // pops Modal Bottom Content Widget
   }
 
   @override
@@ -33,8 +32,8 @@ class ThreadsState extends State<Threads> {
     Future postThread({Map<String, dynamic> fields, dynamic files}) async =>
         await boardsProvider.postThread(fields: fields, files: files);
 
-    Future editThreadContent({int id, Map<String, dynamic> fields}) async {
-      return await boardsProvider.editThreadContent(id: id, fields: fields)
+    Future editThreadContent({int id, Map<String, dynamic> fields}) async =>
+       await boardsProvider.editThreadContent(threadId: id, fields: fields)
           .then((successful) {
             if (successful) {
               setState(() {
@@ -43,7 +42,6 @@ class ThreadsState extends State<Threads> {
               return successful;
             }
       });
-    }
 
     return Padding(
         padding: EdgeInsets.only(bottom: 12),
@@ -52,7 +50,6 @@ class ThreadsState extends State<Threads> {
               iconTitle(icon: Icons.comment_outlined, title: "스레드"),
               SizedBox(
                   width: double.infinity,
-                  //height: 520, // temp
                   child: DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),

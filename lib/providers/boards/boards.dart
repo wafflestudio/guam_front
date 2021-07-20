@@ -129,9 +129,13 @@ class Boards with ChangeNotifier {
           path: "/thread/$threadId",
           authToken: authToken
       ).then((response) {
-        final jsonUtf8 = decodeKo(response);
-        final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
-        comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
+        } else {
+          throw new Exception();
+        }
       });
     } catch (e) {
       print(e);
@@ -156,6 +160,8 @@ class Boards with ChangeNotifier {
         if (response.statusCode == 200) {
           print("스레드가 등록되었습니다.");
           res = true;
+        } else {
+          throw new Exception();
         }
       });
 
@@ -167,10 +173,7 @@ class Boards with ChangeNotifier {
     }
   }
 
-  Future editThreadContent({int id, Map<String, dynamic> fields}) async {
-    print("BOARDS");
-    print("Id: $id");
-    print("Fields: $fields");
+  Future editThreadContent({int threadId, Map<String, dynamic> fields}) async {
     bool res = false;
 
     try {
@@ -178,7 +181,7 @@ class Boards with ChangeNotifier {
 
       await HttpRequest()
         .put(
-          path: "/thread/$id/content",
+          path: "/thread/$threadId/content",
           authToken: authToken,
           body: fields,
       ).then((response) {
@@ -212,6 +215,8 @@ class Boards with ChangeNotifier {
         if (response.statusCode == 200) {
           print("공지가 등록되었습니다.");
           res = true;
+        } else {
+          throw new Exception();
         }
       });
 
@@ -237,6 +242,8 @@ class Boards with ChangeNotifier {
         if (response.statusCode == 200) {
           print("스레드가 삭제되었습니다.");
           res = true;
+        } else {
+          throw new Exception();
         }
       });
 
@@ -264,6 +271,8 @@ class Boards with ChangeNotifier {
         if (response.statusCode == 200) {
           print("커멘트가 등록되었습니다.");
           res = true;
+        } else {
+          throw new Exception();
         }
       });
 
@@ -272,6 +281,32 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
+  Future editCommentContent({int commentId, Map<String, dynamic> fields}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .put(
+          path: "/comment/$commentId/content",
+          authToken: authToken,
+          body: fields,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("답글이 수정되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -289,6 +324,8 @@ class Boards with ChangeNotifier {
         if (response.statusCode == 200) {
           print("답글이 삭제되었습니다.");
           res = true;
+        } else {
+          throw new Exception();
         }
       });
 

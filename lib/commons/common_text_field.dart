@@ -24,6 +24,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   void dispose() {
+    imageFileList.clear();
     _threadTextFieldController.dispose();
     super.dispose();
   }
@@ -107,9 +108,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                   children: [
                     if (!isEdit) CommonIconButton(
                       icon: Icons.add_a_photo,
-                      onPressed: () async {
-                        await pickImage().then((val) => setImageFile(val));
-                      },
+                      onPressed: () async => await pickImage().then((img) => setImageFile(img)),
                     ),
                     if (!isEdit) Padding(padding: EdgeInsets.only(right: 10)),
                     CommonIconButton(

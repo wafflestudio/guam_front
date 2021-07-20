@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/screens/boards/thread_page/thread_comment_images.dart';
-import 'package:guam_front/screens/boards/thread_page/thread_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../commons/profile_thumbnail.dart';
@@ -8,13 +7,13 @@ import 'package:intl/intl.dart';
 import '../../../models/boards/comment.dart' as CommentModel;
 import 'dart:io' show Platform;
 import '../bottom_modal/bottom_modal_content.dart';
-import '../../../providers/boards/boards.dart';
 
 class Comment extends StatelessWidget {
   final CommentModel.Comment comment;
+  final Function switchToEditMode;
   final Function deleteComment;
 
-  Comment({@required this.comment, @required this.deleteComment});
+  Comment({@required this.comment, @required this.switchToEditMode, @required this.deleteComment});
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +21,29 @@ class Comment extends StatelessWidget {
       onLongPress: () {
         if (Platform.isAndroid) {
           showMaterialModalBottomSheet(
-              context: context,
-              builder: (_) => BottomModalContent(
-                deleteFunc: () => deleteComment(comment.id).then((val) {
-                  if (val) Navigator.of(context).pop();
-                })
-              )
+            context: context,
+            builder: (_) => BottomModalContent(
+              editFunc: () {
+                switchToEditMode(editTargetComment: comment);
+                Navigator.of(context).pop(); // pops Modal Bottom Content Widget
+              },
+              deleteFunc: () => deleteComment(comment.id).then((val) {
+                if (val) Navigator.of(context).pop();
+              })
+            )
           );
         } else {
           showCupertinoModalBottomSheet(
-              context: context,
-              builder: (_) => BottomModalContent(
-                  deleteFunc: () => deleteComment(comment.id).then((val) {
-                    if (val) Navigator.of(context).pop();
-                  })
-              )
+            context: context,
+            builder: (_) => BottomModalContent(
+                editFunc: () {
+                  switchToEditMode(editTargetComment: comment);
+                  Navigator.of(context).pop(); // pops Modal Bottom Content Widget
+                },
+              deleteFunc: () => deleteComment(comment.id).then((val) {
+                if (val) Navigator.of(context).pop();
+              })
+            )
           );
         }
       },

@@ -19,11 +19,18 @@ class ThreadPage extends StatefulWidget {
 }
 
 class _ThreadPageState extends State<ThreadPage> {
-  Future<dynamic> comments;
+  Future<List<CommentModel.Comment>> comments;
+  CommentModel.Comment editTargetComment;
 
   void fetchFullThread() {
     setState(() {
       comments = widget.boardsProvider.fetchFullThread(widget.thread.id);
+    });
+  }
+
+  void switchToEditMode({@required CommentModel.Comment editTargetComment}) {
+    setState(() {
+      this.editTargetComment = editTargetComment;
     });
   }
 
@@ -85,6 +92,7 @@ class _ThreadPageState extends State<ThreadPage> {
                                   if (snapshot.hasData) {
                                     return CommentsContainer(
                                       comments: snapshot.data,
+                                      switchToEditMode: switchToEditMode,
                                       deleteComment: deleteComment,
                                     );
                                   } else {
