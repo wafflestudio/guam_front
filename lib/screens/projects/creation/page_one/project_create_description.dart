@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class ProjectCreateDescription extends StatefulWidget {
   final Map input;
   final TextEditingController _descriptionController;
+  final Function onChanged;
 
-  ProjectCreateDescription(this.input, this._descriptionController);
+  ProjectCreateDescription(this.input, this._descriptionController,
+      {@required this.onChanged});
 
   @override
   _ProjectCreateDescriptionState createState() =>
@@ -35,9 +37,8 @@ class _ProjectCreateDescriptionState extends State<ProjectCreateDescription> {
           height: 100,
           child: TextFormField(
             onChanged: (_projectDescription) {
-              setState(() {
-                saveDescription(_projectDescription);
-              });
+              widget.onChanged();
+              saveDescription(_projectDescription);
             },
             controller: widget._descriptionController,
             style: TextStyle(fontSize: 14, color: Colors.white),

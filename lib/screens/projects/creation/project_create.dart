@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:guam_front/commons/next_page.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/previous_page.dart';
 import 'package:guam_front/commons/project_create_container.dart';
@@ -34,7 +33,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   List<String> filterValues;
   Map input = {
     'title': '',
-    'period': -1,
+    'period': 0,
     'description': '',
     '백엔드': {'id': 0, 'stack': '', 'headcount': 0},
     '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
@@ -76,6 +75,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       });
     }
 
+    void goToNextPage() {
+      setState(() {
+        _currentPage++;
+      });
+    }
+
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 만들기',
@@ -91,11 +96,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       children: [
                     if (_currentPage == 1)
                       ProjectCreatePageOne(
-                        input,
-                        periodSelected,
-                        _projectNameController,
-                        _projectDescriptionController,
-                      ),
+                          input,
+                          periodSelected,
+                          _projectNameController,
+                          _projectDescriptionController,
+                          goToNextPage),
                     if (_currentPage == 2) createProjectPageTwo(_filterOptions),
                     if (_currentPage == 3) createProjectPageThree(),
                     Column(
@@ -114,25 +119,15 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                     });
                                   },
                                 ),
-                              if (_currentPage != 3)
-                              NextPage(
-                                page: _currentPage,
-                                onTap: () {
-                                  setState(() {
-                                    _currentPage++;
-                                  });
-                                },
-                              ),
                               if (_currentPage == 3)
                                 SavePage(
                                   page: _currentPage,
                                   onTap: () {
                                     setState(() {
-                                      print(1);
                                     });
                                   },
                                 ),
-                             ],
+                            ],
                           ),
                         ),
                         ProjectStatus(totalPage: 3, currentPage: _currentPage)

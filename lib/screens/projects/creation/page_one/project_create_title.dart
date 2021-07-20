@@ -5,7 +5,8 @@ class ProjectCreateTitle extends StatefulWidget {
   final TextEditingController _projectNameController;
   final Function onChanged;
 
-  ProjectCreateTitle(this.input, this._projectNameController, {@required this.onChanged});
+  ProjectCreateTitle(this.input, this._projectNameController,
+      {@required this.onChanged});
 
   @override
   _ProjectCreateTitleState createState() => _ProjectCreateTitleState();
@@ -20,7 +21,6 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.input["title"]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,8 +36,7 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
           height: 50,
           child: TextFormField(
             onChanged: (_projectName) {
-              if(widget.input["title"] != '') widget.onChanged();
-              print(1);
+              widget.onChanged();
               saveTitle(_projectName);
             },
             controller: widget._projectNameController,

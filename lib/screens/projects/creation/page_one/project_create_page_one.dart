@@ -9,12 +9,14 @@ class ProjectCreatePageOne extends StatefulWidget {
   final List<bool> periodSelected;
   final TextEditingController _projectNameController;
   final TextEditingController _projectDescriptionController;
+  final Function goToNextPage;
 
   ProjectCreatePageOne(
     this.input,
     this.periodSelected,
     this._projectNameController,
     this._projectDescriptionController,
+    this.goToNextPage,
   );
 
   @override
@@ -22,17 +24,21 @@ class ProjectCreatePageOne extends StatefulWidget {
 }
 
 class _ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
-  bool isTitleFilled = false;
+  List<bool> isDataFilled = [false, false, false];
 
-  void _checkElementFilled(bool e) {
-    setState(() {
-      isTitleFilled = true;
-    });
+  @override
+  void initState() {
+    if (widget.input['title'] == '') isDataFilled[0] = false;
+    if (widget.input['period'] == -1) isDataFilled[1] = false;
+    if (widget.input['description'] == '') isDataFilled[2] = false;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(isTitleFilled);
+    print(widget.periodSelected);
+    print(widget.input);
+    print(isDataFilled);
     return Container(
       child: Column(
         children: [
@@ -61,12 +67,40 @@ class _ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
           ),
           ProjectCreateTitle(widget.input, widget._projectNameController,
               onChanged: () {
-            _checkElementFilled(isTitleFilled);
+            setState(() {
+              if (widget._projectNameController.text != '') {
+                isDataFilled[0] = true;
+              } else {
+                isDataFilled[0] = false;
+              }
+            });
           }),
-          ProjectCreatePeriod(widget.input, widget.periodSelected),
+          ProjectCreatePeriod(widget.input, widget.periodSelected,
+              onChanged: () {
+            setState(() {
+              if (widget.input['period'] != -1) {
+                isDataFilled[1] = true;
+              } else {
+                isDataFilled[1] = false;
+              }
+            });
+          }),
           ProjectCreateDescription(
-              widget.input, widget._projectDescriptionController),
-          // NextPage(page: 1)
+              widget.input, widget._projectDescriptionController,
+              onChanged: () {
+            setState(() {
+              if (widget._projectDescriptionController.text != '') {
+                isDataFilled[2] = true;
+              } else {
+                isDataFilled[2] = false;
+              }
+            });
+          }),
+          NextPage(
+            page: 1,
+            onTap: widget.goToNextPage,
+            active: isDataFilled,
+          )
         ],
       ),
     );
