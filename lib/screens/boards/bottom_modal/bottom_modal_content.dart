@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'function_container.dart';
-import 'package:provider/provider.dart';
-import '../../../providers/boards/boards.dart';
+
 class BottomModalContent extends StatelessWidget {
   final Function setFunc;
   final Function editFunc;

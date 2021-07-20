@@ -13,8 +13,9 @@ import 'bottom_modal/bottom_modal_content.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
+  final Function switchToEditMode;
 
-  Thread(this.thread);
+  Thread(this.thread, {this.switchToEditMode});
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +49,20 @@ class Thread extends StatelessWidget {
         if (Platform.isAndroid) {
           showMaterialModalBottomSheet(
             context: context,
-            builder: (_) => BottomModalContent(setFunc: setNotice, deleteFunc: deleteThread)
+            builder: (_) => BottomModalContent(
+              setFunc: setNotice,
+              editFunc: () => switchToEditMode(editTargetThread: thread),
+              deleteFunc: deleteThread
+            )
           );
         } else {
           showCupertinoModalBottomSheet(
             context: context,
-              builder: (_) => BottomModalContent(setFunc: setNotice, deleteFunc: deleteThread)
+              builder: (_) => BottomModalContent(
+                setFunc: setNotice,
+                editFunc: () => switchToEditMode(editTargetThread: thread),
+                deleteFunc: deleteThread
+            )
           );
         }
       },

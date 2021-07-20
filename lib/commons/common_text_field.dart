@@ -8,8 +8,9 @@ import 'dart:io';
 
 class CommonTextField extends StatefulWidget {
   final Function onTap;
+  final dynamic editTarget;
 
-  CommonTextField({@required this.onTap});
+  CommonTextField({@required this.onTap, this.editTarget});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -41,6 +42,9 @@ class _CommonTextFieldState extends State<CommonTextField> {
 
   @override
   Widget build(BuildContext context) {
+    bool isEdit = widget.editTarget != null;
+    _threadTextFieldController.text = isEdit ? widget.editTarget.content : null;
+
     return ConstrainedBox(
       constraints: BoxConstraints(
           minHeight: 36
@@ -101,27 +105,39 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 ),
                 Row(
                   children: [
-                    CommonIconButton(
+                    if (!isEdit) CommonIconButton(
                       icon: Icons.add_a_photo,
                       onPressed: () async {
                         await pickImage().then((val) => setImageFile(val));
                       },
                     ),
-                    Padding(padding: EdgeInsets.only(right: 10)),
+                    if (!isEdit) Padding(padding: EdgeInsets.only(right: 10)),
                     CommonIconButton(
                       icon: Icons.send_outlined,
                       onPressed: () async {
-                        await widget.onTap(
-                          fields: {"content": _threadTextFieldController.text},
-                          files: [...imageFileList.map((e) => File(e.path))],
-                        ).then((successful) {
-                          if (successful) {
-                            imageFileList.clear();
-                            _threadTextFieldController.clear();
-                            FocusScope.of(context).unfocus();
-                          }
-                        });
-                      },
+                        if (isEdit) {
+                          await widget.onTap(
+                            id: widget.editTarget.id,
+                            fields: {"content": _threadTextFieldController.text},
+                          ).then((successful) {
+                            if (successful) {
+                              _threadTextFieldController.clear();
+                              FocusScope.of(context).unfocus();
+                            }
+                          });
+                        } else {
+                          await widget.onTap(
+                            files: [...imageFileList.map((e) => File(e.path))],
+                            fields: {"content": _threadTextFieldController.text},
+                          ).then((successful) {
+                            if (successful) {
+                              imageFileList.clear();
+                              _threadTextFieldController.clear();
+                              FocusScope.of(context).unfocus();
+                            }
+                          });
+                        }
+                      }
                     ),
                   ],
                 )

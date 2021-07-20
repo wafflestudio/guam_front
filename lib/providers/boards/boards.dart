@@ -167,7 +167,10 @@ class Boards with ChangeNotifier {
     }
   }
 
-  Future editThreadContent({int threadId, Map<String, dynamic> fields}) async {
+  Future editThreadContent({int id, Map<String, dynamic> fields}) async {
+    print("BOARDS");
+    print("Id: $id");
+    print("Fields: $fields");
     bool res = false;
 
     try {
@@ -175,7 +178,7 @@ class Boards with ChangeNotifier {
 
       await HttpRequest()
         .put(
-          path: "/thread/$threadId/content",
+          path: "/thread/$id/content",
           authToken: authToken,
           body: fields,
       ).then((response) {
