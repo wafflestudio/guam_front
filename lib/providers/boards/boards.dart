@@ -219,9 +219,10 @@ class Boards with ChangeNotifier {
   }
 
   Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       await HttpRequest()
         .postMultipart(
@@ -239,6 +240,8 @@ class Boards with ChangeNotifier {
       return res;
     } catch (e) {
       print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
     }
   }
 
@@ -262,6 +265,8 @@ class Boards with ChangeNotifier {
       return res;
     } catch (e) {
       print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
     }
   }
 }
