@@ -24,7 +24,7 @@ class ProjectCreatePageOne extends StatefulWidget {
 }
 
 class _ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
-  List<bool> isDataFilled = [false, false, false];
+  List<bool> isDataFilled = [true, true, true];
 
   @override
   void initState() {
@@ -36,9 +36,6 @@ class _ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.periodSelected);
-    print(widget.input);
-    print(isDataFilled);
     return Container(
       child: Column(
         children: [

@@ -8,6 +8,7 @@ import 'package:guam_front/commons/save_page.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/creation/page_one/project_create_page_one.dart';
+import 'package:guam_front/screens/projects/creation/page_two/project_create_page_two.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -81,6 +82,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       });
     }
 
+    void goToPreviousPage() {
+      setState(() {
+        _currentPage--;
+      });
+    }
+
+    print(input);
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 만들기',
@@ -101,7 +109,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           _projectNameController,
                           _projectDescriptionController,
                           goToNextPage),
-                    if (_currentPage == 2) createProjectPageTwo(_filterOptions),
+                    if (_currentPage == 2)
+                      ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
                     if (_currentPage == 3) createProjectPageThree(),
                     Column(
                       children: [
@@ -110,21 +119,20 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              if (_currentPage != 1)
-                                PreviousPage(
-                                  page: _currentPage,
-                                  onTap: () {
-                                    setState(() {
-                                      _currentPage--;
-                                    });
-                                  },
-                                ),
+                              // if (_currentPage != 1)
+                              //   PreviousPage(
+                              //     page: _currentPage,
+                              //     onTap: () {
+                              //       setState(() {
+                              //         _currentPage--;
+                              //       });
+                              //     },
+                              //   ),
                               if (_currentPage == 3)
                                 SavePage(
                                   page: _currentPage,
                                   onTap: () {
-                                    setState(() {
-                                    });
+                                    setState(() {});
                                   },
                                 ),
                             ],
@@ -135,221 +143,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     )
                   ])),
             )));
-  }
-
-  // Page 2
-  Widget createProjectPageTwo(Map<dynamic, List<dynamic>> _filterOptions) {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          child: Container(
-            width: 100,
-            height: 5,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            '2. 인원 및 스택 구성',
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        pageTwoFilter(_filterOptions),
-      ],
-    );
-  }
-
-  Widget pageTwoFilter(Map<dynamic, List<dynamic>> filterOptions) {
-    return Column(
-      children: [
-        Container(
-            padding: const EdgeInsets.fromLTRB(3, 10, 10, 10),
-            decoration: BoxDecoration(
-              border: Border.all(color: HexColor("979797")),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                Row(children: [
-                  ...filterOptions.entries.map((e) => CreateFilterChip(
-                      content: e.key,
-                      display: e.key,
-                      selected: selectedKey == e.key,
-                      selectKey: selectKey,
-                      filterValues: e.value))
-                ]),
-                if (selectedKey != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                        child: Text(
-                          "인원",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(left: 20),
-                          child: headCounter()),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                        child: Text(
-                          "기술 스택",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Wrap(
-                          children: [
-                            ...filterValues.map((e) => CreateFilterValueChip(
-                                  content: e,
-                                  selected: input[selectedKey]["stack"] == e,
-                                  selectValue: selectValue,
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-              ],
-            )),
-        Container(
-            padding: EdgeInsets.only(top: 10, left: 5, bottom: 5),
-            alignment: Alignment.centerLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
-                  child: Text(
-                    '포지션',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                position(filterOptions),
-              ],
-            )),
-      ],
-    );
-  }
-
-  Widget headCounter() {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: 36.0,
-          height: 36.0,
-          child: RawMaterialButton(
-            shape: CircleBorder(
-              side: BorderSide(color: Colors.white, width: 1.5),
-            ),
-            elevation: 5.0,
-            fillColor: Colors.white24,
-            child: Icon(
-              Icons.remove,
-              color: Colors.white,
-            ),
-            onPressed: () =>
-                {if (selectedKey != null) minusHeadcount(selectedKey)},
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(15),
-          child: Text(
-            input[selectedKey]["headcount"].toString(),
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          ),
-        ),
-        Container(
-          width: 36.0,
-          height: 36.0,
-          child: RawMaterialButton(
-            shape: CircleBorder(
-              side: BorderSide(color: Colors.white, width: 1.5),
-            ),
-            elevation: 5.0,
-            fillColor: Colors.white24,
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () => {
-              if (selectedKey != null) addHeadcount(selectedKey),
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget position(Map<dynamic, List<dynamic>> filterOptions) {
-    return Container(
-        width: MediaQuery.of(context).size.width * 0.95,
-        decoration: BoxDecoration(
-          border: Border.all(color: HexColor("979797")),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(children: [
-          if ((input["백엔드"]["stack"] == '') &
-              (input["프론트엔드"]["stack"] == '') &
-              (input["디자이너"]["stack"] == ''))
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.all(20),
-              child: Text(
-                "포지션을 선택하여 크루를 구성하세요.",
-                style: TextStyle(fontSize: 14, color: Colors.white),
-              ),
-            ),
-          if ((input["백엔드"]["stack"] != '') ||
-              (input["프론트엔드"]["stack"] != '') ||
-              (input["디자이너"]["stack"] != ''))
-            Wrap(
-              children: [
-                ...filterOptions.entries.map((e) => (input[e.key]["stack"]
-                            .toString() !=
-                        '')
-                    ? Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                e.key.toString(),
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                              Text(
-                                input[e.key.toString()]["stack"].toString(),
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                              Text(
-                                input[e.key.toString()]["headcount"].toString(),
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                            ]))
-                    : Container())
-              ],
-            ),
-        ]));
   }
 
   // Page 3
