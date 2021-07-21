@@ -64,7 +64,7 @@ class TasksState extends State<Tasks> {
                                 showNickname: true,
                                 textColor: Colors.white,
                               ),
-                              positionChip(position: selectedUserTask.position),
+                              positionChip(position: selectedUserTask.state),
                             ],
                           ),
                         )
@@ -112,7 +112,7 @@ class TasksState extends State<Tasks> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Task(task: selectedUserTask),
+                    if (selectedUserTask.task != null) Task(task: selectedUserTask),
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Row(
