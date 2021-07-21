@@ -178,7 +178,7 @@ class ProjectDetailBody extends StatelessWidget {
         animation: true,
         lineHeight: 25,
         animationDuration: 500,
-        percent: currentCount / totalCount,
+        percent: totalCount == 0 ? 0 : currentCount / totalCount,
         center: Container(
             padding: EdgeInsets.only(left: 37),
             alignment: Alignment.centerRight,

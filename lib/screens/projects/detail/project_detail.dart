@@ -15,15 +15,12 @@ class DetailProject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     print(project.id);
-    // print(project.thumbnail);
-    // print(project.techStacks[1]);
-    // print(project.leader);
-    // print(project.due);
-    // print(project.description);
-
-    print(projectsProvider.projectToBeApplied);
-
+    print(project.leader);
+    print(project.frontLeftCount);
+    print(project.isRecruiting);
+    print(project.techStacks);
     return Scaffold(
         appBar: CustomAppBar(
           title: "프로젝트",
@@ -52,8 +49,7 @@ class DetailProject extends StatelessWidget {
                       padding: EdgeInsets.only(left: 10, top: 10),
                       child: Row(children: [
                         Container(
-                            child: project.leader != null &&
-                                    project.leader.imageUrl != null
+                            child: project.leader.imageUrl != null
                                 ? CircleAvatar(
                                     radius: 12,
                                     backgroundImage:
@@ -65,11 +61,7 @@ class DetailProject extends StatelessWidget {
                             decoration: BoxDecoration(
                                 boxShadow: [BoxShadow(color: Colors.blue)],
                                 shape: BoxShape.circle)),
-                        Text(
-                            project.leader != null &&
-                                    project.leader.nickname != null
-                                ? project.leader.nickname
-                                : "",
+                        Text(project.leader.nickname,
                             style: TextStyle(fontSize: 12, color: Colors.black))
                       ])),
                   Container(

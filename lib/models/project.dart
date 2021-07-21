@@ -25,7 +25,7 @@ class Project extends ChangeNotifier {
   final List<StackModel.Stack> techStacks;
 
   /* parameters needed for boards tab */
-  final Thread notice;
+  Thread notice;
   final List<UserTask> tasks;
   List<Thread> threads;
 
@@ -52,9 +52,14 @@ class Project extends ChangeNotifier {
   set(List<Thread> _threads) => threads = _threads;
 
   factory Project.fromJson(Map<String, dynamic> json) {
+    Thread notice;
     List<UserTask> tasks;
     List<StackModel.Stack> techStacks;
     Profile leader;
+
+    if (json['noticeThread'] != null) {
+      notice = Thread.fromJson(json['noticeThread']);
+    }
 
     if (json['tasks'] != null) {
       tasks = [...json['tasks'].map((e) => UserTask.fromJson(e))];
@@ -64,26 +69,28 @@ class Project extends ChangeNotifier {
       ...json['techStacks'].map((e) => StackModel.Stack.fromJson(e))
     ];
 
-    json['leaderProfile'] != null
-        ? leader = Profile.fromJson(json['leaderProfile'])
-        : leader = null;
+    if (json['leaderProfile'] != null) {
+      leader = Profile.fromJson(json['leaderProfile']);
+    }
 
     return Project(
-        id: json['id'],
-        title: json['title'],
-        description: json['description'],
-        thumbnail: json['thumbnail'],
-        isRecruiting: json['isRecruiting'],
-        due: json['due'],
-        backHeadCount: json['backHeadCnt'],
-        backLeftCount: json['backLeftCnt'],
-        designHeadCount: json['designHeadCnt'],
-        designLeftCount: json['designLeftCnt'],
-        frontHeadCount: json['frontHeadCnt'],
-        frontLeftCount: json['frontLeftCnt'],
-        leader: leader,
-        techStacks: techStacks,
-        tasks: tasks);
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      thumbnail: json['thumbnail'],
+      isRecruiting: json['isRecruiting'],
+      due: json['due'],
+      backHeadCount: json['backHeadCnt'],
+      backLeftCount: json['backLeftCnt'],
+      designHeadCount: json['designHeadCnt'],
+      designLeftCount: json['designLeftCnt'],
+      frontHeadCount: json['frontHeadCnt'],
+      frontLeftCount: json['frontLeftCnt'],
+      leader: leader,
+      techStacks: techStacks,
+      tasks: tasks,
+      notice: notice,
+    );
   }
 
   bool hasBoardData() {
