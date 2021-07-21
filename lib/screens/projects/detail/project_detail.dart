@@ -15,12 +15,6 @@ class DetailProject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    print(project.id);
-    print(project.leader);
-    print(project.frontLeftCount);
-    print(project.isRecruiting);
-    print(project.techStacks);
     return Scaffold(
         appBar: CustomAppBar(
           title: "프로젝트",
@@ -28,17 +22,10 @@ class DetailProject extends StatelessWidget {
         ),
         body: Stack(children: [
           Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      HexColor("#FFFFFF").withOpacity(0.8),
-                      HexColor("#FEF2E4"),
-                      HexColor("#D5D7DE"),
-                    ],
-                    begin: FractionalOffset(0.0, 0.4),
-                    end: FractionalOffset(0.0, 0.0),
-                    stops: [0, 0.5, 1],
-                    tileMode: TileMode.clamp)),
+            decoration: BoxDecoration(image: DecorationImage(
+              image: AssetImage("assets/backgrounds/projects-bg.png"),
+              fit: BoxFit.cover,
+            )),
           ),
           Container(
               height: MediaQuery.of(context).size.height,
@@ -61,8 +48,12 @@ class DetailProject extends StatelessWidget {
                             decoration: BoxDecoration(
                                 boxShadow: [BoxShadow(color: Colors.blue)],
                                 shape: BoxShape.circle)),
-                        Text(project.leader.nickname,
-                            style: TextStyle(fontSize: 12, color: Colors.black))
+                        Padding(
+                          padding: EdgeInsets.only(left: 5),
+                          child: Text(project.leader.nickname,
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.black)),
+                        )
                       ])),
                   Container(
                       padding: EdgeInsets.fromLTRB(5, 15, 0, 15),
@@ -71,7 +62,7 @@ class DetailProject extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold))),
                   Container(
-                      padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                      padding: EdgeInsets.fromLTRB(10, 20, 10, 40),
                       child: Text(project.description ?? 'default description',
                           style: TextStyle(fontSize: 14)))
                 ]),

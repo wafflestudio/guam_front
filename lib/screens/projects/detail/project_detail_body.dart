@@ -36,7 +36,7 @@ class ProjectDetailBody extends StatelessWidget {
     return Column(children: [
       Container(
         decoration: BoxDecoration(
-          color: HexColor("#FFFFFF").withOpacity(0.8),
+          color: HexColor("#FFFFFF").withOpacity(0.65),
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(30),
             topLeft: Radius.circular(30),
