@@ -48,7 +48,7 @@ class HttpRequest {
       fields.entries.forEach((e) => request.fields[e.key] = e.value);
       files.forEach((e) async {
         final multipartFile = http.MultipartFile(
-          "files",
+          "imageFiles",
           e.readAsBytes().asStream(),
           e.lengthSync(),
           filename: e.path.split("/").last,
