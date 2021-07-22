@@ -338,4 +338,36 @@ class Boards with ChangeNotifier {
       if (res) fetchThreads(currentBoard.id);
     }
   }
+
+  Future acceptDenyGuest({int guestId, bool accept}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .post(
+          path: "/project/${currentBoard.id}/$guestId",
+          authToken: authToken,
+          body: { "accept": accept }
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print(json.decode(response)); //
+          print("승인/반려가 완료되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) {
+        fetchBoard(currentBoard.id);
+        fetchThreads(currentBoard.id);
+      }
+    }
+  }
 }

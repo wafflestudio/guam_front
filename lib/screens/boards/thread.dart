@@ -11,6 +11,7 @@ import '../../models/boards/thread.dart' as ThreadModel;
 import 'thread_page/thread_page.dart';
 import 'thread_page/thread_comment_images.dart';
 import 'bottom_modal/bottom_modal_content.dart';
+import 'accept_deny_button.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
@@ -123,7 +124,9 @@ class Thread extends StatelessWidget {
                           ),
                         )
                       ],
-                    )
+                    ),
+                    if (boardsProvider.currentBoard.guestIds.contains(thread.creator.id))
+                      AcceptDenyButton(guestId: thread.creator.id)
                   ],
                 ),
               ),
