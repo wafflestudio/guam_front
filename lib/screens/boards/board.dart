@@ -32,8 +32,7 @@ class Board extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        // Notice(board.notice),
-                        Notice(board.notice), // temp code before 지혁님 배포
+                        Notice(board.notice), 
                         Tasks(board.tasks),
                         Threads(board.threads),
                       ],
