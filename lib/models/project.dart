@@ -65,9 +65,9 @@ class Project extends ChangeNotifier {
       tasks = [...json['tasks'].map((e) => UserTask.fromJson(e))];
     }
 
-    techStacks = [
-      ...json['techStacks'].map((e) => StackModel.Stack.fromJson(e))
-    ];
+    if (json['techStacks'] != null) {
+      techStacks = [...json['techStacks'].map((e) => StackModel.Stack.fromJson(e))];
+    }
 
     if (json['leaderProfile'] != null) {
       leader = Profile.fromJson(json['leaderProfile']);
