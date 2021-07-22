@@ -16,13 +16,18 @@ class ProjectDetailApply extends StatefulWidget {
 
 class _ProjectDetailApplyState extends State<ProjectDetailApply> {
   String myPosition;
-  List<String> positions = ['BACKEND', 'FRONTEND', 'DESIGNER'];
   final TextEditingController _introductionController = TextEditingController();
 
   @override
   void dispose() {
     _introductionController.dispose();
     super.dispose();
+  }
+
+  void setMyPosition(String position) {
+    setState(() {
+      myPosition = position;
+    });
   }
 
   @override
@@ -45,11 +50,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            ProjectApply((idx) {
-              setState(() {
-                myPosition = positions[idx];
-              });
-            }),
+            ProjectApply(setMyPosition),
             Padding(
               padding: EdgeInsets.only(bottom: 15, left: 5, right: 5),
               child: Container(

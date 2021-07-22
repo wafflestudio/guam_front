@@ -115,7 +115,7 @@ class Projects with ChangeNotifier {
 
   Future createProject(dynamic queryParams) async {
     try {
-      _authProvider.toggleLoading();
+      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
 
@@ -150,13 +150,13 @@ class Projects with ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      _authProvider.toggleLoading();
+      loading = false;
     }
   }
 
   Future applyProject(int projectId, dynamic queryParams) async {
     try {
-      _authProvider.toggleLoading();
+      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
 
@@ -191,7 +191,7 @@ class Projects with ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      _authProvider.toggleLoading();
+      loading = false;
     }
   }
 }
