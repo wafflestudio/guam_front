@@ -23,6 +23,7 @@ class Project extends ChangeNotifier {
   Thread notice;
   final List<UserTask> tasks;
   List<Thread> threads;
+  final List<int> guestIds;
 
   Project({
     @required this.id,
@@ -41,6 +42,7 @@ class Project extends ChangeNotifier {
     this.notice,
     this.tasks,
     this.threads,
+    this.guestIds,
   });
 
   set (List<Thread> _threads) => threads = _threads;
@@ -48,6 +50,7 @@ class Project extends ChangeNotifier {
   factory Project.fromJson(Map<String, dynamic> json) {
     Thread notice;
     List<UserTask> tasks;
+    List<int> guestIds;
 
     if (json['noticeThread'] != null) {
       notice = Thread.fromJson(json['noticeThread']);
@@ -55,6 +58,9 @@ class Project extends ChangeNotifier {
 
     if (json['tasks'] != null) {
       tasks = [...json['tasks'].map((e) => UserTask.fromJson(e))];
+      guestIds = tasks.where((task) => task.state == "GUEST")
+                      .map((task) => task.user.id)
+                      .toList();
     }
 
     return Project(
@@ -73,6 +79,7 @@ class Project extends ChangeNotifier {
       designHeadCount: json['designLeftCnt'],
       notice: notice,
       tasks: tasks,
+      guestIds: guestIds,
     );
   }
 
