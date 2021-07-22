@@ -25,6 +25,8 @@ class Boards with ChangeNotifier {
   get renderBoardIdx => _renderBoardIdx;
   get currentBoard => boards[renderBoardIdx];
 
+  bool isMe(int userId) => _authProvider.me.id == userId;
+
   set renderBoardIdx(idx) {
     _renderBoardIdx = idx;
     notifyListeners();
@@ -116,9 +118,9 @@ class Boards with ChangeNotifier {
     }
   }
 
+  // threads provider 로 분리하는 게 어떨지?
+
   Future<List<Comment>> fetchFullThread(int threadId) async {
-    // Should return comments and `Images` also, when server code is done.
-    // Temporally, only return comments.
     List<Comment> comments;
 
     try {
@@ -129,9 +131,13 @@ class Boards with ChangeNotifier {
           path: "/thread/$threadId",
           authToken: authToken
       ).then((response) {
-        final jsonUtf8 = decodeKo(response);
-        final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
-        comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
+        } else {
+          throw new Exception();
+        }
       });
     } catch (e) {
       print(e);
@@ -140,20 +146,24 @@ class Boards with ChangeNotifier {
     return comments;
   }
 
-  Future postThread(dynamic body) async {
+  Future postThread({Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       await HttpRequest()
-        .post(
+        .postMultipart(
           path: "/thread/create/${currentBoard.id}",
           authToken: authToken,
-          body: body
+          fields: fields,
+          files: files,
       ).then((response) {
         if (response.statusCode == 200) {
           print("스레드가 등록되었습니다.");
           res = true;
+        } else {
+          throw new Exception();
         }
       });
 
@@ -161,30 +171,171 @@ class Boards with ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      fetchThreads(currentBoard.id);
+      if (res) fetchThreads(currentBoard.id);
     }
   }
 
-  Future postComment(int threadId, dynamic body) async {
+  Future editThreadContent({int threadId, Map<String, dynamic> fields}) async {
+    bool res = false;
+
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       await HttpRequest()
-        .post(
+        .put(
+          path: "/thread/$threadId/content",
           authToken: authToken,
-          path: "/comment/create/$threadId",
-          body: body
+          body: fields,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("커멘트가 등록되었습니다.");
+          print("스레드가 수정되었습니다.");
           res = true;
+        } else {
+          throw new Exception();
         }
       });
 
       return res;
     } catch (e) {
       print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
+  Future setNotice(int threadId) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .put(
+          path: "/project/${currentBoard.id}/notice/$threadId",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("스레드가 고정되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoard(currentBoard.id);
+    }
+  }
+
+  Future deleteThread(int threadId) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "/thread/$threadId",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("스레드가 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
+  Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .postMultipart(
+          authToken: authToken,
+          path: "/comment/create/$threadId",
+          fields: fields,
+          files: files,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("답글이 등록되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
+  Future editCommentContent({int commentId, Map<String, dynamic> fields}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .put(
+          path: "/comment/$commentId/content",
+          authToken: authToken,
+          body: fields,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("답글이 수정되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future deleteComment(int commentId) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "/comment/$commentId",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("답글이 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
     }
   }
 }

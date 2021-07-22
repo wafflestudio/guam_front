@@ -20,10 +20,10 @@ class Notice extends StatelessWidget {
           child: CircularBorderContainer(
             header: Row(
               children: [
-                Icon(Icons.notifications),
+                Icon(Icons.push_pin_outlined),
                 Padding(padding: EdgeInsets.only(right: 8)),
                 Text(
-                  '공지',
+                  '고정',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,

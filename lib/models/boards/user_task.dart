@@ -4,23 +4,26 @@ import '../profile.dart';
 
 class UserTask extends ChangeNotifier {
   final int id;
+  final int projectId;
   final Profile user;
   final String task;
-  final String position;
+  final String state;
 
   UserTask({
     this.id,
+    this.projectId,
     this.user,
     this.task,
-    this.position,
+    this.state,
   });
 
   factory UserTask.fromJson(Map<String, dynamic> json) {
     return UserTask(
       id: json["id"],
+      projectId: json["projectId"],
       user: Profile.fromJson(json["user"]),
-      task: json["task"],
-      position: json["position"],
+      task: json["taskMsg"],
+      state: json["state"],
     );
   }
 }
