@@ -29,8 +29,16 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    void applyProject(int projectId, dynamic params) {
-      widget.projectProvider.applyProject(projectId, params);
+    Future applyProject(int projectId, dynamic params) async {
+      return await widget.projectProvider
+          .applyProject(projectId, params)
+          .then((successful) {
+        if (successful) {
+          Navigator.pop(context);
+          widget.projectProvider.fetchProjects();
+          return successful;
+        }
+      });
     }
 
     return Container(
@@ -88,7 +96,6 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
               "introduction": _introductionController.text,
               "position": myPosition
             };
-            print(keyMap);
             applyProject(widget.project.id, keyMap);
           }),
     );
