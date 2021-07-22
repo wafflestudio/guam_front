@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail.dart';
@@ -31,9 +32,14 @@ class ProjectSquare extends StatelessWidget {
                   child: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                      // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
                       image: project.thumbnail != ""
-                          ? NetworkImage(project.thumbnail)
+                          ? CachedNetworkImage(
+                              imageUrl: project.thumbnail,
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            )
                           : AssetImage(
                               "assets/images/project-square-default.jpeg"),
                       fit: BoxFit.fill,

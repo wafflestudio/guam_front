@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail_body.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 import '../../../commons/back.dart';
 import '../../../commons/custom_app_bar.dart';
@@ -22,7 +21,8 @@ class DetailProject extends StatelessWidget {
         ),
         body: Stack(children: [
           Container(
-            decoration: BoxDecoration(image: DecorationImage(
+            decoration: BoxDecoration(
+                image: DecorationImage(
               image: AssetImage("assets/backgrounds/projects-bg.png"),
               fit: BoxFit.cover,
             )),
@@ -36,7 +36,8 @@ class DetailProject extends StatelessWidget {
                       padding: EdgeInsets.only(left: 10, top: 10),
                       child: Row(children: [
                         Container(
-                            child: project.leader.imageUrl != null
+                            child: project.leader != null &&
+                                    project.leader.imageUrl != null
                                 ? CircleAvatar(
                                     radius: 12,
                                     backgroundImage:
@@ -50,7 +51,10 @@ class DetailProject extends StatelessWidget {
                                 shape: BoxShape.circle)),
                         Padding(
                           padding: EdgeInsets.only(left: 5),
-                          child: Text(project.leader.nickname,
+                          child: Text(
+                              project.leader != null
+                                  ? project.leader.nickname
+                                  : '',
                               style:
                                   TextStyle(fontSize: 12, color: Colors.black)),
                         )

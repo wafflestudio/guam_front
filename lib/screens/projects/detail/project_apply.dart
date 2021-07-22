@@ -29,7 +29,7 @@ class _ProjectApplyState extends State<ProjectApply> {
           borderWidth: 0.3,
           constraints: BoxConstraints(
               minWidth:
-                  MediaQuery.of(context).size.width * 0.9 / positions.length,
+                  MediaQuery.of(context).size.width * 0.85 / positions.length,
               minHeight: 36),
           isSelected: isSelected,
           onPressed: (idx) {

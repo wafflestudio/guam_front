@@ -35,6 +35,7 @@ class ProjectDetailBody extends StatelessWidget {
 
     return Column(children: [
       Container(
+        padding: EdgeInsets.only(bottom: 100),
         decoration: BoxDecoration(
           color: HexColor("#FFFFFF").withOpacity(0.65),
           borderRadius: BorderRadius.only(
@@ -81,7 +82,7 @@ class ProjectDetailBody extends StatelessWidget {
                           _text("디자이너"),
                         ],
                       ),
-                      width: size.width * 0.35,
+                      width: size.width * 0.3,
                       height: size.height * 0.2,
                       padding: EdgeInsets.only(top: 10),
                     ),
@@ -104,7 +105,7 @@ class ProjectDetailBody extends StatelessWidget {
                               : Text(""),
                         ],
                       ),
-                      width: size.width * 0.35,
+                      width: size.width * 0.3,
                       height: size.height * 0.2,
                       padding: EdgeInsets.only(top: 10),
                     ),
@@ -114,12 +115,15 @@ class ProjectDetailBody extends StatelessWidget {
                         children: [
                           _columnName("인원 현황"),
                           _percentBar(
+                              size,
                               project.backHeadCount - project.backLeftCount,
                               project.backHeadCount),
                           _percentBar(
+                              size,
                               project.frontHeadCount - project.frontLeftCount,
                               project.frontHeadCount),
                           _percentBar(
+                              size,
                               project.designHeadCount - project.designLeftCount,
                               project.designHeadCount)
                         ],
@@ -170,11 +174,11 @@ class ProjectDetailBody extends StatelessWidget {
             fontWeight: FontWeight.bold));
   }
 
-  Widget _percentBar(int currentCount, int totalCount) {
+  Widget _percentBar(Size size, int currentCount, int totalCount) {
     return Padding(
       padding: EdgeInsets.only(top: 5, bottom: 3),
       child: LinearPercentIndicator(
-        width: 79.6,
+        width: size.width * 0.25,
         animation: true,
         lineHeight: 25,
         animationDuration: 500,

@@ -43,7 +43,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
               });
             }),
             Padding(
-              padding: EdgeInsets.only(bottom: 15),
+              padding: EdgeInsets.only(bottom: 15, left: 5, right: 5),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -74,8 +74,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
 
   Widget _applyButton(Size size, Function applyProject) {
     return Container(
-      width: size.width,
-      height: size.height * 0.05,
+      width: size.width * 0.85,
       child: RaisedButton(
           child: Text(
             '참여하기',
