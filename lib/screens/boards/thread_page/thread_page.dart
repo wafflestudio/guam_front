@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../commons/custom_app_bar.dart';
 import '../../../commons/back.dart';
 import '../../../models/boards/thread.dart';
@@ -9,10 +10,10 @@ import 'thread_container.dart';
 import 'comments_container.dart';
 
 class ThreadPage extends StatefulWidget {
-  final Boards boardsProvider;
   final Thread thread;
+  final Future<List<CommentModel.Comment>> comments;
 
-  ThreadPage({this.boardsProvider, this.thread});
+  ThreadPage({this.thread, this.comments});
 
   @override
   State<StatefulWidget> createState() => _ThreadPageState();
@@ -22,12 +23,6 @@ class _ThreadPageState extends State<ThreadPage> {
   Future<List<CommentModel.Comment>> comments;
   CommentModel.Comment editTargetComment;
 
-  void fetchFullThread() {
-    setState(() {
-      comments = widget.boardsProvider.fetchFullThread(widget.thread.id);
-    });
-  }
-
   void switchToEditMode({@required CommentModel.Comment editTargetComment}) {
     setState(() {
       this.editTargetComment = editTargetComment;
@@ -36,14 +31,22 @@ class _ThreadPageState extends State<ThreadPage> {
 
   @override
   void initState() {
-    comments = widget.boardsProvider.fetchFullThread(widget.thread.id);
+    comments = widget.comments;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final boardsProvider = context.watch<Boards>();
+
+    void fetchFullThread() {
+      setState(() {
+        comments = boardsProvider.fetchFullThread(widget.thread.id);
+      });
+    }
+
     Future postComment({Map<String, dynamic> fields, dynamic files}) async {
-      return await widget.boardsProvider.postComment(
+      return await boardsProvider.postComment(
         threadId: widget.thread.id,
         fields: fields,
         files: files,
@@ -54,7 +57,7 @@ class _ThreadPageState extends State<ThreadPage> {
     }
 
     Future editCommentContent({int id, Map<String, dynamic> fields}) async =>
-        await widget.boardsProvider.editCommentContent(
+        await boardsProvider.editCommentContent(
           commentId: id,
           fields: fields
         ).then((successful) {
@@ -69,7 +72,7 @@ class _ThreadPageState extends State<ThreadPage> {
         });
 
     Future deleteComment(int commentId) async {
-      return await widget.boardsProvider.deleteComment(commentId).then((successful) {
+      return await boardsProvider.deleteComment(commentId).then((successful) {
         if (successful) fetchFullThread();
         return successful;
       });

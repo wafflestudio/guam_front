@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../commons/circular_border_container.dart';
 import '../../../models/boards/thread.dart';
 import '../../../commons/profile_thumbnail.dart';
 import 'thread_comment_images.dart';
+import '../accept_decline_button.dart';
+import '../../../providers/boards/boards.dart';
 
 class ThreadContainer extends StatelessWidget {
   final Thread thread;
@@ -13,6 +16,9 @@ class ThreadContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showAcceptDenyButton = ["GUEST", "DECLINED"]
+        .contains(context.read<Boards>().currentBoard.userStates[thread.creator.id]);
+
     return CircularBorderContainer(
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,6 +48,11 @@ class ThreadContainer extends StatelessWidget {
             child: Text(thread.content),
           ),
           if (thread.threadImages.isNotEmpty) ThreadCommentImages(images: thread.threadImages),
+          if (showAcceptDenyButton) AcceptDeclineButton(
+            userId: thread.creator.id,
+            userState: context.read<Boards>().currentBoard.userStates[thread.creator.id],
+            enabled: context.read<Boards>().currentBoard.userStates[thread.creator.id] == "GUEST"
+          )
         ],
       ),
       contentColor: Color.fromRGBO(246, 228, 173, 0.6),

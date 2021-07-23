@@ -45,8 +45,8 @@ class Thread extends StatelessWidget {
             return ChangeNotifierProvider.value(
               value: boardsProvider,
               child: ThreadPage(
-                boardsProvider: boardsProvider,
                 thread: thread,
+                comments: boardsProvider.fetchFullThread(thread.id)
               ),
             );
           })
