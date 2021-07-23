@@ -11,7 +11,7 @@ import '../../models/boards/thread.dart' as ThreadModel;
 import 'thread_page/thread_page.dart';
 import 'thread_page/thread_comment_images.dart';
 import 'bottom_modal/bottom_modal_content.dart';
-import 'accept_deny_button.dart';
+import 'accept_decline_button.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
@@ -22,6 +22,8 @@ class Thread extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Boards boardsProvider = context.read<Boards>();
+
+    final showAcceptDenyButton = ["GUEST", "DECLINED"].contains(boardsProvider.currentBoard.userStates[thread.creator.id]);
 
     Future setNotice() async {
       await boardsProvider.setNotice(thread.id).then((res) {
@@ -125,8 +127,11 @@ class Thread extends StatelessWidget {
                         )
                       ],
                     ),
-                    if (boardsProvider.currentBoard.guestIds.contains(thread.creator.id))
-                      AcceptDenyButton(guestId: thread.creator.id)
+                    if (showAcceptDenyButton) AcceptDeclineButton(
+                      userId: thread.creator.id,
+                      userState: boardsProvider.currentBoard.userStates[thread.creator.id],
+                      enabled: boardsProvider.currentBoard.userStates[thread.creator.id] == "GUEST"
+                    )
                   ],
                 ),
               ),

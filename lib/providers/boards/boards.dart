@@ -339,7 +339,7 @@ class Boards with ChangeNotifier {
     }
   }
 
-  Future acceptDenyGuest({int guestId, bool accept}) async {
+  Future acceptDecline({int userId, bool accept}) async {
     bool res = false;
 
     try {
@@ -347,20 +347,17 @@ class Boards with ChangeNotifier {
 
       await HttpRequest()
         .post(
-          path: "/project/${currentBoard.id}/$guestId",
+          path: "/project/${currentBoard.id}/$userId",
           authToken: authToken,
-          body: { "accept": accept }
+          queryParams: { "accept": "$accept" }
       ).then((response) {
         if (response.statusCode == 200) {
-          print(json.decode(response)); //
-          print("승인/반려가 완료되었습니다.");
+          print("${accept ? "승인" : "반려"}가 완료되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          throw new Exception("오직 프로젝트 리더만 승인/반려가 가능합니다.");
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
