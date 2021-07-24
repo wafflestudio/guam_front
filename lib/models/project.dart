@@ -28,7 +28,7 @@ class Project extends ChangeNotifier {
   Thread notice;
   final List<UserTask> tasks;
   List<Thread> threads;
-  final Map<int, String> userStates; // { LEADER, MEMBER, GUEST, DECLINED }
+  final Map<int, String> userStates; // { LEADER, MEMBER, GUEST, DECLINED, QUIT }
 
   Project({
     @required this.id,
@@ -67,6 +67,7 @@ class Project extends ChangeNotifier {
     if (json['tasks'] != null) {
       tasks = [...json['tasks'].map((e) => UserTask.fromJson(e))];
       tasks.forEach((task) => userStates[task.user.id] = task.state);
+      tasks = [...tasks.where((task) => ["LEADER", "MEMBER"].contains(task.state))];
     }
 
     if (json['techStacks'] != null) {

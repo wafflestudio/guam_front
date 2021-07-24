@@ -7,7 +7,7 @@ import 'task.dart';
 class Tasks extends StatefulWidget {
   final List<UserTask> tasks;
 
-  Tasks(List<UserTask> tasks) : tasks = tasks.where((task) => task.state != "GUEST").toList();
+  Tasks(this.tasks);
 
   @override
   State<StatefulWidget> createState() => TasksState();
