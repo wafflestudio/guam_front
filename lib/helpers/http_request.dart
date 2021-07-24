@@ -23,9 +23,9 @@ class HttpRequest {
     }
   }
 
-  Future post({String authority, String path, String authToken, dynamic body}) async {
+  Future post({String authority, String path, String authToken, dynamic queryParams, dynamic body}) async {
     try {
-      final uri = Uri.http(authority ?? baseAuthority, path);
+      final uri = Uri.http(authority ?? baseAuthority, path, queryParams);
 
       final response = await http.post(
         uri,

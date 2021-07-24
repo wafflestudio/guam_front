@@ -23,7 +23,7 @@ class UserTask extends ChangeNotifier {
       projectId: json["projectId"],
       user: Profile.fromJson(json["user"]),
       task: json["taskMsg"],
-      state: json["state"],
+      state: json["userState"],
     );
   }
 }

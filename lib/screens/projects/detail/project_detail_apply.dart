@@ -16,7 +16,6 @@ class ProjectDetailApply extends StatefulWidget {
 
 class _ProjectDetailApplyState extends State<ProjectDetailApply> {
   String myPosition;
-  List<String> positions = ['BACKEND', 'FRONTEND', 'DESIGNER'];
   final TextEditingController _introductionController = TextEditingController();
 
   @override
@@ -25,25 +24,35 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
     super.dispose();
   }
 
+  void setMyPosition(String position) {
+    setState(() {
+      myPosition = position;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    void applyProject(int projectId, dynamic params) {
-      widget.projectProvider.applyProject(projectId, params);
+    Future applyProject(int projectId, dynamic params) async {
+      return await widget.projectProvider
+          .applyProject(projectId, params)
+          .then((successful) {
+        if (successful) {
+          Navigator.pop(context);
+          widget.projectProvider.fetchProjects();
+          return successful;
+        }
+      });
     }
 
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            ProjectApply((idx) {
-              setState(() {
-                myPosition = positions[idx];
-              });
-            }),
+            ProjectApply(setMyPosition),
             Padding(
-              padding: EdgeInsets.only(bottom: 15),
+              padding: EdgeInsets.only(bottom: 15, left: 5, right: 5),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -59,7 +68,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
-                          "간단히 자기소개를 해주세요. 기술 스택, 개발 경험 등 자세하게 적어주시면 팀 구성에 도움이 된답니다.🚀",
+                      "간단히 자기소개를 해주세요. 기술 스택, 개발 경험 등 자세하게 적어주시면 팀 구성에 도움이 된답니다.🚀",
                       hintStyle: TextStyle(fontSize: 14, color: Colors.black38),
                     ),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
@@ -74,8 +83,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
 
   Widget _applyButton(Size size, Function applyProject) {
     return Container(
-      width: size.width,
-      height: size.height * 0.05,
+      width: size.width * 0.85,
       child: RaisedButton(
           child: Text(
             '참여하기',
@@ -89,7 +97,6 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
               "introduction": _introductionController.text,
               "position": myPosition
             };
-            print(keyMap);
             applyProject(widget.project.id, keyMap);
           }),
     );
