@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:guam_front/models/profile.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class MyProfileTop extends StatelessWidget {
   final Profile me;
@@ -19,9 +20,10 @@ class MyProfileTop extends StatelessWidget {
               // borderRadius: BorderRadius.circular(100),
                 child: (me.imageUrl == null)
                     ? CircleAvatar(
+                    backgroundColor: Colors.black38,
                     radius: 50,
                     child: Icon(Icons.person,
-                        color: Colors.white, size: 100))
+                        color: Colors.white, size: 90))
                     : ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.network(

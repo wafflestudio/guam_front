@@ -20,7 +20,7 @@ class MyPage extends StatelessWidget {
         trailing: authProvider.profileExists()
             ? TextButton(
                 child: Text(
-                  'EDIT',
+                  'Edit',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 14,
@@ -35,7 +35,7 @@ class MyPage extends StatelessWidget {
           ? Center(child: CircularProgressIndicator())
           : authProvider.userSignedIn()
               ? authProvider.profileExists()
-                  ? MyProfile()
+                  ? MyProfile(stacksProvider)
                   : MakeProfilePage(stacksProvider)
               : Container(
                   child: Center(

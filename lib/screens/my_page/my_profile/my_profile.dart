@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/my_page/my_profile/my_profile_bottom.dart';
-import 'package:guam_front/screens/my_page/my_profile/my_profile_top.dart';
 import 'package:guam_front/screens/my_page/my_profile/my_profile_link.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:guam_front/screens/my_page/my_profile/my_profile_top.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/user_auth/authenticate.dart';
 import '../../user_auth/sign_out.dart';
 
 class MyProfile extends StatelessWidget {
+  final Stacks stacksProvider;
+
+  MyProfile(this.stacksProvider);
+
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
@@ -30,7 +34,7 @@ class MyProfile extends StatelessWidget {
                   MyProfileLink(authProvider.me),
                   MyProfileTop(authProvider.me),
                 ]),
-                MyProfileBottom(authProvider.me),
+                MyProfileBottom(authProvider.me, stacksProvider),
               ],
             ),
           ),

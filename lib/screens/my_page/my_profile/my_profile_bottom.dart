@@ -1,15 +1,38 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:guam_front/models/profile.dart';
+import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/my_page/my_profile/my_projects.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class MyProfileBottom extends StatelessWidget {
   final Profile me;
+  final Stacks stacksProvider;
 
-  MyProfileBottom(this.me);
+  MyProfileBottom(this.me, this.stacksProvider);
 
   @override
   Widget build(BuildContext context) {
+    Map techStacks = {
+      'BACKEND': <String>[],
+      'DESIGNER': <String>[],
+      'FRONTEND': <String>[]
+    };
+
+    Map myStacks = json.decode(json.encode(techStacks));
+
+    stacksProvider.stacks.forEach((e) => techStacks[e.position].add(e.name));
+
+    me.skills.forEach((element) {
+      techStacks.forEach((key, value) {
+        if (techStacks[key].contains(element)) myStacks[key].add(element);
+      });
+    });
+    myStacks['백엔드'] = myStacks.remove('BACKEND');
+    myStacks['프론트엔드'] = myStacks.remove('FRONTEND');
+    myStacks['디자이너'] = myStacks.remove('DESIGNER');
+
     final size = MediaQuery.of(context).size;
 
     return Container(
@@ -35,32 +58,48 @@ class MyProfileBottom extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: 100,
-                      padding: EdgeInsets.only(top: 15),
-                      child: Text("백엔드"),
-                    ),
-                    Expanded(
-                      child: _wrap(),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: 100,
-                      padding: EdgeInsets.only(top: 15),
-                      child: Text("프론트엔드"),
-                    ),
-                    Expanded(
-                      child: _wrap(),
-                    ),
-                  ],
-                ),
+                if (myStacks['백엔드'].length != 0)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: 100,
+                        padding: EdgeInsets.only(top: 15),
+                        child: Text("백엔드"),
+                      ),
+                      Expanded(
+                        child: _wrap(myStacks['백엔드']),
+                      ),
+                    ],
+                  ),
+                if (myStacks['프론트엔드'].length != 0)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: 100,
+                        padding: EdgeInsets.only(top: 15),
+                        child: Text("프론트엔드"),
+                      ),
+                      Expanded(
+                        child: _wrap(myStacks['프론트엔드']),
+                      ),
+                    ],
+                  ),
+                if (myStacks['디자이너'].length != 0)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: 100,
+                        padding: EdgeInsets.only(top: 15),
+                        child: Text("디자이너"),
+                      ),
+                      Expanded(
+                        child: _wrap(myStacks['디자이너']),
+                      ),
+                    ],
+                  ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -90,19 +129,12 @@ class MyProfileBottom extends StatelessWidget {
     );
   }
 
-  Widget _wrap() {
+  Widget _wrap(List techStack) {
     return Wrap(
-      spacing: 4,
-      children: [
-        _buildChip("asdf"),
-        _buildChip("aㅁㄴㅇsdf"),
-        _buildChip("asdf"),
-        _buildChip("asㄹㅁㄴㅇdf"),
-        _buildChip("asdf"),
-        _buildChip("asㄹdf"),
-        _buildChip("asdf"),
-      ],
-    );
+        spacing: 4,
+        children: techStack.map((e) {
+          return _buildChip(e);
+        }));
   }
 
   Widget _startBar(String color, double width, double height) {
