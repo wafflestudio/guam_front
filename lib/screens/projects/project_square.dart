@@ -29,23 +29,17 @@ class ProjectSquare extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                  child: Container(
-                decoration: BoxDecoration(
+                child: Container(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: project.thumbnail != ""
-                          ? CachedNetworkImage(
-                              imageUrl: project.thumbnail,
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            )
-                          : AssetImage(
-                              "assets/images/project-square-default.jpeg"),
+                      // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
+                      image: project.thumbnail != "" ? NetworkImage(project.thumbnail) : AssetImage("assets/images/project-square-default.jpeg"),
                       fit: BoxFit.fill,
                     ),
-                    borderRadius: BorderRadius.circular(5)),
-              )),
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                )
+              ),
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
