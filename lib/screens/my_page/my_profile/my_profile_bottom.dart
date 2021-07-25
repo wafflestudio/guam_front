@@ -58,48 +58,19 @@ class MyProfileBottom extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
-                if (myStacks['백엔드'].length != 0)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: 100,
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text("백엔드"),
-                      ),
-                      Expanded(
-                        child: _wrap(myStacks['백엔드']),
-                      ),
-                    ],
-                  ),
-                if (myStacks['프론트엔드'].length != 0)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: 100,
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text("프론트엔드"),
-                      ),
-                      Expanded(
-                        child: _wrap(myStacks['프론트엔드']),
-                      ),
-                    ],
-                  ),
-                if (myStacks['디자이너'].length != 0)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: 100,
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text("디자이너"),
-                      ),
-                      Expanded(
-                        child: _wrap(myStacks['디자이너']),
-                      ),
-                    ],
-                  ),
+                ...myStacks.entries.map((e) => (e.value.length != 0)
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 100,
+                            padding: EdgeInsets.only(top: 15),
+                            child: Text(e.key),
+                          ),
+                          Wrap(spacing: 4, children: _buildChip(e.value)),
+                        ],
+                      )
+                    : Container()),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -129,14 +100,6 @@ class MyProfileBottom extends StatelessWidget {
     );
   }
 
-  Widget _wrap(List techStack) {
-    return Wrap(
-        spacing: 4,
-        children: techStack.map((e) {
-          return _buildChip(e);
-        }));
-  }
-
   Widget _startBar(String color, double width, double height) {
     return Container(
       alignment: Alignment.center,
@@ -151,18 +114,20 @@ class MyProfileBottom extends StatelessWidget {
     );
   }
 
-  Widget _buildChip(String label) {
-    return Chip(
-      backgroundColor: HexColor("#E9E9E9"),
-      side: BorderSide(color: HexColor("#979797"), width: 0.5),
-      labelPadding: EdgeInsets.symmetric(horizontal: 2),
-      label: Text(
-        label,
-        style: TextStyle(
-          fontSize: 12,
-          color: Colors.black,
-        ),
-      ),
-    );
+  List<Widget> _buildChip(List<dynamic> techStack) {
+    return techStack
+        .map<Widget>((i) => Chip(
+              backgroundColor: HexColor("#E9E9E9"),
+              side: BorderSide(color: HexColor("#979797"), width: 0.5),
+              labelPadding: EdgeInsets.symmetric(horizontal: 2),
+              label: Text(
+                i,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              ),
+            ))
+        .toList();
   }
 }

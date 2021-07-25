@@ -15,7 +15,6 @@ class MyProfileTop extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(top: 20),
             child: ClipRRect(
-                // borderRadius: BorderRadius.circular(100),
                 child: (me.imageUrl == null)
                     ? CircleAvatar(
                         backgroundColor: Colors.black38,
