@@ -9,7 +9,7 @@ class BoardsBody extends StatelessWidget {
     final boardsProvider = context.watch<Boards>();
 
     return boardsProvider.boards != null && boardsProvider.boards.length != 0
-        ? Board(boardsProvider.boards[boardsProvider.renderBoardIdx])
+        ? Board(boardsProvider.currentBoard)
         : Container(child: Center(child: Text("참여중인 프로젝트가 없습니다")));
   }
 }
