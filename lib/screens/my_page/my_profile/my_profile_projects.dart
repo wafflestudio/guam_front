@@ -31,14 +31,17 @@ class MyProfileProjects extends StatelessWidget {
                               child: Container(
                             decoration: BoxDecoration(
                                 image: DecorationImage(
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.white.withOpacity(0.5),
+                                      BlendMode.dstATop),
                                   // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
                                   image:
                                       // project.thumbnail != "" ? NetworkImage(project.thumbnail) :
                                       AssetImage(
-                                          "assets/images/project-thumbnail-default.jpeg"),
+                                          "assets/images/project-thumbnail-default.png"),
                                   fit: BoxFit.fill,
                                 ),
-                                borderRadius: BorderRadius.circular(5)),
+                                borderRadius: BorderRadius.circular(20)),
                           )),
                           Positioned.fill(
                             child: Container(
@@ -47,7 +50,9 @@ class MyProfileProjects extends StatelessWidget {
                               child: Text(
                                 e,
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           )
