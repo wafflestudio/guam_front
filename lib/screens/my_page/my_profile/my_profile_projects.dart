@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyProfileProjects extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var titles = ["유튜브 제작", "괌 따라하기", "와플 스튜디오 만들기"];
     return Container(
       padding: EdgeInsets.only(top: 20),
       child: Column(
@@ -17,54 +18,44 @@ class MyProfileProjects extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 5),
-                  child: SizedBox(
-                    width: 140,
-                    child: ElevatedButton(
-                      // GetX 사용 고려?
-                      onPressed: () {},
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 80),
-                        child: Text(
-                          "유튜브 제작하기",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(140, 140),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20), // <-- Radius
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: 140,
-                    child: ElevatedButton(
-                      // GetX 사용 고려?
-                      onPressed: () {},
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 80),
-                        child: Text(
-                          "딥러닝 스터디",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(140, 140),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20), // <-- Radius
-                        ),
+                ...titles.map(
+                  (e) => Container(
+                    height: 150,
+                    width: 150,
+                    margin: EdgeInsets.only(right: 10),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                              child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
+                                  image:
+                                      // project.thumbnail != "" ? NetworkImage(project.thumbnail) :
+                                      AssetImage(
+                                          "assets/images/project-thumbnail-default.jpeg"),
+                                  fit: BoxFit.fill,
+                                ),
+                                borderRadius: BorderRadius.circular(5)),
+                          )),
+                          Positioned.fill(
+                            child: Container(
+                              padding: EdgeInsets.all(20),
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                e,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           )
