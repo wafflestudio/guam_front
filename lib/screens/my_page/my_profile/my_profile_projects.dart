@@ -46,7 +46,7 @@ class MyProfileProjects extends StatelessWidget {
                           Positioned.fill(
                             child: Container(
                               padding: EdgeInsets.all(20),
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomCenter,
                               child: Text(
                                 e,
                                 style: TextStyle(

@@ -38,8 +38,11 @@ class MyProfile extends StatelessWidget {
               ],
             ),
           ),
-          Center(
-            child: SignOut(),
+          Padding(
+            padding: EdgeInsets.only(top: 30),
+            child: Center(
+              child: SignOut(),
+            ),
           )
         ],
       ),
