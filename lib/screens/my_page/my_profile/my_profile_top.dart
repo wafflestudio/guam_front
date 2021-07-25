@@ -15,16 +15,12 @@ class MyProfileTop extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(top: 20),
             child: ClipRRect(
-                child: (me.imageUrl == null)
-                    ? CircleAvatar(
-                        backgroundColor: Colors.black38,
-                        radius: 50,
-                        child:
-                            Icon(Icons.person, color: Colors.white, size: 90))
-                    : CircleAvatar(
-                        backgroundColor: Colors.black38,
-                        radius: 50,
-                        child: Image.network(me.imageUrl))),
+                child: CircleAvatar(
+                    backgroundColor: Colors.black38,
+                    radius: 50,
+                    child: (me.imageUrl == null)
+                        ? Icon(Icons.person, color: Colors.white, size: 90)
+                        : Image.network(me.imageUrl))),
           ),
         ),
         Padding(
