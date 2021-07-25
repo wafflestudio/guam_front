@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
-import 'package:guam_front/screens/my_page/my_profile/my_projects.dart';
 import 'package:hexcolor/hexcolor.dart';
+
+import 'my_profile_projects.dart';
 
 class MyProfileBottom extends StatelessWidget {
   final Profile me;
@@ -91,7 +92,7 @@ class MyProfileBottom extends StatelessWidget {
                     )
                   ],
                 ),
-                MyProjects()
+                MyProfileProjects()
               ],
             ),
           ),

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/providers/boards/boards.dart';
 
 class MyProfileProjects extends StatelessWidget {
-  final Boards boardsProvider;
-  MyProfileProjects(this.boardsProvider);
-
   @override
   Widget build(BuildContext context) {
     return Container(
