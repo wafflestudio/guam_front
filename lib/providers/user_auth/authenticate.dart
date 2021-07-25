@@ -1,9 +1,11 @@
 import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
 import '../../models/profile.dart';
-import '../../helpers/decode_ko.dart';
 
 class Authenticate with ChangeNotifier {
   final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
@@ -14,6 +16,7 @@ class Authenticate with ChangeNotifier {
   bool loading = false;
 
   get kakaoClientId => _kakaoClientId;
+
   get kakaoJavascriptClientId => _kakaoJavascriptClientId;
 
   Authenticate() {
@@ -28,7 +31,7 @@ class Authenticate with ChangeNotifier {
       toggleLoading();
       await HttpRequest().get(
         path: "/kakao",
-        queryParams: { "token": kakaoAccessToken },
+        queryParams: {"token": kakaoAccessToken},
       ).then((response) async {
         final customToken = jsonDecode(response.body)["customToken"];
         await auth.signInWithCustomToken(customToken);
@@ -53,10 +56,12 @@ class Authenticate with ChangeNotifier {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
-        await HttpRequest().get(
-            path: "/user",
-            authToken: authToken
-        ).then((response) {
+        await HttpRequest()
+            .get(
+          path: "/user",
+          authToken: authToken,
+        )
+            .then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
@@ -80,14 +85,15 @@ class Authenticate with ChangeNotifier {
       String authToken = await getFirebaseIdToken();
       print(authToken);
       if (authToken.isNotEmpty) {
-        await HttpRequest().post(
-          path: "/user",
-          body: params,
-          authToken: authToken
-        ).then((response) {
-            if (response.statusCode == 200) {
-              getMyProfile();
-            }
+        await HttpRequest()
+            .postMultipart(
+                path: "/user",
+                fields: {"command": "$params"},
+                authToken: authToken)
+            .then((response) {
+          if (response.statusCode == 200) {
+            getMyProfile();
+          }
         }).then((response) {
           print("Successfully updated profile.");
         });

@@ -35,7 +35,8 @@ class MyPage extends StatelessWidget {
           ? Center(child: CircularProgressIndicator())
           : authProvider.userSignedIn()
               ? authProvider.profileExists()
-                  ? MyProfile(stacksProvider)
+                  ? ChangeNotifierProvider.value(
+                      value: stacksProvider, child: MyProfile())
                   : MakeProfilePage(stacksProvider)
               : Container(
                   child: Center(

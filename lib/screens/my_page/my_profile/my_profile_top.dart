@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/helpers/http_request.dart';
 import 'package:guam_front/models/profile.dart';
 
 class MyProfileTop extends StatelessWidget {
@@ -20,7 +21,8 @@ class MyProfileTop extends StatelessWidget {
                     radius: 50,
                     child: (me.imageUrl == null)
                         ? Icon(Icons.person, color: Colors.white, size: 90)
-                        : Image.network(me.imageUrl))),
+                        : Image.network(
+                            HttpRequest().s3BaseAuthority + me.imageUrl))),
           ),
         ),
         Padding(

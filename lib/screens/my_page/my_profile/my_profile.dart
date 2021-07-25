@@ -9,13 +9,10 @@ import '../../../providers/user_auth/authenticate.dart';
 import '../../user_auth/sign_out.dart';
 
 class MyProfile extends StatelessWidget {
-  final Stacks stacksProvider;
-
-  MyProfile(this.stacksProvider);
-
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
+    final stacksProvider = context.read<Stacks>();
 
     return SingleChildScrollView(
       child: Column(
