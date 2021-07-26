@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:guam_front/helpers/pick_image.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MakeProfileImage extends StatefulWidget {
-  final Size size;
+  final Function onTap;
 
-  MakeProfileImage(this.size);
+  MakeProfileImage({@required this.onTap});
 
   @override
   _MakeProfileImageState createState() => _MakeProfileImageState();
@@ -24,6 +25,8 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,7 +66,7 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
                   onTap: () {
                     showModalBottomSheet(
                         context: context,
-                        builder: ((builder) => bottomSheet(widget.size)));
+                        builder: ((builder) => bottomSheet(size)));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -118,6 +121,8 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
               icon: Icon(Icons.camera),
               onPressed: () {
                 takePhoto(ImageSource.camera);
+                pickImage(type: 'camera')
+                    .then((image) => widget.onTap(image));
               },
               label: Text("카메라"),
             ),
@@ -125,6 +130,8 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
               icon: Icon(Icons.image),
               onPressed: () {
                 takePhoto(ImageSource.gallery);
+                pickImage(type: 'gallery')
+                    .then((image) => widget.onTap(image));
               },
               label: Text("갤러리"),
             ),

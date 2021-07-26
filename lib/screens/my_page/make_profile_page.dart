@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
 import 'package:guam_front/commons/custom_app_bar.dart';
@@ -5,6 +7,7 @@ import 'package:guam_front/models/profile.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/my_page/profile_filter_value_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/user_auth/authenticate.dart';
@@ -25,7 +28,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
   final isSelected = <bool>[false, false, false];
-  List<String> selectedReportList = [];
+  List<String> selectedSkillsList = [];
   Map techStacksInfo = {
     '백엔드': <String>[],
     '프론트엔드': <String>[],
@@ -34,6 +37,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   String selectedKey;
   List<String> filterValues;
   Profile me;
+  PickedFile profileImage;
 
   @override
   void initState() {
@@ -52,6 +56,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     _blogController.dispose();
     _introductionController.dispose();
     super.dispose();
+  }
+
+  void setImageFile(PickedFile val) {
+    setState(() {
+      if (val != null) profileImage = val;
+    });
   }
 
   void selectKey(String key, List<String> value) {
@@ -89,10 +99,17 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     final Size size = MediaQuery.of(context).size;
     final authProvider = context.read<Authenticate>();
 
-    Future setProfile(dynamic body) async {
-      return await authProvider.setProfile(body).then((successful) {
-        Navigator.pop(context);
-        authProvider.getMyProfile();
+    Future setProfile({dynamic body, dynamic files}) async {
+      return await authProvider
+          .setProfile(
+        body: body,
+        files: files,
+      )
+          .then((successful) {
+        if (successful) {
+          Navigator.pop(context);
+          authProvider.getMyProfile();
+        }
       });
     }
 
@@ -113,7 +130,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                   SizedBox(height: 20),
                   Container(color: Colors.grey),
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    MakeProfileImage(size),
+                    MakeProfileImage(onTap: setImageFile),
                     _profileInfo(size, techStacks),
                     _authButton(size, setProfile)
                   ]),
@@ -229,7 +246,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                       techStacks[selectedKey],
                       (selectedList) {
                         setState(() {
-                          selectedReportList = selectedList;
+                          selectedSkillsList = selectedList;
                         });
                       },
                     ),
@@ -312,9 +329,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             "blogUrl": _blogController.text,
             "githubUrl": _githubIdController.text,
             "introduction": _introductionController.text,
-            "skills": selectedReportList
+            "skills": selectedSkillsList
           };
-          setProfile(keyMap);
+          setProfile(body: keyMap, files: [File(profileImage.path)]);
         },
         child: Container(
           alignment: Alignment.center,
