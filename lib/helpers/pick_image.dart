@@ -12,5 +12,6 @@ Future<PickedFile> pickImage({@required type}) async {
       break;
     default:
       print("We can pick images from either gallery or camera.");
+      return null;
   }
 }

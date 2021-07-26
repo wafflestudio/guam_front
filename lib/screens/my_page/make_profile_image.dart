@@ -1,27 +1,25 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:guam_front/helpers/http_request.dart';
 import 'package:guam_front/helpers/pick_image.dart';
+import 'package:guam_front/models/profile.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class MakeProfileImage extends StatefulWidget {
   final Function onTap;
+  final Profile profile;
 
-  MakeProfileImage({@required this.onTap});
+  MakeProfileImage({@required this.onTap, @required this.profile});
 
   @override
   _MakeProfileImageState createState() => _MakeProfileImageState();
 }
 
 class _MakeProfileImageState extends State<MakeProfileImage> {
-  final ImagePicker _picker = ImagePicker();
   PickedFile _imageFile;
-
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
-    setState(() => _imageFile = pickedFile);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +41,22 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
             width: 110,
             height: 110,
             child: _imageFile == null
-                ? Icon(Icons.person, color: Colors.white, size: 100)
+                ? widget.profile.imageUrl == null
+                    ? Icon(Icons.person, color: Colors.white, size: 100)
+                    : ClipOval(
+                        child: FadeInImage(
+                            placeholder: MemoryImage(kTransparentImage),
+                            fit: BoxFit.cover,
+                            image: NetworkImage(HttpRequest().s3BaseAuthority +
+                                widget.profile.imageUrl)),
+                      )
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image(
                       image: FileImage(File(_imageFile.path)),
                       fit: BoxFit.fill,
                     )),
-            decoration: _imageFile == null
+            decoration: _imageFile == null && widget.profile.imageUrl == null
                 ? BoxDecoration(boxShadow: [
                     BoxShadow(
                         blurRadius: 1,
@@ -120,18 +126,20 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
             TextButton.icon(
               icon: Icon(Icons.camera),
               onPressed: () {
-                takePhoto(ImageSource.camera);
-                pickImage(type: 'camera')
-                    .then((image) => widget.onTap(image));
+                pickImage(type: 'camera').then((image) {
+                  widget.onTap(image);
+                  _imageFile = image;
+                });
               },
               label: Text("카메라"),
             ),
             TextButton.icon(
               icon: Icon(Icons.image),
               onPressed: () {
-                takePhoto(ImageSource.gallery);
-                pickImage(type: 'gallery')
-                    .then((image) => widget.onTap(image));
+                pickImage(type: 'gallery').then((image) {
+                  widget.onTap(image);
+                  _imageFile = image;
+                });
               },
               label: Text("갤러리"),
             ),

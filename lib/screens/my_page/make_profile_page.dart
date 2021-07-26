@@ -130,7 +130,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                   SizedBox(height: 20),
                   Container(color: Colors.grey),
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    MakeProfileImage(onTap: setImageFile),
+                    MakeProfileImage(onTap: setImageFile, profile: me),
                     _profileInfo(size, techStacks),
                     _authButton(size, setProfile)
                   ]),
@@ -331,7 +331,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             "introduction": _introductionController.text,
             "skills": selectedSkillsList
           };
-          setProfile(body: keyMap, files: [File(profileImage.path)]);
+          setProfile(
+              body: keyMap,
+              files: [File(profileImage.path)]);
         },
         child: Container(
           alignment: Alignment.center,
