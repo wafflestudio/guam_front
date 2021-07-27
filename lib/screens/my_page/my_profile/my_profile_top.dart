@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/helpers/http_request.dart';
 import 'package:guam_front/models/profile.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class MyProfileTop extends StatelessWidget {
   final Profile me;
@@ -14,7 +12,7 @@ class MyProfileTop extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Align(
-          child: Container(
+          child: Padding(
             padding: EdgeInsets.only(top: 20),
             child: ClipRRect(
                 child: CircleAvatar(
@@ -22,14 +20,7 @@ class MyProfileTop extends StatelessWidget {
                     radius: 50,
                     child: (me.imageUrl == null)
                         ? Icon(Icons.person, color: Colors.white, size: 90)
-                        : ClipOval(
-                            child: FadeInImage(
-                                placeholder: MemoryImage(kTransparentImage),
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    HttpRequest().s3BaseAuthority +
-                                        me.imageUrl)),
-                          ))),
+                        : Image.network(me.imageUrl))),
           ),
         ),
         Padding(

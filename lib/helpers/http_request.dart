@@ -45,19 +45,26 @@ class HttpRequest {
 
       MultipartRequest request = MultipartRequest("POST", uri);
       request.headers['Authorization'] = authToken;
-      fields.entries.forEach((e) => request.fields[e.key] = e.value);
-      files.forEach((e) async {
-        final multipartFile = http.MultipartFile(
-          "imageFiles",
-          e.readAsBytes().asStream(),
-          e.lengthSync(),
-          filename: e.path.split("/").last,
-          contentType: MediaType("image", "${p.extension(e.path)}")
-        );
-
-        request.files.add(multipartFile);
+      fields.entries.forEach((e) {
+        if (e.key == 'command'){
+          print(request.fields[e.key].runtimeType);
+        }
+        else{
+          request.fields[e.key] = e.value;
+        }
       });
-
+      // fields.entries.forEach((e) => request.fields[e.key] = e.value);
+      if (files != null)
+        files.forEach((e) async {
+          final multipartFile = http.MultipartFile(
+              "imageFiles",
+              e.readAsBytes().asStream(),
+              e.lengthSync(),
+              filename: e.path.split("/").last,
+              contentType: MediaType("image", "${p.extension(e.path)}")
+          );
+          request.files.add(multipartFile);
+        });
       final response = await request.send();
 
       return response;

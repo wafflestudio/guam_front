@@ -37,6 +37,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   String selectedKey;
   List<String> filterValues;
   Profile me;
+  bool wilUpdateImage;
   PickedFile profileImage;
 
   @override
@@ -46,6 +47,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     _githubIdController.text = me.githubUrl;
     _blogController.text = me.blogUrl;
     _introductionController.text = me.introduction;
+    wilUpdateImage = false;
     super.initState();
   }
 
@@ -60,6 +62,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
   void setImageFile(PickedFile val) {
     setState(() {
+      wilUpdateImage = true;
       if (val != null) profileImage = val;
     });
   }
@@ -99,17 +102,17 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     final Size size = MediaQuery.of(context).size;
     final authProvider = context.read<Authenticate>();
 
-    Future setProfile({dynamic body, dynamic files}) async {
+    Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
       return await authProvider
           .setProfile(
-        body: body,
+        fields: fields,
         files: files,
       )
           .then((successful) {
-        if (successful) {
-          Navigator.pop(context);
-          authProvider.getMyProfile();
-        }
+        // if (successful) {
+        // Navigator.pop(context);
+        authProvider.getMyProfile();
+        // }
       });
     }
 
@@ -329,11 +332,13 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             "blogUrl": _blogController.text,
             "githubUrl": _githubIdController.text,
             "introduction": _introductionController.text,
-            "skills": selectedSkillsList
+            "skills": selectedSkillsList,
+            "wilUpdateImage": wilUpdateImage,
           };
           setProfile(
-              body: keyMap,
-              files: [File(profileImage.path)]);
+            fields: keyMap,
+            files: wilUpdateImage ? [File(profileImage.path)] : null,
+          );
         },
         child: Container(
           alignment: Alignment.center,

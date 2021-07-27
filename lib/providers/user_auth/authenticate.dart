@@ -79,7 +79,7 @@ class Authenticate with ChangeNotifier {
     }
   }
 
-  Future setProfile({dynamic body, dynamic files}) async {
+  Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
@@ -88,15 +88,28 @@ class Authenticate with ChangeNotifier {
         await HttpRequest()
             .postMultipart(
                 path: "/user",
-                fields: {"command": "$body"},
+                fields: {"command": fields},
                 files: files,
                 authToken: authToken)
             .then((response) {
           if (response.statusCode == 200) {
             getMyProfile();
+            print("Successfully updated profile.");
           }
-        }).then((response) {
-          print("Successfully updated profile.");
+          if (response.statusCode == 201) {
+            print("Successfully created profile.");
+          }
+          if (response.statusCode == 401) {
+            print("Unauthorized.");
+          }
+          if (response.statusCode == 403) {
+            print("Forbidden to set a profile.");
+          }
+          if (response.statusCode == 404) {
+            print("Not Found");
+          } else {
+            print("Error : ${response.statusCode}");
+          }
         });
       }
     } catch (e) {
