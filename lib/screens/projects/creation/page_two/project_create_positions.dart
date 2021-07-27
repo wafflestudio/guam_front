@@ -8,8 +8,10 @@ class ProjectCreatePositions extends StatefulWidget {
   final Map input;
   final Map<dynamic, List<dynamic>> filterOptions;
   final List<bool> isDataFilled;
+  final Function checkDataFilled;
 
-  ProjectCreatePositions(this.input, this.filterOptions, this.isDataFilled);
+  ProjectCreatePositions(
+      this.input, this.filterOptions, this.isDataFilled, this.checkDataFilled);
 
   @override
   _ProjectCreatePositionsState createState() => _ProjectCreatePositionsState();
@@ -64,13 +66,12 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                         padding: EdgeInsets.only(left: 10),
                         child: Wrap(
                           children: [
-                            ...filterValues
-                                .map((e) => CreateFilterValueChip(
-                                      content: e,
-                                      selected:
-                                          widget.input[selectedKey]["stack"] == e,
-                                      selectValue: selectValue,
-                                    ))
+                            ...filterValues.map((e) => CreateFilterValueChip(
+                                  content: e,
+                                  selected:
+                                      widget.input[selectedKey]["stack"] == e,
+                                  selectValue: selectValue,
+                                ))
                           ],
                         ),
                       )
@@ -117,8 +118,9 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
               Icons.remove,
               color: Colors.white,
             ),
-            onPressed: () =>
-                {if (selectedKey != null) minusHeadcount(selectedKey)},
+            onPressed: () => {
+              if (selectedKey != null) minusHeadcount(selectedKey),
+            },
           ),
         ),
         Container(
@@ -215,7 +217,8 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
 
   void minusHeadcount(tech) {
     setState(() {
-      if (widget.input[tech]["headcount"] > 0) widget.input[tech]["headcount"]--;
+      if (widget.input[tech]["headcount"] > 0)
+        widget.input[tech]["headcount"]--;
     });
   }
 
@@ -228,6 +231,6 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
 
   void selectValue(String value) {
     setState(() => widget.input[selectedKey]["stack"] = value);
+    widget.checkDataFilled();
   }
-
 }

@@ -15,38 +15,10 @@ class _SavePageState extends State<SavePage> {
   @override
   Widget build(BuildContext context) {
     return (widget.page == 3
-        // && input['myPosition'] != ''
         ? Container(
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
             child: InkWell(
-              onTap: () {
-                // final projectInfo = {
-                //   "title": input['title'],
-                //   "due": input['period'],
-                //   "description": input['description'],
-                //   "backLeftCnt": input['백엔드']['headcount'],
-                //   "designLeftCnt": input['디자이너']['headcount'],
-                //   "frontLeftCnt": input['프론트엔드']['headcount'],
-                //   "myPosition": input['myPosition'],
-                //   "thumbnail": input['thumbnail'],
-                //   "techStackIds": [
-                //     {
-                //       "first": setTechStackIdx(input['백엔드']['stack'], '백엔드'),
-                //       "second": "BACKEND"
-                //     },
-                //     {
-                //       "first":
-                //       setTechStackIdx(input['프론트엔드']['stack'], '프론트엔드'),
-                //       "second": "FRONTEND"
-                //     },
-                //     {
-                //       "first": setTechStackIdx(input['디자이너']['stack'], '디자이너'),
-                //       "second": "DESIGNER"
-                //     }
-                //   ]
-                // };
-                // createProject(projectInfo);
-              },
+              onTap: () {},
               child: Container(
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width * 0.45,

@@ -31,9 +31,16 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
     super.initState();
   }
 
+  void checkDataFilled() {
+    setState(() {
+      if (widget.input['백엔드']['stack'] != '') isDataFilled[0] = true;
+      if (widget.input['프론트엔드']['stack'] != '') isDataFilled[1] = true;
+      if (widget.input['디자이너']['stack'] != '') isDataFilled[2] = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(isDataFilled);
     return Column(
       children: [
         Container(
@@ -59,7 +66,8 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             ),
           ),
         ),
-        ProjectCreatePositions(widget.input, widget.filterOptions, isDataFilled),
+        ProjectCreatePositions(
+            widget.input, widget.filterOptions, isDataFilled, checkDataFilled),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
