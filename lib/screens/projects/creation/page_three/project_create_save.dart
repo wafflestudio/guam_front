@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
@@ -36,9 +39,12 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
     }
   }
 
-  Future createProject(dynamic body) async {
+  Future createProject({Map<String, dynamic> fields, dynamic files}) async {
     return await widget.projectProvider
-        .createProject(body)
+        .createProject(
+      fields: fields,
+      files: files,
+    )
         .then((successful) {
       if (successful) {
         Navigator.pop(context);
@@ -47,6 +53,18 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       }
     });
   }
+
+  // Future createProject(dynamic body) async {
+  //   return await widget.projectProvider
+  //       .createProject(body)
+  //       .then((successful) {
+  //     if (successful) {
+  //       Navigator.pop(context);
+  //       widget.projectProvider.fetchProjects();
+  //       return successful;
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +77,14 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
                   "title": widget.input['title'],
                   "due": widget.input['period'],
                   "description": widget.input['description'],
+                  // HeadCnt 부분이 int로 넘어가야하는데,
+                  // http_request.dart의 postMultipart 함수에서 사용하는
+                  // MultipartRequest 클래스에서 정의된 fields가 Map<String, String>이라 문제!
                   "backHeadCnt": widget.input['백엔드']['headcount'],
                   "designHeadCnt": widget.input['디자이너']['headcount'],
                   "frontHeadCnt": widget.input['프론트엔드']['headcount'],
                   "myPosition": widget.input['myPosition'],
+                  // techStackIds도 String이 아니라 List라는 점이 문제!
                   "techStackIds": [
                     if (widget.input['백엔드']['stack'] != '')
                       setTechStackIdx(widget.input['백엔드']['stack'], '백엔드'),
@@ -71,10 +93,10 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
                     if (widget.input['디자이너']['stack'] != '')
                       setTechStackIdx(widget.input['디자이너']['stack'], '디자이너'),
                   ],
-                  "imageFiles": null,
                 };
+                print(<File>[File(widget.input['thumbnail'].path)]);
                 print(projectInfo);
-                createProject(projectInfo);
+                createProject(fields: projectInfo, files: <File>[File(widget.input['thumbnail'].path)]);
               },
               child: Container(
                 alignment: Alignment.center,

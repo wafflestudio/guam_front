@@ -113,7 +113,7 @@ class Projects with ChangeNotifier {
     }
   }
 
-  Future createProject(dynamic queryParams) async {
+  Future createProject({Map<String, dynamic> fields, dynamic files}) async {
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
@@ -121,7 +121,12 @@ class Projects with ChangeNotifier {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .post(path: "/project", body: queryParams, authToken: authToken)
+            .postMultipart(
+              path: "/project",
+              authToken: authToken,
+              fields: fields,
+              files: files,
+            )
             .then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
@@ -153,6 +158,47 @@ class Projects with ChangeNotifier {
       loading = false;
     }
   }
+
+  // Future createProject(dynamic queryParams) async {
+  //   try {
+  //     loading = true;
+  //     String authToken = await _authProvider.getFirebaseIdToken();
+  //     bool res = false;
+  //
+  //     if (authToken.isNotEmpty) {
+  //       await HttpRequest()
+  //           .post(path: "/project", body: queryParams, authToken: authToken)
+  //           .then((response) {
+  //         if (response.statusCode == 200) {
+  //           final jsonUtf8 = decodeKo(response);
+  //           _projectToBeCreated = json.decode(jsonUtf8)["data"];
+  //           print("프로젝트가 생성되었습니다.");
+  //           res = true;
+  //         }
+  //         if (response.statusCode == 400) {
+  //           print("불충분한 정보입니다");
+  //         }
+  //         if (response.statusCode == 401) {
+  //           print("프로젝트를 생성하려면 로그인이 필요합니다.");
+  //           // alert message confirm 후 redirect 시키기
+  //           // context 사용하지 않고 navigation 구현하는 GetX라는 라이브러리도 있네요.
+  //           // Get.to(MyPage())
+  //         }
+  //         if (response.statusCode == 403) {
+  //           print("최대 3개의 프로젝트에만 참여할 수 있습니다.");
+  //         }
+  //         if (response.statusCode == 404) {
+  //           print("프로젝트 생성에 필요한 정보를 모두 채워야 합니다.");
+  //         }
+  //       });
+  //     }
+  //     return res;
+  //   } catch (e) {
+  //     print(e);
+  //   } finally {
+  //     loading = false;
+  //   }
+  // }
 
   Future applyProject(int projectId, dynamic queryParams) async {
     try {

@@ -31,6 +31,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
     '디자이너': {'id': 0, 'stack': '', 'headcount': 0},
     'myPosition': '',
+    'thumbnail': null,
   };
   final _projectNameController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
@@ -65,7 +66,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       });
     }
 
-    print(input);
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 만들기',
