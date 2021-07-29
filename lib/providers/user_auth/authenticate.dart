@@ -80,6 +80,7 @@ class Authenticate with ChangeNotifier {
   }
 
   Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
+  // Future setProfile({String fields, dynamic files}) async {
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
@@ -88,7 +89,7 @@ class Authenticate with ChangeNotifier {
         await HttpRequest()
             .postMultipart(
                 path: "/user",
-                fields: {"command": fields},
+                fields: {'command' : fields},
                 files: files,
                 authToken: authToken)
             .then((response) {

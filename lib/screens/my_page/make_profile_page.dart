@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -103,6 +104,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     final authProvider = context.read<Authenticate>();
 
     Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
+      // Future setProfile({String fields, dynamic files}) async {
       return await authProvider
           .setProfile(
         fields: fields,
@@ -134,15 +136,15 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                   Container(color: Colors.grey),
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                     MakeProfileImage(onTap: setImageFile, profile: me),
-                    _profileInfo(size, techStacks),
-                    _authButton(size, setProfile)
+                    _profileInfo(techStacks),
+                    _authButton(setProfile)
                   ]),
                 ],
               ),
             )));
   }
 
-  Widget _profileInfo(Size size, Map<dynamic, List<dynamic>> techStacks) {
+  Widget _profileInfo(Map<dynamic, List<dynamic>> techStacks) {
     return Container(
       padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
       child: Form(
@@ -322,7 +324,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  Widget _authButton(Size size, Function setProfile) {
+  Widget _authButton(Function setProfile) {
     return Container(
       padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
       child: InkWell(
@@ -337,6 +339,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           };
           setProfile(
             fields: keyMap,
+            // fields: json.encode(keyMap),
             files: wilUpdateImage ? [File(profileImage.path)] : null,
           );
         },

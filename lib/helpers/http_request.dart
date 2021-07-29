@@ -47,7 +47,8 @@ class HttpRequest {
       request.headers['Authorization'] = authToken;
       fields.entries.forEach((e) {
         if (e.key == 'command'){
-          print(request.fields[e.key].runtimeType);
+          print(json.encode(fields));
+          request.fields['command'] = json.encode(fields);
         }
         else{
           request.fields[e.key] = e.value;
