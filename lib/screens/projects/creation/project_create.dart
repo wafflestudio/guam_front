@@ -73,7 +73,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       ProjectCreatePageOne(
                           input,
                           periodSelected,
-                          _projectDescriptionController,
                           goToNextPage),
                     if (_currentPage == 2)
                       ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),

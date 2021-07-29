@@ -121,13 +121,14 @@ class Projects with ChangeNotifier {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipartDio(
+            .postMultipart(
               path: "/project",
               authToken: authToken,
-              fields: fields,
+              fields: {"title": "ㅗㅗㅗ", "due": "THREE", "description": "ㅛ", "backHeadCnt": "1", "designHeadCnt": "2", "frontHeadCnt": "3", "myPosition": "FRONTEND", "frontStackId": "1", "backStackId": "2", "designStackId": "3"},
               files: files,
             )
             .then((response) {
+              print(response.statusCode);
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             _projectToBeCreated = json.decode(jsonUtf8)["data"];

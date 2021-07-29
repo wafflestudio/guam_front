@@ -10,8 +10,7 @@ class ProjectCreatePositions extends StatefulWidget {
   final List<bool> isDataFilled;
   final Function checkDataFilled;
 
-  ProjectCreatePositions(
-      this.input, this.filterOptions, this.isDataFilled, this.checkDataFilled);
+  ProjectCreatePositions(this.input, this.filterOptions, this.isDataFilled, this.checkDataFilled);
 
   @override
   _ProjectCreatePositionsState createState() => _ProjectCreatePositionsState();
@@ -23,6 +22,9 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.input);
+    print(widget.filterOptions);
+
     return Column(
       children: [
         Container(
@@ -68,8 +70,7 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                           children: [
                             ...filterValues.map((e) => CreateFilterValueChip(
                                   content: e,
-                                  selected:
-                                      widget.input[selectedKey]["stack"] == e,
+                                  selected: widget.input[selectedKey]["stack"] == e,
                                   selectValue: selectValue,
                                 ))
                           ],

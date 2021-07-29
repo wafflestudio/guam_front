@@ -70,21 +70,32 @@ class HttpRequest {
     try {
       final uri = Uri.http(authority ?? baseAuthority, path);
 
-      // var formData;
-      //
-      // if (files.length <= 1) {
-      //   print("Only 1 file attached");
-      //   fields["file"] = await MultipartFile.fromFile(files[0].path, filename: files[0].path);
-      //   formData = FormData.fromMap(fields);
-      // } else {
-      //   print("Multi files attached");
-      //   formData = FormData.fromMap(fields);
-      //   formData.files.addAll(files.map((e) => MapEntry("files", MultipartFile.fromFileSync(e.path, filename: e.path))));
-      // }
+      var formData;
+
+      if (files.length <= 1) {
+        print("Only 1 file attached");
+        var newFileds = {
+          "title": "이걸 왜 안되냐 개같은 ",
+          "description": "now encoding??",
+          "thumbnail": null,
+          "frontHeadCnt": '1',
+          "backHeadCnt": '2',
+          "designHeadCnt": '3',
+          "frontStackId": '1',
+          "backStackId": '2',
+          "designStackId": '3',
+        };
+        //fields["imageFiles"] = await MultipartFile.fromFile(files[0].path, filename: files[0].path);
+        formData = FormData.fromMap(newFileds);
+      } else {
+        print("Multi files attached");
+        formData = FormData.fromMap(fields);
+        formData.files.addAll(files.map((e) => MapEntry("imageFiles", MultipartFile.fromFileSync(e.path, filename: e.path))));
+      }
 
       print(uri.toString());
 
-      var response = await Dio().post(uri.toString(), data: FormData.fromMap(fields));
+      var response = await Dio().post(uri.toString(), data: formData);
 
       return response;
     } catch (e) {

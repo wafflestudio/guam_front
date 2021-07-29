@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/next_page.dart';
 import 'package:guam_front/commons/previous_page.dart';
+import 'package:guam_front/models/stack.dart' as StackModel;
 import 'package:guam_front/screens/projects/creation/page_two/project_create_positions.dart';
 
 class ProjectCreatePageTwo extends StatefulWidget {
   final Map input;
-  final Map<dynamic, List<dynamic>> filterOptions;
+  final Map<String, List<StackModel.Stack>> filterOptions;
   final Function goToNextPage;
   final Function goToPreviousPage;
 
@@ -66,8 +67,7 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             ),
           ),
         ),
-        ProjectCreatePositions(
-            widget.input, widget.filterOptions, isDataFilled, checkDataFilled),
+        ProjectCreatePositions(widget.input, widget.filterOptions, isDataFilled, checkDataFilled),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

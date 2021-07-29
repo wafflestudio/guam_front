@@ -7,15 +7,11 @@ import 'package:guam_front/screens/projects/creation/page_one/project_create_tit
 class ProjectCreatePageOne extends StatefulWidget {
   final Map input;
   final List<bool> periodSelected;
-  final TextEditingController _projectNameController;
-  final TextEditingController _projectDescriptionController;
   final Function goToNextPage;
 
   ProjectCreatePageOne(
     this.input,
     this.periodSelected,
-    this._projectNameController,
-    this._projectDescriptionController,
     this.goToNextPage,
   );
 
@@ -62,37 +58,9 @@ class _ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
               ),
             ),
           ),
-          ProjectCreateTitle(widget.input, widget._projectNameController,
-              onChanged: () {
-            setState(() {
-              if (widget._projectNameController.text != '') {
-                isDataFilled[0] = true;
-              } else {
-                isDataFilled[0] = false;
-              }
-            });
-          }),
-          ProjectCreatePeriod(widget.input, widget.periodSelected,
-              onChanged: () {
-            setState(() {
-              if (widget.input['period'] != '') {
-                isDataFilled[1] = true;
-              } else {
-                isDataFilled[1] = false;
-              }
-            });
-          }),
-          ProjectCreateDescription(
-              widget.input, widget._projectDescriptionController,
-              onChanged: () {
-            setState(() {
-              if (widget._projectDescriptionController.text != '') {
-                isDataFilled[2] = true;
-              } else {
-                isDataFilled[2] = false;
-              }
-            });
-          }),
+          ProjectCreateTitle(widget.input),
+          ProjectCreatePeriod(widget.input, widget.periodSelected),
+          ProjectCreateDescription(widget.input),
           NextPage(
             page: 1,
             onTap: widget.goToNextPage,
