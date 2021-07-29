@@ -6,9 +6,9 @@ import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/creation/page_one/project_create_page_one.dart';
 import 'package:guam_front/screens/projects/creation/page_three/project_create_page_three.dart';
 import 'package:guam_front/screens/projects/creation/page_two/project_create_page_two.dart';
-
 import '../../../commons/back.dart';
 import '../../../commons/custom_app_bar.dart';
+import '../../../models/stack.dart' as StackModel;
 
 class CreateProjectScreen extends StatefulWidget {
   final Projects projectProvider;
@@ -33,39 +33,29 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'myPosition': '',
     'thumbnail': null,
   };
-  final _projectNameController = TextEditingController();
+  Map<String, List<StackModel.Stack>> _filterOptions = {
+    'BACKEND': [],
+    'DESIGNER': [],
+    'FRONTEND': [],
+  };
+
   final _projectDescriptionController = TextEditingController();
   final periodSelected = <bool>[false, false, false, false];
   final positionSelected = <bool>[false, false, false];
+
   int _currentPage = 1;
 
   @override
+  void initState() {
+    widget.stacksProvider.stacks.forEach((e) => _filterOptions[e.position].add(e));
+    super.initState();
+  }
+
+  void goToNextPage() => setState(() {_currentPage++;});
+  void goToPreviousPage() => setState(() {_currentPage--;});
+
+  @override
   Widget build(BuildContext context) {
-    var _filterOptions = {
-      'BACKEND': <String>[],
-      'DESIGNER': <String>[],
-      'FRONTEND': <String>[]
-    };
-
-    widget.stacksProvider.stacks
-        .forEach((e) => _filterOptions[e.position].add(e.name));
-
-    _filterOptions['백엔드'] = _filterOptions.remove('BACKEND');
-    _filterOptions['프론트엔드'] = _filterOptions.remove('FRONTEND');
-    _filterOptions['디자이너'] = _filterOptions.remove('DESIGNER');
-
-    void goToNextPage() {
-      setState(() {
-        _currentPage++;
-      });
-    }
-
-    void goToPreviousPage() {
-      setState(() {
-        _currentPage--;
-      });
-    }
-
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 만들기',
@@ -83,12 +73,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       ProjectCreatePageOne(
                           input,
                           periodSelected,
-                          _projectNameController,
                           _projectDescriptionController,
                           goToNextPage),
                     if (_currentPage == 2)
-                      ProjectCreatePageTwo(input, _filterOptions, goToNextPage,
-                          goToPreviousPage),
+                      ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
                     if (_currentPage == 3)
                       ProjectCreatePageThree(
                           input,
