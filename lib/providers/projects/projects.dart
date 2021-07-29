@@ -121,7 +121,7 @@ class Projects with ChangeNotifier {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipart(
+            .postMultipartDio(
               path: "/project",
               authToken: authToken,
               fields: fields,
@@ -139,9 +139,6 @@ class Projects with ChangeNotifier {
           }
           if (response.statusCode == 401) {
             print("프로젝트를 생성하려면 로그인이 필요합니다.");
-            // alert message confirm 후 redirect 시키기
-            // context 사용하지 않고 navigation 구현하는 GetX라는 라이브러리도 있네요.
-            // Get.to(MyPage())
           }
           if (response.statusCode == 403) {
             print("최대 3개의 프로젝트에만 참여할 수 있습니다.");

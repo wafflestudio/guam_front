@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io' show File, HttpHeaders;
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as p;
+import 'package:dio/dio.dart';
 
 class HttpRequest {
   final String baseAuthority = "15.164.72.46:8080";
@@ -43,7 +43,7 @@ class HttpRequest {
     try {
       final uri = Uri.http(authority ?? baseAuthority, path);
 
-      MultipartRequest request = MultipartRequest("POST", uri);
+      http.MultipartRequest request = http.MultipartRequest("POST", uri);
       request.headers['Authorization'] = authToken;
       fields.entries.forEach((e) => request.fields[e.key] = e.value);
       files.forEach((e) async {
@@ -59,6 +59,32 @@ class HttpRequest {
       });
 
       final response = await request.send();
+
+      return response;
+    } catch (e) {
+      print("Error on POST Multipart request: $e");
+    }
+  }
+
+  Future postMultipartDio({String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files}) async {
+    try {
+      final uri = Uri.http(authority ?? baseAuthority, path);
+
+      // var formData;
+      //
+      // if (files.length <= 1) {
+      //   print("Only 1 file attached");
+      //   fields["file"] = await MultipartFile.fromFile(files[0].path, filename: files[0].path);
+      //   formData = FormData.fromMap(fields);
+      // } else {
+      //   print("Multi files attached");
+      //   formData = FormData.fromMap(fields);
+      //   formData.files.addAll(files.map((e) => MapEntry("files", MultipartFile.fromFileSync(e.path, filename: e.path))));
+      // }
+
+      print(uri.toString());
+
+      var response = await Dio().post(uri.toString(), data: FormData.fromMap(fields));
 
       return response;
     } catch (e) {

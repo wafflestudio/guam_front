@@ -41,11 +41,10 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
 
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
     return await widget.projectProvider
-        .createProject(
+    .createProject(
       fields: fields,
       files: files,
-    )
-        .then((successful) {
+    ).then((successful) {
       if (successful) {
         Navigator.pop(context);
         widget.projectProvider.fetchProjects();
@@ -94,9 +93,11 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
                       setTechStackIdx(widget.input['디자이너']['stack'], '디자이너'),
                   ],
                 };
-                print(<File>[File(widget.input['thumbnail'].path)]);
-                print(projectInfo);
-                createProject(fields: projectInfo, files: <File>[File(widget.input['thumbnail'].path)]);
+
+                createProject(
+                  fields: projectInfo,
+                  files: widget.input['thumbnail'] != null ? [File(widget.input['thumbnail'].path)] : null
+                );
               },
               child: Container(
                 alignment: Alignment.center,
