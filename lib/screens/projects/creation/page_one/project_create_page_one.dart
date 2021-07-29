@@ -29,7 +29,7 @@ class _ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
   @override
   void initState() {
     if (widget.input['title'] == '') isDataFilled[0] = false;
-    if (widget.input['period'] == -1) isDataFilled[1] = false;
+    if (widget.input['period'] == '') isDataFilled[1] = false;
     if (widget.input['description'] == '') isDataFilled[2] = false;
     super.initState();
   }
@@ -75,7 +75,7 @@ class _ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
           ProjectCreatePeriod(widget.input, widget.periodSelected,
               onChanged: () {
             setState(() {
-              if (widget.input['period'] != -1) {
+              if (widget.input['period'] != '') {
                 isDataFilled[1] = true;
               } else {
                 isDataFilled[1] = false;

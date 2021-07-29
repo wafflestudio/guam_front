@@ -16,7 +16,23 @@ class ProjectCreatePeriod extends StatefulWidget {
 class _ProjectCreatePeriodState extends State<ProjectCreatePeriod> {
   void savePeriod(idx) {
     setState(() {
-      widget.input["period"] = idx;
+      switch (idx) {
+        case 0:
+          widget.input["period"] = 'ONE';
+          break;
+        case 1:
+          widget.input["period"] = 'THREE';
+          break;
+        case 2:
+          widget.input["period"] = 'SIX';
+          break;
+        case 3:
+          widget.input["period"] = 'MORE';
+          break;
+        default:
+          widget.input["period"] = 'UNDEFINED';
+          break;
+      }
     });
   }
 

@@ -25,13 +25,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   List<String> filterValues;
   Map input = {
     'title': '',
-    'period': 0,
+    'period': 'UNDEFINED',
     'description': '',
     '백엔드': {'id': 0, 'stack': '', 'headcount': 0},
     '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
     '디자이너': {'id': 0, 'stack': '', 'headcount': 0},
     'myPosition': '',
-    'thumbnail': '',
   };
   final _projectNameController = TextEditingController();
   final _projectDescriptionController = TextEditingController();
@@ -53,16 +52,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     _filterOptions['백엔드'] = _filterOptions.remove('BACKEND');
     _filterOptions['프론트엔드'] = _filterOptions.remove('FRONTEND');
     _filterOptions['디자이너'] = _filterOptions.remove('DESIGNER');
-
-    Future createProject(dynamic body) async {
-      return await widget.projectProvider
-          .createProject(body)
-          .then((successful) {
-        Navigator.pop(context);
-        widget.projectProvider.fetchProjects();
-        return successful;
-      });
-    }
 
     void goToNextPage() {
       setState(() {
