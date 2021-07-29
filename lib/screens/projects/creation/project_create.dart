@@ -25,7 +25,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   List<String> filterValues;
   Map input = {
     'title': '',
-    'period': 'UNDEFINED',
+    'period': null,
     'description': '',
     '백엔드': {'id': 0, 'stack': '', 'headcount': 0},
     '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
@@ -39,7 +39,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'FRONTEND': [],
   };
 
-  final _projectDescriptionController = TextEditingController();
   final periodSelected = <bool>[false, false, false, false];
   final positionSelected = <bool>[false, false, false];
 

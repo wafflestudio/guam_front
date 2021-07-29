@@ -22,9 +22,6 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.input);
-    print(widget.filterOptions);
-
     return Column(
       children: [
         Container(

@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class NextPage extends StatefulWidget {
+class NextPage extends StatelessWidget {
   final int page;
   final Function onTap;
-  final List<bool> active;
+  bool active;
 
-  NextPage({@required this.page, @required this.onTap, @required this.active});
+  NextPage({@required this.page, @required this.onTap}) : this.active = true;
 
-  @override
-  _NextPageState createState() => _NextPageState();
-}
-
-class _NextPageState extends State<NextPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
         child: InkWell(
-            onTap: widget.active.contains(false) ? null : widget.onTap,
+            onTap: active ? onTap : null,
             child: Container(
               alignment: Alignment.center,
-              width: widget.page == 1
+              width: page == 1
                   ? MediaQuery.of(context).size.width * 0.9
                   : MediaQuery.of(context).size.width * 0.45,
               height: 60,
@@ -30,17 +25,17 @@ class _NextPageState extends State<NextPage> {
                   width: 1.5,
                   color: Colors.white24,
                 ),
-                gradient: widget.active.contains(false)
+                gradient: !active
                     ? null
                     : LinearGradient(
-                        colors: [
-                          HexColor("4F34F3"),
-                          HexColor("3EF7FF"),
-                        ],
-                        begin: FractionalOffset(1.0, 0.0),
-                        end: FractionalOffset(0.0, 0.0),
-                        stops: [0, 1],
-                        tileMode: TileMode.clamp),
+                    colors: [
+                      HexColor("4F34F3"),
+                      HexColor("3EF7FF"),
+                    ],
+                    begin: FractionalOffset(1.0, 0.0),
+                    end: FractionalOffset(0.0, 0.0),
+                    stops: [0, 1],
+                    tileMode: TileMode.clamp),
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
@@ -53,3 +48,4 @@ class _NextPageState extends State<NextPage> {
             )));
   }
 }
+

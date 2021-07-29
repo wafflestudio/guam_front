@@ -75,7 +75,6 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             NextPage(
               page: 2,
               onTap: widget.goToNextPage,
-              active: isDataFilled,
             ),
           ],
         )

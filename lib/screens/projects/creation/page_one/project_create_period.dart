@@ -36,8 +36,6 @@ class _ProjectCreatePeriodState extends State<ProjectCreatePeriod> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.input);
-
     return Container(
         padding: EdgeInsets.only(top: 20),
         child: Column(
