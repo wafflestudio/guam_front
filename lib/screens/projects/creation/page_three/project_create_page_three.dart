@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/previous_page.dart';
-import 'package:guam_front/commons/save_page.dart';
+import 'package:guam_front/providers/projects/projects.dart';
+import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/creation/page_three/project_create_my_position.dart';
+import 'package:guam_front/screens/projects/creation/page_three/project_create_save.dart';
 import 'package:guam_front/screens/projects/creation/page_three/project_create_thumbnail.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -9,9 +11,11 @@ class ProjectCreatePageThree extends StatefulWidget {
   final Map input;
   final List<bool> positionSelected;
   final Function goToPreviousPage;
+  final Stacks stacksProvider;
+  final Projects projectsProvider;
 
-  ProjectCreatePageThree(
-      this.input, this.positionSelected, this.goToPreviousPage);
+  ProjectCreatePageThree(this.input, this.positionSelected,
+      this.goToPreviousPage, this.stacksProvider, this.projectsProvider);
 
   @override
   _ProjectCreatePageThreeState createState() => _ProjectCreatePageThreeState();
@@ -20,7 +24,6 @@ class ProjectCreatePageThree extends StatefulWidget {
 class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         Container(
@@ -74,12 +77,12 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               PreviousPage(page: 2, onTap: widget.goToPreviousPage),
-              SavePage(
+              ProjectCreateSave(
+                input: widget.input,
                 page: 3,
-                onTap: () {
-                  setState(() {});
-                },
-              ),
+                stacksProvider: widget.stacksProvider,
+                projectProvider: widget.projectsProvider,
+              )
             ],
           ),
         ),

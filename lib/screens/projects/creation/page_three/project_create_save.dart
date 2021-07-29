@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
@@ -76,6 +73,7 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
                   ],
                   "imageFiles": null,
                 };
+                print(projectInfo);
                 createProject(projectInfo);
               },
               child: Container(

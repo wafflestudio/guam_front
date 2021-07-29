@@ -91,18 +91,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           goToPreviousPage),
                     if (_currentPage == 3)
                       ProjectCreatePageThree(
-                          input, positionSelected, goToPreviousPage),
+                          input,
+                          positionSelected,
+                          goToPreviousPage,
+                          widget.stacksProvider,
+                          widget.projectProvider),
                     ProjectStatus(totalPage: 3, currentPage: _currentPage)
                   ])),
             )));
-  }
-
-  setTechStackIdx(String techStack, String position) {
-    setState(() {
-      widget.stacksProvider.stacks.forEach((e) => {
-            if (techStack == e.name) {input[position]['id'] = e.id}
-          });
-    });
-    return input[position]['id'];
   }
 }
