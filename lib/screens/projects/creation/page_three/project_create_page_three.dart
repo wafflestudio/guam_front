@@ -33,7 +33,6 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
 
   @override
   Widget build(BuildContext context) {
-    print("27: ${widget.input}");
     return Column(
       children: [
         Container(

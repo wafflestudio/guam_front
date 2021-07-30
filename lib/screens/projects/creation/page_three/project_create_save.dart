@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:provider/provider.dart';
-import '../../../../models/stack.dart' as StackModel;
 import 'package:hexcolor/hexcolor.dart';
 
 class ProjectCreateSave extends StatefulWidget {
@@ -18,16 +17,17 @@ class ProjectCreateSave extends StatefulWidget {
 
 class _ProjectCreateSaveState extends State<ProjectCreateSave> {
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
-    return await context.read<Projects>().createProject(
-        fields: fields,
-        files: files,
-    ).then((successful) {
-      if (successful) {
-        Navigator.pop(context);
-        context.read<Projects>().fetchProjects();
-        return successful;
-      }
-    });
+    print("20: ${widget.input}");
+    // return await context.read<Projects>().createProject(
+    //     fields: fields,
+    //     files: files,
+    // ).then((successful) {
+    //   if (successful) {
+    //     Navigator.pop(context);
+    //     context.read<Projects>().fetchProjects();
+    //     return successful;
+    //   }
+    // });
   }
 
   @override
