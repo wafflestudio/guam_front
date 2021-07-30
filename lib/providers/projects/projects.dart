@@ -114,32 +114,34 @@ class Projects with ChangeNotifier {
       String authToken = await _authProvider.getFirebaseIdToken();
       bool res = false;
 
+      print(fields);
+      print(files);
+
       if (authToken.isNotEmpty) {
         await HttpRequest()
             .postMultipart(
               path: "/project",
               authToken: authToken,
-              fields: {"title": "ㅗㅗㅗ", "due": "THREE", "description": "ㅛ", "backHeadCnt": "1", "designHeadCnt": "2", "frontHeadCnt": "3", "myPosition": "FRONTEND", "frontStackId": "1", "backStackId": "2", "designStackId": "3"},
+              fields: fields,
               files: files,
             )
             .then((response) {
               print(response.statusCode);
           if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
             print("프로젝트가 생성되었습니다.");
             res = true;
-          }
-          if (response.statusCode == 400) {
-            print("불충분한 정보입니다");
-          }
-          if (response.statusCode == 401) {
-            print("프로젝트를 생성하려면 로그인이 필요합니다.");
-          }
-          if (response.statusCode == 403) {
-            print("최대 3개의 프로젝트에만 참여할 수 있습니다.");
-          }
-          if (response.statusCode == 404) {
-            print("프로젝트 생성에 필요한 정보를 모두 채워야 합니다.");
+          } else {
+            String err;
+
+            switch(response.statusCode) {
+              case 400: err = "불충분한 정보입니다"; break;
+              case 401: err = "프로젝트를 생성하려면 로그인이 필요합니다."; break;
+              case 403: err = "최대 3개의 프로젝트에만 참여할 수 있습니다."; break;
+              case 404: err = "프로젝트 생성에 필요한 정보를 모두 채워야 합니다."; break;
+              case 500: err = "Interner server error"; break;
+            }
+
+            throw new Exception(err);
           }
         });
       }
@@ -150,47 +152,6 @@ class Projects with ChangeNotifier {
       loading = false;
     }
   }
-
-  // Future createProject(dynamic queryParams) async {
-  //   try {
-  //     loading = true;
-  //     String authToken = await _authProvider.getFirebaseIdToken();
-  //     bool res = false;
-  //
-  //     if (authToken.isNotEmpty) {
-  //       await HttpRequest()
-  //           .post(path: "/project", body: queryParams, authToken: authToken)
-  //           .then((response) {
-  //         if (response.statusCode == 200) {
-  //           final jsonUtf8 = decodeKo(response);
-  //           _projectToBeCreated = json.decode(jsonUtf8)["data"];
-  //           print("프로젝트가 생성되었습니다.");
-  //           res = true;
-  //         }
-  //         if (response.statusCode == 400) {
-  //           print("불충분한 정보입니다");
-  //         }
-  //         if (response.statusCode == 401) {
-  //           print("프로젝트를 생성하려면 로그인이 필요합니다.");
-  //           // alert message confirm 후 redirect 시키기
-  //           // context 사용하지 않고 navigation 구현하는 GetX라는 라이브러리도 있네요.
-  //           // Get.to(MyPage())
-  //         }
-  //         if (response.statusCode == 403) {
-  //           print("최대 3개의 프로젝트에만 참여할 수 있습니다.");
-  //         }
-  //         if (response.statusCode == 404) {
-  //           print("프로젝트 생성에 필요한 정보를 모두 채워야 합니다.");
-  //         }
-  //       });
-  //     }
-  //     return res;
-  //   } catch (e) {
-  //     print(e);
-  //   } finally {
-  //     loading = false;
-  //   }
-  // }
 
   Future applyProject(int projectId, dynamic queryParams) async {
     try {

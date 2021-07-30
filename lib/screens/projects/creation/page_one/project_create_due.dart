@@ -13,7 +13,7 @@ class ProjectCreateDue extends StatefulWidget {
 }
 
 class _ProjectCreateDueState extends State<ProjectCreateDue> {
-  void savePeriod(idx) {
+  void saveDue(idx) {
     setState(() {
       switch (idx) {
         case 0:
@@ -70,7 +70,7 @@ class _ProjectCreateDueState extends State<ProjectCreateDue> {
               widget.dueSelected[i] = i == idx;
             }
             widget.checkButtonEnable();
-            savePeriod(idx);
+            saveDue(idx);
           });
         },
         children: [
