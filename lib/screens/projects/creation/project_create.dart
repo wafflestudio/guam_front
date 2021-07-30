@@ -35,8 +35,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   Map<String, List<StackModel.Stack>> _filterOptions = {
     'BACKEND': [],
-    'DESIGNER': [],
     'FRONTEND': [],
+    'DESIGNER': [],
   };
 
   final periodSelected = <bool>[false, false, false, false];

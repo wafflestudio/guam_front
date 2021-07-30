@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../../../models/stack.dart' as StackModel;
+import '../../../models/stack.dart' as StackModel;
 
 class CreateFilterValueChip extends StatelessWidget {
   final StackModel.Stack stack;
