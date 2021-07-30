@@ -88,7 +88,8 @@ class Authenticate with ChangeNotifier {
         await HttpRequest()
           .postMultipart(
             path: "/user",
-            fields: {"command" : fields.toString()},
+            //fields: {"command" : fields.toString()},
+            fields: { "command": "{ \"nickname\": \"ryu\", \"willUploadImage\": \"true\" }"},
             files: files,
             authToken: authToken)
           .then((response) async {

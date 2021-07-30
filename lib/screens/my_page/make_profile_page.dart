@@ -100,20 +100,19 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     techStacks['프론트엔드'] = techStacks.remove('FRONTEND');
     techStacks['디자이너'] = techStacks.remove('DESIGNER');
 
-    final Size size = MediaQuery.of(context).size;
     final authProvider = context.read<Authenticate>();
 
     Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
       return await authProvider
-      .setProfile(
-        fields: fields,
-        files: files,
-      ).then((successful) {
-        if (successful) {
-          Navigator.pop(context);
-          authProvider.getMyProfile();
-        }
-      });
+        .setProfile(
+          fields: fields,
+          files: files,
+        ).then((successful) {
+          if (successful) {
+            Navigator.pop(context);
+            authProvider.getMyProfile();
+          }
+        });
     }
 
     return Scaffold(

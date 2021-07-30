@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'thumbnail.dart';
 
 class Profile extends ChangeNotifier {
   final int id;
