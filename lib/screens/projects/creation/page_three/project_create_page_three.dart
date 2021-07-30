@@ -11,17 +11,26 @@ class ProjectCreatePageThree extends StatefulWidget {
   final Map input;
   final List<bool> positionSelected;
   final Function goToPreviousPage;
-  final Stacks stacksProvider;
-  final Projects projectsProvider;
 
-  ProjectCreatePageThree(this.input, this.positionSelected,
-      this.goToPreviousPage, this.stacksProvider, this.projectsProvider);
+  ProjectCreatePageThree(this.input, this.positionSelected, this.goToPreviousPage);
 
   @override
   _ProjectCreatePageThreeState createState() => _ProjectCreatePageThreeState();
 }
 
 class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
+  bool nextBtnEnabled;
+
+  void checkButtonEnable() => setState(() {
+    nextBtnEnabled = widget.input['myPosition'] != '';
+  });
+
+  @override
+  void initState() {
+    nextBtnEnabled = widget.input['myPosition'] != '';
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +63,11 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
             color: HexColor("6B70AA"),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: ProjectCreateMyPosition(widget.input, widget.positionSelected),
+          child: ProjectCreateMyPosition(
+            input: widget.input,
+            positionSelected: widget.positionSelected,
+            checkButtonEnable: checkButtonEnable,
+          ),
         ),
         Container(
           padding: EdgeInsets.only(top: 40, left: 30, bottom: 10),
@@ -80,8 +93,7 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
               ProjectCreateSave(
                 input: widget.input,
                 page: 3,
-                stacksProvider: widget.stacksProvider,
-                projectProvider: widget.projectsProvider,
+                btnEnabled: nextBtnEnabled
               )
             ],
           ),

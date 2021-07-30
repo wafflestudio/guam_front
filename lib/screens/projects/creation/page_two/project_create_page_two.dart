@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/next_page.dart';
 import 'package:guam_front/commons/previous_page.dart';
+import 'package:guam_front/models/stack.dart' as StackModel;
 import 'package:guam_front/screens/projects/creation/page_two/project_create_positions.dart';
 
 class ProjectCreatePageTwo extends StatefulWidget {
   final Map input;
-  final Map<dynamic, List<dynamic>> filterOptions;
+  final Map<String, List<StackModel.Stack>> filterOptions;
   final Function goToNextPage;
   final Function goToPreviousPage;
 
@@ -21,22 +22,22 @@ class ProjectCreatePageTwo extends StatefulWidget {
 }
 
 class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
-  List<bool> isDataFilled = [true, true, true];
+  bool nextBtnEnabled;
+
+  void checkButtonEnable() => setState(() {
+    nextBtnEnabled =
+      widget.input['BACKEND']['id'] != 0 && widget.input['BACKEND']['stack'] != ''
+      && widget.input['FRONTEND']['id'] != 0 && widget.input['FRONTEND']['stack'] != ''
+      && widget.input['DESIGNER']['id'] != 0 && widget.input['DESIGNER']['stack'] != '';
+  });
 
   @override
   void initState() {
-    if (widget.input['백엔드']['stack'] == '') isDataFilled[0] = false;
-    if (widget.input['프론트엔드']['stack'] == '') isDataFilled[1] = false;
-    if (widget.input['디자이너']['stack'] == '') isDataFilled[2] = false;
+    nextBtnEnabled =
+      widget.input['BACKEND']['id'] != 0 && widget.input['BACKEND']['stack'] != ''
+      && widget.input['FRONTEND']['id'] != 0 && widget.input['FRONTEND']['stack'] != ''
+      && widget.input['DESIGNER']['id'] != 0 && widget.input['DESIGNER']['stack'] != '';
     super.initState();
-  }
-
-  void checkDataFilled() {
-    setState(() {
-      if (widget.input['백엔드']['stack'] != '') isDataFilled[0] = true;
-      if (widget.input['프론트엔드']['stack'] != '') isDataFilled[1] = true;
-      if (widget.input['디자이너']['stack'] != '') isDataFilled[2] = true;
-    });
   }
 
   @override
@@ -66,8 +67,7 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             ),
           ),
         ),
-        ProjectCreatePositions(
-            widget.input, widget.filterOptions, isDataFilled, checkDataFilled),
+        ProjectCreatePositions(input: widget.input, filterOptions: widget.filterOptions, checkButtonEnable: checkButtonEnable), //
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -75,7 +75,7 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             NextPage(
               page: 2,
               onTap: widget.goToNextPage,
-              active: isDataFilled,
+              active: nextBtnEnabled,
             ),
           ],
         )

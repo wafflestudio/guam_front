@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../models/stack.dart' as StackModel;
 
 class CreateFilterValueChip extends StatelessWidget {
-  final String content;
+  final StackModel.Stack stack;
   final bool selected;
   final Function selectValue;
+  final Function checkButtonEnable;
 
-  CreateFilterValueChip({this.content,  this.selected, this.selectValue});
+  CreateFilterValueChip({this.stack, this.selected, this.selectValue, this.checkButtonEnable});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class CreateFilterValueChip extends StatelessWidget {
       padding: EdgeInsets.only(left: 5),
       child: ChoiceChip(
         label: Text(
-          content,
+          stack.name,
           style: TextStyle(
             fontSize: 12,
             color: selected ? Colors.white : Colors.black,
@@ -24,7 +26,10 @@ class CreateFilterValueChip extends StatelessWidget {
         backgroundColor: HexColor("#E9E9E9"),
         side: BorderSide(color: HexColor("#979797"), width: 1),
         selectedColor: HexColor("#4694F9"),
-        onSelected: (val) => selectValue(content),
+        onSelected: (val) {
+          selectValue(stack);
+          checkButtonEnable();
+        },
       ),
     );
   }

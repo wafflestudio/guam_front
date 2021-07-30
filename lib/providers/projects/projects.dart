@@ -11,8 +11,6 @@ class Projects with ChangeNotifier {
   List<Project> _projects;
   List<Project> _almostFullProjects;
   List<Project> _filteredProjects;
-  Project _projectToBeCreated;
-  Project _projectToBeApplied;
   bool loading = false;
 
   Projects() {
@@ -24,10 +22,6 @@ class Projects with ChangeNotifier {
   List<Project> get almostFullProjects => _almostFullProjects;
 
   List<Project> get filteredProjects => _filteredProjects;
-
-  Project get projectToBeCreated => _projectToBeCreated;
-
-  Project get projectToBeApplied => _projectToBeApplied;
 
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
 
@@ -43,11 +37,7 @@ class Projects with ChangeNotifier {
         }
       });
 
-      await HttpRequest()
-          .get(
-        path: "/project/tab",
-      )
-          .then((response) {
+      await HttpRequest().get(path: "/project/tab").then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
@@ -68,11 +58,13 @@ class Projects with ChangeNotifier {
     try {
       loading = true;
 
-      await HttpRequest().get(path: "/project/$projectId").then((response) {
-        if (response.statusCode == 200) {
-          final jsonUtf8 = decodeKo(response);
-          _projectToBeApplied = json.decode(jsonUtf8)["data"];
-        }
+      await HttpRequest()
+        .get(path: "/project/$projectId")
+        .then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            return Project.fromJson(json.decode(jsonUtf8)["data"]);
+          }
       });
       loading = false;
     } catch (e) {
@@ -89,20 +81,20 @@ class Projects with ChangeNotifier {
       await HttpRequest()
           .get(path: "/project/search", queryParams: queryParams)
           .then((response) {
-        if (response.statusCode == 200) {
-          final jsonUtf8 = decodeKo(response);
-          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-          _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
-        }
-        if (response.statusCode == 401) {
-          print("프로젝트를 검색하려면 로그인이 필요합니다.");
-        }
-        if (response.statusCode == 403) {
-          print("검색 권한이 없습니다.");
-        }
-        if (response.statusCode == 404) {
-          print("검색된 결과가 존재하지 않습니다.");
-        }
+            if (response.statusCode == 200) {
+              final jsonUtf8 = decodeKo(response);
+              final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+              _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+            }
+            if (response.statusCode == 401) {
+              print("프로젝트를 검색하려면 로그인이 필요합니다.");
+            }
+            if (response.statusCode == 403) {
+              print("검색 권한이 없습니다.");
+            }
+            if (response.statusCode == 404) {
+              print("검색된 결과가 존재하지 않습니다.");
+            }
       });
 
       loading = false;
@@ -121,35 +113,29 @@ class Projects with ChangeNotifier {
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipart(
-              path: "/project",
-              authToken: authToken,
-              fields: fields,
-              files: files,
-            )
-            .then((response) {
-          if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            _projectToBeCreated = json.decode(jsonUtf8)["data"];
-            print("프로젝트가 생성되었습니다.");
-            res = true;
-          }
-          if (response.statusCode == 400) {
-            print("불충분한 정보입니다");
-          }
-          if (response.statusCode == 401) {
-            print("프로젝트를 생성하려면 로그인이 필요합니다.");
-            // alert message confirm 후 redirect 시키기
-            // context 사용하지 않고 navigation 구현하는 GetX라는 라이브러리도 있네요.
-            // Get.to(MyPage())
-          }
-          if (response.statusCode == 403) {
-            print("최대 3개의 프로젝트에만 참여할 수 있습니다.");
-          }
-          if (response.statusCode == 404) {
-            print("프로젝트 생성에 필요한 정보를 모두 채워야 합니다.");
-          }
-        });
+          .postMultipart(
+            path: "/project",
+            authToken: authToken,
+            fields: fields,
+            files: files,
+          ).then((response) {
+            if (response.statusCode == 200) {
+              print("프로젝트가 생성되었습니다.");
+              res = true;
+            } else {
+              String err;
+
+              switch(response.statusCode) {
+                case 400: err = "불충분한 정보입니다"; break;
+                case 401: err = "프로젝트를 생성하려면 로그인이 필요합니다."; break;
+                case 403: err = "최대 3개의 프로젝트에만 참여할 수 있습니다."; break;
+                case 404: err = "프로젝트 생성에 필요한 정보를 모두 채워야 합니다."; break;
+                case 500: err = "Interner server error"; break;
+              }
+
+              throw new Exception(err);
+            }
+          });
       }
       return res;
     } catch (e) {
@@ -158,47 +144,6 @@ class Projects with ChangeNotifier {
       loading = false;
     }
   }
-
-  // Future createProject(dynamic queryParams) async {
-  //   try {
-  //     loading = true;
-  //     String authToken = await _authProvider.getFirebaseIdToken();
-  //     bool res = false;
-  //
-  //     if (authToken.isNotEmpty) {
-  //       await HttpRequest()
-  //           .post(path: "/project", body: queryParams, authToken: authToken)
-  //           .then((response) {
-  //         if (response.statusCode == 200) {
-  //           final jsonUtf8 = decodeKo(response);
-  //           _projectToBeCreated = json.decode(jsonUtf8)["data"];
-  //           print("프로젝트가 생성되었습니다.");
-  //           res = true;
-  //         }
-  //         if (response.statusCode == 400) {
-  //           print("불충분한 정보입니다");
-  //         }
-  //         if (response.statusCode == 401) {
-  //           print("프로젝트를 생성하려면 로그인이 필요합니다.");
-  //           // alert message confirm 후 redirect 시키기
-  //           // context 사용하지 않고 navigation 구현하는 GetX라는 라이브러리도 있네요.
-  //           // Get.to(MyPage())
-  //         }
-  //         if (response.statusCode == 403) {
-  //           print("최대 3개의 프로젝트에만 참여할 수 있습니다.");
-  //         }
-  //         if (response.statusCode == 404) {
-  //           print("프로젝트 생성에 필요한 정보를 모두 채워야 합니다.");
-  //         }
-  //       });
-  //     }
-  //     return res;
-  //   } catch (e) {
-  //     print(e);
-  //   } finally {
-  //     loading = false;
-  //   }
-  // }
 
   Future applyProject(int projectId, dynamic queryParams) async {
     try {
@@ -211,8 +156,6 @@ class Projects with ChangeNotifier {
             .post(path: "/project/$projectId", body: queryParams, authToken: authToken)
             .then((response) {
           if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            _projectToBeCreated = json.decode(jsonUtf8)["data"];
             print("프로젝트에 신청하였습니다.");
             res = true;
           }

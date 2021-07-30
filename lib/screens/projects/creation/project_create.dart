@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
-import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/creation/page_one/project_create_page_one.dart';
 import 'package:guam_front/screens/projects/creation/page_three/project_create_page_three.dart';
 import 'package:guam_front/screens/projects/creation/page_two/project_create_page_two.dart';
-
 import '../../../commons/back.dart';
 import '../../../commons/custom_app_bar.dart';
+import '../../../models/stack.dart' as StackModel;
 
 class CreateProjectScreen extends StatefulWidget {
-  final Projects projectProvider;
   final Stacks stacksProvider;
 
-  CreateProjectScreen(this.projectProvider, this.stacksProvider);
+  CreateProjectScreen({this.stacksProvider});
 
   @override
   _CreateProjectScreenState createState() => _CreateProjectScreenState();
@@ -23,49 +21,40 @@ class CreateProjectScreen extends StatefulWidget {
 class _CreateProjectScreenState extends State<CreateProjectScreen> {
   String selectedKey;
   List<String> filterValues;
+
   Map input = {
     'title': '',
-    'period': 'UNDEFINED',
+    'due': null,
     'description': '',
-    '백엔드': {'id': 0, 'stack': '', 'headcount': 0},
-    '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
-    '디자이너': {'id': 0, 'stack': '', 'headcount': 0},
+    'BACKEND': {'id': 0, 'stack': '', 'headcount': 0},
+    'FRONTEND': {'id': 0, 'stack': '', 'headcount': 0},
+    'DESIGNER': {'id': 0, 'stack': '', 'headcount': 0},
     'myPosition': '',
     'thumbnail': null,
   };
-  final _projectNameController = TextEditingController();
-  final _projectDescriptionController = TextEditingController();
-  final periodSelected = <bool>[false, false, false, false];
+
+  Map<String, List<StackModel.Stack>> _filterOptions = {
+    'BACKEND': [],
+    'FRONTEND': [],
+    'DESIGNER': [],
+  };
+
+  final dueSelected = <bool>[false, false, false, false];
   final positionSelected = <bool>[false, false, false];
+
   int _currentPage = 1;
 
   @override
+  void initState() {
+    widget.stacksProvider.stacks.forEach((e) => _filterOptions[e.position].add(e));
+    super.initState();
+  }
+
+  void goToNextPage() => setState(() {_currentPage++;});
+  void goToPreviousPage() => setState(() {_currentPage--;});
+
+  @override
   Widget build(BuildContext context) {
-    var _filterOptions = {
-      'BACKEND': <String>[],
-      'DESIGNER': <String>[],
-      'FRONTEND': <String>[]
-    };
-
-    widget.stacksProvider.stacks
-        .forEach((e) => _filterOptions[e.position].add(e.name));
-
-    _filterOptions['백엔드'] = _filterOptions.remove('BACKEND');
-    _filterOptions['프론트엔드'] = _filterOptions.remove('FRONTEND');
-    _filterOptions['디자이너'] = _filterOptions.remove('DESIGNER');
-
-    void goToNextPage() {
-      setState(() {
-        _currentPage++;
-      });
-    }
-
-    void goToPreviousPage() {
-      setState(() {
-        _currentPage--;
-      });
-    }
-
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 만들기',
@@ -82,20 +71,16 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     if (_currentPage == 1)
                       ProjectCreatePageOne(
                           input,
-                          periodSelected,
-                          _projectNameController,
-                          _projectDescriptionController,
+                          dueSelected,
                           goToNextPage),
                     if (_currentPage == 2)
-                      ProjectCreatePageTwo(input, _filterOptions, goToNextPage,
-                          goToPreviousPage),
+                      ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
                     if (_currentPage == 3)
                       ProjectCreatePageThree(
                           input,
                           positionSelected,
                           goToPreviousPage,
-                          widget.stacksProvider,
-                          widget.projectProvider),
+                      ),
                     ProjectStatus(totalPage: 3, currentPage: _currentPage)
                   ])),
             )));

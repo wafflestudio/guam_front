@@ -4,8 +4,9 @@ import 'package:hexcolor/hexcolor.dart';
 class ProjectCreateMyPosition extends StatefulWidget {
   final Map input;
   final List<bool> positionSelected;
+  final Function checkButtonEnable;
 
-  ProjectCreateMyPosition(this.input, this.positionSelected);
+  ProjectCreateMyPosition({this.input, this.positionSelected, this.checkButtonEnable});
 
   @override
   _ProjectCreateMyPositionState createState() =>
@@ -16,6 +17,7 @@ class _ProjectCreateMyPositionState extends State<ProjectCreateMyPosition> {
   void saveMyPosition(idx) {
     setState(() {
       widget.input["myPosition"] = ['BACKEND', 'FRONTEND', 'DESIGNER'][idx];
+      widget.checkButtonEnable();
     });
   }
 

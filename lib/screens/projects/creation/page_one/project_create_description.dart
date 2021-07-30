@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 
 class ProjectCreateDescription extends StatefulWidget {
   final Map input;
-  final TextEditingController _descriptionController;
-  final Function onChanged;
+  final Function checkButtonEnable;
 
-  ProjectCreateDescription(this.input, this._descriptionController,
-      {@required this.onChanged});
+  ProjectCreateDescription({this.input, this.checkButtonEnable});
 
   @override
-  _ProjectCreateDescriptionState createState() =>
-      _ProjectCreateDescriptionState();
+  _ProjectCreateDescriptionState createState() => _ProjectCreateDescriptionState();
 }
 
 class _ProjectCreateDescriptionState extends State<ProjectCreateDescription> {
-  void saveDescription(_projectDescription) {
-    setState(() {
-      widget.input["description"] = _projectDescription;
-    });
-  }
+  final TextEditingController _descriptionController = TextEditingController();
 
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,11 +34,13 @@ class _ProjectCreateDescriptionState extends State<ProjectCreateDescription> {
           padding: EdgeInsets.only(left: 20, right: 20),
           height: 100,
           child: TextFormField(
-            onChanged: (_projectDescription) {
-              widget.onChanged();
-              saveDescription(_projectDescription);
+            onChanged: (text) {
+              setState(() {
+                widget.input["description"] = text;
+              });
+              widget.checkButtonEnable();
             },
-            controller: widget._descriptionController,
+            controller: _descriptionController,
             style: TextStyle(fontSize: 14, color: Colors.white),
             maxLines: 6,
             decoration: InputDecoration(

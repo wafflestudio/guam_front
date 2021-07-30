@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class ProjectCreatePeriod extends StatefulWidget {
+class ProjectCreateDue extends StatefulWidget {
   final Map input;
-  final List<bool> periodSelected;
-  final Function onChanged;
+  final List<bool> dueSelected;
+  final Function checkButtonEnable;
 
-  ProjectCreatePeriod(this.input, this.periodSelected,
-      {@required this.onChanged});
+  ProjectCreateDue({this.input, this.dueSelected, this.checkButtonEnable});
 
   @override
-  _ProjectCreatePeriodState createState() => _ProjectCreatePeriodState();
+  State createState() => _ProjectCreateDueState();
 }
 
-class _ProjectCreatePeriodState extends State<ProjectCreatePeriod> {
-  void savePeriod(idx) {
+class _ProjectCreateDueState extends State<ProjectCreateDue> {
+  void saveDue(idx) {
     setState(() {
       switch (idx) {
         case 0:
-          widget.input["period"] = 'ONE';
+          widget.input["due"] = 'ONE';
           break;
         case 1:
-          widget.input["period"] = 'THREE';
+          widget.input["due"] = 'THREE';
           break;
         case 2:
-          widget.input["period"] = 'SIX';
+          widget.input["due"] = 'SIX';
           break;
         case 3:
-          widget.input["period"] = 'MORE';
+          widget.input["due"] = 'MORE';
           break;
         default:
-          widget.input["period"] = 'UNDEFINED';
+          widget.input["due"] = 'UNDEFINED';
           break;
       }
     });
@@ -47,12 +46,12 @@ class _ProjectCreatePeriodState extends State<ProjectCreatePeriod> {
                 padding: EdgeInsets.only(left: 25, bottom: 10),
                 child: Text('진행 기간',
                     style: TextStyle(fontSize: 18, color: Colors.white))),
-            _selectPeriod()
+            selectDue()
           ],
         ));
   }
 
-  Widget _selectPeriod() {
+  Widget selectDue() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: ToggleButtons(
@@ -64,14 +63,14 @@ class _ProjectCreatePeriodState extends State<ProjectCreatePeriod> {
         constraints: BoxConstraints(
             minWidth: (MediaQuery.of(context).size.width * 0.85) / 4,
             minHeight: 40),
-        isSelected: widget.periodSelected,
+        isSelected: widget.dueSelected,
         onPressed: (idx) {
           setState(() {
-            for (int i = 0; i < widget.periodSelected.length; i++) {
-              widget.periodSelected[i] = i == idx;
+            for (int i = 0; i < widget.dueSelected.length; i++) {
+              widget.dueSelected[i] = i == idx;
             }
-            widget.onChanged();
-            savePeriod(idx);
+            widget.checkButtonEnable();
+            saveDue(idx);
           });
         },
         children: [
