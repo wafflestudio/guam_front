@@ -8,35 +8,16 @@ import 'package:hexcolor/hexcolor.dart';
 class ProjectCreateSave extends StatefulWidget {
   final Map input;
   final int page;
-  final Stacks stacksProvider;
   final Projects projectProvider;
+  final bool btnEnabled;
 
-  ProjectCreateSave({this.input, this.page, this.stacksProvider, this.projectProvider});
+  ProjectCreateSave({this.input, this.page, this.projectProvider, this.btnEnabled});
 
   @override
   _ProjectCreateSaveState createState() => _ProjectCreateSaveState();
 }
 
 class _ProjectCreateSaveState extends State<ProjectCreateSave> {
-  setTechStackIdx(String techStack, String position) {
-    setState(() {
-      widget.stacksProvider.stacks.forEach((e) => {
-            if (techStack == e.name) {widget.input[position]['id'] = e.id}
-          });
-    });
-    switch (position) {
-      case '백엔드':
-        return "${widget.input[position]['id']}, BACKEND";
-        break;
-      case '프론트엔드':
-        return "${widget.input[position]['id']}, FRONTEND";
-        break;
-      case '디자이너':
-        return "${widget.input[position]['id']}, DESIGNER";
-        break;
-    }
-  }
-
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
     return await widget.projectProvider
       .createProject(
@@ -61,14 +42,14 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       "designHeadCnt": widget.input['DESIGNER']['headcount'],
       "frontHeadCnt": widget.input['FRONTEND']['headcount'],
       "myPosition": widget.input['myPosition'],
-      "techStackIds": [
-        if (widget.input['BACKEND']['stack'] != '')
-          setTechStackIdx(widget.input['BACKEND']['stack'], '백엔드'),
-        if (widget.input['FRONTEND']['stack'] != '')
-          setTechStackIdx(widget.input['프론트엔드']['stack'], '프론트엔드'),
-        if (widget.input['DESIGNER']['stack'] != '')
-          setTechStackIdx(widget.input['디자이너']['stack'], '디자이너'),
-      ],
+      // "techStackIds": [
+      //   if (widget.input['BACKEND']['stack'] != '')
+      //     setTechStackIdx(widget.input['BACKEND']['stack'], '백엔드'),
+      //   if (widget.input['FRONTEND']['stack'] != '')
+      //     setTechStackIdx(widget.input['프론트엔드']['stack'], '프론트엔드'),
+      //   if (widget.input['DESIGNER']['stack'] != '')
+      //     setTechStackIdx(widget.input['디자이너']['stack'], '디자이너'),
+      // ],
     };
 
     return (
@@ -76,11 +57,12 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
         ? Container(
             padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
             child: InkWell(
-              onTap: () => createProject(
-                fields: projectInfo,
-                files: widget.input['thumbnail'] != null ? [File(widget.input['thumbnail'].path)] : null
-              )
-              ,
+              onTap: () {
+                if (widget.btnEnabled) createProject(
+                    fields: projectInfo,
+                    files: widget.input['thumbnail'] != null ? [File(widget.input['thumbnail'].path)] : null
+                );
+              },
               child: Container(
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width * 0.45,
@@ -90,7 +72,9 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
                     width: 1.5,
                     color: Colors.white24,
                   ),
-                  gradient: LinearGradient(
+                  gradient: !widget.btnEnabled
+                      ? null
+                      : LinearGradient(
                       colors: [
                         HexColor("4F34F3"),
                         HexColor("3EF7FF"),

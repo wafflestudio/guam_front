@@ -83,7 +83,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           positionSelected,
                           goToPreviousPage,
                           widget.stacksProvider,
-                          widget.projectProvider),
+                          widget.projectProvider
+                      ),
                     ProjectStatus(totalPage: 3, currentPage: _currentPage)
                   ])),
             )));
