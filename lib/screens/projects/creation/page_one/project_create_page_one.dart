@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/next_page.dart';
-import 'package:guam_front/screens/projects/creation/page_one/project_create_description.dart';
-import 'package:guam_front/screens/projects/creation/page_one/project_create_period.dart';
-import 'package:guam_front/screens/projects/creation/page_one/project_create_title.dart';
+import 'project_create_description.dart';
+import 'project_create_due.dart';
+import 'project_create_title.dart';
 
 class ProjectCreatePageOne extends StatefulWidget {
   final Map input;
-  final List<bool> periodSelected;
+  final List<bool> dueSelected;
   final Function goToNextPage;
 
   ProjectCreatePageOne(
     this.input,
-    this.periodSelected,
+    this.dueSelected,
     this.goToNextPage,
   );
 
@@ -26,14 +26,14 @@ class ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
   void initState() {
     nextBtnEnabled = widget.input['title'] != ''
         && widget.input['description'] != ''
-        && widget.input['period'] != null;
+        && widget.input['due'] != null;
     super.initState();
   }
 
   void checkButtonEnable() => setState(() {
     nextBtnEnabled = widget.input['title'] != ''
         && widget.input['description'] != ''
-        && widget.input['period'] != null;
+        && widget.input['due'] != null;
   });
 
   @override
@@ -65,7 +65,7 @@ class ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
             ),
           ),
           ProjectCreateTitle(input: widget.input, checkButtonEnable: checkButtonEnable),
-          ProjectCreatePeriod(input: widget.input, periodSelected: widget.periodSelected, checkButtonEnable: checkButtonEnable),
+          ProjectCreateDue(input: widget.input, dueSelected: widget.dueSelected, checkButtonEnable: checkButtonEnable),
           ProjectCreateDescription(input: widget.input, checkButtonEnable: checkButtonEnable),
           NextPage(
             page: 1,
