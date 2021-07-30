@@ -81,7 +81,7 @@ class MyProfileBottom extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
                     ),
-                    Padding(
+                    if (me.introduction != null) Padding(
                       padding: EdgeInsets.only(right: 20),
                       child: Container(
                         width: size.width,

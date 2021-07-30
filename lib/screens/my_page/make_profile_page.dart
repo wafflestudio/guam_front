@@ -38,7 +38,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   String selectedKey;
   List<String> filterValues;
   Profile me;
-  bool wilUpdateImage;
+  bool willUploadImage;
   PickedFile profileImage;
 
   @override
@@ -48,7 +48,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     _githubIdController.text = me.githubUrl;
     _blogController.text = me.blogUrl;
     _introductionController.text = me.introduction;
-    wilUpdateImage = false;
+    willUploadImage = false;
     super.initState();
   }
 
@@ -63,7 +63,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
 
   void setImageFile(PickedFile val) {
     setState(() {
-      wilUpdateImage = true;
+      willUploadImage = true;
       if (val != null) profileImage = val;
     });
   }
@@ -104,18 +104,19 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     final authProvider = context.read<Authenticate>();
 
     Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
-      // Future setProfile({String fields, dynamic files}) async {
-      return await authProvider
-          .setProfile(
-        fields: fields,
-        files: files,
-      )
-          .then((successful) {
-        // if (successful) {
-        // Navigator.pop(context);
-        authProvider.getMyProfile();
-        // }
-      });
+      print(fields);
+      print(await authProvider.getFirebaseIdToken());
+      // return await authProvider
+      //     .setProfile(
+      //   fields: fields,
+      //   files: files,
+      // )
+      //     .then((successful) {
+      //   // if (successful) {
+      //   // Navigator.pop(context);
+      //   authProvider.getMyProfile();
+      //   // }
+      // });
     }
 
     return Scaffold(
@@ -335,12 +336,11 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             "githubUrl": _githubIdController.text,
             "introduction": _introductionController.text,
             "skills": selectedSkillsList,
-            "wilUpdateImage": wilUpdateImage,
+            "willUploadImage": willUploadImage,
           };
           setProfile(
             fields: keyMap,
-            // fields: json.encode(keyMap),
-            files: wilUpdateImage ? [File(profileImage.path)] : null,
+            files: willUploadImage ? [File(profileImage.path)] : null,
           );
         },
         child: Container(
