@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:guam_front/models/profile.dart';
-
+import '../models/profile.dart';
 import '../models/boards/thread.dart';
 import '../models/boards/user_task.dart';
 import '../models/stack.dart' as StackModel;
+import '../models/thumbnail.dart';
 
 class Project extends ChangeNotifier {
   final int id;
@@ -14,7 +14,7 @@ class Project extends ChangeNotifier {
   final String title;
   final String description;
   final String due;
-  final String thumbnail;
+  final Thumbnail thumbnail;
   final int backHeadCount;
   final int backLeftCount;
   final int designHeadCount;
@@ -54,11 +54,14 @@ class Project extends ChangeNotifier {
   set(List<Thread> _threads) => threads = _threads;
 
   factory Project.fromJson(Map<String, dynamic> json) {
+    Thumbnail thumbnail;
     Thread notice;
     List<UserTask> tasks;
     List<StackModel.Stack> techStacks;
     Profile leader;
     Map<int, String> userStates = {};
+
+    if (json['thumbnail'] != null) thumbnail = Thumbnail.fromJson(json['thumbnail']);
 
     if (json['noticeThread'] != null) {
       notice = Thread.fromJson(json['noticeThread']);
@@ -82,7 +85,7 @@ class Project extends ChangeNotifier {
       id: json['id'],
       title: json['title'],
       description: json['description'],
-      thumbnail: json['thumbnail'],
+      thumbnail: thumbnail,
       isRecruiting: json['isRecruiting'],
       due: json['due'],
       backHeadCount: json['backHeadCnt'],
