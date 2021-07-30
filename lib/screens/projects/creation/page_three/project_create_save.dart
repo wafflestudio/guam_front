@@ -18,16 +18,16 @@ class ProjectCreateSave extends StatefulWidget {
 class _ProjectCreateSaveState extends State<ProjectCreateSave> {
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
     print("20: ${widget.input}");
-    // return await context.read<Projects>().createProject(
-    //     fields: fields,
-    //     files: files,
-    // ).then((successful) {
-    //   if (successful) {
-    //     Navigator.pop(context);
-    //     context.read<Projects>().fetchProjects();
-    //     return successful;
-    //   }
-    // });
+    return await context.read<Projects>().createProject(
+        fields: fields,
+        files: files,
+    ).then((successful) {
+      if (successful) {
+        Navigator.pop(context);
+        context.read<Projects>().fetchProjects();
+        return successful;
+      }
+    });
   }
 
   @override

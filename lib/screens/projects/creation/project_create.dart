@@ -24,7 +24,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   Map input = {
     'title': '',
-    'period': null,
+    'due': null,
     'description': '',
     'BACKEND': {'id': 0, 'stack': '', 'headcount': 0},
     'FRONTEND': {'id': 0, 'stack': '', 'headcount': 0},
@@ -39,7 +39,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'FRONTEND': [],
   };
 
-  final periodSelected = <bool>[false, false, false, false];
+  final dueSelected = <bool>[false, false, false, false];
   final positionSelected = <bool>[false, false, false];
 
   int _currentPage = 1;
@@ -71,7 +71,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     if (_currentPage == 1)
                       ProjectCreatePageOne(
                           input,
-                          periodSelected,
+                          dueSelected,
                           goToNextPage),
                     if (_currentPage == 2)
                       ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),

@@ -11,7 +11,6 @@ class Projects with ChangeNotifier {
   List<Project> _projects;
   List<Project> _almostFullProjects;
   List<Project> _filteredProjects;
-  Project _projectToBeCreated;
   Project _projectToBeApplied;
   bool loading = false;
 
@@ -24,10 +23,6 @@ class Projects with ChangeNotifier {
   List<Project> get almostFullProjects => _almostFullProjects;
 
   List<Project> get filteredProjects => _filteredProjects;
-
-  Project get projectToBeCreated => _projectToBeCreated;
-
-  Project get projectToBeApplied => _projectToBeApplied;
 
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
 
@@ -131,7 +126,6 @@ class Projects with ChangeNotifier {
               print(response.statusCode);
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            _projectToBeCreated = json.decode(jsonUtf8)["data"];
             print("프로젝트가 생성되었습니다.");
             res = true;
           }
@@ -210,7 +204,8 @@ class Projects with ChangeNotifier {
             .then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            _projectToBeCreated = json.decode(jsonUtf8)["data"];
+            // ??
+            //_projectToBeCreated = json.decode(jsonUtf8)["data"];
             print("프로젝트에 신청하였습니다.");
             res = true;
           }
