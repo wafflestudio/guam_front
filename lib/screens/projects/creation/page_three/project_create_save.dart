@@ -16,8 +16,20 @@ class ProjectCreateSave extends StatefulWidget {
 }
 
 class _ProjectCreateSaveState extends State<ProjectCreateSave> {
-  Future createProject({Map<String, dynamic> fields, dynamic files}) async {
-    print("20: ${widget.input}");
+  Future createProject({dynamic files}) async {
+    Map<String, String> fields = {
+      "title": widget.input['title'],
+      "due": widget.input['due'],
+      "description": widget.input['description'],
+      "backHeadCnt": widget.input['BACKEND']['headcount'].toString(),
+      "designHeadCnt": widget.input['DESIGNER']['headcount'].toString(),
+      "frontHeadCnt": widget.input['FRONTEND']['headcount'].toString(),
+      "frontStackId": widget.input['FRONTEND']['id'].toString(),
+      "backStackId": widget.input['BACKEND']['id'].toString(),
+      "designStackId": widget.input['DESIGNER']['id'].toString(),
+      "myPosition": widget.input['myPosition'],
+    };
+
     return await context.read<Projects>().createProject(
         fields: fields,
         files: files,
@@ -32,16 +44,6 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
 
   @override
   Widget build(BuildContext context) {
-    final projectInfo = {
-      "title": widget.input['title'],
-      "due": widget.input['period'],
-      "description": widget.input['description'],
-      "backHeadCnt": widget.input['BACKEND']['headcount'],
-      "designHeadCnt": widget.input['DESIGNER']['headcount'],
-      "frontHeadCnt": widget.input['FRONTEND']['headcount'],
-      "myPosition": widget.input['myPosition'],
-    };
-
     return (
         widget.page == 3
         ? Container(
@@ -49,7 +51,6 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
             child: InkWell(
               onTap: () {
                 if (widget.btnEnabled) createProject(
-                    fields: projectInfo,
                     files: widget.input['thumbnail'] != null ? [File(widget.input['thumbnail'].path)] : null
                 );
               },
