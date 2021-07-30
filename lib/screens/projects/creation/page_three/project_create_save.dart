@@ -1,17 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
-import 'package:guam_front/providers/stacks/stacks.dart';
+import 'package:provider/provider.dart';
 import '../../../../models/stack.dart' as StackModel;
 import 'package:hexcolor/hexcolor.dart';
 
 class ProjectCreateSave extends StatefulWidget {
   final Map input;
   final int page;
-  final Projects projectProvider;
   final bool btnEnabled;
 
-  ProjectCreateSave({this.input, this.page, this.projectProvider, this.btnEnabled});
+  ProjectCreateSave({this.input, this.page, this.btnEnabled});
 
   @override
   _ProjectCreateSaveState createState() => _ProjectCreateSaveState();
@@ -19,14 +18,13 @@ class ProjectCreateSave extends StatefulWidget {
 
 class _ProjectCreateSaveState extends State<ProjectCreateSave> {
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
-    return await widget.projectProvider
-      .createProject(
+    return await context.read<Projects>().createProject(
         fields: fields,
         files: files,
     ).then((successful) {
       if (successful) {
         Navigator.pop(context);
-        widget.projectProvider.fetchProjects();
+        context.read<Projects>().fetchProjects();
         return successful;
       }
     });
@@ -42,14 +40,6 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       "designHeadCnt": widget.input['DESIGNER']['headcount'],
       "frontHeadCnt": widget.input['FRONTEND']['headcount'],
       "myPosition": widget.input['myPosition'],
-      // "techStackIds": [
-      //   if (widget.input['BACKEND']['stack'] != '')
-      //     setTechStackIdx(widget.input['BACKEND']['stack'], '백엔드'),
-      //   if (widget.input['FRONTEND']['stack'] != '')
-      //     setTechStackIdx(widget.input['프론트엔드']['stack'], '프론트엔드'),
-      //   if (widget.input['DESIGNER']['stack'] != '')
-      //     setTechStackIdx(widget.input['디자이너']['stack'], '디자이너'),
-      // ],
     };
 
     return (

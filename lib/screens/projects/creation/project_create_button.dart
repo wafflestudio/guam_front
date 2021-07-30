@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/creation/project_create.dart';
+import 'package:provider/provider.dart';
 
 class ProjectCreateButton extends StatelessWidget {
-  final Projects projectProvider;
   final Stacks stacksProvider;
 
-  ProjectCreateButton(this.projectProvider, this.stacksProvider);
+  ProjectCreateButton({this.stacksProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +18,10 @@ class ProjectCreateButton extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) =>
-                    CreateProjectScreen(projectProvider, stacksProvider),
-              ));
+                builder: (_) => ChangeNotifierProvider.value(
+                  value: context.read<Projects>(),
+                  child: CreateProjectScreen(stacksProvider: context.read<Stacks>())
+                )));
         });
   }
 }

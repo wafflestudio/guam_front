@@ -11,11 +11,8 @@ class ProjectCreatePageThree extends StatefulWidget {
   final Map input;
   final List<bool> positionSelected;
   final Function goToPreviousPage;
-  final Stacks stacksProvider;
-  final Projects projectsProvider;
 
-  ProjectCreatePageThree(this.input, this.positionSelected,
-      this.goToPreviousPage, this.stacksProvider, this.projectsProvider);
+  ProjectCreatePageThree(this.input, this.positionSelected, this.goToPreviousPage);
 
   @override
   _ProjectCreatePageThreeState createState() => _ProjectCreatePageThreeState();
@@ -97,7 +94,6 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
               ProjectCreateSave(
                 input: widget.input,
                 page: 3,
-                projectProvider: widget.projectsProvider,
                 btnEnabled: nextBtnEnabled
               )
             ],

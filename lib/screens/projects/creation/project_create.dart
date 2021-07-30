@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/commons/project_create_container.dart';
-import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/creation/page_one/project_create_page_one.dart';
 import 'package:guam_front/screens/projects/creation/page_three/project_create_page_three.dart';
@@ -11,10 +10,9 @@ import '../../../commons/custom_app_bar.dart';
 import '../../../models/stack.dart' as StackModel;
 
 class CreateProjectScreen extends StatefulWidget {
-  final Projects projectProvider;
   final Stacks stacksProvider;
 
-  CreateProjectScreen(this.projectProvider, this.stacksProvider);
+  CreateProjectScreen({this.stacksProvider});
 
   @override
   _CreateProjectScreenState createState() => _CreateProjectScreenState();
@@ -82,8 +80,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           input,
                           positionSelected,
                           goToPreviousPage,
-                          widget.stacksProvider,
-                          widget.projectProvider
                       ),
                     ProjectStatus(totalPage: 3, currentPage: _currentPage)
                   ])),
