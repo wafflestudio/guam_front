@@ -9,12 +9,13 @@ class CreateFilterChip extends StatelessWidget {
   final bool selected;
   final List<StackModel.Stack> filterValues;
 
-  CreateFilterChip(
-      {this.content,
-      this.display,
-      this.selectKey,
-      this.selected,
-      this.filterValues});
+  CreateFilterChip({
+    this.content,
+    this.display,
+    this.selectKey,
+    this.selected,
+    this.filterValues
+  });
 
   @override
   Widget build(BuildContext context) {

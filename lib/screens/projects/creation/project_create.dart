@@ -28,17 +28,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'title': '',
     'period': null,
     'description': '',
-    '백엔드': {'id': 0, 'stack': '', 'headcount': 0},
-    '프론트엔드': {'id': 0, 'stack': '', 'headcount': 0},
-    '디자이너': {'id': 0, 'stack': '', 'headcount': 0},
+    'BACKEND': {'id': null, 'stack': null, 'headcount': 0},
+    'FRONTEND': {'id': null, 'stack': null, 'headcount': 0},
+    'DESIGNER': {'id': null, 'stack': null, 'headcount': 0},
     'myPosition': '',
     'thumbnail': null,
-  };
-
-  Map btnEnabledStates = {
-    1: false,
-    2: false,
-    3: false,
   };
 
   Map<String, List<StackModel.Stack>> _filterOptions = {
@@ -60,9 +54,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   void goToNextPage() => setState(() {_currentPage++;});
   void goToPreviousPage() => setState(() {_currentPage--;});
-  void checkButtonEnable() => setState(() {
-    btnEnabledStates[1] = input['title'] != '' && input['description'] != '' && input['period'] != null;
-  });
 
   @override
   Widget build(BuildContext context) {

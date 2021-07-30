@@ -22,22 +22,21 @@ class ProjectCreatePageTwo extends StatefulWidget {
 }
 
 class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
-  List<bool> isDataFilled = [true, true, true];
+  bool nextBtnEnabled;
+
+  void checkButtonEnable() => setState(() {
+    nextBtnEnabled = widget.input['title'] != ''
+        && widget.input['description'] != ''
+        && widget.input['period'] != null;
+  });
 
   @override
   void initState() {
-    if (widget.input['백엔드']['stack'] == '') isDataFilled[0] = false;
-    if (widget.input['프론트엔드']['stack'] == '') isDataFilled[1] = false;
-    if (widget.input['디자이너']['stack'] == '') isDataFilled[2] = false;
-    super.initState();
-  }
+    nextBtnEnabled = widget.input['title'] != ''
+        && widget.input['description'] != ''
+        && widget.input['period'] != null;
 
-  void checkDataFilled() {
-    setState(() {
-      if (widget.input['백엔드']['stack'] != '') isDataFilled[0] = true;
-      if (widget.input['프론트엔드']['stack'] != '') isDataFilled[1] = true;
-      if (widget.input['디자이너']['stack'] != '') isDataFilled[2] = true;
-    });
+    super.initState();
   }
 
   @override
@@ -67,7 +66,7 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             ),
           ),
         ),
-        ProjectCreatePositions(widget.input, widget.filterOptions, isDataFilled, checkDataFilled),
+        ProjectCreatePositions(input: widget.input, filterOptions: widget.filterOptions), //
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -75,6 +74,7 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             NextPage(
               page: 2,
               onTap: widget.goToNextPage,
+              active: nextBtnEnabled,
             ),
           ],
         )

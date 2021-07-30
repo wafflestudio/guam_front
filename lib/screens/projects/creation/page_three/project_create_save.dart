@@ -57,16 +57,16 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       "title": widget.input['title'],
       "due": widget.input['period'],
       "description": widget.input['description'],
-      "backHeadCnt": widget.input['백엔드']['headcount'],
-      "designHeadCnt": widget.input['디자이너']['headcount'],
-      "frontHeadCnt": widget.input['프론트엔드']['headcount'],
+      "backHeadCnt": widget.input['BACKEND']['headcount'],
+      "designHeadCnt": widget.input['DESIGNER']['headcount'],
+      "frontHeadCnt": widget.input['FRONTEND']['headcount'],
       "myPosition": widget.input['myPosition'],
       "techStackIds": [
-        if (widget.input['백엔드']['stack'] != '')
-          setTechStackIdx(widget.input['백엔드']['stack'], '백엔드'),
-        if (widget.input['프론트엔드']['stack'] != '')
+        if (widget.input['BACKEND']['stack'] != '')
+          setTechStackIdx(widget.input['BACKEND']['stack'], '백엔드'),
+        if (widget.input['FRONTEND']['stack'] != '')
           setTechStackIdx(widget.input['프론트엔드']['stack'], '프론트엔드'),
-        if (widget.input['디자이너']['stack'] != '')
+        if (widget.input['DESIGNER']['stack'] != '')
           setTechStackIdx(widget.input['디자이너']['stack'], '디자이너'),
       ],
     };

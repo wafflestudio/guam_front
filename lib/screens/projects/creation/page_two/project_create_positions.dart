@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import '../create_filter_chip.dart';
 import '../create_filter_value_chip.dart';
+import '../../../../helpers/translate.dart';
+import '../../../../models/stack.dart' as StackModel;
 
 class ProjectCreatePositions extends StatefulWidget {
   final Map input;
   final Map<dynamic, List<dynamic>> filterOptions;
-  final List<bool> isDataFilled;
-  final Function checkDataFilled;
 
-  ProjectCreatePositions(this.input, this.filterOptions, this.isDataFilled, this.checkDataFilled);
+  ProjectCreatePositions({this.input, this.filterOptions});
 
   @override
   _ProjectCreatePositionsState createState() => _ProjectCreatePositionsState();
@@ -18,10 +17,12 @@ class ProjectCreatePositions extends StatefulWidget {
 
 class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
   String selectedKey;
-  List<String> filterValues;
+  List<StackModel.Stack> filterValues;
 
   @override
   Widget build(BuildContext context) {
+    print("24: ${widget.input}");
+
     return Column(
       children: [
         Container(
@@ -35,7 +36,7 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                 Row(children: [
                   ...widget.filterOptions.entries.map((e) => CreateFilterChip(
                       content: e.key,
-                      display: e.key,
+                      display: translate(e.key),
                       selected: selectedKey == e.key,
                       selectKey: selectKey,
                       filterValues: e.value))
@@ -65,11 +66,13 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                         padding: EdgeInsets.only(left: 10),
                         child: Wrap(
                           children: [
-                            ...filterValues.map((e) => CreateFilterValueChip(
-                                  content: e,
-                                  selected: widget.input[selectedKey]["stack"] == e,
-                                  selectValue: selectValue,
-                                ))
+                            ...filterValues.map((e) {
+                              return CreateFilterValueChip(
+                                stack: e,
+                                selected: widget.input[selectedKey]["stack"] == e.name,
+                                selectValue: selectValue,
+                              );
+                            })
                           ],
                         ),
                       )
@@ -93,7 +96,7 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                     ),
                   ),
                 ),
-                position(widget.filterOptions),
+                //position(widget.filterOptions),
               ],
             )),
       ],
@@ -158,9 +161,9 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(children: [
-          if ((widget.input["백엔드"]["stack"] == '') &
-              (widget.input["프론트엔드"]["stack"] == '') &
-              (widget.input["디자이너"]["stack"] == ''))
+          if ((widget.input["BACKEND"]["stack"] == '') &
+              (widget.input["FRONTEND"]["stack"] == '') &
+              (widget.input["DESIGNER"]["stack"] == ''))
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.all(20),
@@ -169,9 +172,9 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                 style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ),
-          if ((widget.input["백엔드"]["stack"] != '') ||
-              (widget.input["프론트엔드"]["stack"] != '') ||
-              (widget.input["디자이너"]["stack"] != ''))
+          if ((widget.input["BACKEND"]["stack"] != '') ||
+              (widget.input["FRONTEND"]["stack"] != '') ||
+              (widget.input["DESIGNER"]["stack"] != ''))
             Wrap(
               children: [
                 ...filterOptions.entries.map((e) =>
@@ -220,15 +223,17 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
     });
   }
 
-  void selectKey(String key, List<String> value) {
+  void selectKey(String key, List<StackModel.Stack> value) {
     setState(() {
       selectedKey = selectedKey == key ? null : key;
       filterValues = value;
     });
   }
 
-  void selectValue(String value) {
-    setState(() => widget.input[selectedKey]["stack"] = value);
-    widget.checkDataFilled();
+  void selectValue(StackModel.Stack stack) {
+    setState(() {
+      widget.input[selectedKey]["id"] = stack.id;
+      widget.input[selectedKey]["stack"] = stack.name;
+    });
   }
 }
