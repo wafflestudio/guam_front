@@ -36,10 +36,11 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.black))),
         Center(
-            child: Stack(children: <Widget>[
+            child: Stack(
+                children: [
           Container(
-            width: 110,
-            height: 110,
+            width: 120,
+            height: 120,
             child: _imageFile == null
                 ? widget.profile.imageUrl == null
                     ? Icon(Icons.person, color: Colors.white, size: 100)

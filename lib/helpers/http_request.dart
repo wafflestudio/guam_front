@@ -3,7 +3,6 @@ import 'dart:io' show File, HttpHeaders;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as p;
-import 'package:dio/dio.dart';
 
 class HttpRequest {
   final String baseAuthority = "15.164.72.46:8080";
@@ -47,8 +46,6 @@ class HttpRequest {
       request.headers['Authorization'] = authToken;
       fields.entries.forEach((e) => request.fields[e.key] = e.value);
 
-      print("REQUEST FIELDS : ${request.fields}");
-
       if (files != null)
         files.forEach((e) async {
           final multipartFile = http.MultipartFile(
@@ -61,43 +58,6 @@ class HttpRequest {
           request.files.add(multipartFile);
         });
       final response = await request.send();
-
-      return response;
-    } catch (e) {
-      print("Error on POST Multipart request: $e");
-    }
-  }
-
-  Future postMultipartDio({String authority, String path, String authToken, Map<String, dynamic> fields, List<File> files}) async {
-    try {
-      final uri = Uri.http(authority ?? baseAuthority, path);
-
-      var formData;
-
-      if (files.length <= 1) {
-        print("Only 1 file attached");
-        var newFileds = {
-          "title": "이걸 왜 안되냐 개같은 ",
-          "description": "now encoding??",
-          "thumbnail": null,
-          "frontHeadCnt": '1',
-          "backHeadCnt": '2',
-          "designHeadCnt": '3',
-          "frontStackId": '1',
-          "backStackId": '2',
-          "designStackId": '3',
-        };
-        //fields["imageFiles"] = await MultipartFile.fromFile(files[0].path, filename: files[0].path);
-        formData = FormData.fromMap(newFileds);
-      } else {
-        print("Multi files attached");
-        formData = FormData.fromMap(fields);
-        formData.files.addAll(files.map((e) => MapEntry("imageFiles", MultipartFile.fromFileSync(e.path, filename: e.path))));
-      }
-
-      print(uri.toString());
-
-      var response = await Dio().post(uri.toString(), data: formData);
 
       return response;
     } catch (e) {

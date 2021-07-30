@@ -80,40 +80,41 @@ class Authenticate with ChangeNotifier {
   }
 
   Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
       print(authToken);
+
       if (authToken.isNotEmpty) {
         await HttpRequest()
           .postMultipart(
             path: "/user",
-            //fields: {"command" : fields.toString()},
-            fields: { "command": "{ \"nickname\": \"ryu\", \"willUploadImage\": \"true\" }"},
+            fields: { "command" : "${json.encode(fields)}" },
             files: files,
             authToken: authToken)
           .then((response) async {
             if (response.statusCode == 200) {
               getMyProfile();
               print("Successfully updated profile.");
-            }
-            if (response.statusCode == 201) {
-              print("Successfully created profile.");
-            }
-            if (response.statusCode == 401) {
-              print("Unauthorized.");
-            }
-            if (response.statusCode == 403) {
-              print("Forbidden to set a profile.");
-            }
-            if (response.statusCode == 404) {
-              print("Not Found");
+              res = true;
             } else {
-              print("Error : ${response.statusCode}");
-              var dec = await response.stream.bytesToString();
-              print(dec);
+              String err;
+
+              switch (response.statusCode) {
+                case 201: err = "Successfully created profile."; break;
+                case 401: err = "Unauthorized."; break;
+                case 403: err = "Forbidden to set a profile."; break;
+                case 404: err = "Not Found"; break;
+                case 500: err = "Internal Server Error"; break;
+              }
+
+              throw new Exception(err);
             }
-        });
+          });
+
+        return res;
       }
     } catch (e) {
       print(e);
