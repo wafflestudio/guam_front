@@ -86,30 +86,32 @@ class Authenticate with ChangeNotifier {
       print(authToken);
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .postMultipart(
-                path: "/user",
-                fields: {"command" : fields},
-                files: files,
-                authToken: authToken)
-            .then((response) {
-          if (response.statusCode == 200) {
-            getMyProfile();
-            print("Successfully updated profile.");
-          }
-          if (response.statusCode == 201) {
-            print("Successfully created profile.");
-          }
-          if (response.statusCode == 401) {
-            print("Unauthorized.");
-          }
-          if (response.statusCode == 403) {
-            print("Forbidden to set a profile.");
-          }
-          if (response.statusCode == 404) {
-            print("Not Found");
-          } else {
-            print("Error : ${response.statusCode}");
-          }
+          .postMultipart(
+            path: "/user",
+            fields: {"command" : fields.toString()},
+            files: files,
+            authToken: authToken)
+          .then((response) async {
+            if (response.statusCode == 200) {
+              getMyProfile();
+              print("Successfully updated profile.");
+            }
+            if (response.statusCode == 201) {
+              print("Successfully created profile.");
+            }
+            if (response.statusCode == 401) {
+              print("Unauthorized.");
+            }
+            if (response.statusCode == 403) {
+              print("Forbidden to set a profile.");
+            }
+            if (response.statusCode == 404) {
+              print("Not Found");
+            } else {
+              print("Error : ${response.statusCode}");
+              var dec = await response.stream.bytesToString();
+              print(dec);
+            }
         });
       }
     } catch (e) {

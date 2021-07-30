@@ -104,19 +104,16 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     final authProvider = context.read<Authenticate>();
 
     Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
-      print(fields);
-      print(await authProvider.getFirebaseIdToken());
-      // return await authProvider
-      //     .setProfile(
-      //   fields: fields,
-      //   files: files,
-      // )
-      //     .then((successful) {
-      //   // if (successful) {
-      //   // Navigator.pop(context);
-      //   authProvider.getMyProfile();
-      //   // }
-      // });
+      return await authProvider
+      .setProfile(
+        fields: fields,
+        files: files,
+      ).then((successful) {
+        if (successful) {
+          Navigator.pop(context);
+          authProvider.getMyProfile();
+        }
+      });
     }
 
     return Scaffold(
@@ -336,7 +333,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             "githubUrl": _githubIdController.text,
             "introduction": _introductionController.text,
             "skills": selectedSkillsList,
-            "willUploadImage": willUploadImage,
+            "willUploadImage": willUploadImage.toString(),
           };
           setProfile(
             fields: keyMap,

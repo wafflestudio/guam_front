@@ -45,16 +45,10 @@ class HttpRequest {
 
       http.MultipartRequest request = http.MultipartRequest("POST", uri);
       request.headers['Authorization'] = authToken;
-      fields.entries.forEach((e) {
-        if (e.key == 'command'){
-          print(json.encode(fields));
-          request.fields['command'] = json.encode(fields);
-        }
-        else{
-          request.fields[e.key] = e.value;
-        }
-      });
-      // fields.entries.forEach((e) => request.fields[e.key] = e.value);
+      fields.entries.forEach((e) => request.fields[e.key] = e.value);
+
+      print("REQUEST FIELDS : ${request.fields}");
+
       if (files != null)
         files.forEach((e) async {
           final multipartFile = http.MultipartFile(

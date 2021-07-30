@@ -101,7 +101,7 @@ class Thread extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    if (thread.content != null) Padding(
                       child: Text(
                         thread.content,
                         style: TextStyle(fontSize: 12),
