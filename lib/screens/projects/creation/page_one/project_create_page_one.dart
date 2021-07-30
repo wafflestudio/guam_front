@@ -64,9 +64,9 @@ class ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
               ),
             ),
           ),
-          ProjectCreateTitle(widget.input),
-          ProjectCreatePeriod(widget.input, widget.periodSelected),
-          ProjectCreateDescription(widget.input),
+          ProjectCreateTitle(input: widget.input, checkButtonEnable: checkButtonEnable),
+          ProjectCreatePeriod(input: widget.input, periodSelected: widget.periodSelected, checkButtonEnable: checkButtonEnable),
+          ProjectCreateDescription(input: widget.input, checkButtonEnable: checkButtonEnable),
           NextPage(
             page: 1,
             onTap: widget.goToNextPage,

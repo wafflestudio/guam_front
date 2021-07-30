@@ -4,8 +4,9 @@ import 'package:hexcolor/hexcolor.dart';
 class ProjectCreatePeriod extends StatefulWidget {
   final Map input;
   final List<bool> periodSelected;
+  final Function checkButtonEnable;
 
-  ProjectCreatePeriod(this.input, this.periodSelected);
+  ProjectCreatePeriod({this.input, this.periodSelected, this.checkButtonEnable});
 
   @override
   _ProjectCreatePeriodState createState() => _ProjectCreatePeriodState();
@@ -68,6 +69,7 @@ class _ProjectCreatePeriodState extends State<ProjectCreatePeriod> {
             for (int i = 0; i < widget.periodSelected.length; i++) {
               widget.periodSelected[i] = i == idx;
             }
+            widget.checkButtonEnable();
             savePeriod(idx);
           });
         },
