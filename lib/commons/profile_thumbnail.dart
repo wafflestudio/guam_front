@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/profile.dart';
+import 'package:transparent_image/transparent_image.dart';
+import '../helpers/http_request.dart';
 
 class ProfileThumbnail extends StatelessWidget {
   final Profile profile;
@@ -19,10 +21,21 @@ class ProfileThumbnail extends StatelessWidget {
     return Container(
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundImage: profile.imageUrl != null ? NetworkImage(profile.imageUrl) : AssetImage("assets/images/default-avatar.jpeg"),
-            backgroundColor: Colors.transparent,
-            radius: radius,
+          Container(
+            height: 2 * radius,
+            width: 2 * radius,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey,
+            ),
+            child: ClipOval(
+                child: profile.imageUrl != null
+                    ? FadeInImage(
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: NetworkImage(HttpRequest().s3BaseAuthority + profile.imageUrl),
+                      fit: BoxFit.cover)
+                    : Icon(Icons.person, color: Colors.white, size: 2 * radius)
+            ),
           ),
           if (showNickname) Padding(
             padding: EdgeInsets.only(left: 10),
