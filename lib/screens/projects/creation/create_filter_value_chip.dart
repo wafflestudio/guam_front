@@ -6,8 +6,9 @@ class CreateFilterValueChip extends StatelessWidget {
   final StackModel.Stack stack;
   final bool selected;
   final Function selectValue;
+  final Function checkButtonEnable;
 
-  CreateFilterValueChip({this.stack, this.selected, this.selectValue});
+  CreateFilterValueChip({this.stack, this.selected, this.selectValue, this.checkButtonEnable});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,10 @@ class CreateFilterValueChip extends StatelessWidget {
         backgroundColor: HexColor("#E9E9E9"),
         side: BorderSide(color: HexColor("#979797"), width: 1),
         selectedColor: HexColor("#4694F9"),
-        onSelected: (val) => selectValue(stack),
+        onSelected: (val) {
+          selectValue(stack);
+          checkButtonEnable();
+        },
       ),
     );
   }

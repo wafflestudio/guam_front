@@ -8,8 +8,9 @@ import '../../../../models/stack.dart' as StackModel;
 class ProjectCreatePositions extends StatefulWidget {
   final Map input;
   final Map<dynamic, List<dynamic>> filterOptions;
+  final Function checkButtonEnable;
 
-  ProjectCreatePositions({this.input, this.filterOptions});
+  ProjectCreatePositions({this.input, this.filterOptions, this.checkButtonEnable});
 
   @override
   _ProjectCreatePositionsState createState() => _ProjectCreatePositionsState();
@@ -21,8 +22,6 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
 
   @override
   Widget build(BuildContext context) {
-    print("24: ${widget.input}");
-
     return Column(
       children: [
         Container(
@@ -39,7 +38,8 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                       display: translate(e.key),
                       selected: selectedKey == e.key,
                       selectKey: selectKey,
-                      filterValues: e.value))
+                      filterValues: e.value,
+                  ))
                 ]),
                 if (selectedKey != null)
                   Column(
@@ -71,6 +71,7 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                                 stack: e,
                                 selected: widget.input[selectedKey]["stack"] == e.name,
                                 selectValue: selectValue,
+                                checkButtonEnable: widget.checkButtonEnable,
                               );
                             })
                           ],
@@ -96,7 +97,7 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                     ),
                   ),
                 ),
-                //position(widget.filterOptions),
+                position(widget.filterOptions),
               ],
             )),
       ],
@@ -187,7 +188,7 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
-                                    e.key.toString(),
+                                    translate(e.key.toString()),
                                     style: TextStyle(
                                         fontSize: 14, color: Colors.white),
                                   ),

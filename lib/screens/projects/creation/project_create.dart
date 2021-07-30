@@ -28,9 +28,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'title': '',
     'period': null,
     'description': '',
-    'BACKEND': {'id': null, 'stack': null, 'headcount': 0},
-    'FRONTEND': {'id': null, 'stack': null, 'headcount': 0},
-    'DESIGNER': {'id': null, 'stack': null, 'headcount': 0},
+    'BACKEND': {'id': 0, 'stack': '', 'headcount': 0},
+    'FRONTEND': {'id': 0, 'stack': '', 'headcount': 0},
+    'DESIGNER': {'id': 0, 'stack': '', 'headcount': 0},
     'myPosition': '',
     'thumbnail': null,
   };

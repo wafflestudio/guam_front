@@ -25,17 +25,18 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
   bool nextBtnEnabled;
 
   void checkButtonEnable() => setState(() {
-    nextBtnEnabled = widget.input['title'] != ''
-        && widget.input['description'] != ''
-        && widget.input['period'] != null;
+    nextBtnEnabled =
+      widget.input['BACKEND']['id'] != 0 && widget.input['BACKEND']['stack'] != ''
+      && widget.input['FRONTEND']['id'] != 0 && widget.input['FRONTEND']['stack'] != ''
+      && widget.input['DESIGNER']['id'] != 0 && widget.input['DESIGNER']['stack'] != '';
   });
 
   @override
   void initState() {
-    nextBtnEnabled = widget.input['title'] != ''
-        && widget.input['description'] != ''
-        && widget.input['period'] != null;
-
+    nextBtnEnabled =
+      widget.input['BACKEND']['id'] != 0 && widget.input['BACKEND']['stack'] != ''
+      && widget.input['FRONTEND']['id'] != 0 && widget.input['FRONTEND']['stack'] != ''
+      && widget.input['DESIGNER']['id'] != 0 && widget.input['DESIGNER']['stack'] != '';
     super.initState();
   }
 
@@ -66,7 +67,7 @@ class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
             ),
           ),
         ),
-        ProjectCreatePositions(input: widget.input, filterOptions: widget.filterOptions), //
+        ProjectCreatePositions(input: widget.input, filterOptions: widget.filterOptions, checkButtonEnable: checkButtonEnable), //
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
