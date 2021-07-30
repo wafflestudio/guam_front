@@ -4,9 +4,9 @@ import 'package:hexcolor/hexcolor.dart';
 class NextPage extends StatelessWidget {
   final int page;
   final Function onTap;
-  bool active;
+  final bool active;
 
-  NextPage({@required this.page, @required this.onTap}) : this.active = true;
+  NextPage({@required this.page, @required this.onTap, @required this.active});
 
   @override
   Widget build(BuildContext context) {

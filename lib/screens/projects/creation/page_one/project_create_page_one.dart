@@ -4,7 +4,7 @@ import 'package:guam_front/screens/projects/creation/page_one/project_create_des
 import 'package:guam_front/screens/projects/creation/page_one/project_create_period.dart';
 import 'package:guam_front/screens/projects/creation/page_one/project_create_title.dart';
 
-class ProjectCreatePageOne extends StatelessWidget {
+class ProjectCreatePageOne extends StatefulWidget {
   final Map input;
   final List<bool> periodSelected;
   final Function goToNextPage;
@@ -14,6 +14,27 @@ class ProjectCreatePageOne extends StatelessWidget {
     this.periodSelected,
     this.goToNextPage,
   );
+
+  @override
+  State<StatefulWidget> createState() => ProjectCreatePageOneState();
+}
+
+class ProjectCreatePageOneState extends State<ProjectCreatePageOne> {
+  bool nextBtnEnabled;
+
+  @override
+  void initState() {
+    nextBtnEnabled = widget.input['title'] != ''
+        && widget.input['description'] != ''
+        && widget.input['period'] != null;
+    super.initState();
+  }
+
+  void checkButtonEnable() => setState(() {
+    nextBtnEnabled = widget.input['title'] != ''
+        && widget.input['description'] != ''
+        && widget.input['period'] != null;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +64,13 @@ class ProjectCreatePageOne extends StatelessWidget {
               ),
             ),
           ),
-          ProjectCreateTitle(input),
-          ProjectCreatePeriod(input, periodSelected),
-          ProjectCreateDescription(input),
+          ProjectCreateTitle(widget.input),
+          ProjectCreatePeriod(widget.input, widget.periodSelected),
+          ProjectCreateDescription(widget.input),
           NextPage(
             page: 1,
-            onTap: goToNextPage,
+            onTap: widget.goToNextPage,
+            active: nextBtnEnabled,
           )
         ],
       ),

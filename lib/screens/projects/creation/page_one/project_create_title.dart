@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class ProjectCreateTitle extends StatefulWidget {
   final Map input;
+  final Function checkButtonEnable;
 
-  ProjectCreateTitle(this.input);
+  ProjectCreateTitle({this.input, this.checkButtonEnable});
 
   @override
   _ProjectCreateTitleState createState() => _ProjectCreateTitleState();
@@ -34,9 +35,10 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
           padding: EdgeInsets.only(left: 20, right: 20),
           height: 50,
           child: TextFormField(
-            onChanged: (text) => setState(() {
-              widget.input["title"] = text;
-            }),
+            onChanged: (text) {
+              setState(() {widget.input["title"] = text;});
+              widget.checkButtonEnable();
+            },
             controller: _projectNameController,
             style: TextStyle(fontSize: 14, color: Colors.white),
             decoration: InputDecoration(

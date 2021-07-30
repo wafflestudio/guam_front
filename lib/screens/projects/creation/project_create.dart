@@ -23,6 +23,7 @@ class CreateProjectScreen extends StatefulWidget {
 class _CreateProjectScreenState extends State<CreateProjectScreen> {
   String selectedKey;
   List<String> filterValues;
+
   Map input = {
     'title': '',
     'period': null,
@@ -33,6 +34,13 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'myPosition': '',
     'thumbnail': null,
   };
+
+  Map btnEnabledStates = {
+    1: false,
+    2: false,
+    3: false,
+  };
+
   Map<String, List<StackModel.Stack>> _filterOptions = {
     'BACKEND': [],
     'DESIGNER': [],
@@ -52,6 +60,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   void goToNextPage() => setState(() {_currentPage++;});
   void goToPreviousPage() => setState(() {_currentPage--;});
+  void checkButtonEnable() => setState(() {
+    btnEnabledStates[1] = input['title'] != '' && input['description'] != '' && input['period'] != null;
+  });
 
   @override
   Widget build(BuildContext context) {
