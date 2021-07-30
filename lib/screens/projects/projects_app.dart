@@ -39,8 +39,7 @@ class ProjectsAppScaffold extends StatelessWidget {
       child: Scaffold(
         appBar: CustomAppBar(
             title: '프로젝트',
-            leading: ProjectCreateButton(
-                context.watch<Projects>(), context.read<Stacks>()),
+            leading: ProjectCreateButton(),
             trailing: ProjectSearchButton(
                 context.read<Stacks>(), context.watch<Projects>())),
         body: ProjectsBody(context.watch<Projects>()),

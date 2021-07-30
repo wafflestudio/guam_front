@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../models/stack.dart' as StackModel;
 
 class CreateFilterChip extends StatelessWidget {
   final String content;
   final String display;
   final Function selectKey;
   final bool selected;
-  final List<String> filterValues;
+  final List<StackModel.Stack> filterValues;
 
-  CreateFilterChip(
-      {this.content,
-      this.display,
-      this.selectKey,
-      this.selected,
-      this.filterValues});
+  CreateFilterChip({
+    this.content,
+    this.display,
+    this.selectKey,
+    this.selected,
+    this.filterValues
+  });
 
   @override
   Widget build(BuildContext context) {
