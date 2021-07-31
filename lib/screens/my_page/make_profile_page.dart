@@ -29,6 +29,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
   final isSelected = <bool>[false, false, false];
+  // 추후 List<int>로 수정해야 함.
   List<String> selectedSkillsList = [];
   Map techStacksInfo = {
     '백엔드': <String>[],
@@ -88,13 +89,13 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   @override
   Widget build(BuildContext context) {
     var techStacks = {
-      'BACKEND': <String>[],
-      'DESIGNER': <String>[],
-      'FRONTEND': <String>[]
+      'BACKEND': <dynamic>[],
+      'DESIGNER': <dynamic>[],
+      'FRONTEND': <dynamic>[]
     };
 
     widget.stacksProvider.stacks
-        .forEach((e) => techStacks[e.position].add(e.name));
+        .forEach((e) => techStacks[e.position].add({e.id: e.name}));
 
     techStacks['백엔드'] = techStacks.remove('BACKEND');
     techStacks['프론트엔드'] = techStacks.remove('FRONTEND');
@@ -225,6 +226,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   }
 
   Widget _techStacksFilter(Map<dynamic, List<dynamic>> techStacks) {
+    print(selectedSkillsList);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
