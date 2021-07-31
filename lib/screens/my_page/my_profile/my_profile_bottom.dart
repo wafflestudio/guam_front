@@ -68,7 +68,7 @@ class MyProfileBottom extends StatelessWidget {
                             padding: EdgeInsets.only(top: 15),
                             child: Text(e.key),
                           ),
-                          Wrap(spacing: 4, children: _buildChip(e.value)),
+                          Expanded(child: Wrap(spacing: 4, children: _buildChip(e.value))),
                         ],
                       )
                     : Container()),
