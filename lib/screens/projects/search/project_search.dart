@@ -64,20 +64,20 @@ class _SearchScreenState extends State<SearchScreen> {
         title: Column(
           children: <Widget>[
             Container(
-                height: 36,
-                color: Colors.white,
-                child: Row(
-                  children: <Widget>[
-                    SearchForm(
-                        result, widget.projectsProvider, toggleIsSubmitted),
-                    IconButton(
-                        icon: Icon(
-                          Icons.filter_list,
-                          color: Colors.black,
-                        ),
-                        onPressed: _toggleIsFilterOpen),
-                  ],
-                )),
+              height: 36,
+              color: Colors.white,
+              child: Row(
+                children: <Widget>[
+                  SearchForm(
+                    result, widget.projectsProvider, toggleIsSubmitted),
+                  IconButton(
+                    icon: Icon(
+                      Icons.filter_list, color: Colors.black),
+                    onPressed: _toggleIsFilterOpen,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -87,23 +87,25 @@ class _SearchScreenState extends State<SearchScreen> {
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [
-                      HexColor("FFB980").withOpacity(0.5),
-                      HexColor("E2AFF3").withOpacity(0.5),
-                    ],
-                    begin: FractionalOffset(0.0, 1.0),
-                    end: FractionalOffset(0.0, 0.0),
-                    stops: [0, 1]),
+                  colors: [
+                    HexColor("FFB980").withOpacity(0.5),
+                    HexColor("E2AFF3").withOpacity(0.5),
+                  ],
+                  begin: FractionalOffset(0.0, 1.0),
+                  end: FractionalOffset(0.0, 0.0),
+                  stops: [0, 1],
+                ),
               ),
             ),
             SingleChildScrollView(
-                child: Column(
-              children: <Widget>[
+              child: Column(
+               children: <Widget>[
                 if (isFilterOpen) searchFilter(widget.stacksProvider, size),
                 Container(color: Colors.black),
                 ProjectsSearchedList(widget.projectsProvider, isSubmitted)
-              ],
-            )),
+               ],
+              ),
+            ),
           ],
         ),
       ),
@@ -119,43 +121,46 @@ class _SearchScreenState extends State<SearchScreen> {
     };
 
     return Container(
-        width: size.width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: HexColor("979797"),
-          ),
+      width: size.width,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: HexColor("979797"),
         ),
-        padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(children: [
-                ...filterOptions.entries.map((e) => SearchFilterChip(
-                    content: e.key,
-                    display: result[e.key] != null
-                        ? "${e.key}: ${result[e.key]}"
-                        : e.key,
-                    selected: selectedKey == e.key,
-                    selectKey: selectKey,
-                    filterValues: e.value)),
-              ]),
+      ),
+      padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(children: [
+              ...filterOptions.entries.map((e) => SearchFilterChip(
+                content: e.key,
+                display: result[e.key] != null
+                  ? "${e.key}: ${result[e.key]}"
+                  : e.key,
+                selected: selectedKey == e.key,
+                selectKey: selectKey,
+                filterValues: e.value),
+              )]
             ),
-            if (selectedKey != null)
-              SizedBox(
-                  height: 40,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, idx) => FilterValueChip(
-                      content: filterValues[idx],
-                      selected: result[selectedKey] == filterValues[idx],
-                      selectValue: selectValue,
-                    ),
-                    itemCount: filterValues.length,
-                  )),
-          ],
-        ));
+          ),
+          if (selectedKey != null)
+            SizedBox(
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, idx) => FilterValueChip(
+                  content: filterValues[idx],
+                  selected: result[selectedKey] == filterValues[idx],
+                  selectValue: selectValue,
+                ),
+                itemCount: filterValues.length,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
