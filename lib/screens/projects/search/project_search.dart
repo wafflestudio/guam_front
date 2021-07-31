@@ -6,6 +6,7 @@ import 'package:guam_front/screens/projects/search/project_search_form.dart';
 import 'package:guam_front/screens/projects/search/projects_searched_list.dart';
 import 'package:guam_front/screens/projects/search/search_filter_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
+
 import 'filter_value_chip.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -55,6 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -97,7 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
             SingleChildScrollView(
                 child: Column(
               children: <Widget>[
-                if (isFilterOpen) searchFilter(widget.stacksProvider),
+                if (isFilterOpen) searchFilter(widget.stacksProvider, size),
                 Container(color: Colors.black),
                 ProjectsSearchedList(widget.projectsProvider, isSubmitted)
               ],
@@ -108,7 +110,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget searchFilter(Stacks stacksProvider) {
+  Widget searchFilter(Stacks stacksProvider, Size size) {
     final Map filterOptions = {
       '기술 스택': List<String>.from(
           widget.stacksProvider.stacks.map((stack) => stack.name)),
@@ -117,6 +119,7 @@ class _SearchScreenState extends State<SearchScreen> {
     };
 
     return Container(
+        width: size.width,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
@@ -125,17 +128,21 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(children: [
-              ...filterOptions.entries.map((e) => SearchFilterChip(
-                  content: e.key,
-                  display: result[e.key] != null
-                      ? "${e.key}: ${result[e.key]}"
-                      : e.key,
-                  selected: selectedKey == e.key,
-                  selectKey: selectKey,
-                  filterValues: e.value)),
-            ]),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(children: [
+                ...filterOptions.entries.map((e) => SearchFilterChip(
+                    content: e.key,
+                    display: result[e.key] != null
+                        ? "${e.key}: ${result[e.key]}"
+                        : e.key,
+                    selected: selectedKey == e.key,
+                    selectKey: selectKey,
+                    filterValues: e.value)),
+              ]),
+            ),
             if (selectedKey != null)
               SizedBox(
                   height: 40,
