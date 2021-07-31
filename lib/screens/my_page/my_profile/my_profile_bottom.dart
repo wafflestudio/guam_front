@@ -21,6 +21,7 @@ class MyProfileBottom extends StatelessWidget {
       'FRONTEND': <String>[]
     };
 
+    // shallow copying `techStacks`
     Map myStacks = json.decode(json.encode(techStacks));
 
     stacksProvider.stacks.forEach((e) => techStacks[e.position].add(e.name));
