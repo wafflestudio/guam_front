@@ -5,9 +5,8 @@ import 'package:hexcolor/hexcolor.dart';
 class SearchForm extends StatefulWidget {
   final Map<dynamic, dynamic> result;
   final Projects projectsProvider;
-  final Function toggleIsSubmitted;
 
-  SearchForm(this.result, this.projectsProvider, this.toggleIsSubmitted);
+  SearchForm(this.result, this.projectsProvider);
 
   @override
   _SearchFormState createState() => _SearchFormState();

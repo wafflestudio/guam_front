@@ -67,11 +67,9 @@ class _SearchScreenState extends State<SearchScreen> {
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  SearchForm(
-                    result, widget.projectsProvider, toggleIsSubmitted),
+                  SearchForm(result, widget.projectsProvider),
                   IconButton(
-                    icon: Icon(
-                      Icons.filter_list, color: Colors.black),
+                    icon: Icon(Icons.filter_list, color: Colors.black),
                     onPressed: _toggleIsFilterOpen,
                   ),
                 ],
@@ -98,11 +96,11 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             SingleChildScrollView(
               child: Column(
-               children: <Widget>[
-                if (isFilterOpen) searchFilter(widget.stacksProvider, size),
-                Container(color: Colors.black),
-                ProjectsSearchedList(widget.projectsProvider, isSubmitted)
-               ],
+                children: <Widget>[
+                  if (isFilterOpen) searchFilter(widget.stacksProvider, size),
+                  Container(color: Colors.black),
+                  ProjectsSearchedList(widget.projectsProvider)
+                ],
               ),
             ),
           ],
@@ -134,16 +132,17 @@ class _SearchScreenState extends State<SearchScreen> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(children: [
-              ...filterOptions.entries.map((e) => SearchFilterChip(
-                content: e.key,
-                display: result[e.key] != null
-                  ? "${e.key}: ${result[e.key]}"
-                  : e.key,
-                selected: selectedKey == e.key,
-                selectKey: selectKey,
-                filterValues: e.value),
-              )]
-            ),
+              ...filterOptions.entries.map(
+                (e) => SearchFilterChip(
+                    content: e.key,
+                    display: result[e.key] != null
+                        ? "${e.key}: ${result[e.key]}"
+                        : e.key,
+                    selected: selectedKey == e.key,
+                    selectKey: selectKey,
+                    filterValues: e.value),
+              )
+            ]),
           ),
           if (selectedKey != null)
             SizedBox(
