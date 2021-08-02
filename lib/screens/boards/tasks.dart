@@ -21,9 +21,14 @@ class TasksState extends State<Tasks> {
   @override
   void initState() {
     super.initState();
-    selectedUserId = widget.tasks.first.user.id;
-    selectedUserTask = widget.tasks.firstWhere((e) => e.user.id == selectedUserId);
-    unselectedUsers = widget.tasks.where((e) => e.user.id != selectedUserId).toList();
+    selectUser(widget.tasks.first.user.id);
+  }
+
+  @override
+  // Board Title 통한 navigation 시 TasksState 를 해당 작업실에 맞춰 reset 하기 위함.
+  void didUpdateWidget(covariant Tasks oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    selectUser(widget.tasks.first.user.id);
   }
 
   void selectUser(int userId) {
