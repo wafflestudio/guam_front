@@ -7,8 +7,10 @@ class CommentsContainer extends StatelessWidget {
   final Function switchToEditMode;
   final Function deleteComment;
   final List<CommentModel.Comment> comments;
+  final CommentModel.Comment editTargetComment;
 
-  CommentsContainer({@required this.comments, @required this.switchToEditMode, @required this.deleteComment});
+  CommentsContainer({@required this.comments, @required this.switchToEditMode,
+    @required this.deleteComment, @required this.editTargetComment});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class CommentsContainer extends StatelessWidget {
             itemBuilder: (_, idx) => Comment(
               comment: comments[idx],
               switchToEditMode: switchToEditMode,
-              deleteComment: deleteComment
+              deleteComment: deleteComment,
+              isEditTarget: editTargetComment == comments[idx],
             ),
           )
         ],

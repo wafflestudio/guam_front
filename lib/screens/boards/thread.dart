@@ -16,8 +16,9 @@ import 'accept_decline_button.dart';
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
   final Function switchToEditMode;
+  final bool isEditTarget;
 
-  Thread(this.thread, {this.switchToEditMode});
+  Thread(this.thread, {this.switchToEditMode, this.isEditTarget});
 
   @override
   Widget build(BuildContext context) {
@@ -84,12 +85,13 @@ class Thread extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 7),
         decoration: BoxDecoration(
+          color: isEditTarget ? Color.fromRGBO(255, 235, 148, 0.5) : null,
           border: Border(
             bottom: BorderSide(
               color: Color.fromRGBO(151, 151, 151, 0.2),
               width: 1.5,
             )
-          )
+          ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,9 +115,7 @@ class Thread extends StatelessWidget {
                       children: [
                         if (thread.commentSize != 0) Text(
                           "댓글 +${thread.commentSize}",
-                          style: TextStyle(
-                              fontSize: 12
-                          ),
+                          style: TextStyle(fontSize: 12),
                         ),
                         Spacer(),
                         Text(
