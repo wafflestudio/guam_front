@@ -25,7 +25,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Map result = {};
   String selectedKey;
   List<String> filterValues;
-  TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode();
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../providers/projects/projects.dart';
 import '../project_banner.dart';
 import '../sub_headings.dart';
@@ -15,18 +16,15 @@ class ProjectsSearchedList extends StatelessWidget {
       children: [
         SubHeadings("🔎 검색 결과"),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: projectsProvider.loading
-              ? Center(child: CircularProgressIndicator())
-              : (isSubmitted
-                  ? Column(
-                      children: [
-                        ...projectsProvider.filteredProjects
-                            .map((e) => ProjectBanner(e, projectsProvider))
-                      ],
-                    )
-                  : Text("검색 결과 없음")),
-        )
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: projectsProvider.filteredProjects != null
+                ? Column(
+                    children: [
+                      ...projectsProvider.filteredProjects
+                          .map((e) => ProjectBanner(e, projectsProvider))
+                    ],
+                  )
+                : Text("검색 결과 없음"))
       ],
     );
   }

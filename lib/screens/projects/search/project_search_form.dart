@@ -14,21 +14,32 @@ class SearchForm extends StatefulWidget {
 }
 
 class _SearchFormState extends State<SearchForm> {
-  final TextEditingController _filter = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   FocusNode focusNode = FocusNode();
 
   Map get results => widget.result;
 
-  @override
-  Widget build(BuildContext context) {
-    final searchInfo = {
-      "keyword": _filter.text,
+  void setSearchInfo() {
+    setState(() {
+      results["keyword"] = _searchController.text;
+    });
+    widget.projectsProvider.searchProjects({
+      "keyword": results['keyword'],
       "stacks": results['기술 스택'],
       "position": results['포지션'],
       "period": results['활동 기간'],
-    };
+    });
+  }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: TextField(
         focusNode: focusNode,
@@ -36,10 +47,9 @@ class _SearchFormState extends State<SearchForm> {
           fontSize: 17,
         ),
         autofocus: true,
-        controller: _filter,
+        controller: _searchController,
         onSubmitted: (e) {
-          widget.projectsProvider.searchProjects(searchInfo);
-          widget.toggleIsSubmitted();
+          setSearchInfo();
         },
         decoration: InputDecoration(
             contentPadding: EdgeInsets.only(left: 10),
@@ -52,8 +62,7 @@ class _SearchFormState extends State<SearchForm> {
                   size: 20,
                 ),
                 onPressed: () {
-                  widget.projectsProvider.searchProjects(searchInfo);
-                  widget.toggleIsSubmitted();
+                  setSearchInfo();
                 }),
             hintText: '검색',
             labelStyle: TextStyle(color: Colors.black45),
