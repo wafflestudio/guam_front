@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../helpers/http_request.dart';
-import 'package:transparent_image/transparent_image.dart';
 import '../../../models/boards/thread_comment_image.dart';
+import '../../../commons/image_thumbnail.dart';
 
 class ThreadCommentImageContainer extends StatelessWidget {
   final ThreadCommentImage img;
@@ -17,14 +16,7 @@ class ThreadCommentImageContainer extends StatelessWidget {
         Container(
           height: double.infinity,
           width: double.infinity,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(HttpRequest().s3BaseAuthority + img.path),
-              fit: BoxFit.cover,
-            ),
-          ),
+          child: ImageThumbnail(imagePath: img.path),
         ),
         if (blur) Container(
           decoration: BoxDecoration(
