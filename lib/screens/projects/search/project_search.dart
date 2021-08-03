@@ -83,15 +83,12 @@ class _SearchScreenState extends State<SearchScreen> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    HexColor("FFB980").withOpacity(0.5),
-                    HexColor("E2AFF3").withOpacity(0.5),
-                  ],
-                  begin: FractionalOffset(0.0, 1.0),
-                  end: FractionalOffset(0.0, 0.0),
-                  stops: [0, 1],
-                ),
+                image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                      Colors.white.withOpacity(0.6), BlendMode.dstATop),
+                  image: AssetImage("assets/backgrounds/projects-bg-2.png"),
+                  fit: BoxFit.cover,
+                )
               ),
             ),
             SingleChildScrollView(

@@ -79,22 +79,22 @@ class Projects with ChangeNotifier {
       loading = true;
 
       await HttpRequest()
-          .get(path: "/project/search", queryParams: queryParams)
-          .then((response) {
-            if (response.statusCode == 200) {
-              final jsonUtf8 = decodeKo(response);
-              final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-              _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
-            }
-            if (response.statusCode == 401) {
-              print("프로젝트를 검색하려면 로그인이 필요합니다.");
-            }
-            if (response.statusCode == 403) {
-              print("검색 권한이 없습니다.");
-            }
-            if (response.statusCode == 404) {
-              print("검색된 결과가 존재하지 않습니다.");
-            }
+        .get(path: "/project/search", queryParams: queryParams)
+        .then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+            _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+          }
+          if (response.statusCode == 401) {
+            print("프로젝트를 검색하려면 로그인이 필요합니다.");
+          }
+          if (response.statusCode == 403) {
+            print("검색 권한이 없습니다.");
+          }
+          if (response.statusCode == 404) {
+            print("검색된 결과가 존재하지 않습니다.");
+          }
       });
 
       loading = false;
