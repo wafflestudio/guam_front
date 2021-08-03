@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
 import 'package:guam_front/commons/custom_app_bar.dart';
@@ -10,14 +8,14 @@ import 'package:guam_front/screens/my_page/profile_filter_value_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/user_auth/authenticate.dart';
 import 'make_profile_image.dart';
 
 class MakeProfilePage extends StatefulWidget {
   final Stacks stacksProvider;
+  final bool showAppBar;
 
-  MakeProfilePage(this.stacksProvider);
+  MakeProfilePage({this.stacksProvider, showAppBar}) : this.showAppBar = showAppBar ?? true;
 
   @override
   _MakeProfilePageState createState() => _MakeProfilePageState();
@@ -117,7 +115,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     }
 
     return Scaffold(
-        appBar: CustomAppBar(title: "프로필 수정", leading: Back()),
+        appBar: widget.showAppBar ? CustomAppBar(title: "프로필 수정", leading: Back()) : null,
         body: DecoratedBox(
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -226,7 +224,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   }
 
   Widget _techStacksFilter(Map<dynamic, List<dynamic>> techStacks) {
-    print(selectedSkillsList);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

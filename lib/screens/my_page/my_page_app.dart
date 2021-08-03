@@ -27,7 +27,7 @@ class MyPage extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MakeProfilePage(stacksProvider))),
+                    builder: (context) => MakeProfilePage(stacksProvider: stacksProvider))),
               )
             : null,
       ),
@@ -36,7 +36,7 @@ class MyPage extends StatelessWidget {
           : authProvider.userSignedIn()
               ? authProvider.profileExists()
                   ? MyProfile(stacksProvider)
-                  : MakeProfilePage(stacksProvider)
+                  : MakeProfilePage(stacksProvider: stacksProvider, showAppBar: false)
               : Container(
                   child: Center(
                     child: KakaoLogin(),
