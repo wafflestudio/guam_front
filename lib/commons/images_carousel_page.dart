@@ -4,7 +4,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'custom_app_bar.dart';
 import 'image_expanded.dart';
 import '../models/thumbnail.dart';
-import '../screens/boards/bottom_modal/bottom_modal_content.dart';
+import 'bottom_modal/bottom_modal_content.dart';
 import 'package:intl/intl.dart';
 import 'dart:io' show Platform;
 
@@ -54,6 +54,7 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
               showMaterialModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                  deleteText: "이미지 삭제",
                   deleteFunc: () => widget.deleteFunc(imageId: thumbnailsState[currPage].id)
                 )
               );
@@ -61,7 +62,8 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
               showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                  deleteFunc: () => widget.deleteFunc(imageId: thumbnailsState[currPage].id)
+                    deleteText: "이미지 삭제",
+                    deleteFunc: () => widget.deleteFunc(imageId: thumbnailsState[currPage].id)
                 )
               );
             }

@@ -7,7 +7,7 @@ import 'dart:io' show Platform;
 import '../../../commons/profile_thumbnail.dart';
 import '../../../models/boards/comment.dart' as CommentModel;
 import '../../../providers/boards/boards.dart';
-import '../bottom_modal/bottom_modal_content.dart';
+import '../../../commons/bottom_modal/bottom_modal_content.dart';
 import 'thread_comment_images.dart';
 
 class Comment extends StatelessWidget {
@@ -28,6 +28,8 @@ class Comment extends StatelessWidget {
             showMaterialModalBottomSheet(
               context: context,
               builder: (_) => BottomModalContent(
+                  editText: "메시지 편집",
+                  deleteText: "메시지 삭제",
                   editFunc: () {
                     switchToEditMode(editTargetComment: comment);
                     Navigator.of(context).pop(); // pops Modal Bottom Content Widget
@@ -41,6 +43,8 @@ class Comment extends StatelessWidget {
             showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                    editText: "메시지 편집",
+                    deleteText: "메시지 삭제",
                     editFunc: () {
                       switchToEditMode(editTargetComment: comment);
                       Navigator.of(context).pop(); // pops Modal Bottom Content Widget

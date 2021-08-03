@@ -10,7 +10,7 @@ import '../../commons/profile_thumbnail.dart';
 import '../../models/boards/thread.dart' as ThreadModel;
 import 'thread_page/thread_page.dart';
 import 'thread_page/thread_comment_images.dart';
-import 'bottom_modal/bottom_modal_content.dart';
+import '../../commons/bottom_modal/bottom_modal_content.dart';
 import 'accept_decline_button.dart';
 
 class Thread extends StatelessWidget {
@@ -59,24 +59,30 @@ class Thread extends StatelessWidget {
             showMaterialModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                    setFunc: setNotice,
-                    editFunc: () {
-                      switchToEditMode(editTargetThread: thread);
-                      Navigator.of(context).pop();
-                    },
-                    deleteFunc: deleteThread
+                  setText: "메시지 고정",
+                  editText: "메시지 편집",
+                  deleteText: "메시지 삭제",
+                  setFunc: setNotice,
+                  editFunc: () {
+                    switchToEditMode(editTargetThread: thread);
+                    Navigator.of(context).pop();
+                  },
+                  deleteFunc: deleteThread
                 )
             );
           } else {
             showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                    setFunc: setNotice,
-                    editFunc: () {
-                      switchToEditMode(editTargetThread: thread);
-                      Navigator.of(context).pop();
-                    },
-                    deleteFunc: deleteThread
+                  setText: "메시지 고정",
+                  editText: "메시지 편집",
+                  deleteText: "메시지 삭제",
+                  setFunc: setNotice,
+                  editFunc: () {
+                    switchToEditMode(editTargetThread: thread);
+                    Navigator.of(context).pop();
+                  },
+                  deleteFunc: deleteThread
                 )
             );
           }
