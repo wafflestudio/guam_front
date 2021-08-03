@@ -16,8 +16,10 @@ class Comment extends StatelessWidget {
   final Function deleteComment;
   final bool isEditTarget;
 
+  final Function fetchFullThread; // needed for comments image carousel deletion callback
+
   Comment({@required this.comment, @required this.switchToEditMode,
-    @required this.deleteComment, @required this.isEditTarget});
+    @required this.deleteComment, @required this.isEditTarget, @required this.fetchFullThread});
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +101,7 @@ class Comment extends StatelessWidget {
               commentId: comment.id,
               creatorId: comment.creator.id,
               images: comment.commentImages,
+              fetchFullThread: fetchFullThread,
             )
           ],
         )

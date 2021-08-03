@@ -112,6 +112,7 @@ class _ThreadPageState extends State<ThreadPage> {
                                       switchToEditMode: switchToEditMode,
                                       deleteComment: deleteComment,
                                       editTargetComment: editTargetComment,
+                                      fetchFullThread: fetchFullThread,
                                     );
                                   } else {
                                     return CircularProgressIndicator();

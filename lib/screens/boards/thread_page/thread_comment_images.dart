@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/boards/thread_page/thread_page.dart';
 import 'package:provider/provider.dart';
 import 'thread_comment_image_container.dart';
 import '../../../commons/images_carousel_page.dart';
@@ -15,7 +14,9 @@ class ThreadCommentImages extends StatelessWidget {
   final int threadId;
   final int commentId;
 
-  ThreadCommentImages({@required this.images, this.threadId, this.commentId, this.creatorId});
+  final Function fetchFullThread; // Needed for rebuilding comments after comment img delete
+
+  ThreadCommentImages({@required this.images, this.threadId, this.commentId, this.creatorId, this.fetchFullThread});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,10 @@ class ThreadCommentImages extends StatelessWidget {
       return await context.read<Boards>().deleteCommentImage(
         commentId: commentId,
         imageId: imageId,
-      );
+      ).then((successful) {
+        if (successful) fetchFullThread();
+        return successful;
+      });
     }
 
     return Padding(

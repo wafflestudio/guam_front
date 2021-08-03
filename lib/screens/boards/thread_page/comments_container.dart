@@ -9,8 +9,10 @@ class CommentsContainer extends StatelessWidget {
   final List<CommentModel.Comment> comments;
   final CommentModel.Comment editTargetComment;
 
+  final Function fetchFullThread; // needed for comments image carousel deletion callback
+
   CommentsContainer({@required this.comments, @required this.switchToEditMode,
-    @required this.deleteComment, @required this.editTargetComment});
+    @required this.deleteComment, @required this.editTargetComment, @required this.fetchFullThread});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CommentsContainer extends StatelessWidget {
               switchToEditMode: switchToEditMode,
               deleteComment: deleteComment,
               isEditTarget: editTargetComment == comments[idx],
+              fetchFullThread: fetchFullThread,
             ),
           )
         ],
