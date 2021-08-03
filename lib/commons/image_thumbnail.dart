@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../../../helpers/http_request.dart';
-import 'image_expanded.dart';
+import 'closable_image_expanded.dart';
 
 class ImageThumbnail extends StatelessWidget {
   /*
@@ -35,10 +35,12 @@ class ImageThumbnail extends StatelessWidget {
       onTap: () {
         if (activateOnTap) Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => ImageExpanded(
-            image: image ?? null,
-            imagePath: imagePath ?? null,
-          ))
+          MaterialPageRoute(
+            builder: (_) => ClosableImageExpanded(
+              image: image ?? null,
+              imagePath: imagePath ?? null
+            )
+          )
         );
       }
     );

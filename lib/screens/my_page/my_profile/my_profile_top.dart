@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/commons/closable_image_expanded.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../../../helpers/http_request.dart';
-import '../../../commons/image_expanded.dart';
+import '../../../commons/closable_image_expanded.dart';
 
 class MyProfileTop extends StatelessWidget {
   final Profile me;
@@ -36,7 +37,7 @@ class MyProfileTop extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => ImageExpanded(imagePath: me.imageUrl))
+                        MaterialPageRoute(builder: (_) => ClosableImageExpanded(imagePath: me.imageUrl))
                       );
                     }
                   ) : Icon(Icons.person, color: Colors.white, size: 90)
