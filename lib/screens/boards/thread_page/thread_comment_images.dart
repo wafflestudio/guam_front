@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../models/boards/thread_comment_image.dart';
 import 'thread_comment_image_container.dart';
 import '../../../commons/images_carousel_page.dart';
 import '../../../providers/boards/boards.dart';
+import '../../../models/thumbnail.dart';
 
 class ThreadCommentImages extends StatelessWidget {
-  final List<ThreadCommentImage> images;
+  final List<Thumbnail> images;
   final int maxRenderImgCnt = 4;
 
   ThreadCommentImages({@required this.images});
@@ -39,7 +39,7 @@ class ThreadCommentImages extends StatelessWidget {
                 builder: (_) => ChangeNotifierProvider.value(
                   value: context.read<Boards>(),
                   child: ImagesCarouselPage(
-                    imagePaths: [...this.images.map((e) => e.path)],
+                    thumbnails: [...this.images],
                     initialPage: idx,
                   ),
                 )

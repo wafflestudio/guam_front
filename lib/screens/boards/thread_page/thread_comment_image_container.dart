@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../models/boards/thread_comment_image.dart';
+import 'package:guam_front/models/thumbnail.dart';
+import '../../../models/thumbnail.dart';
 import '../../../commons/image_thumbnail.dart';
 
 class ThreadCommentImageContainer extends StatelessWidget {
-  final ThreadCommentImage img;
+  final Thumbnail img;
   final bool blur;
   final int hiddenImgCnt;
 
