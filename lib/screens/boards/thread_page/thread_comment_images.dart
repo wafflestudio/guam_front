@@ -7,14 +7,39 @@ import '../../../providers/boards/boards.dart';
 import '../../../models/thumbnail.dart';
 
 class ThreadCommentImages extends StatelessWidget {
-  final List<Thumbnail> images;
   final int maxRenderImgCnt = 4;
+  final List<Thumbnail> images;
   final int creatorId;
+  // IMPORTANT: Only one of fields below should be passed as parameter
+  final int threadId;
+  final int commentId;
 
-  ThreadCommentImages({@required this.images, this.creatorId});
+  ThreadCommentImages({@required this.images, this.threadId, this.commentId, this.creatorId});
 
   @override
   Widget build(BuildContext context) {
+    Future deleteThreadImage({@required int imageId}) async {
+      await context.read<Boards>().deleteThreadImage(
+        threadId: threadId,
+        imageId: imageId,
+      ).then((successful) {
+        if (successful) {
+          print("deleted thread image");
+        }
+      });
+    }
+
+    Future deleteCommentImage({@required int imageId}) async {
+      await context.read<Boards>().deleteCommentImage(
+        commentId: commentId,
+        imageId: imageId,
+      ).then((successful) {
+        if (successful) {
+          print("deleted comment image");
+        }
+      });
+    }
+
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: GridView.builder(
@@ -43,6 +68,9 @@ class ThreadCommentImages extends StatelessWidget {
                     thumbnails: [...this.images],
                     initialPage: idx,
                     showImageActions: creatorId != null && context.read<Boards>().isMe(creatorId),
+                    deleteFunc: threadId != null ? deleteThreadImage
+                        : commentId != null ? deleteCommentImage
+                        : null,
                   ),
                 )
               )

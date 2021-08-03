@@ -92,8 +92,9 @@ class Comment extends StatelessWidget {
               child: Text(comment.content),
             ),
             if (comment.commentImages.isNotEmpty) ThreadCommentImages(
-                creatorId: comment.creator.id,
-                images: comment.commentImages
+              commentId: comment.id,
+              creatorId: comment.creator.id,
+              images: comment.commentImages,
             )
           ],
         )

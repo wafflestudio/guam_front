@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'custom_app_bar.dart';
 import 'image_expanded.dart';
 import '../models/thumbnail.dart';
+import '../screens/boards/bottom_modal/bottom_modal_content.dart';
+import 'package:intl/intl.dart';
+import 'dart:io' show Platform;
 
 class ImagesCarouselPage extends StatefulWidget {
-  /*
-  * images: for uploaded native image files via ImagePicker, etc.,
-  * thumbnails: for network image paths (S3)
-  * IMPORTANT: only 1 of above should be passed to parameter
-  * */
-  final List<Image> images;
   final List<Thumbnail> thumbnails;
   final int initialPage;
-  final bool showImageActions;
 
-  ImagesCarouselPage({this.images, this.thumbnails, this.initialPage, this.showImageActions});
+  // Actions for trailing
+  final bool showImageActions;
+  final Function deleteFunc;
+
+  ImagesCarouselPage({@required this.thumbnails, this.initialPage,
+    @required this.showImageActions, this.deleteFunc});
 
   @override
   State<StatefulWidget> createState() => ImagesCarouselPageState();
 }
 
 class ImagesCarouselPageState extends State<ImagesCarouselPage> {
-  List<Image> imagesState;
   List<Thumbnail> thumbnailsState;
   int currPage;
 
   @override
   void initState() {
     super.initState();
-    imagesState = widget.images;
     thumbnailsState = widget.thumbnails;
     currPage = widget.initialPage ?? 0;
   }
@@ -40,6 +40,7 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: Icon(Icons.close),
           color: Colors.grey,
@@ -48,9 +49,24 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
         trailing: widget.showImageActions ? IconButton(
           icon: Icon(Icons.more_vert),
           color: Colors.grey,
-          onPressed: () {},
+          onPressed: () {
+            if (Platform.isAndroid) {
+              showMaterialModalBottomSheet(
+                context: context,
+                builder: (_) => BottomModalContent(
+                  deleteFunc: () => widget.deleteFunc(imageId: thumbnailsState[currPage].id)
+                )
+              );
+            } else {
+              showCupertinoModalBottomSheet(
+                context: context,
+                builder: (_) => BottomModalContent(
+                  deleteFunc: () => widget.deleteFunc(imageId: thumbnailsState[currPage].id)
+                )
+              );
+            }
+          },
         ) : null,
-        backgroundColor: Colors.black,
       ),
       body: CarouselSlider(
         options: CarouselOptions(
@@ -60,9 +76,7 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
           initialPage: currPage,
           onPageChanged: (idx, _) => switchPage(idx)
         ),
-        items: thumbnailsState != null
-            ? thumbnailsState.map((e) => ImageExpanded(imagePath: e.path)).toList()
-            : imagesState.map((e) => ImageExpanded(image: e)).toList()
+        items: [...thumbnailsState.map((e) => ImageExpanded(imagePath: e.path))]
       ),
     );
   }

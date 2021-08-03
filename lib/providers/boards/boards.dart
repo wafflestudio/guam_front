@@ -257,6 +257,33 @@ class Boards with ChangeNotifier {
     }
   }
 
+  Future deleteThreadImage({int threadId, int imageId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+      .delete(
+        path: "/thread/$threadId/image/$imageId",
+        authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("이미지가 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
   Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
     bool res = false;
 
@@ -336,6 +363,31 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
+  Future deleteCommentImage({int commentId, int imageId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+      .delete(
+        path: "/comment/$commentId/image/$imageId",
+        authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("이미지가 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
     }
   }
 

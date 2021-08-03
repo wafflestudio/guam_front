@@ -226,7 +226,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   }
 
   Widget _techStacksFilter(Map<dynamic, List<dynamic>> techStacks) {
-    print(selectedSkillsList);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
