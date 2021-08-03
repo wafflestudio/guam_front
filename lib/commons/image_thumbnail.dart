@@ -5,7 +5,7 @@ import 'closable_image_expanded.dart';
 
 class ImageThumbnail extends StatelessWidget {
   /*
-  * image: for uploaded image file via ImagePicker, etc.,
+  * image: for uploaded native image file via ImagePicker, etc.,
   * imagePath: for network image path (S3)
   * IMPORTANT: only 1 of above should be passed to parameter
   * */
@@ -13,13 +13,12 @@ class ImageThumbnail extends StatelessWidget {
   final String imagePath;
   final double height;
   final double width;
-  final bool activateOnTap; // false in case of carousel usage of image list
 
-  ImageThumbnail({this.image, this.imagePath, this.height, this.width, this.activateOnTap});
+  ImageThumbnail({this.image, this.imagePath, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       child: Container(
         height: height,
         width: width,
@@ -32,17 +31,15 @@ class ImageThumbnail extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () {
-        if (activateOnTap) Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ClosableImageExpanded(
-              image: image ?? null,
-              imagePath: imagePath ?? null
-            )
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ClosableImageExpanded(
+            image: image ?? null,
+            imagePath: imagePath ?? null
           )
-        );
-      }
+        )
+      )
     );
   }
 }
