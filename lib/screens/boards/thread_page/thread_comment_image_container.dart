@@ -16,7 +16,7 @@ class ThreadCommentImageContainer extends StatelessWidget {
         Container(
           height: double.infinity,
           width: double.infinity,
-          child: ImageThumbnail(imagePath: img.path),
+          child: ImageThumbnail(imagePath: img.path, activateOnTap: false),
         ),
         if (blur) Container(
           decoration: BoxDecoration(

@@ -13,8 +13,9 @@ class ImageThumbnail extends StatelessWidget {
   final String imagePath;
   final double height;
   final double width;
+  final bool activateOnTap; // false in case of carousel usage of image list
 
-  ImageThumbnail({this.image, this.imagePath, this.height, this.width});
+  ImageThumbnail({this.image, this.imagePath, this.height, this.width, this.activateOnTap});
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +32,15 @@ class ImageThumbnail extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => ImageExpanded(
-          image: image ?? null,
-          imagePath: imagePath ?? null,
-        ))
-      )
+      onTap: () {
+        if (activateOnTap) Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => ImageExpanded(
+            image: image ?? null,
+            imagePath: imagePath ?? null,
+          ))
+        );
+      }
     );
   }
 }
