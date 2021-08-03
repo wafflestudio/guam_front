@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/boards/thread_page/thread_page.dart';
 import 'package:provider/provider.dart';
 import 'thread_comment_image_container.dart';
 import '../../../commons/images_carousel_page.dart';
@@ -19,25 +20,17 @@ class ThreadCommentImages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future deleteThreadImage({@required int imageId}) async {
-      await context.read<Boards>().deleteThreadImage(
+      return await context.read<Boards>().deleteThreadImage(
         threadId: threadId,
         imageId: imageId,
-      ).then((successful) {
-        if (successful) {
-          print("deleted thread image");
-        }
-      });
+      );
     }
 
     Future deleteCommentImage({@required int imageId}) async {
-      await context.read<Boards>().deleteCommentImage(
+      return await context.read<Boards>().deleteCommentImage(
         commentId: commentId,
         imageId: imageId,
-      ).then((successful) {
-        if (successful) {
-          print("deleted comment image");
-        }
-      });
+      );
     }
 
     return Padding(

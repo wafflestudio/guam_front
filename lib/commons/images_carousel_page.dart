@@ -5,7 +5,7 @@ import 'custom_app_bar.dart';
 import 'image_expanded.dart';
 import '../models/thumbnail.dart';
 import 'bottom_modal/bottom_modal_content.dart';
-import 'package:intl/intl.dart';
+import 'dart:math';
 import 'dart:io' show Platform;
 
 class ImagesCarouselPage extends StatefulWidget {
@@ -34,10 +34,19 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
     currPage = widget.initialPage ?? 0;
   }
 
+  void afterDelete() {
+    setState(() {
+      thumbnailsState.removeAt(currPage);
+      currPage = max(currPage - 1, 0);
+      if (thumbnailsState.isEmpty) Navigator.of(context).pop(); // pop when delete last image
+    });
+  }
+
   void switchPage(int idx) => setState(() {currPage = idx;});
 
   @override
   Widget build(BuildContext context) {
+    print("widget.thumbnails.length: ${widget.thumbnails.length}");
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.black,
@@ -55,7 +64,16 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
                 context: context,
                 builder: (_) => BottomModalContent(
                   deleteText: "이미지 삭제",
-                  deleteFunc: () => widget.deleteFunc(imageId: thumbnailsState[currPage].id)
+                  deleteFunc: () async {
+                    await widget.deleteFunc(imageId: thumbnailsState[currPage].id)
+                      .then((successful) {
+                        print(successful);
+                        if (successful) {
+                          Navigator.of(context).pop(); // pop Modal Bottom Content
+                          afterDelete();
+                        }
+                    });
+                  }
                 )
               );
             } else {
@@ -63,7 +81,16 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
                 context: context,
                 builder: (_) => BottomModalContent(
                     deleteText: "이미지 삭제",
-                    deleteFunc: () => widget.deleteFunc(imageId: thumbnailsState[currPage].id)
+                    deleteFunc: () async {
+                      await widget.deleteFunc(imageId: thumbnailsState[currPage].id)
+                        .then((successful) {
+                          print(successful);
+                          if (successful) {
+                            Navigator.of(context).pop(); // pop Modal Bottom Content
+                            afterDelete();
+                          }
+                      });
+                    }
                 )
               );
             }
