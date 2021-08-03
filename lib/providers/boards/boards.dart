@@ -419,4 +419,58 @@ class Boards with ChangeNotifier {
       }
     }
   }
+
+  Future quitBoard() async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .post(
+          path: "/project/${currentBoard.id}/quit",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("작업실을 나갔습니다.");
+          res = true;
+        } else {
+          throw new Exception("작업실을 나갈 수 없습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoardIds();
+    }
+  }
+
+  Future deleteBoard() async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "/project/${currentBoard.id}",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("작업실을 삭제했습니다.");
+          res = true;
+        } else {
+          throw new Exception("작업실을 삭제할 수 없습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoardIds();
+    }
+  }
 }

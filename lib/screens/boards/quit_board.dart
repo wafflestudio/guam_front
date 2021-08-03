@@ -21,16 +21,30 @@ class QuitBoard extends StatelessWidget {
               showMaterialModalBottomSheet(
                   context: context,
                   builder: (_) => BottomModalContent(
-                      deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
-                      deleteFunc: () {}
+                    deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
+                    deleteFunc: () async {
+                      if (boardsProvider.isMe(boardsProvider.currentBoard.leader.id)) {
+                        await boardsProvider.deleteBoard();
+                      } else {
+                        await boardsProvider.quitBoard();
+                      }
+                      Navigator.of(context).pop();
+                    }
                   )
               );
             } else {
               showCupertinoModalBottomSheet(
                   context: context,
                   builder: (_) => BottomModalContent(
-                      deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
-                      deleteFunc: () {}
+                    deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
+                    deleteFunc: () async {
+                      if (boardsProvider.isMe(boardsProvider.currentBoard.leader.id)) {
+                        await boardsProvider.deleteBoard();
+                      } else {
+                        await boardsProvider.quitBoard();
+                      }
+                      Navigator.of(context).pop();
+                    }
                   )
               );
             }

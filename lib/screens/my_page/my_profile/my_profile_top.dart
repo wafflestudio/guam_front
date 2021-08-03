@@ -24,7 +24,7 @@ class MyProfileTop extends StatelessWidget {
               width: 120,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.transparent,
+                color: me.imageUrl != null ? Colors.transparent : Colors.grey,
               ),
               child: ClipOval(
                 child: me.imageUrl != null
