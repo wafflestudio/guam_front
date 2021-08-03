@@ -91,7 +91,10 @@ class Comment extends StatelessWidget {
               padding: EdgeInsets.only(bottom: comment.commentImages.isNotEmpty ? 10 : 0),
               child: Text(comment.content),
             ),
-            if (comment.commentImages.isNotEmpty) ThreadCommentImages(images: comment.commentImages)
+            if (comment.commentImages.isNotEmpty) ThreadCommentImages(
+                creatorId: comment.creator.id,
+                images: comment.commentImages
+            )
           ],
         )
       ),

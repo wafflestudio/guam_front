@@ -9,8 +9,9 @@ import '../../../models/thumbnail.dart';
 class ThreadCommentImages extends StatelessWidget {
   final List<Thumbnail> images;
   final int maxRenderImgCnt = 4;
+  final int creatorId;
 
-  ThreadCommentImages({@required this.images});
+  ThreadCommentImages({@required this.images, this.creatorId});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +38,11 @@ class ThreadCommentImages extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider.value(
-                  value: context.read<Boards>(),
+                  value: context.read<Boards>(), // necessary?
                   child: ImagesCarouselPage(
                     thumbnails: [...this.images],
                     initialPage: idx,
+                    showImageActions: creatorId != null && context.read<Boards>().isMe(creatorId),
                   ),
                 )
               )

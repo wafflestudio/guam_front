@@ -110,7 +110,10 @@ class Thread extends StatelessWidget {
                       ),
                       padding: EdgeInsets.only(bottom: 10),
                     ),
-                    if (thread.threadImages.isNotEmpty) ThreadCommentImages(images: thread.threadImages),
+                    if (thread.threadImages.isNotEmpty) ThreadCommentImages(
+                      creatorId: thread.creator.id,
+                      images: thread.threadImages
+                    ),
                     Row(
                       children: [
                         if (thread.commentSize != 0) Text(
