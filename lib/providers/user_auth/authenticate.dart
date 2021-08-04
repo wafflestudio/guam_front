@@ -23,7 +23,7 @@ class Authenticate with ChangeNotifier {
     getMyProfile();
   }
 
-  bool userSignedIn() => auth.currentUser != null; // 로그인 된 유저 존재 여부
+  bool userSignedIn() => auth.currentUser != null && me != null; // 로그인 된 유저 존재 여부
   bool profileExists() => me != null && me.isProfileSet; // 프로필까지 만든 정상 유저인지 여부
 
   Future kakaoSignIn(String kakaoAccessToken) async {
@@ -57,11 +57,10 @@ class Authenticate with ChangeNotifier {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .get(
-          path: "/user",
-          authToken: authToken,
-        )
-            .then((response) {
+          .get(
+            path: "/user/me",
+            authToken: authToken,
+        ).then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
