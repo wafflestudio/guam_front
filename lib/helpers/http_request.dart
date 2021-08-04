@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io' show File, HttpHeaders;
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as p;
 
@@ -43,21 +42,21 @@ class HttpRequest {
     try {
       final uri = Uri.http(authority ?? baseAuthority, path);
 
-      MultipartRequest request = MultipartRequest("POST", uri);
+      http.MultipartRequest request = http.MultipartRequest("POST", uri);
       request.headers['Authorization'] = authToken;
       fields.entries.forEach((e) => request.fields[e.key] = e.value);
-      files.forEach((e) async {
-        final multipartFile = http.MultipartFile(
-          "imageFiles",
-          e.readAsBytes().asStream(),
-          e.lengthSync(),
-          filename: e.path.split("/").last,
-          contentType: MediaType("image", "${p.extension(e.path)}")
-        );
 
-        request.files.add(multipartFile);
-      });
-
+      if (files != null)
+        files.forEach((e) async {
+          final multipartFile = http.MultipartFile(
+              "imageFiles",
+              e.readAsBytes().asStream(),
+              e.lengthSync(),
+              filename: e.path.split("/").last,
+              contentType: MediaType("image", "${p.extension(e.path)}")
+          );
+          request.files.add(multipartFile);
+        });
       final response = await request.send();
 
       return response;

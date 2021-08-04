@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../helpers/http_request.dart';
 
 import '../../models/project.dart';
 
@@ -33,7 +34,7 @@ class ProjectSquare extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
-                      image: project.thumbnail != "" ? NetworkImage(project.thumbnail) : AssetImage("assets/images/project-square-default.jpeg"),
+                      image: project.thumbnail != null ? NetworkImage(HttpRequest().s3BaseAuthority + project.thumbnail.path) : AssetImage("assets/images/project-square-default.jpeg"),
                       fit: BoxFit.fill,
                     ),
                     borderRadius: BorderRadius.circular(5)

@@ -7,47 +7,47 @@ import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/my_page/profile_filter_value_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../providers/user_auth/authenticate.dart';
 import 'package:provider/provider.dart';
+import '../../providers/user_auth/authenticate.dart';
+import 'make_profile_image.dart';
 
 class MakeProfilePage extends StatefulWidget {
   final Stacks stacksProvider;
+  final bool showAppBar;
 
-  MakeProfilePage(this.stacksProvider);
+  MakeProfilePage({this.stacksProvider, showAppBar}) : this.showAppBar = showAppBar ?? true;
 
   @override
   _MakeProfilePageState createState() => _MakeProfilePageState();
 }
 
 class _MakeProfilePageState extends State<MakeProfilePage> {
-  final ImagePicker _picker = ImagePicker();
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
   final TextEditingController _introductionController = TextEditingController();
   final isSelected = <bool>[false, false, false];
-  List<String> selectedReportList = [];
+  // 추후 List<int>로 수정해야 함.
+  List<String> selectedSkillsList = [];
   Map techStacksInfo = {
     '백엔드': <String>[],
     '프론트엔드': <String>[],
     '디자이너': <String>[],
   };
-
   String selectedKey;
   List<String> filterValues;
-
-  PickedFile _imageFile;
   Profile me;
+  bool willUploadImage;
+  PickedFile profileImage;
 
   @override
   void initState() {
-    me = context
-        .read<Authenticate>()
-        .me;
+    me = context.read<Authenticate>().me;
     _nicknameController.text = me.nickname;
     _githubIdController.text = me.githubUrl;
     _blogController.text = me.blogUrl;
     _introductionController.text = me.introduction;
+    willUploadImage = false;
     super.initState();
   }
 
@@ -58,6 +58,13 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     _blogController.dispose();
     _introductionController.dispose();
     super.dispose();
+  }
+
+  void setImageFile(PickedFile val) {
+    setState(() {
+      willUploadImage = true;
+      if (val != null) profileImage = val;
+    });
   }
 
   void selectKey(String key, List<String> value) {
@@ -77,45 +84,46 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     });
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
-    setState(() => _imageFile = pickedFile);
-  }
-
   @override
   Widget build(BuildContext context) {
     var techStacks = {
-      'BACKEND': <String>[],
-      'DESIGNER': <String>[],
-      'FRONTEND': <String>[]
+      'BACKEND': <dynamic>[],
+      'DESIGNER': <dynamic>[],
+      'FRONTEND': <dynamic>[]
     };
 
     widget.stacksProvider.stacks
-        .forEach((e) => techStacks[e.position].add(e.name));
+        .forEach((e) => techStacks[e.position].add({e.id: e.name}));
 
     techStacks['백엔드'] = techStacks.remove('BACKEND');
     techStacks['프론트엔드'] = techStacks.remove('FRONTEND');
     techStacks['디자이너'] = techStacks.remove('DESIGNER');
 
-    final Size size = MediaQuery
-        .of(context)
-        .size;
     final authProvider = context.read<Authenticate>();
 
-    void setProfile(dynamic params) {
-      authProvider.setProfile(params);
+    Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
+      return await authProvider
+        .setProfile(
+          fields: fields,
+          files: files,
+        ).then((successful) {
+          if (successful) {
+            Navigator.pop(context);
+            authProvider.getMyProfile();
+          }
+        });
     }
 
     return Scaffold(
-        appBar: CustomAppBar(title: "프로필 수정", leading: Back()),
+        appBar: widget.showAppBar ? CustomAppBar(title: "프로필 수정", leading: Back()) : null,
         body: DecoratedBox(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                  colorFilter: ColorFilter.mode(
-                      Colors.white.withOpacity(0.7), BlendMode.dstATop),
-                  image: AssetImage("assets/backgrounds/profile-bg-1.png"),
-                  fit: BoxFit.cover,
-                )),
+              colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.7), BlendMode.dstATop),
+              image: AssetImage("assets/backgrounds/profile-bg-1.png"),
+              fit: BoxFit.cover,
+            )),
             child: SingleChildScrollView(
               child: Stack(
                 alignment: Alignment.center,
@@ -123,127 +131,16 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                   SizedBox(height: 20),
                   Container(color: Colors.grey),
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    imageProfile(context, size),
-                    _profileInfo(size, techStacks),
-                    _authButton(size, setProfile)
+                    MakeProfileImage(onTap: setImageFile, profile: me),
+                    _profileInfo(techStacks),
+                    _authButton(setProfile)
                   ]),
                 ],
               ),
             )));
   }
 
-  Widget imageProfile(BuildContext context, Size size) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-            padding: EdgeInsets.fromLTRB(25, 20, 0, 0),
-            child: Text("프로필 사진 선택",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black))),
-        Center(
-            child: Stack(children: <Widget>[
-              Container(
-                width: 110,
-                height: 110,
-                child: _imageFile == null
-                    ? Icon(Icons.person, color: Colors.white, size: 100)
-                    : ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image(
-                      image: FileImage(File(_imageFile.path)),
-                      fit: BoxFit.fill,
-                    )),
-                decoration: _imageFile == null
-                    ? BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      blurRadius: 1,
-                      color: Colors.black.withOpacity(0.5),
-                      offset: Offset(0, 7))
-                ], shape: BoxShape.circle)
-                    : BoxDecoration(),
-              ),
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: ((builder) => bottomSheet(size)));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 1,
-                          ),
-                          gradient: LinearGradient(
-                              colors: [
-                                HexColor("4F34F3"),
-                                HexColor("3EF7FF"),
-                              ],
-                              begin: FractionalOffset(1.0, 0.0),
-                              end: FractionalOffset(0.0, 0.0),
-                              stops: [0, 1],
-                              tileMode: TileMode.clamp),
-                        ),
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      )))
-            ])),
-      ],
-    );
-  }
-
-  Widget bottomSheet(Size size) {
-    return Container(
-      height: 130,
-      width: size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: <Widget>[
-          Text(
-            "프로필 사진을 설정해주세요.",
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            TextButton.icon(
-              icon: Icon(Icons.camera),
-              onPressed: () {
-                takePhoto(ImageSource.camera);
-              },
-              label: Text("카메라"),
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.image),
-              onPressed: () {
-                takePhoto(ImageSource.gallery);
-              },
-              label: Text("갤러리"),
-            ),
-          ])
-        ],
-      ),
-    );
-  }
-
-  Widget _profileInfo(Size size, Map<dynamic, List<dynamic>> techStacks) {
+  Widget _profileInfo(Map<dynamic, List<dynamic>> techStacks) {
     return Container(
       padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
       child: Form(
@@ -254,7 +151,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             _inputForm("assets/images/github-icon.png", _githubIdController,
                 'GitHub ID', 'GitHub ID를 입력하세요.', 1),
             _inputForm("assets/images/browser-icon.png", _blogController,
-                '웹사이트', 'Website', 1),
+                '웹사이트', 'https://wafflestudio.com', 1),
             _inputForm(
                 "", _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
             _techStacksFilter(techStacks)
@@ -348,9 +245,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
                   child: Container(
                     child: ProfileFilterValueChip(
                       techStacks[selectedKey],
-                          (selectedList) {
+                      (selectedList) {
                         setState(() {
-                          selectedReportList = selectedList;
+                          selectedSkillsList = selectedList;
                         });
                       },
                     ),
@@ -370,10 +267,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
         borderRadius: BorderRadius.circular(10),
         borderWidth: 0.5,
         constraints: BoxConstraints(
-            minWidth: (MediaQuery
-                .of(context)
-                .size
-                .width * 0.85) / 3,
+            minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
             minHeight: 40),
         isSelected: isSelected,
         onPressed: (idx) {
@@ -391,9 +285,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               '백엔드',
               style: (selectedKey == '백엔드')
                   ? TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)
                   : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
@@ -403,9 +297,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               '프론트엔드',
               style: (selectedKey == '프론트엔드')
                   ? TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)
                   : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
@@ -415,9 +309,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
               '디자이너',
               style: (selectedKey == '디자이너')
                   ? TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white)
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)
                   : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
@@ -426,7 +320,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  Widget _authButton(Size size, Function setProfile) {
+  Widget _authButton(Function setProfile) {
     return Container(
       padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
       child: InkWell(
@@ -436,16 +330,17 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             "blogUrl": _blogController.text,
             "githubUrl": _githubIdController.text,
             "introduction": _introductionController.text,
-            "skills": selectedReportList
+            "skills": selectedSkillsList,
+            "willUploadImage": willUploadImage.toString(),
           };
-          setProfile(keyMap);
+          setProfile(
+            fields: keyMap,
+            files: willUploadImage ? [File(profileImage.path)] : null,
+          );
         },
         child: Container(
           alignment: Alignment.center,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width * 0.85,
+          width: MediaQuery.of(context).size.width * 0.85,
           height: 50,
           decoration: BoxDecoration(
             border: Border.all(

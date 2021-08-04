@@ -108,7 +108,10 @@ class _CommonTextFieldState extends State<CommonTextField> {
                   children: [
                     if (!isEdit) CommonIconButton(
                       icon: Icons.add_a_photo,
-                      onPressed: () async => await pickImage().then((img) => setImageFile(img)),
+                      // 추후 갤러리에서만 아니라 카메라 촬영을 통해서 사진을 넣는 경우도 있어
+                      // make_profile_image.dart 참고하시면 좋을 듯합니다!
+                      onPressed: () async => await pickImage(type: 'gallery')
+                          .then((img) => setImageFile(img)),
                     ),
                     if (!isEdit) Padding(padding: EdgeInsets.only(right: 10)),
                     CommonIconButton(
