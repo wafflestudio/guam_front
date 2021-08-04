@@ -36,7 +36,7 @@ class ProjectsAppScaffold extends StatelessWidget {
           image: DecorationImage(
         colorFilter:
             ColorFilter.mode(Colors.white.withOpacity(0.6), BlendMode.dstATop),
-        image: AssetImage("assets/backgrounds/projects-bg.png"),
+        image: AssetImage("assets/backgrounds/projects-bg-2.png"),
         fit: BoxFit.cover,
       )),
       child: Scaffold(
