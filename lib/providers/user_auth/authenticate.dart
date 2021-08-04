@@ -57,11 +57,10 @@ class Authenticate with ChangeNotifier {
       String authToken = await getFirebaseIdToken();
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .get(
-          path: "/user",
-          authToken: authToken,
-        )
-            .then((response) {
+          .get(
+            path: "/user/me",
+            authToken: authToken,
+        ).then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
