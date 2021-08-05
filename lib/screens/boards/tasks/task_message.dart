@@ -28,9 +28,7 @@ class _TaskMessageState extends State<TaskMessage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // constraints: BoxConstraints(
-      //   minHeight: 40,
-      // ),
+      margin: EdgeInsets.only(bottom: 10),
       width: double.infinity,
       child: DecoratedBox(
           decoration: BoxDecoration(
@@ -41,9 +39,15 @@ class _TaskMessageState extends State<TaskMessage> {
             padding: EdgeInsets.only(right: 10),
             child: Row(
               children: [
-                Checkbox(
-                    value: done,
-                    onChanged: (val) => toggleDone(val)
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: 40,
+                    minHeight: 40
+                  ),
+                  child: Checkbox(
+                      value: done,
+                      onChanged: (val) => toggleDone(val)
+                  ),
                 ),
                 Expanded(
                   child: Text(

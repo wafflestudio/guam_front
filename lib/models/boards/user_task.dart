@@ -20,13 +20,15 @@ class UserTask extends ChangeNotifier {
 
   factory UserTask.fromJson(Map<String, dynamic> json) {
     List<TaskMsg> taskMessages;
+    Profile user;
 
-    if (json["taskMsg"] != null) taskMessages = [...json["taskMsg"].map((msg) => TaskMsg.fromJson(msg))];
+    if (json["user"] != null) user = Profile.fromJson(json["user"]);
+    if (json["taskMessages"] != null) taskMessages = [...json["taskMessages"].map((msg) => TaskMsg.fromJson(msg))];
 
     return UserTask(
       id: json["id"],
       projectId: json["projectId"],
-      user: Profile.fromJson(json["user"]),
+      user: user,
       taskMessages: taskMessages,
       state: json["userState"],
     );

@@ -115,22 +115,7 @@ class TasksState extends State<Tasks> {
               ),
               child: Padding(
                 padding: EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    if (selectedUserTask.taskMessages != null) Task(task: selectedUserTask),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          progressDropdownButton(),
-                          Padding(padding: EdgeInsets.only(right: 10)),
-                          addProgressButton(),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                child: Task(task: selectedUserTask),
               )
             )
           )
@@ -152,25 +137,5 @@ Widget positionChip({@required String position}) => DecoratedBox(
       style: TextStyle(fontSize: 10),
     ), // temp
   ),
-);
-
-Widget progressButton(IconData icon) => Container(
-  width: 30,
-  height: 30,
-  decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(30),
-      color: Colors.white
-  ),
-  child: Icon(icon)
-);
-
-Widget progressDropdownButton() => InkWell(
-  child: progressButton(Icons.expand_more),
-  onTap: () {},
-);
-
-Widget addProgressButton() => InkWell(
-  child: progressButton(Icons.add),
-  onTap: () {},
 );
 
