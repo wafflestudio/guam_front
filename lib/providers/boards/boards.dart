@@ -7,6 +7,7 @@ import '../../models/boards/thread.dart';
 import '../../helpers/http_request.dart';
 import '../user_auth/authenticate.dart';
 import '../../helpers/decode_ko.dart';
+import '../../models/boards/user_task.dart';
 
 class Boards with ChangeNotifier {
   Authenticate _authProvider;
@@ -84,6 +85,7 @@ class Boards with ChangeNotifier {
           boards[renderBoardIdx] = Project.fromJson(jsonData);
       });
 
+      await setTasks();
       await fetchThreads(projectId);
 
       loading = false;
@@ -92,6 +94,41 @@ class Boards with ChangeNotifier {
     } finally {
       notifyListeners();
     }
+  }
+
+  Future setTasks() async {
+    List<UserTask> newTasks = [];
+
+    for (UserTask task in currentBoard.tasks) {
+      newTasks.add(await fetchTask(task.id));
+    }
+
+    currentBoard.tasks = newTasks;
+  }
+
+  Future<UserTask> fetchTask(int taskId) async {
+    UserTask userTask;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest().get(
+        path: "/task/$taskId",
+        authToken: authToken
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          userTask = UserTask.fromJson(jsonData);
+        } else {
+          throw new Exception("Task not found.");
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return userTask;
   }
 
   Future fetchThreads(int projectId) async {
@@ -107,7 +144,7 @@ class Boards with ChangeNotifier {
         final jsonUtf8 = decodeKo(response);
         final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
         final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
-        boards[renderBoardIdx].threads = threads;
+        currentBoard.threads = threads;
       });
 
       loading = false;

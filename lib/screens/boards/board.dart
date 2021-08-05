@@ -22,6 +22,11 @@ class Board extends StatelessWidget {
       boardsProvider.fetchBoard(board.id);
     }
 
+    // temp
+    if (boardsProvider.currentBoard.tasks != null) {
+      print(boardsProvider.currentBoard.tasks.first.taskMessages);
+    }
+
     return !boardsProvider.loading
         ? SingleChildScrollView(
             child: Container(
@@ -32,7 +37,7 @@ class Board extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        Notice(board.notice), 
+                        Notice(board.notice),
                         Tasks(board.tasks),
                         Threads(board.threads),
                       ],

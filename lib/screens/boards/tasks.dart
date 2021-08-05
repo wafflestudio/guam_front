@@ -117,7 +117,7 @@ class TasksState extends State<Tasks> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    if (selectedUserTask.task != null) Task(task: selectedUserTask),
+                    //if (selectedUserTask.task != null) Task(task: selectedUserTask),
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Row(

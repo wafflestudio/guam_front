@@ -43,10 +43,10 @@ class _TaskState extends State<Task> {
                     value: done,
                     onChanged: (val) => toggleDone(val)
                 ),
-                Text(
-                  widget.task.task,
-                  style: TextStyle(fontSize: 14),
-                ),
+                // Text(
+                //   widget.task.task,
+                //   style: TextStyle(fontSize: 14),
+                // ),
               ],
             ),
           )
