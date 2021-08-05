@@ -22,11 +22,6 @@ class Board extends StatelessWidget {
       boardsProvider.fetchBoard(board.id);
     }
 
-    // temp
-    if (boardsProvider.currentBoard.tasks != null) {
-      print(boardsProvider.currentBoard.tasks.first.taskMessages);
-    }
-
     return !boardsProvider.loading
         ? SingleChildScrollView(
             child: Container(
