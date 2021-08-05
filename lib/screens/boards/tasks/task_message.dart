@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../models/boards/task_msg.dart';
+import '../../../providers/boards/boards.dart';
+import 'package:provider/provider.dart';
 
 class TaskMessage extends StatefulWidget {
   final TaskMsg taskMsg;
+  final bool isMyTaskMsg;
 
-  TaskMessage({@required this.taskMsg});
+  TaskMessage({@required this.taskMsg, @required this.isMyTaskMsg});
 
   @override
   State<StatefulWidget> createState() => _TaskMessageState();
@@ -15,18 +18,29 @@ class _TaskMessageState extends State<TaskMessage> {
 
   @override
   void initState() {
-    done = false; // After server code, init done to task.done
+    done = widget.taskMsg.status == "DONE";
     super.initState();
   }
 
-  void toggleDone(bool val) {
-    // request toggle done to server
-    setState(() {
-      done = val;
-    });
-  }
   @override
   Widget build(BuildContext context) {
+
+    Future updateTaskMsgState(bool done) async {
+      await context.read<Boards>().updateTaskMsg(
+        taskMsgId: widget.taskMsg.id,
+        body: {
+          "status": done ? "DONE" : "ONGOING"
+        }
+      );
+    }
+
+    void toggleDone(bool val) {
+      setState(() {
+        done = val;
+      });
+      updateTaskMsgState(val);
+    }
+
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       width: double.infinity,
@@ -46,7 +60,9 @@ class _TaskMessageState extends State<TaskMessage> {
                   ),
                   child: Checkbox(
                       value: done,
-                      onChanged: (val) => toggleDone(val)
+                      onChanged: widget.isMyTaskMsg
+                          ? (val) => toggleDone(val)
+                          : null
                   ),
                 ),
                 Expanded(

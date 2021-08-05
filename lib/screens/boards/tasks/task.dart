@@ -63,11 +63,14 @@ class _TaskState extends State<Task> {
         if (widget.task.taskMessages != null) Column(
           children: [
             if (addingNewMsg && isMyTask) EmptyTaskMessage(createTaskMsg: createTaskMsg),
-            if (widget.task.taskMessages.isNotEmpty) TaskMessage(taskMsg: widget.task.taskMessages.first),
+            if (widget.task.taskMessages.isNotEmpty) TaskMessage(
+              taskMsg: widget.task.taskMessages.first,
+              isMyTaskMsg: isMyTask
+            ),
             if (showAllMsgs && widget.task.taskMessages.length > 1) Column(
               children: widget.task.taskMessages
                   .sublist(1)
-                  .map((e) => TaskMessage(taskMsg: e))
+                  .map((e) => TaskMessage(taskMsg: e, isMyTaskMsg: isMyTask))
                   .toList(),
             ),
           ],
