@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
-import '../../models/boards/user_task.dart';
-import 'iconTitle.dart';
+import '../../../models/boards/user_task.dart';
+import '../iconTitle.dart';
 import 'task.dart';
 
 class Tasks extends StatefulWidget {
@@ -117,7 +117,7 @@ class TasksState extends State<Tasks> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    //if (selectedUserTask.task != null) Task(task: selectedUserTask),
+                    if (selectedUserTask.taskMessages != null) Task(task: selectedUserTask),
                     Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: Row(

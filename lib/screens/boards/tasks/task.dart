@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/boards/user_task.dart';
+import '../../../models/boards/user_task.dart';
 
 class Task extends StatefulWidget {
   final UserTask task;
