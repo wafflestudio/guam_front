@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/boards/user_task.dart';
+import 'task_message.dart';
 
 class Task extends StatefulWidget {
   final UserTask task;
@@ -11,46 +12,29 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-  bool done;
+  bool showAllMsgs;
 
   @override
   void initState() {
-    done = false; // After server code, init done to task.done
+    showAllMsgs = false; // After server code, init done to task.done
     super.initState();
   }
 
-  void toggleDone(bool val) {
-    // request toggle done to server
+  void toggleShowAllMsgs(bool val) {
     setState(() {
-      done = val;
+      showAllMsgs = val;
     });
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 40,
-      child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Row(
-              children: [
-                Checkbox(
-                    value: done,
-                    onChanged: (val) => toggleDone(val)
-                ),
-                // Text(
-                //   widget.task.task,
-                //   style: TextStyle(fontSize: 14),
-                // ),
-              ],
-            ),
-          )
-      ),
+    return Column(
+      children: [
+        // adding new
+        // list first
+        TaskMessage(taskMsg: widget.task.taskMessages.first),
+        //if (showAllMsgs) widget.task.taskMessages[1:].map()
+        // others
+      ],
     );
   }
 }
