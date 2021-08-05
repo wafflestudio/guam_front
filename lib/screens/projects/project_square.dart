@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/commons/profile_thumbnail.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../../helpers/http_request.dart';
 import '../../models/project.dart';
@@ -17,6 +17,7 @@ class ProjectSquare extends StatelessWidget {
   Widget build(BuildContext context) {
     project.tasks.forEach((e) {
       print(HttpRequest().s3BaseAuthority + e.user.imageUrl);
+      print(project.tasks.length);
     });
     return Container(
         height: 150,
@@ -66,50 +67,16 @@ class ProjectSquare extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: Stack(
                   children: [
-                    Stack(children: [
-                      ...project.tasks.map((user) => Container(
-                          height: 20,
-                          width: 20,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.grey,
-                          ),
-                          child: ClipOval(
-                            child: user.user.imageUrl != null
-                                ? FadeInImage(
-                                    placeholder: MemoryImage(kTransparentImage),
-                                    image: NetworkImage(
-                                        HttpRequest().s3BaseAuthority +
-                                            user.user.imageUrl),
-                                    fit: BoxFit.cover,
-                                  )
-                                : Icon(
-                                    Icons.person,
-                                    size: 20,
-                                  ),
-                          )))
-                    ]),
-                    //   Positioned(
-                    //   child: Container(
-                    //     width: 20,
-                    //     child: Icon(Icons.monetization_on,
-                    //         size: 20, color: Colors.yellow),
-                    //   ),
-                    // ),
-                    //   Positioned(
-                    //     child: Container(
-                    //       width: 50,
-                    //       child: Icon(Icons.monetization_on,
-                    //           size: 20, color: Colors.blue),
-                    //     ),
-                    //   ),
-                    //   Positioned(
-                    //     child: Container(
-                    //       width: 80,
-                    //       child: Icon(Icons.monetization_on,
-                    //           size: 20, color: Colors.green),
-                    //     ),
-                    //   ),
+                    ...project.tasks.map((user) => Positioned(
+                      child: Container(
+                        width: 20 * project.tasks.length.toDouble(),
+                        child: ProfileThumbnail(
+                              profile: user.user,
+                              radius: 14,
+                              showNickname: false,
+                            ),
+                      ),
+                    )),
                   ],
                 ),
               ),

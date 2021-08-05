@@ -26,7 +26,7 @@ class ProfileThumbnail extends StatelessWidget {
             width: 2 * radius,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.grey,
+              color: profile.imageUrl != null ? Colors.transparent : Colors.grey,
             ),
             child: ClipOval(
                 child: profile.imageUrl != null
