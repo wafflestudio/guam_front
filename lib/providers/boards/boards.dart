@@ -131,6 +131,35 @@ class Boards with ChangeNotifier {
     return userTask;
   }
 
+  Future createTaskMsg({int taskId, Map<String, String> body}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .post(
+          path: "task/$taskId",
+          authToken: authToken,
+          body: body,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          res = true;
+          print("작업현황이 생성되었습니다.");
+          await setTasks();
+        } else {
+          throw new Exception("작업현황이 생성되지 않았습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
   Future fetchThreads(int projectId) async {
     try {
       loading = true;

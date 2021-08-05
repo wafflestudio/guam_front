@@ -43,12 +43,26 @@ class _TaskState extends State<Task> {
   Widget build(BuildContext context) {
     final bool isMyTask = context.read<Boards>().isMe(widget.task.user.id);
 
+    Future createTaskMsg({Map<String, String> fields, dynamic files}) async {
+      bool res = await context.read<Boards>().createTaskMsg(
+        taskId: widget.task.id,
+        body: {
+          "msg": fields["content"],
+          "status": "ONGOING",
+        },
+      ).then((successful) {
+        if (successful) toggleAddingNewMsg();
+        return successful;
+      });
+
+      return res;
+    }
+
     return Column(
       children: [
         if (widget.task.taskMessages != null) Column(
           children: [
-            // adding new
-            if (addingNewMsg && isMyTask) EmptyTaskMessage(),
+            if (addingNewMsg && isMyTask) EmptyTaskMessage(createTaskMsg: createTaskMsg),
             if (widget.task.taskMessages.isNotEmpty) TaskMessage(taskMsg: widget.task.taskMessages.first),
             if (showAllMsgs && widget.task.taskMessages.length > 1) Column(
               children: widget.task.taskMessages
