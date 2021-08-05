@@ -165,7 +165,7 @@ class Boards with ChangeNotifier {
 
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
-      
+
       await HttpRequest()
         .put(
           path: "taskMsg/$taskMsgId",
@@ -457,8 +457,9 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       if (res) {
-        fetchBoard(currentBoard.id);
-        fetchThreads(currentBoard.id);
+        await setTasks();
+        await fetchThreads(currentBoard.id);
+        notifyListeners();
       }
     }
   }
