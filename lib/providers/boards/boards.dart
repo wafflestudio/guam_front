@@ -447,7 +447,7 @@ class Boards with ChangeNotifier {
           queryParams: { "accept": "$accept" }
       ).then((response) {
         if (response.statusCode == 200) {
-          print("${accept ? "승인" : "반려"}가 완료되었습니다.");
+          print("${accept ? "승인이" : "반려가"} 완료되었습니다.");
           res = true;
         } else {
           throw new Exception("오직 프로젝트 리더만 승인/반려가 가능합니다.");
@@ -457,9 +457,7 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       if (res) {
-        await setTasks();
-        await fetchThreads(currentBoard.id);
-        notifyListeners();
+        await fetchBoard(currentBoard.id);
       }
     }
   }
