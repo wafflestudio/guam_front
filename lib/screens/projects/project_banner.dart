@@ -94,7 +94,9 @@ class ProjectBanner extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  project.title,
+                                  project.title.length > 20
+                                      ? project.title.substring(0, 18) + '...'
+                                      : project.title,
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.white,
