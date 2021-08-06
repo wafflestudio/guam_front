@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:guam_front/commons/profile_thumbnail.dart';
+import 'package:guam_front/commons/techStack_thumbnail.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -15,7 +17,7 @@ class ProjectBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    // print(project.techStacks.map((techStack) {print(techStack.thumbnail);}));
     return Container(
         height: 150,
         width: double.infinity,
@@ -46,33 +48,53 @@ class ProjectBanner extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Stack(children: [
+                              // ...project.techStacks.map((techStack) => Positioned(
+                              //       child: Padding(
+                              //         padding: EdgeInsets.only(
+                              //             left: 20 *
+                              //                 (project.techStacks
+                              //                     .indexOf(techStack)
+                              //                     .toDouble())),
+                              //         child: TechStackThumbnail(
+                              //           techStack: techStack,
+                              //           radius: 10,
+                              //         ),
+                              //       ),
+                              //     ))
+                            // ]),
                             Spacer(),
-                            Stack(
-                              children: [
-                                // 참가자 프로필
-                                Positioned(
-                                  child: Container(
-                                    width: size.width * (1 - 0.2),
-                                    child: Icon(Icons.monetization_on,
-                                        size: 30, color: Colors.yellow),
-                                  ),
-                                ),
-                                Positioned(
-                                  child: Container(
-                                    width: size.width * (1 - 0.3),
-                                    child: Icon(Icons.monetization_on,
-                                        size: 30, color: Colors.blue),
-                                  ),
-                                ),
-                                Positioned(
-                                  child: Container(
-                                    width: size.width * (1 - 0.4),
-                                    child: Icon(Icons.monetization_on,
-                                        size: 30, color: Colors.green),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            Stack(children: [
+                              ...project.tasks.map(
+                                (user) => project.tasks.indexOf(user) < 4
+                                    ? Positioned(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 20 *
+                                                  (project.tasks
+                                                      .indexOf(user)
+                                                      .toDouble())),
+                                          child: ProfileThumbnail(
+                                            profile: user.user,
+                                            radius: 10,
+                                            showNickname: false,
+                                          ),
+                                        ),
+                                      )
+                                    : Positioned(
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.only(left: 60, top: 3),
+                                          child: Text(
+                                            "+${(project.tasks.length - 3).abs()}",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                      ),
+                              )
+                            ])
                           ],
                         ),
                       ))),

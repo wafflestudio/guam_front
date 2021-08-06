@@ -79,11 +79,11 @@ class ProjectSquare extends StatelessWidget {
                         )
                         : Positioned(
                             child: Padding(
-                              padding: EdgeInsets.only(left: 40, top: 3),
+                              padding: EdgeInsets.only(left: 60, top: 3),
                               child: Text(
                                 "+${(project.tasks.length - 3).abs()}",
                                 style: TextStyle(
-                                  fontSize: 10, color: Colors.white),
+                                  fontSize: 12, color: Colors.white),
                               ),
                             ),
                           ),
