@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/search/project_search_button.dart';
 import 'package:provider/provider.dart';
+
 import '../../commons/custom_app_bar.dart';
-import '../../providers/user_auth/authenticate.dart';
 import '../../providers/projects/projects.dart';
+import '../../providers/user_auth/authenticate.dart';
 import 'creation/project_create_button.dart';
 import 'projects_body.dart';
 
@@ -33,7 +34,9 @@ class ProjectsAppScaffold extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
           image: DecorationImage(
-        image: AssetImage("assets/backgrounds/projects-bg.png"),
+        colorFilter:
+            ColorFilter.mode(Colors.white.withOpacity(0.6), BlendMode.dstATop),
+        image: AssetImage("assets/backgrounds/projects-bg-2.png"),
         fit: BoxFit.cover,
       )),
       child: Scaffold(
