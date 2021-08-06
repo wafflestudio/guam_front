@@ -4,6 +4,7 @@ import '../../commons/custom_app_bar.dart';
 import '../../providers/boards/boards.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'boards_body.dart';
+import 'quit_board.dart';
 
 class BoardsApp extends StatelessWidget {
   @override
@@ -25,20 +26,7 @@ class BoardsAppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: '작업실',
-        leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-            onPressed: () {}
-        ),
-        trailing: IconButton(
-            icon: Icon(
-              Icons.notifications_none,
-              color: Colors.black,
-            ),
-            onPressed: () {}
-        ),
+        trailing: QuitBoard(),
       ),
       body: BoardsBody(),
       backgroundColor: Colors.transparent,

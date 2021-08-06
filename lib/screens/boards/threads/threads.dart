@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../commons/common_text_field.dart';
-import '../../providers/boards/boards.dart';
-import '../../models/boards/thread.dart' as ThreadModel;
+import '../../../commons/common_text_field.dart';
+import '../../../providers/boards/boards.dart';
+import '../../../models/boards/thread.dart' as ThreadModel;
 import 'thread.dart';
-import 'iconTitle.dart';
+import '../iconTitle.dart';
 
 class Threads extends StatefulWidget {
   final List<ThreadModel.Thread> threads;
@@ -52,7 +52,7 @@ class ThreadsState extends State<Threads> {
                   child: DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: Color.fromRGBO(255, 255, 227, 1),
+                        color: Color.fromRGBO(203, 203, 203, 0.5),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(10),
@@ -62,7 +62,11 @@ class ThreadsState extends State<Threads> {
                             SizedBox(
                               height: 464, // temp: threads container 500 - textfield 36
                               child: ListView.builder(
-                                itemBuilder: (context, idx) => Thread(widget.threads[idx], switchToEditMode: switchToEditMode),
+                                itemBuilder: (context, idx) => Thread(
+                                  widget.threads[idx],
+                                  switchToEditMode: switchToEditMode,
+                                  isEditTarget: editTargetThread == widget.threads[idx]
+                                ),
                                 itemCount: widget.threads.length,
                                 shrinkWrap: true,
                                 physics: ClampingScrollPhysics(),

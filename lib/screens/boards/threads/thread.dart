@@ -4,20 +4,21 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
-import '../../providers/boards/boards.dart';
-import '../../providers/user_auth/authenticate.dart';
-import '../../commons/profile_thumbnail.dart';
-import '../../models/boards/thread.dart' as ThreadModel;
-import 'thread_page/thread_page.dart';
-import 'thread_page/thread_comment_images.dart';
-import 'bottom_modal/bottom_modal_content.dart';
-import 'accept_decline_button.dart';
+import '../../../providers/boards/boards.dart';
+import '../../../providers/user_auth/authenticate.dart';
+import '../../../commons/profile_thumbnail.dart';
+import '../../../models/boards/thread.dart' as ThreadModel;
+import '../thread_page/thread_page.dart';
+import '../thread_page/thread_comment_images.dart';
+import '../../../commons/bottom_modal/bottom_modal_content.dart';
+import '../accept_decline_button.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
   final Function switchToEditMode;
+  final bool isEditTarget;
 
-  Thread(this.thread, {this.switchToEditMode});
+  Thread(this.thread, {this.switchToEditMode, this.isEditTarget});
 
   @override
   Widget build(BuildContext context) {
@@ -58,24 +59,30 @@ class Thread extends StatelessWidget {
             showMaterialModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                    setFunc: setNotice,
-                    editFunc: () {
-                      switchToEditMode(editTargetThread: thread);
-                      Navigator.of(context).pop();
-                    },
-                    deleteFunc: deleteThread
+                  setText: "메시지 고정",
+                  editText: "메시지 편집",
+                  deleteText: "메시지 삭제",
+                  setFunc: setNotice,
+                  editFunc: () {
+                    switchToEditMode(editTargetThread: thread);
+                    Navigator.of(context).pop();
+                  },
+                  deleteFunc: deleteThread
                 )
             );
           } else {
             showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                    setFunc: setNotice,
-                    editFunc: () {
-                      switchToEditMode(editTargetThread: thread);
-                      Navigator.of(context).pop();
-                    },
-                    deleteFunc: deleteThread
+                  setText: "메시지 고정",
+                  editText: "메시지 편집",
+                  deleteText: "메시지 삭제",
+                  setFunc: setNotice,
+                  editFunc: () {
+                    switchToEditMode(editTargetThread: thread);
+                    Navigator.of(context).pop();
+                  },
+                  deleteFunc: deleteThread
                 )
             );
           }
@@ -84,12 +91,13 @@ class Thread extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 7),
         decoration: BoxDecoration(
+          color: isEditTarget ? Color.fromRGBO(255, 235, 148, 0.5) : null,
           border: Border(
             bottom: BorderSide(
               color: Color.fromRGBO(151, 151, 151, 0.2),
               width: 1.5,
             )
-          )
+          ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,14 +116,16 @@ class Thread extends StatelessWidget {
                       ),
                       padding: EdgeInsets.only(bottom: 10),
                     ),
-                    if (thread.threadImages.isNotEmpty) ThreadCommentImages(images: thread.threadImages),
+                    if (thread.threadImages.isNotEmpty) ThreadCommentImages(
+                      threadId: thread.id,
+                      creatorId: thread.creator.id,
+                      images: thread.threadImages
+                    ),
                     Row(
                       children: [
                         if (thread.commentSize != 0) Text(
                           "댓글 +${thread.commentSize}",
-                          style: TextStyle(
-                              fontSize: 12
-                          ),
+                          style: TextStyle(fontSize: 12),
                         ),
                         Spacer(),
                         Text(

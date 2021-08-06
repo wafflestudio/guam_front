@@ -16,6 +16,21 @@ class ProfileThumbnail extends StatelessWidget {
     this.textColor,
   });
 
+  Color randomColor() {
+    final int randInt = profile.id % 5;
+    Color res;
+
+    switch(randInt) {
+      case 0: res = Color.fromRGBO(255, 136, 155, 1); break;
+      case 1: res =  Color.fromRGBO(0, 141, 232, 1); break;
+      case 2: res = Color.fromRGBO(141, 64, 0, 1); break;
+      case 3: res = Color.fromRGBO(255, 223, 82, 1); break;
+      case 4: res = Color.fromRGBO(8, 149, 28, 1); break;
+    }
+
+    return res;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +41,7 @@ class ProfileThumbnail extends StatelessWidget {
             width: 2 * radius,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.grey,
+              color: Colors.white,
             ),
             child: ClipOval(
                 child: profile.imageUrl != null
@@ -34,7 +49,7 @@ class ProfileThumbnail extends StatelessWidget {
                       placeholder: MemoryImage(kTransparentImage),
                       image: NetworkImage(HttpRequest().s3BaseAuthority + profile.imageUrl),
                       fit: BoxFit.cover)
-                    : Icon(Icons.person, color: Colors.white, size: 2 * radius)
+                    : Icon(Icons.person, color: randomColor(), size: 2 * radius)
             ),
           ),
           if (showNickname) Padding(

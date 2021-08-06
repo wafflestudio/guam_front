@@ -7,6 +7,7 @@ import '../../models/boards/thread.dart';
 import '../../helpers/http_request.dart';
 import '../user_auth/authenticate.dart';
 import '../../helpers/decode_ko.dart';
+import '../../models/boards/user_task.dart';
 
 class Boards with ChangeNotifier {
   Authenticate _authProvider;
@@ -84,9 +85,107 @@ class Boards with ChangeNotifier {
           boards[renderBoardIdx] = Project.fromJson(jsonData);
       });
 
+      await setTasks();
       await fetchThreads(projectId);
 
       loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future setTasks() async {
+    List<UserTask> newTasks = [];
+
+    for (UserTask briefTask in currentBoard.tasks) {
+      UserTask detailedTask = await fetchTask(briefTask.id);
+
+      // Position my task initially at front.
+      if (isMe(detailedTask.user.id)) newTasks.insert(0, detailedTask);
+      else newTasks.add(detailedTask);
+    }
+
+    currentBoard.tasks = newTasks;
+  }
+
+  Future<UserTask> fetchTask(int taskId) async {
+    UserTask userTask;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest().get(
+        path: "/task/$taskId",
+        authToken: authToken
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          userTask = UserTask.fromJson(jsonData);
+        } else {
+          throw new Exception("Task not found.");
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return userTask;
+  }
+
+  Future createTaskMsg({int taskId, Map<String, String> body}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .post(
+          path: "task/$taskId",
+          authToken: authToken,
+          body: body,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          res = true;
+          print("작업현황이 생성되었습니다.");
+          await setTasks();
+        } else {
+          throw new Exception("작업현황이 생성되지 않았습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future updateTaskMsg({int taskMsgId, Map<String, String> body}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .put(
+          path: "taskMsg/$taskMsgId",
+          authToken: authToken,
+          body: body,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          res = true;
+          print("작업현황이 수정되었습니다.");
+          await setTasks();
+        } else {
+          throw new Exception("작업현황이 수정되지 않았습니다.");
+        }
+      });
+
+      return res;
     } catch (e) {
       print(e);
     } finally {
@@ -107,7 +206,7 @@ class Boards with ChangeNotifier {
         final jsonUtf8 = decodeKo(response);
         final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
         final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
-        boards[renderBoardIdx].threads = threads;
+        currentBoard.threads = threads;
       });
 
       loading = false;
@@ -257,6 +356,33 @@ class Boards with ChangeNotifier {
     }
   }
 
+  Future deleteThreadImage({int threadId, int imageId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+      .delete(
+        path: "/thread/$threadId/image/$imageId",
+        authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("이미지가 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
   Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
     bool res = false;
 
@@ -339,6 +465,31 @@ class Boards with ChangeNotifier {
     }
   }
 
+  Future deleteCommentImage({int commentId, int imageId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+      .delete(
+        path: "/comment/$commentId/image/$imageId",
+        authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("이미지가 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future acceptDecline({int userId, bool accept}) async {
     bool res = false;
 
@@ -352,7 +503,7 @@ class Boards with ChangeNotifier {
           queryParams: { "accept": "$accept" }
       ).then((response) {
         if (response.statusCode == 200) {
-          print("${accept ? "승인" : "반려"}가 완료되었습니다.");
+          print("${accept ? "승인이" : "반려가"} 완료되었습니다.");
           res = true;
         } else {
           throw new Exception("오직 프로젝트 리더만 승인/반려가 가능합니다.");
@@ -362,9 +513,62 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       if (res) {
-        fetchBoard(currentBoard.id);
-        fetchThreads(currentBoard.id);
+        await fetchBoard(currentBoard.id);
       }
+    }
+  }
+
+  Future quitBoard() async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .post(
+          path: "/project/${currentBoard.id}/quit",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("작업실을 나갔습니다.");
+          res = true;
+        } else {
+          throw new Exception("작업실을 나갈 수 없습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoardIds();
+    }
+  }
+
+  Future deleteBoard() async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "/project/${currentBoard.id}",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("작업실을 삭제했습니다.");
+          res = true;
+        } else {
+          throw new Exception("작업실을 삭제할 수 없습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoardIds();
     }
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/commons/closable_image_expanded.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../../../helpers/http_request.dart';
+import '../../../commons/closable_image_expanded.dart';
 
 class MyProfileTop extends StatelessWidget {
   final Profile me;
@@ -22,15 +24,23 @@ class MyProfileTop extends StatelessWidget {
               width: 120,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.grey,
+                color: me.imageUrl != null ? Colors.transparent : Colors.grey,
               ),
               child: ClipOval(
                 child: me.imageUrl != null
-                  ? FadeInImage(
-                    placeholder: MemoryImage(kTransparentImage),
-                    image: NetworkImage(HttpRequest().s3BaseAuthority + me.imageUrl),
-                    fit: BoxFit.cover)
-                  : Icon(Icons.person, color: Colors.white, size: 90)
+                  ? InkWell(
+                    child: FadeInImage(
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: NetworkImage(HttpRequest().s3BaseAuthority + me.imageUrl),
+                      fit: BoxFit.cover
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ClosableImageExpanded(imagePath: me.imageUrl))
+                      );
+                    }
+                  ) : Icon(Icons.person, color: Colors.white, size: 90)
               ),
             ),
           ),

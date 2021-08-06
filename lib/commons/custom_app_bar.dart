@@ -7,8 +7,9 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String title;
   final dynamic leading;
   final dynamic trailing;
+  final Color backgroundColor;
 
-  CustomAppBar({@required this.title, this.leading, this.trailing});
+  CustomAppBar({this.title, this.leading, this.trailing, this.backgroundColor});
 
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
@@ -21,10 +22,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     if (Platform.isAndroid) {
       return AppBar(
         title: Text(
-          title,
-          style: TextStyle(
-            color: textColor,
-          ),
+          title ?? "",
+          style: TextStyle(color: textColor),
         ),
         leading: Material(
           color: Colors.transparent,
@@ -33,7 +32,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         actions: trailing == null
             ? []
             : [Material(color: Colors.transparent, child: trailing)],
-        backgroundColor: Colors.white,
+        backgroundColor: backgroundColor ?? Colors.white,
         iconTheme: IconThemeData(
           color: iconColor,
         ),
@@ -41,7 +40,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     } else {
       return CupertinoNavigationBar(
         middle: Text(
-          title,
+          title ?? "",
           style: TextStyle(
             color: textColor,
           ),
@@ -54,7 +53,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           color: Colors.transparent,
           child: trailing,
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: backgroundColor ?? Colors.transparent,
       );
     }
   }
