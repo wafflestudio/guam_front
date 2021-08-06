@@ -65,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  SearchForm(result),
+                  SearchForm(result, widget.stacksProvider),
                   IconButton(
                     icon: Icon(Icons.filter_list, color: Colors.black),
                     onPressed: _toggleIsFilterOpen,

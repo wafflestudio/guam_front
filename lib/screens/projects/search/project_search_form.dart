@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
+import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 class SearchForm extends StatefulWidget {
   final Map<dynamic, dynamic> result;
+  final Stacks stacksProvider;
 
-  SearchForm(this.result);
+  SearchForm(this.result, this.stacksProvider);
 
   @override
   _SearchFormState createState() => _SearchFormState();
@@ -14,10 +16,56 @@ class SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<SearchForm> {
   final TextEditingController _searchController = TextEditingController();
-
   FocusNode focusNode = FocusNode();
 
   Map get results => widget.result;
+
+  setPosition(String positionKor) {
+    String positionEng;
+    switch (positionKor) {
+      case '백엔드':
+        positionEng = 'BACKEND';
+        break;
+      case '프론트엔드':
+        positionEng = 'FRONTEND';
+        break;
+      case '디자이너':
+        positionEng = 'DESIGNER';
+        break;
+    }
+    return positionEng;
+  }
+
+  setPeriod(String periodStr) {
+    String periodInt;
+    switch (periodStr) {
+      case '1개월 미만':
+        periodInt = 'ONE';
+        break;
+      case '3개월 미만':
+        periodInt = 'THREE';
+        break;
+      case '6개월 미만':
+        periodInt = 'SIX';
+        break;
+      case '6개월 이상':
+        periodInt = 'MORE';
+        break;
+    }
+    return periodInt;
+  }
+
+  setTechStack(String stackStr) {
+    if (stackStr != null) {
+      return List<int>.from(
+          widget.stacksProvider.stacks.map((stack) => stack.id))[
+      List<String>.from(
+          widget.stacksProvider.stacks.map((stack) => stack.name))
+          .indexOf(results['기술 스택'])].toString();
+    } else {
+      return null;
+    }
+  }
 
   Future setSearchInfo() async {
     setState(() {
@@ -25,9 +73,9 @@ class _SearchFormState extends State<SearchForm> {
     });
     await context.read<Projects>().searchProjects({
       "keyword": results['keyword'],
-      "stacks": results['기술 스택'],
-      "position": results['포지션'],
-      "period": results['활동 기간'],
+      "stackId": setTechStack(results['기술 스택']),
+      "position": setPosition(results['포지션']),
+      "due": setPeriod(results['활동 기간']),
     });
   }
 
