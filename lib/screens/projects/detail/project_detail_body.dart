@@ -18,19 +18,21 @@ class ProjectDetailBody extends StatelessWidget {
 
     _selectDue(String due) {
       switch (due) {
-        case 'ONE':
-          return '1개월 미만';
-          break;
-        case 'THREE':
-          return '3개월 미만';
-          break;
-        case 'SIX':
-          return '6개월 미만';
-          break;
-        case 'MORE':
-          return '6개월 이상';
-          break;
+        case 'ONE': return '1개월 미만'; break;
+        case 'THREE': return '3개월 미만'; break;
+        case 'SIX': return '6개월 미만'; break;
+        case 'MORE': return '6개월 이상'; break;
       }
+    }
+
+    _selectTechStack(List techStacks, String position) {
+      String techStack;
+      project.techStacks.forEach((e) {
+        if (position == e.position){
+          techStack = e.name;
+        }
+      });
+      return techStack;
     }
 
     return Column(children: [
@@ -65,8 +67,8 @@ class ProjectDetailBody extends StatelessWidget {
                     children: [
                       Icon(Icons.people, size: 20),
                       Text(' 참여 현황 ',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -92,16 +94,16 @@ class ProjectDetailBody extends StatelessWidget {
                         children: [
                           _columnName("기술 스택"),
                           project.techStacks != [] &&
-                                  project.techStacks.length > 2
-                              ? _text(project.techStacks[2].name.toString())
+                            project.techStacks.length > 2
+                              ? _text(_selectTechStack(project.techStacks, 'BACKEND'))
                               : Text(""),
                           project.techStacks != [] &&
-                                  project.techStacks.length > 2
-                              ? _text(project.techStacks[0].name.toString())
+                            project.techStacks.length > 2
+                              ? _text(_selectTechStack(project.techStacks, 'FRONTEND'))
                               : Text(""),
                           project.techStacks != [] &&
-                                  project.techStacks.length > 2
-                              ? _text(project.techStacks[1].name.toString())
+                            project.techStacks.length > 2
+                              ? _text(_selectTechStack(project.techStacks, 'DESIGNER'))
                               : Text(""),
                         ],
                       ),

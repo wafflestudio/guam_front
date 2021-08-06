@@ -23,7 +23,7 @@ class DetailProject extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage("assets/backgrounds/projects-bg.png"),
+              image: AssetImage("assets/backgrounds/projects-bg-2.png"),
               fit: BoxFit.cover,
             )),
           ),
