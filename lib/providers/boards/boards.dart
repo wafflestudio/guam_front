@@ -356,6 +356,33 @@ class Boards with ChangeNotifier {
     }
   }
 
+  Future deleteThreadImage({int threadId, int imageId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+      .delete(
+        path: "/thread/$threadId/image/$imageId",
+        authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("이미지가 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchThreads(currentBoard.id);
+    }
+  }
+
   Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
     bool res = false;
 
@@ -438,6 +465,31 @@ class Boards with ChangeNotifier {
     }
   }
 
+  Future deleteCommentImage({int commentId, int imageId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+      .delete(
+        path: "/comment/$commentId/image/$imageId",
+        authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("이미지가 삭제되었습니다.");
+          res = true;
+        } else {
+          throw new Exception();
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future acceptDecline({int userId, bool accept}) async {
     bool res = false;
 
@@ -463,6 +515,60 @@ class Boards with ChangeNotifier {
       if (res) {
         await fetchBoard(currentBoard.id);
       }
+    }
+  }
+
+  Future quitBoard() async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .post(
+          path: "/project/${currentBoard.id}/quit",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("작업실을 나갔습니다.");
+          res = true;
+        } else {
+          throw new Exception("작업실을 나갈 수 없습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoardIds();
+    }
+  }
+
+  Future deleteBoard() async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "/project/${currentBoard.id}",
+          authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          print("작업실을 삭제했습니다.");
+          res = true;
+        } else {
+          throw new Exception("작업실을 삭제할 수 없습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoardIds();
     }
   }
 }

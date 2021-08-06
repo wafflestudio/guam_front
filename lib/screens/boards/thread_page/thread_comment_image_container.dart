@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../helpers/http_request.dart';
-import 'package:transparent_image/transparent_image.dart';
-import '../../../models/boards/thread_comment_image.dart';
+import 'package:guam_front/models/thumbnail.dart';
+import '../../../models/thumbnail.dart';
+import '../../../commons/image_thumbnail.dart';
 
 class ThreadCommentImageContainer extends StatelessWidget {
-  final ThreadCommentImage img;
+  final Thumbnail img;
   final bool blur;
   final int hiddenImgCnt;
 
@@ -17,13 +17,9 @@ class ThreadCommentImageContainer extends StatelessWidget {
         Container(
           height: double.infinity,
           width: double.infinity,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(HttpRequest().s3BaseAuthority + img.path),
-              fit: BoxFit.cover,
-            ),
+          child: IgnorePointer( // ignore image thumbnail's on tap
+            ignoring: true,
+            child: ImageThumbnail(imagePath: img.path),
           ),
         ),
         if (blur) Container(

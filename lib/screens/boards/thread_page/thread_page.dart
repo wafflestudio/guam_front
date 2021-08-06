@@ -66,7 +66,6 @@ class _ThreadPageState extends State<ThreadPage> {
               this.editTargetComment = null;
             });
             fetchFullThread();
-
             return successful;
           }
         });
@@ -112,6 +111,8 @@ class _ThreadPageState extends State<ThreadPage> {
                                       comments: snapshot.data,
                                       switchToEditMode: switchToEditMode,
                                       deleteComment: deleteComment,
+                                      editTargetComment: editTargetComment,
+                                      fetchFullThread: fetchFullThread,
                                     );
                                   } else {
                                     return CircularProgressIndicator();
