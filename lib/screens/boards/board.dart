@@ -6,8 +6,6 @@ import 'threads/threads.dart';
 import 'package:provider/provider.dart';
 import '../../providers/boards/boards.dart';
 import 'board_title/board_title.dart';
-import '../../models/boards/thread.dart';
-import '../../models/profile.dart';
 
 class Board extends StatelessWidget {
   final Project board;
