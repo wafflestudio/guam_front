@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 
 class SearchForm extends StatefulWidget {
   final Map<dynamic, dynamic> result;
-  final Projects projectsProvider;
 
-  SearchForm(this.result, this.projectsProvider);
+  SearchForm(this.result);
 
   @override
   _SearchFormState createState() => _SearchFormState();
@@ -19,11 +19,11 @@ class _SearchFormState extends State<SearchForm> {
 
   Map get results => widget.result;
 
-  void setSearchInfo() {
+  Future setSearchInfo() async {
     setState(() {
       results["keyword"] = _searchController.text;
     });
-    widget.projectsProvider.searchProjects({
+    await context.read<Projects>().searchProjects({
       "keyword": results['keyword'],
       "stacks": results['기술 스택'],
       "position": results['포지션'],

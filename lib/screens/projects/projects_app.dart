@@ -19,9 +19,6 @@ class ProjectsApp extends StatelessWidget {
           update: (_, authProvider, projectsProvider) =>
               projectsProvider..authProvider = authProvider,
         ),
-        ChangeNotifierProvider<Stacks>(
-          create: (_) => Stacks(),
-        )
       ],
       child: ProjectsAppScaffold(),
     );
@@ -43,8 +40,8 @@ class ProjectsAppScaffold extends StatelessWidget {
         appBar: CustomAppBar(
             title: '프로젝트',
             leading: ProjectCreateButton(),
-            trailing: ProjectSearchButton(
-                context.read<Stacks>(), context.watch<Projects>())),
+            trailing: ProjectSearchButton()
+        ),
         body: ProjectsBody(context.watch<Projects>()),
         backgroundColor: Colors.transparent,
       ),

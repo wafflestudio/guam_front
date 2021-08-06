@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
-import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/search/project_search_form.dart';
 import 'package:guam_front/screens/projects/search/projects_searched_list.dart';
 import 'package:guam_front/screens/projects/search/search_filter_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import 'filter_value_chip.dart';
 
 class SearchScreen extends StatefulWidget {
   final Stacks stacksProvider;
-  final Projects projectsProvider;
 
-  SearchScreen(this.stacksProvider, this.projectsProvider);
+  SearchScreen({this.stacksProvider});
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -56,6 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -67,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
               color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  SearchForm(result, widget.projectsProvider),
+                  SearchForm(result),
                   IconButton(
                     icon: Icon(Icons.filter_list, color: Colors.black),
                     onPressed: _toggleIsFilterOpen,
@@ -96,7 +94,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: <Widget>[
                   if (isFilterOpen) searchFilter(widget.stacksProvider, size),
                   Container(color: Colors.black),
-                  ProjectsSearchedList(widget.projectsProvider)
+                  ProjectsSearchedList()
                 ],
               ),
             ),

@@ -79,12 +79,15 @@ class Projects with ChangeNotifier {
       loading = true;
 
       await HttpRequest()
-        .get(path: "/project/search", queryParams: queryParams)
+        .get(path: "/project/spearch", queryParams: queryParams)
         .then((response) {
+          print("Status: ${response.statusCode}");
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+            print(jsonList);
             _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+            print("filtered prjs: $_filteredProjects");
           }
           if (response.statusCode == 401) {
             print("프로젝트를 검색하려면 로그인이 필요합니다.");
