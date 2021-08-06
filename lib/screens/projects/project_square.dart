@@ -49,7 +49,7 @@ class ProjectSquare extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       HexColor("#787878").withOpacity(0.8),
-                      HexColor("#000000").withOpacity(0.3)
+                      HexColor("#000000").withOpacity(0.2)
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -92,22 +92,19 @@ class ProjectSquare extends StatelessWidget {
               ),
             ),
             Positioned.fill(
-              top: 65,
-              child: Container(
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    Text(
-                      project.title.length > 13
-                          ? project.title.substring(0, 11) + '...'
-                          : project.title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ],
+              top: 60,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  project.title,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               ),
             )

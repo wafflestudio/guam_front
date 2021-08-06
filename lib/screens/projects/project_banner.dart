@@ -131,14 +131,15 @@ class ProjectBanner extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          project.title.length > 20
-                              ? project.title.substring(0, 18) + '...'
-                              : project.title,
+                          project.title,
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
                         )
                       ],
                     ),
