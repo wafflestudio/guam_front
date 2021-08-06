@@ -99,8 +99,12 @@ class Boards with ChangeNotifier {
   Future setTasks() async {
     List<UserTask> newTasks = [];
 
-    for (UserTask task in currentBoard.tasks) {
-      newTasks.add(await fetchTask(task.id));
+    for (UserTask briefTask in currentBoard.tasks) {
+      UserTask detailedTask = await fetchTask(briefTask.id);
+
+      // Position my task initially at front.
+      if (isMe(detailedTask.user.id)) newTasks.insert(0, detailedTask);
+      else newTasks.add(detailedTask);
     }
 
     currentBoard.tasks = newTasks;

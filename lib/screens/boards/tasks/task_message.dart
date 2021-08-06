@@ -16,30 +16,25 @@ class TaskMessage extends StatefulWidget {
 class _TaskMessageState extends State<TaskMessage> {
   bool done;
 
-  @override
-  void initState() {
-    done = widget.taskMsg.status == "DONE";
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    Future updateTaskMsgState(bool done) async {
-      await context.read<Boards>().updateTaskMsg(
+  Future updateTaskMsgState(bool done) async {
+    await context.read<Boards>().updateTaskMsg(
         taskMsgId: widget.taskMsg.id,
         body: {
           "status": done ? "DONE" : "ONGOING"
         }
-      );
-    }
+    );
+  }
 
-    void toggleDone(bool val) {
-      setState(() {
-        done = val;
-      });
-      updateTaskMsgState(val);
-    }
+  void toggleDone(bool val) {
+    setState(() {
+      done = val;
+    });
+    updateTaskMsgState(val);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    done = widget.taskMsg.status == "DONE";
 
     return Container(
       margin: EdgeInsets.only(bottom: 10),
