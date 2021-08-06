@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
-import '../../providers/boards/boards.dart';
-import '../../providers/user_auth/authenticate.dart';
-import '../../commons/profile_thumbnail.dart';
-import '../../models/boards/thread.dart' as ThreadModel;
-import 'thread_page/thread_page.dart';
-import 'thread_page/thread_comment_images.dart';
-import 'bottom_modal/bottom_modal_content.dart';
-import 'accept_decline_button.dart';
+import '../../../providers/boards/boards.dart';
+import '../../../providers/user_auth/authenticate.dart';
+import '../../../commons/profile_thumbnail.dart';
+import '../../../models/boards/thread.dart' as ThreadModel;
+import '../thread_page/thread_page.dart';
+import '../thread_page/thread_comment_images.dart';
+import '../bottom_modal/bottom_modal_content.dart';
+import '../accept_decline_button.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;

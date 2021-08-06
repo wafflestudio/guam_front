@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/project.dart';
-import 'notice.dart';
-import 'tasks.dart';
-import 'threads.dart';
+import 'notice/notice.dart';
+import 'tasks/tasks.dart';
+import 'threads/threads.dart';
 import 'package:provider/provider.dart';
 import '../../providers/boards/boards.dart';
 import 'board_title/board_title.dart';
@@ -32,7 +32,7 @@ class Board extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        Notice(board.notice), 
+                        Notice(board.notice),
                         Tasks(board.tasks),
                         Threads(board.threads),
                       ],
