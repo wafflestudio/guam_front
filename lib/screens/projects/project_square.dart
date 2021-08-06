@@ -10,8 +10,10 @@ import '../../models/project.dart';
 class ProjectSquare extends StatelessWidget {
   final Project project;
   final Projects projectsProvider;
+  final bool allowOnTap;
 
-  ProjectSquare(this.project, this.projectsProvider);
+  ProjectSquare({this.project, this.projectsProvider, allowOnTap})
+      : this.allowOnTap = allowOnTap ?? true;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +23,12 @@ class ProjectSquare extends StatelessWidget {
       margin: EdgeInsets.only(right: 10),
       child: InkWell(
         onTap: () {
-          Navigator.push(
+          if (allowOnTap) Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      DetailProject(project, projectsProvider)));
+                builder: (context) => DetailProject(project, projectsProvider)
+              )
+          );
         },
         child: Stack(
           children: [
@@ -63,7 +66,7 @@ class ProjectSquare extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: Stack(
                 children: [
-                  if (project.tasks.length < 4)
+                  if (project.tasks != null && project.tasks.length < 4)
                     ...project.tasks.map(
                       (user) => project.tasks.indexOf(user) < 3
                         ? Positioned(

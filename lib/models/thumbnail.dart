@@ -5,7 +5,7 @@ class Thumbnail {
   final int id;
   final String path;
 
-  Thumbnail({@required this.id, @required this.path});
+  Thumbnail({this.id, @required this.path});
 
   factory Thumbnail.fromJson(dynamic json) {
     return Thumbnail(
