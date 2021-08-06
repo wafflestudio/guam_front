@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/back.dart';
-import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/search/project_search_form.dart';
 import 'package:guam_front/screens/projects/search/projects_searched_list.dart';
@@ -10,9 +9,8 @@ import 'filter_value_chip.dart';
 
 class SearchScreen extends StatefulWidget {
   final Stacks stacksProvider;
-  final Projects projectsProvider;
 
-  SearchScreen(this.stacksProvider, this.projectsProvider);
+  SearchScreen({this.stacksProvider});
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -24,7 +22,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Map result = {};
   String selectedKey;
   List<String> filterValues;
-  TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode();
 
   @override
@@ -55,6 +52,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -62,20 +61,18 @@ class _SearchScreenState extends State<SearchScreen> {
         title: Column(
           children: <Widget>[
             Container(
-                height: 36,
-                color: Colors.white,
-                child: Row(
-                  children: <Widget>[
-                    SearchForm(
-                        result, widget.projectsProvider, toggleIsSubmitted),
-                    IconButton(
-                        icon: Icon(
-                          Icons.filter_list,
-                          color: Colors.black,
-                        ),
-                        onPressed: _toggleIsFilterOpen),
-                  ],
-                )),
+              height: 36,
+              color: Colors.white,
+              child: Row(
+                children: <Widget>[
+                  SearchForm(result, widget.stacksProvider),
+                  IconButton(
+                    icon: Icon(Icons.filter_list, color: Colors.black),
+                    onPressed: _toggleIsFilterOpen,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -84,31 +81,30 @@ class _SearchScreenState extends State<SearchScreen> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [
-                      HexColor("FFB980").withOpacity(0.5),
-                      HexColor("E2AFF3").withOpacity(0.5),
-                    ],
-                    begin: FractionalOffset(0.0, 1.0),
-                    end: FractionalOffset(0.0, 0.0),
-                    stops: [0, 1]),
+                image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                      Colors.white.withOpacity(0.6), BlendMode.dstATop),
+                  image: AssetImage("assets/backgrounds/projects-bg-2.png"),
+                  fit: BoxFit.cover,
+                )
               ),
             ),
             SingleChildScrollView(
-                child: Column(
-              children: <Widget>[
-                if (isFilterOpen) searchFilter(widget.stacksProvider),
-                Container(color: Colors.black),
-                ProjectsSearchedList(widget.projectsProvider, isSubmitted)
-              ],
-            )),
+              child: Column(
+                children: <Widget>[
+                  if (isFilterOpen) searchFilter(widget.stacksProvider, size),
+                  Container(color: Colors.black),
+                  ProjectsSearchedList()
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget searchFilter(Stacks stacksProvider) {
+  Widget searchFilter(Stacks stacksProvider, Size size) {
     final Map filterOptions = {
       '기술 스택': List<String>.from(
           widget.stacksProvider.stacks.map((stack) => stack.name)),
@@ -117,38 +113,48 @@ class _SearchScreenState extends State<SearchScreen> {
     };
 
     return Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: HexColor("979797"),
-          ),
+      width: size.width,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: HexColor("979797"),
         ),
-        padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
-        child: Column(
-          children: [
-            Row(children: [
-              ...filterOptions.entries.map((e) => SearchFilterChip(
-                  content: e.key,
-                  display: result[e.key] != null
-                      ? "${e.key}: ${result[e.key]}"
-                      : e.key,
-                  selected: selectedKey == e.key,
-                  selectKey: selectKey,
-                  filterValues: e.value)),
-            ]),
-            if (selectedKey != null)
-              SizedBox(
-                  height: 40,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, idx) => FilterValueChip(
-                      content: filterValues[idx],
-                      selected: result[selectedKey] == filterValues[idx],
-                      selectValue: selectValue,
-                    ),
-                    itemCount: filterValues.length,
-                  )),
-          ],
-        ));
+      ),
+      padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                ...filterOptions.entries.map((e) => SearchFilterChip(
+                    content: e.key,
+                    display: result[e.key] != null
+                        ? "${e.key}: ${result[e.key]}"
+                        : e.key,
+                    selected: selectedKey == e.key,
+                    selectKey: selectKey,
+                    filterValues: e.value
+                ))
+              ],
+            ),
+          ),
+          if (selectedKey != null)
+            SizedBox(
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, idx) => FilterValueChip(
+                  content: filterValues[idx],
+                  selected: result[selectedKey] == filterValues[idx],
+                  selectValue: selectValue,
+                ),
+                itemCount: filterValues.length,
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
