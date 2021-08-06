@@ -9,8 +9,9 @@ import 'common_icon_button.dart';
 class CommonTextField extends StatefulWidget {
   final Function onTap;
   final dynamic editTarget;
+  final bool allowImages;
 
-  CommonTextField({@required this.onTap, this.editTarget});
+  CommonTextField({@required this.onTap, this.editTarget, this.allowImages = true});
 
   @override
   State<StatefulWidget> createState() => _CommonTextFieldState();
@@ -106,14 +107,18 @@ class _CommonTextFieldState extends State<CommonTextField> {
                 ),
                 Row(
                   children: [
-                    if (!isEdit) CommonIconButton(
-                      icon: Icons.add_a_photo,
-                      // 추후 갤러리에서만 아니라 카메라 촬영을 통해서 사진을 넣는 경우도 있어
-                      // make_profile_image.dart 참고하시면 좋을 듯합니다!
-                      onPressed: () async => await pickImage(type: 'gallery')
-                          .then((img) => setImageFile(img)),
+                    if (!isEdit && widget.allowImages) Row(
+                      children: [
+                        CommonIconButton(
+                          icon: Icons.add_a_photo,
+                          // 추후 갤러리에서만 아니라 카메라 촬영을 통해서 사진을 넣는 경우도 있어
+                          // make_profile_image.dart 참고하시면 좋을 듯합니다!
+                          onPressed: () async => await pickImage(type: 'gallery')
+                              .then((img) => setImageFile(img)),
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 10))
+                      ],
                     ),
-                    if (!isEdit) Padding(padding: EdgeInsets.only(right: 10)),
                     CommonIconButton(
                       icon: Icons.send_outlined,
                       onPressed: () async {

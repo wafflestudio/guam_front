@@ -26,7 +26,7 @@ class Project extends ChangeNotifier {
 
   /* parameters needed for boards tab */
   Thread notice;
-  final List<UserTask> tasks;
+  List<UserTask> tasks;
   List<Thread> threads;
   final Map<int, String> userStates; // { LEADER, MEMBER, GUEST, DECLINED, QUIT }
 
@@ -51,7 +51,8 @@ class Project extends ChangeNotifier {
     this.userStates,
   });
 
-  set(List<Thread> _threads) => threads = _threads;
+  set _tasks(List<UserTask> _tasks) => tasks = _tasks;
+  set _threads(List<Thread> _threads) => threads = _threads;
 
   factory Project.fromJson(Map<String, dynamic> json) {
     Thumbnail thumbnail;
