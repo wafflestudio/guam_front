@@ -5,10 +5,6 @@ import 'package:guam_front/screens/projects/search/project_search.dart';
 import 'package:provider/provider.dart';
 
 class ProjectSearchButton extends StatelessWidget {
-  final Stacks stacksProvider;
-
-  ProjectSearchButton({this.stacksProvider});
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -20,7 +16,7 @@ class ProjectSearchButton extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => ChangeNotifierProvider.value(
                 value: context.read<Projects>(),
-                child: SearchScreen(stacksProvider: stacksProvider)
+                child: SearchScreen(stacksProvider: context.read<Stacks>())
               )
             )
         );
