@@ -7,6 +7,7 @@ import '../../models/boards/thread.dart';
 import '../../helpers/http_request.dart';
 import '../user_auth/authenticate.dart';
 import '../../helpers/decode_ko.dart';
+import '../../models/boards/user_task.dart';
 
 class Boards with ChangeNotifier {
   Authenticate _authProvider;
@@ -84,9 +85,103 @@ class Boards with ChangeNotifier {
           boards[renderBoardIdx] = Project.fromJson(jsonData);
       });
 
+      await setTasks();
       await fetchThreads(projectId);
 
       loading = false;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future setTasks() async {
+    List<UserTask> newTasks = [];
+
+    for (UserTask task in currentBoard.tasks) {
+      newTasks.add(await fetchTask(task.id));
+    }
+
+    currentBoard.tasks = newTasks;
+  }
+
+  Future<UserTask> fetchTask(int taskId) async {
+    UserTask userTask;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest().get(
+        path: "/task/$taskId",
+        authToken: authToken
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          userTask = UserTask.fromJson(jsonData);
+        } else {
+          throw new Exception("Task not found.");
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return userTask;
+  }
+
+  Future createTaskMsg({int taskId, Map<String, String> body}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .post(
+          path: "task/$taskId",
+          authToken: authToken,
+          body: body,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          res = true;
+          print("작업현황이 생성되었습니다.");
+          await setTasks();
+        } else {
+          throw new Exception("작업현황이 생성되지 않았습니다.");
+        }
+      });
+
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future updateTaskMsg({int taskMsgId, Map<String, String> body}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .put(
+          path: "taskMsg/$taskMsgId",
+          authToken: authToken,
+          body: body,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          res = true;
+          print("작업현황이 수정되었습니다.");
+          await setTasks();
+        } else {
+          throw new Exception("작업현황이 수정되지 않았습니다.");
+        }
+      });
+
+      return res;
     } catch (e) {
       print(e);
     } finally {
@@ -107,7 +202,7 @@ class Boards with ChangeNotifier {
         final jsonUtf8 = decodeKo(response);
         final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
         final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
-        boards[renderBoardIdx].threads = threads;
+        currentBoard.threads = threads;
       });
 
       loading = false;
@@ -352,7 +447,7 @@ class Boards with ChangeNotifier {
           queryParams: { "accept": "$accept" }
       ).then((response) {
         if (response.statusCode == 200) {
-          print("${accept ? "승인" : "반려"}가 완료되었습니다.");
+          print("${accept ? "승인이" : "반려가"} 완료되었습니다.");
           res = true;
         } else {
           throw new Exception("오직 프로젝트 리더만 승인/반려가 가능합니다.");
@@ -362,8 +457,7 @@ class Boards with ChangeNotifier {
       print(e);
     } finally {
       if (res) {
-        fetchBoard(currentBoard.id);
-        fetchThreads(currentBoard.id);
+        await fetchBoard(currentBoard.id);
       }
     }
   }
