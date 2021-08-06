@@ -128,18 +128,19 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(children: [
-              ...filterOptions.entries.map(
-                (e) => SearchFilterChip(
+            child: Row(
+              children: [
+                ...filterOptions.entries.map((e) => SearchFilterChip(
                     content: e.key,
                     display: result[e.key] != null
                         ? "${e.key}: ${result[e.key]}"
                         : e.key,
                     selected: selectedKey == e.key,
                     selectKey: selectKey,
-                    filterValues: e.value),
-              )
-            ]),
+                    filterValues: e.value
+                ))
+              ],
+            ),
           ),
           if (selectedKey != null)
             SizedBox(
