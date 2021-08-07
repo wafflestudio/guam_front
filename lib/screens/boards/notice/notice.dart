@@ -48,7 +48,7 @@ class Notice extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              notice.content,
+                              notice.content ?? "",
                               style: TextStyle(fontSize: 12),
                             )
                           ],
