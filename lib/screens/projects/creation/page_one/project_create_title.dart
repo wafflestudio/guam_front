@@ -14,6 +14,12 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
   final _projectNameController = TextEditingController();
 
   @override
+  void initState() {
+    _projectNameController.text = widget.input["title"];
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _projectNameController.dispose();
     super.dispose();
