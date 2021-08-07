@@ -48,6 +48,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     _blogController.text = me.blogUrl;
     _introductionController.text = me.introduction;
     willUploadImage = false;
+    selectedSkillsList = List<String>.from(me.skills);
     super.initState();
   }
 

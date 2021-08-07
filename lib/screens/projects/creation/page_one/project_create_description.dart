@@ -14,6 +14,12 @@ class _ProjectCreateDescriptionState extends State<ProjectCreateDescription> {
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
+  void initState() {
+    _descriptionController.text = widget.input["description"];
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _descriptionController.dispose();
     super.dispose();
