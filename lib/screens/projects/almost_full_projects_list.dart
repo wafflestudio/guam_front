@@ -26,8 +26,9 @@ class AlmostFullProjectsList extends StatelessWidget {
                   : ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, int idx) => ProjectSquare(
-                          projectsProvider.almostFullProjects[idx],
-                          projectsProvider),
+                          project: projectsProvider.almostFullProjects[idx],
+                          projectsProvider: projectsProvider
+                      ),
                       itemCount: projectsProvider.almostFullProjects.length,
                     ))
         ],

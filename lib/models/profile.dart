@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'thumbnail.dart';
+import 'project.dart';
 
 class Profile extends ChangeNotifier {
   final int id;
@@ -12,6 +12,7 @@ class Profile extends ChangeNotifier {
   final List<dynamic> skills;
   final String introduction;
   final bool isProfileSet;
+  final List<Project> projects;
 
   Profile({
     this.id,
@@ -23,9 +24,22 @@ class Profile extends ChangeNotifier {
     this.skills,
     this.introduction,
     this.isProfileSet,
+    this.projects,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
+    List<Project> projects;
+
+    if (json["projects"] != null) {
+      projects = [...json["projects"].map((prj) => Project.fromJson({
+        "id": prj["projectId"],
+        "title": prj["projectTitle"],
+        "thumbnail": {
+          "path": prj["projectThumbnail"]
+        },
+      }))];
+    }
+
     return Profile(
       id: json["id"],
       status: json["status"],
@@ -36,6 +50,7 @@ class Profile extends ChangeNotifier {
       skills: json["skills"],
       introduction: json["introduction"],
       isProfileSet: json["isProfileSet"],
+      projects: projects
     );
   }
 }
