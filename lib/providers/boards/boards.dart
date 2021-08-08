@@ -8,8 +8,9 @@ import '../../helpers/http_request.dart';
 import '../user_auth/authenticate.dart';
 import '../../helpers/decode_ko.dart';
 import '../../models/boards/user_task.dart';
+import '../../mixins/toast.dart';
 
-class Boards with ChangeNotifier {
+class Boards extends ChangeNotifier with Toast {
   Authenticate _authProvider;
 
   List<Project> _boards;
@@ -530,19 +531,21 @@ class Boards with ChangeNotifier {
           authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("작업실을 나갔습니다.");
+          showToast(success: true, msg: "작업실을 나갔습니다.");
           res = true;
         } else {
-          throw new Exception("작업실을 나갈 수 없습니다.");
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          throw new Exception(err);
         }
       });
-
-      return res;
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
       if (res) fetchBoardIds();
     }
+
+    return res;
   }
 
   Future deleteBoard() async {
@@ -557,18 +560,20 @@ class Boards with ChangeNotifier {
           authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("작업실을 삭제했습니다.");
+          showToast(success: true, msg: "작업실을 삭제했습니다.");
           res = true;
         } else {
-          throw new Exception("작업실을 삭제할 수 없습니다.");
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          throw new Exception(err);
         }
       });
-
-      return res;
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
       if (res) fetchBoardIds();
     }
+
+    return res;
   }
 }

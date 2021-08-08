@@ -4,7 +4,7 @@ import '../../helpers/http_request.dart';
 import '../../helpers/decode_ko.dart';
 import '../../models/stack.dart' as StackModel;
 
-class Stacks with ChangeNotifier {
+class Stacks extends ChangeNotifier {
   List<StackModel.Stack> _stacks;
 
   Stacks() {

@@ -107,10 +107,11 @@ class Projects extends ChangeNotifier with Toast {
   }
 
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
@@ -129,19 +130,21 @@ class Projects extends ChangeNotifier with Toast {
             }
           });
       }
-      return res;
     } catch (e) {
       showToast(success: false, msg: e.message);
     } finally {
       loading = false;
     }
+
+    return res;
   }
 
   Future applyProject(int projectId, dynamic queryParams) async {
+    bool res = false;
+
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
@@ -157,11 +160,12 @@ class Projects extends ChangeNotifier with Toast {
             }
         });
       }
-      return res;
     } catch (e) {
       showToast(success: false, msg: e.message);
     } finally {
       loading = false;
     }
+
+    return res;
   }
 }
