@@ -9,16 +9,16 @@ import '../../../commons/back.dart';
 import '../../../commons/custom_app_bar.dart';
 import '../../../models/stack.dart' as StackModel;
 
-class CreateProjectScreen extends StatefulWidget {
+class ProjectCreate extends StatefulWidget {
   final Stacks stacksProvider;
 
-  CreateProjectScreen({this.stacksProvider});
+  ProjectCreate({this.stacksProvider});
 
   @override
-  _CreateProjectScreenState createState() => _CreateProjectScreenState();
+  _ProjectCreateState createState() => _ProjectCreateState();
 }
 
-class _CreateProjectScreenState extends State<CreateProjectScreen> {
+class _ProjectCreateState extends State<ProjectCreate> {
   String selectedKey;
   List<String> filterValues;
 

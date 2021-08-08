@@ -20,7 +20,7 @@ class ProjectCreateButton extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider.value(
                   value: context.read<Projects>(),
-                  child: CreateProjectScreen(stacksProvider: context.read<Stacks>())
+                  child: ProjectCreate(stacksProvider: context.read<Stacks>())
                 )));
         });
   }
