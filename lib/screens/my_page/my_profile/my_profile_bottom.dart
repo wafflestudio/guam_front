@@ -93,7 +93,7 @@ class MyProfileBottom extends StatelessWidget {
                     )
                   ],
                 ),
-                MyProfileProjects()
+                MyProfileProjects(me)
               ],
             ),
           ),
