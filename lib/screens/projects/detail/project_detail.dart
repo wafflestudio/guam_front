@@ -37,7 +37,7 @@ class DetailProject extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => AnotherProfile()));
+                      MaterialPageRoute(builder: (_) => AnotherProfile(project.leader.id)));
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 10, top: 10),

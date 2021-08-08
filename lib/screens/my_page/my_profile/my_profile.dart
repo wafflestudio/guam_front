@@ -11,41 +11,44 @@ import '../../user_auth/sign_out.dart';
 class MyProfile extends StatelessWidget {
   final Stacks stacksProvider;
   final bool isMyProfile;
+  final int userId;
 
-  MyProfile({this.stacksProvider, this.isMyProfile});
+  MyProfile({this.stacksProvider, this.isMyProfile, this.userId});
 
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
-    final profile = isMyProfile ? authProvider.me : authProvider.me;
+
+    Future.delayed(Duration.zero, () {
+      authProvider.getUserProfile(userId);
+    });
+    final profile = isMyProfile ? authProvider.me : authProvider.user;
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                  Colors.white.withOpacity(0.7), BlendMode.dstATop),
-              image: AssetImage("assets/backgrounds/profile-bg-1.png"),
-              fit: BoxFit.cover,
-            )),
-            child: Column(
-              children: [
-                Stack(children: [
-                  MyProfileLink(profile),
-                  MyProfileTop(profile),
-                ]),
-                MyProfileBottom(profile, stacksProvider),
-              ],
+          Padding(
+            padding: EdgeInsets.only(bottom: 30),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                colorFilter: ColorFilter.mode(
+                    Colors.white.withOpacity(0.7), BlendMode.dstATop),
+                image: AssetImage("assets/backgrounds/profile-bg-1.png"),
+                fit: BoxFit.cover,
+              )),
+              child: Column(
+                children: [
+                  Stack(children: [
+                    MyProfileLink(profile),
+                    MyProfileTop(profile),
+                  ]),
+                  MyProfileBottom(profile, stacksProvider),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 30),
-            child: Center(
-              child: SignOut(),
-            ),
-          )
+          if (isMyProfile) Center(child: SignOut()),
         ],
       ),
     );

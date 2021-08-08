@@ -13,6 +13,7 @@ class Authenticate with ChangeNotifier {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   Profile me;
+  Profile user;
   bool loading = false;
 
   get kakaoClientId => _kakaoClientId;
@@ -126,6 +127,38 @@ class Authenticate with ChangeNotifier {
     await auth.signOut();
     notifyListeners();
   }
+
+  Future getUserProfile(int userId) async {
+    try {
+      toggleLoading();
+      await HttpRequest()
+          .get(
+        path: "/user/$userId",
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          user = Profile.fromJson(jsonData);
+        } else{
+          String err;
+
+          switch(response.statusCode) {
+            case 401: err = "Unauthorized"; break;
+            case 403: err = "Forbidden"; break;
+            case 404: err = "Not Found"; break;
+            case 500: err = "Internal server error"; break;
+          }
+
+          throw new Exception(err);
+        }
+      });
+    } catch (e) {
+      print("Failed fetching the user profile: $e");
+    } finally {
+      toggleLoading();
+    }
+  }
+
 
   void toggleLoading() {
     loading = !loading;

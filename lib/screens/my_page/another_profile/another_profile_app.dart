@@ -7,6 +7,10 @@ import '../../../commons/custom_app_bar.dart';
 import '../my_profile/my_profile.dart';
 
 class AnotherProfile extends StatelessWidget {
+  final int userId;
+
+  AnotherProfile(this.userId);
+
   @override
   Widget build(BuildContext context) {
     final stacksProvider = context.read<Stacks>();
@@ -16,7 +20,11 @@ class AnotherProfile extends StatelessWidget {
         title: "프로필",
         leading: Back(),
       ),
-      body: MyProfile(stacksProvider: stacksProvider, isMyProfile: false),
+      body: MyProfile(
+        stacksProvider: stacksProvider,
+        isMyProfile: false,
+        userId: userId,
+      ),
     );
   }
 }
