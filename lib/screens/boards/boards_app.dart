@@ -4,7 +4,7 @@ import '../../commons/custom_app_bar.dart';
 import '../../providers/boards/boards.dart';
 import '../../providers/user_auth/authenticate.dart';
 import 'boards_body.dart';
-import 'quit_board.dart';
+import 'board_setting.dart';
 
 class BoardsApp extends StatelessWidget {
   @override
@@ -26,7 +26,7 @@ class BoardsAppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: '작업실',
-        trailing: QuitBoard(),
+        trailing: BoardSetting(),
       ),
       body: BoardsBody(),
       backgroundColor: Colors.transparent,
