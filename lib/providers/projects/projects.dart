@@ -8,6 +8,7 @@ import '../../helpers/decode_ko.dart';
 
 class Projects with ChangeNotifier {
   Authenticate _authProvider;
+  Project _projectToBeEdited;
   List<Project> _projects;
   List<Project> _almostFullProjects;
   List<Project> _filteredProjects;
@@ -16,6 +17,8 @@ class Projects with ChangeNotifier {
   Projects() {
     fetchProjects();
   }
+
+  Project get projectToBeEdited => _projectToBeEdited;
 
   List<Project> get projects => _projects;
 
@@ -130,7 +133,7 @@ class Projects with ChangeNotifier {
                 case 401: err = "프로젝트를 생성하려면 로그인이 필요합니다."; break;
                 case 403: err = "최대 3개의 프로젝트에만 참여할 수 있습니다."; break;
                 case 404: err = "프로젝트 생성에 필요한 정보를 모두 채워야 합니다."; break;
-                case 500: err = "Interner server error"; break;
+                case 500: err = "Internal server error"; break;
               }
 
               throw new Exception(err);
@@ -175,6 +178,46 @@ class Projects with ChangeNotifier {
             print("존재하지 않거나 이미 마감된 프로젝트입니다.");
           }
         });
+      }
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+    }
+  }
+
+  Future editProject(int projectId, {Map<String, dynamic> fields, dynamic files}) async {
+    try {
+      loading = true;
+      String authToken = await _authProvider.getFirebaseIdToken();
+      bool res = false;
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+          .putMultipart(
+            path: "/project/$projectId",
+            authToken: authToken,
+            fields: fields,
+            files: files,
+          )
+          .then((response) {
+            if (response.statusCode == 200) {
+              print("프로젝트를 수정했습니다.");
+              res = true;
+            } else {
+              String err;
+
+              switch(response.statusCode) {
+                case 401: err = "프로젝트를 수정하려면 로그인이 필요합니다."; break;
+                case 403: err = "리더만 프로젝트를 수정할 수 있습니다."; break;
+                case 404: err = "유효하지 않은 프로젝트입니다."; break;
+                case 500: err = "Internal server error"; break;
+              }
+
+              throw new Exception(err);
+            }
+          });
       }
       return res;
     } catch (e) {
