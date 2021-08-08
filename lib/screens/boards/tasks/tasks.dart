@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import '../../../models/boards/user_task.dart';
 import '../iconTitle.dart';
 import 'task.dart';
@@ -63,11 +64,20 @@ class TasksState extends State<Tasks> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ProfileThumbnail(
-                                profile: selectedUserTask.user,
-                                radius: 12,
-                                showNickname: true,
-                                textColor: Colors.white,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(
+                                      builder: (_) => AnotherProfile(selectedUserTask.user.id)
+                                    )
+                                  );
+                                },
+                                child: ProfileThumbnail(
+                                  profile: selectedUserTask.user,
+                                  radius: 12,
+                                  showNickname: true,
+                                  textColor: Colors.white,
+                                ),
                               ),
                               positionChip(position: selectedUserTask.state),
                             ],
