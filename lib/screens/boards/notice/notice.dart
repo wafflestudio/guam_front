@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import '../../../commons/circular_border_container.dart';
 import '../../../models/boards/thread.dart' as ThreadModel;
 import '../../../commons/profile_thumbnail.dart';
@@ -36,10 +37,19 @@ class Notice extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProfileThumbnail(
-                    profile: notice.creator,
-                    radius: 12,
-                    showNickname: false,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (_) => AnotherProfile(notice.creator.id)
+                          )
+                      );
+                    },
+                    child: ProfileThumbnail(
+                      profile: notice.creator,
+                      radius: 12,
+                      showNickname: false,
+                    ),
                   ),
                   Expanded(
                       child: Padding(
