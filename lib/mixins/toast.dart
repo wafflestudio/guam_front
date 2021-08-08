@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 mixin Toast on ChangeNotifier {
   void showToast ({@required bool success, @required String msg}) {
-    Fluttertoast.showToast(
-        msg: msg,
-        textColor: Colors.red
-        // backgroundColor: success
-        //     ? Color.fromRGBO(85, 88, 255, 1)
-        //     : Color.fromRGBO(235, 87, 87, 1)
+    BotToast.showText(
+      text: msg,
+      contentColor: success
+          ? Colors.white
+          : Color.fromRGBO(235, 87, 87, 1),
+      borderRadius: BorderRadius.circular(30),
+      textStyle: TextStyle(
+        fontSize: 14,
+        color: success ? Colors.black : Colors.white
+      )
     );
   }
 }
