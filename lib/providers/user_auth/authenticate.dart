@@ -34,14 +34,19 @@ class Authenticate extends ChangeNotifier with Toast {
         path: "/kakao",
         queryParams: {"token": kakaoAccessToken},
       ).then((response) async {
-        final customToken = jsonDecode(response.body)["customToken"];
-        await auth.signInWithCustomToken(customToken);
-        await getMyProfile();
+        if (response.statusCode == 200) {
+          final customToken = jsonDecode(response.body)["customToken"];
+          await auth.signInWithCustomToken(customToken);
+          await getMyProfile();
+          showToast(success: true, msg: "카카오 로그인 되었습니다.");
+        } else {
+          throw new Exception("카카오 로그인을 실패했습니다.");
+        }
       });
-      notifyListeners();
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
+      notifyListeners();
       toggleLoading();
     }
   }
@@ -66,14 +71,13 @@ class Authenticate extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
             me = Profile.fromJson(jsonData);
-          }
-          if (response.statusCode == 400) {
-            print("Error loading user profile");
+          } else {
+            throw new Exception("프로필을 가져오지 못했습니다");
           }
         });
       }
     } catch (e) {
-      print("Failed fetching my profile: $e");
+      showToast(success: false, msg: e.message);
     } finally {
       toggleLoading();
     }
@@ -108,7 +112,6 @@ class Authenticate extends ChangeNotifier with Toast {
         return res;
       }
     } catch (e) {
-      print(e);
       showToast(success: false, msg: e.message);
     } finally {
       toggleLoading();
@@ -117,6 +120,7 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future<void> signOut() async {
     await auth.signOut();
+    showToast(success: true, msg: "로그아웃 되었습니다.");
     notifyListeners();
   }
 
