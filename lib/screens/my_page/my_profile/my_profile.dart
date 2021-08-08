@@ -10,12 +10,14 @@ import '../../user_auth/sign_out.dart';
 
 class MyProfile extends StatelessWidget {
   final Stacks stacksProvider;
+  final bool isMyProfile;
 
-  MyProfile(this.stacksProvider);
+  MyProfile({this.stacksProvider, this.isMyProfile});
 
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<Authenticate>();
+    final profile = isMyProfile ? authProvider.me : authProvider.me;
 
     return SingleChildScrollView(
       child: Column(
@@ -31,10 +33,10 @@ class MyProfile extends StatelessWidget {
             child: Column(
               children: [
                 Stack(children: [
-                  MyProfileLink(authProvider.me),
-                  MyProfileTop(authProvider.me),
+                  MyProfileLink(profile),
+                  MyProfileTop(profile),
                 ]),
-                MyProfileBottom(authProvider.me, stacksProvider),
+                MyProfileBottom(profile, stacksProvider),
               ],
             ),
           ),
