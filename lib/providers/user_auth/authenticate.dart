@@ -108,14 +108,14 @@ class Authenticate extends ChangeNotifier with Toast {
               throw new Exception(err);
             }
           });
-
-        return res;
       }
     } catch (e) {
       showToast(success: false, msg: e.message);
     } finally {
       toggleLoading();
     }
+
+    return res;
   }
 
   Future<void> signOut() async {
