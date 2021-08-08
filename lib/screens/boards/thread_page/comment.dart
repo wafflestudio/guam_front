@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -77,10 +78,19 @@ class Comment extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 10),
               child: Row(
                 children: [
-                ProfileThumbnail(
-                  profile: comment.creator,
-                  showNickname: true,
-                  radius: 12,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (_) => AnotherProfile(comment.creator.id)
+                      )
+                    );
+                  },
+                  child: ProfileThumbnail(
+                    profile: comment.creator,
+                    showNickname: true,
+                    radius: 12,
+                  ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Text(
