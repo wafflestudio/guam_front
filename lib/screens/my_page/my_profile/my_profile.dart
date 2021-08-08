@@ -20,7 +20,9 @@ class MyProfile extends StatelessWidget {
     final authProvider = context.watch<Authenticate>();
 
     Future.delayed(Duration.zero, () {
-      authProvider.getUserProfile(userId);
+      if(!isMyProfile) {
+        authProvider.getUserProfile(userId);
+      }
     });
     final profile = isMyProfile ? authProvider.me : authProvider.user;
 
