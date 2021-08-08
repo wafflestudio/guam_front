@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +28,19 @@ class ThreadContainer extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
-                ProfileThumbnail(
-                  profile: thread.creator,
-                  showNickname: true,
-                  radius: 12,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                      MaterialPageRoute(
+                        builder: (_) => AnotherProfile(thread.creator.id),
+                      )
+                    );
+                  },
+                  child: ProfileThumbnail(
+                    profile: thread.creator,
+                    showNickname: true,
+                    radius: 12,
+                  ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Text(

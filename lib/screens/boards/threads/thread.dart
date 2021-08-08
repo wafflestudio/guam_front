@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -102,7 +103,18 @@ class Thread extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProfileThumbnail(profile: thread.creator, radius: 12, showNickname: false),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                  MaterialPageRoute(
+                    builder: (_) => AnotherProfile(thread.creator.id)
+                  ));
+                },
+              child: ProfileThumbnail(
+                profile: thread.creator,
+                radius: 12,
+                showNickname: false,
+              )),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: 9),
