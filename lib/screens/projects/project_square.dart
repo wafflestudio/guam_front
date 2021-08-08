@@ -37,7 +37,7 @@ class ProjectSquare extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
-                  image: project.thumbnail != null
+                  image: project.thumbnail != null && project.thumbnail.path != null
                       ? NetworkImage(HttpRequest().s3BaseAuthority +
                           project.thumbnail.path)
                       : AssetImage("assets/images/project-square-default.jpeg"),
