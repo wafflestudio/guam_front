@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
 import '../../models/profile.dart';
+import '../../mixins/toast.dart';
 
-class Authenticate with ChangeNotifier {
+class Authenticate extends ChangeNotifier with Toast {
   final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
   final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
 
@@ -96,19 +97,10 @@ class Authenticate with ChangeNotifier {
           .then((response) async {
             if (response.statusCode == 200) {
               getMyProfile();
-              print("Successfully updated profile.");
+              showToast(success: true, msg: "프로필을 생성하였습니다.");
               res = true;
             } else {
-              String err;
-
-              switch (response.statusCode) {
-                case 201: err = "Successfully created profile."; break;
-                case 401: err = "Unauthorized."; break;
-                case 403: err = "Forbidden to set a profile."; break;
-                case 404: err = "Not Found"; break;
-                case 500: err = "Internal Server Error"; break;
-              }
-
+              String err = json.decode(await response.stream.bytesToString())["error"];
               throw new Exception(err);
             }
           });
@@ -117,6 +109,7 @@ class Authenticate with ChangeNotifier {
       }
     } catch (e) {
       print(e);
+      showToast(success: false, msg: e.message);
     } finally {
       toggleLoading();
     }

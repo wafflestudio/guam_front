@@ -36,6 +36,7 @@ dependencies:
   percent_indicator: ^2.1.7+2
   url_launcher: ^6.0.9
   flutter_slidable: ^0.6.0
+  fluttertoast: ^8.0.8
 
   # FlutterFire Plugin
   firebase_core: 1.2.0
