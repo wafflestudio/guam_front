@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_front/models/boards/comment.dart';
@@ -532,6 +533,7 @@ class Boards with ChangeNotifier {
         if (response.statusCode == 200) {
           print("작업실을 나갔습니다.");
           res = true;
+          renderBoardIdx = max(_renderBoardIdx - 1, 0);
         } else {
           throw new Exception("작업실을 나갈 수 없습니다.");
         }
@@ -558,6 +560,7 @@ class Boards with ChangeNotifier {
       ).then((response) {
         if (response.statusCode == 200) {
           print("작업실을 삭제했습니다.");
+          renderBoardIdx = max(_renderBoardIdx - 1, 0);
           res = true;
         } else {
           throw new Exception("작업실을 삭제할 수 없습니다.");
