@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:guam_front/models/boards/comment.dart';
@@ -555,6 +556,7 @@ class Boards extends ChangeNotifier with Toast {
         if (response.statusCode == 200) {
           showToast(success: true, msg: "작업실을 나갔습니다.");
           res = true;
+          renderBoardIdx = max(_renderBoardIdx - 1, 0);
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
@@ -583,6 +585,7 @@ class Boards extends ChangeNotifier with Toast {
       ).then((response) {
         if (response.statusCode == 200) {
           showToast(success: true, msg: "작업실을 삭제했습니다.");
+          renderBoardIdx = max(_renderBoardIdx - 1, 0);
           res = true;
         } else {
           final jsonUtf8 = decodeKo(response);
