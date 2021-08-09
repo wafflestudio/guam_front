@@ -81,6 +81,7 @@ class ProjectBanner extends StatelessWidget {
                                       profile: user.user,
                                       radius: 10,
                                       showNickname: false,
+                                      activateRedirectOnTap: false,
                                     ),
                                   ),
                                 )

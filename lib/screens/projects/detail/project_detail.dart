@@ -34,19 +34,19 @@ class DetailProject extends StatelessWidget {
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Column(children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => AnotherProfile(project.leader.id)));
-                },
-                child: Container(
-                  padding: EdgeInsets.only(left: 10, top: 10),
-                  child: ProfileThumbnail(
-                    radius: 12,
-                    textColor: Colors.black,
-                    profile: project.leader,
-                    showNickname: true,
-                  ),
+              Container(
+                padding: EdgeInsets.only(left: 10, top: 10),
+                child: ProfileThumbnail(
+                  radius: 12,
+                  textColor: Colors.black,
+                  profile: project.leader,
+                  showNickname: true,
+                  activateRedirectOnTap: true,
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              AnotherProfile(project.leader.id))),
                 ),
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

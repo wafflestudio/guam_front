@@ -28,19 +28,16 @@ class ThreadContainer extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 10),
             child: Row(
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context,
+                ProfileThumbnail(
+                  profile: thread.creator,
+                  showNickname: true,
+                  radius: 12,
+                  activateRedirectOnTap: true,
+                  onTap: () => Navigator.push(
+                      context,
                       MaterialPageRoute(
-                        builder: (_) => AnotherProfile(thread.creator.id),
-                      )
-                    );
-                  },
-                  child: ProfileThumbnail(
-                    profile: thread.creator,
-                    showNickname: true,
-                    radius: 12,
-                  ),
+                          builder: (_) =>
+                              AnotherProfile(thread.creator.id))),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Text(

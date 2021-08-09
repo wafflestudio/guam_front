@@ -78,19 +78,16 @@ class Comment extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 10),
               child: Row(
                 children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context,
+                ProfileThumbnail(
+                  profile: comment.creator,
+                  showNickname: true,
+                  radius: 12,
+                  activateRedirectOnTap: true,
+                  onTap: () => Navigator.push(
+                      context,
                       MaterialPageRoute(
-                          builder: (_) => AnotherProfile(comment.creator.id)
-                      )
-                    );
-                  },
-                  child: ProfileThumbnail(
-                    profile: comment.creator,
-                    showNickname: true,
-                    radius: 12,
-                  ),
+                          builder: (_) =>
+                              AnotherProfile(comment.creator.id))),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Text(

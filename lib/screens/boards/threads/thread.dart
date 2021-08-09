@@ -103,18 +103,17 @@ class Thread extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.push(context,
+            ProfileThumbnail(
+              profile: thread.creator,
+              radius: 12,
+              showNickname: false,
+              activateRedirectOnTap: true,
+              onTap: () => Navigator.push(
+                  context,
                   MaterialPageRoute(
-                    builder: (_) => AnotherProfile(thread.creator.id)
-                  ));
-                },
-              child: ProfileThumbnail(
-                profile: thread.creator,
-                radius: 12,
-                showNickname: false,
-              )),
+                      builder: (_) =>
+                          AnotherProfile(thread.creator.id))),
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: 9),
