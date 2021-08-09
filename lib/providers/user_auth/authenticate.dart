@@ -40,7 +40,9 @@ class Authenticate extends ChangeNotifier with Toast {
           await getMyProfile();
           showToast(success: true, msg: "카카오 로그인 되었습니다.");
         } else {
-          throw new Exception("카카오 로그인을 실패했습니다.");
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
     } catch (e) {
@@ -66,18 +68,20 @@ class Authenticate extends ChangeNotifier with Toast {
           .get(
             path: "/user/me",
             authToken: authToken,
-        ).then((response) {
+        ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
             me = Profile.fromJson(jsonData);
           } else {
-            throw new Exception("프로필을 가져오지 못했습니다");
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
         });
       }
     } catch (e) {
-      showToast(success: false, msg: e.message);
+      print(e);
     } finally {
       toggleLoading();
     }
@@ -104,13 +108,14 @@ class Authenticate extends ChangeNotifier with Toast {
               showToast(success: true, msg: "프로필을 생성하였습니다.");
               res = true;
             } else {
-              String err = json.decode(await response.stream.bytesToString())["error"];
-              throw new Exception(err);
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              showToast(success: false, msg: err);
             }
           });
       }
     } catch (e) {
-      showToast(success: false, msg: e.message);
+      print(e);
     } finally {
       toggleLoading();
     }

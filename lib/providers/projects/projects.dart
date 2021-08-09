@@ -35,6 +35,10 @@ class Projects extends ChangeNotifier with Toast {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
           _projects = jsonList.map((e) => Project.fromJson(e)).toList();
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
 
@@ -44,6 +48,10 @@ class Projects extends ChangeNotifier with Toast {
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
           _almostFullProjects =
               jsonList.map((e) => Project.fromJson(e)).toList();
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
 
@@ -65,6 +73,10 @@ class Projects extends ChangeNotifier with Toast {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             return Project.fromJson(json.decode(jsonUtf8)["data"]);
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
       });
       loading = false;
@@ -86,22 +98,16 @@ class Projects extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
             _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
-          }
-          if (response.statusCode == 401) {
-            print("프로젝트를 검색하려면 로그인이 필요합니다.");
-          }
-          if (response.statusCode == 403) {
-            print("검색 권한이 없습니다.");
-          }
-          if (response.statusCode == 404) {
-            print("검색된 결과가 존재하지 않습니다.");
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
       });
-
-      loading = false;
     } catch (e) {
       print(e);
     } finally {
+      loading = false;
       notifyListeners();
     }
   }
@@ -125,13 +131,14 @@ class Projects extends ChangeNotifier with Toast {
               showToast(success: true, msg: "프로젝트가 생성되었습니다.");
               res = true;
             } else {
-              String err = json.decode(await response.stream.bytesToString())["message"];
-              throw new Exception(err);
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              showToast(success: false, msg: err);
             }
           });
       }
     } catch (e) {
-      showToast(success: false, msg: e.message);
+      print(e);
     } finally {
       loading = false;
     }
@@ -156,12 +163,12 @@ class Projects extends ChangeNotifier with Toast {
             } else {
               final jsonUtf8 = decodeKo(response);
               final String err = json.decode(jsonUtf8)["message"];
-              throw new Exception(err);
+              showToast(success: false, msg: err);
             }
         });
       }
     } catch (e) {
-      showToast(success: false, msg: e.message);
+      print(e);
     } finally {
       loading = false;
     }

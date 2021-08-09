@@ -34,16 +34,6 @@ class Boards extends ChangeNotifier with Toast {
     notifyListeners();
   }
 
-  /* Deprecated code used for boards navigation.
-  void prev() {
-    renderBoardIdx = (renderBoardIdx - 1) % _boards.length;
-  }
-
-  void next() {
-    renderBoardIdx = (renderBoardIdx + 1) % _boards.length;
-  }
-   */
-
   Boards(Authenticate authProvider) {
     _authProvider = authProvider;
     fetchBoardIds();
@@ -126,7 +116,9 @@ class Boards extends ChangeNotifier with Toast {
           final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
           userTask = UserTask.fromJson(jsonData);
         } else {
-          throw new Exception("Task not found.");
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
     } catch (e) {
@@ -150,19 +142,21 @@ class Boards extends ChangeNotifier with Toast {
       ).then((response) async {
         if (response.statusCode == 200) {
           res = true;
-          print("작업현황이 생성되었습니다.");
+          showToast(success: true, msg: "작업현황이 생성되었습니다.");
           await setTasks();
         } else {
-          throw new Exception("작업현황이 생성되지 않았습니다.");
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       notifyListeners();
     }
+
+    return res;
   }
 
   Future updateTaskMsg({int taskMsgId, Map<String, String> body}) async {
@@ -179,19 +173,21 @@ class Boards extends ChangeNotifier with Toast {
       ).then((response) async {
         if (response.statusCode == 200) {
           res = true;
-          print("작업현황이 수정되었습니다.");
           await setTasks();
+          // Too minor to display success toast.. so skip toast
         } else {
-          throw new Exception("작업현황이 수정되지 않았습니다.");
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       notifyListeners();
     }
+
+    return res;
   }
 
   Future fetchThreads(int projectId) async {
@@ -204,16 +200,21 @@ class Boards extends ChangeNotifier with Toast {
           path: "project/$projectId/threads",
           authToken: authToken,
       ).then((response) {
-        final jsonUtf8 = decodeKo(response);
-        final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
-        final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
-        currentBoard.threads = threads;
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
+          currentBoard.threads = threads;
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
+        }
       });
-
-      loading = false;
     } catch (e) {
       print(e);
     } finally {
+      loading = false;
       notifyListeners();
     }
   }
@@ -236,7 +237,9 @@ class Boards extends ChangeNotifier with Toast {
           final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
           comments = [...jsonData["comments"].map((e) => Comment.fromJson(e))];
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
     } catch (e) {
@@ -260,19 +263,20 @@ class Boards extends ChangeNotifier with Toast {
           files: files,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("스레드가 등록되었습니다.");
+          showToast(success: true, msg: "스레드가 등록되었습니다.");
           res = true;
         } else {
-          throw new Exception();
-        }
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);        }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
     }
+
+    return res;
   }
 
   Future editThreadContent({int threadId, Map<String, dynamic> fields}) async {
@@ -288,19 +292,21 @@ class Boards extends ChangeNotifier with Toast {
           body: fields,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("스레드가 수정되었습니다.");
+          showToast(success: true, msg: "스레드가 수정되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
     }
+
+    return res;
   }
 
   Future setNotice(int threadId) async {
@@ -315,19 +321,21 @@ class Boards extends ChangeNotifier with Toast {
           authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("스레드가 고정되었습니다.");
+          showToast(success: true, msg: "스레드가 고정되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       if (res) fetchBoard(currentBoard.id);
     }
+
+    return res;
   }
 
   Future deleteThread(int threadId) async {
@@ -342,19 +350,21 @@ class Boards extends ChangeNotifier with Toast {
           authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("스레드가 삭제되었습니다.");
+          showToast(success: true, msg: "스레드가 삭제되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
     }
+
+    return res;
   }
 
   Future deleteThreadImage({int threadId, int imageId}) async {
@@ -369,19 +379,21 @@ class Boards extends ChangeNotifier with Toast {
         authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("이미지가 삭제되었습니다.");
+          showToast(success: true, msg: "이미지가 삭제되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
     }
+
+    return res;
   }
 
   Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
@@ -398,19 +410,21 @@ class Boards extends ChangeNotifier with Toast {
           files: files,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("답글이 등록되었습니다.");
+          showToast(success: true, msg: "답글이 등록되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
     }
+
+    return res;
   }
 
   Future editCommentContent({int commentId, Map<String, dynamic> fields}) async {
@@ -426,17 +440,19 @@ class Boards extends ChangeNotifier with Toast {
           body: fields,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("답글이 수정되었습니다.");
+          showToast(success: true, msg: "답글이 수정되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     }
+
+    return res;
   }
 
   Future deleteComment(int commentId) async {
@@ -451,19 +467,21 @@ class Boards extends ChangeNotifier with Toast {
           authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("답글이 삭제되었습니다.");
+          showToast(success: true, msg: "답글이 삭제되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     } finally {
       if (res) fetchThreads(currentBoard.id);
     }
+
+    return res;
   }
 
   Future deleteCommentImage({int commentId, int imageId}) async {
@@ -478,17 +496,19 @@ class Boards extends ChangeNotifier with Toast {
         authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          print("이미지가 삭제되었습니다.");
+          showToast(success: true, msg: "이미지가 삭제되었습니다.");
           res = true;
         } else {
-          throw new Exception();
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
-
-      return res;
     } catch (e) {
       print(e);
     }
+
+    return res;
   }
 
   Future acceptDecline({int userId, bool accept}) async {
@@ -504,10 +524,12 @@ class Boards extends ChangeNotifier with Toast {
           queryParams: { "accept": "$accept" }
       ).then((response) {
         if (response.statusCode == 200) {
-          print("${accept ? "승인이" : "반려가"} 완료되었습니다.");
+          showToast(success: true, msg: "${accept ? "승인이" : "반려가"} 완료되었습니다.");
           res = true;
         } else {
-          throw new Exception("오직 프로젝트 리더만 승인/반려가 가능합니다.");
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
     } catch (e) {
@@ -536,11 +558,11 @@ class Boards extends ChangeNotifier with Toast {
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
-          throw new Exception(err);
+          showToast(success: false, msg: err);
         }
       });
     } catch (e) {
-      showToast(success: false, msg: e.message);
+      print(e);
     } finally {
       if (res) fetchBoardIds();
     }
@@ -565,11 +587,11 @@ class Boards extends ChangeNotifier with Toast {
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
-          throw new Exception(err);
+          showToast(success: false, msg: err);
         }
       });
     } catch (e) {
-      showToast(success: false, msg: e.message);
+      print(e);
     } finally {
       if (res) fetchBoardIds();
     }
