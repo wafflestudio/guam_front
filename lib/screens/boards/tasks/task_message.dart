@@ -37,10 +37,12 @@ class _TaskMessageState extends State<TaskMessage> {
 
   @override
   Widget build(BuildContext context) {
-    done = widget.taskMsg.status == "DONE";
+    final boardsProvider = context.read<Boards>();
     final String taskMsgEllipsis = widget.taskMsg.msg.length > 15
         ? widget.taskMsg.msg.replaceRange(15, null, "...")
         : widget.taskMsg.msg;
+
+    done = widget.taskMsg.status == "DONE";
 
     return Container(
       margin: EdgeInsets.only(bottom: 10),
@@ -52,32 +54,34 @@ class _TaskMessageState extends State<TaskMessage> {
           ),
           child: GestureDetector(
             onLongPress: () {
-              if (Platform.isAndroid) {
-                showMaterialModalBottomSheet(
-                    context: context,
-                    builder: (_) => BottomModalContent(
-                        deleteText: "'$taskMsgEllipsis' 삭제",
-                        deleteFunc: () async {
-                          await context.read<Boards>().deleteTaskMsg(taskMsgId: widget.taskMsg.id)
-                              .then((successful) {
-                                if (successful) Navigator.of(context).pop();
-                          });
-                        }
-                    )
-                );
-              } else {
-                showCupertinoModalBottomSheet(
-                    context: context,
-                    builder: (_) => BottomModalContent(
-                        deleteText: "'$taskMsgEllipsis' 삭제",
-                        deleteFunc: () async {
-                          await context.read<Boards>().deleteTaskMsg(taskMsgId: widget.taskMsg.id)
-                              .then((successful) {
-                            if (successful) Navigator.of(context).pop();
-                          });
-                        }
-                    )
-                );
+              if (widget.isMyTaskMsg) {
+                if (Platform.isAndroid) {
+                  showMaterialModalBottomSheet(
+                      context: context,
+                      builder: (_) => BottomModalContent(
+                          deleteText: "'$taskMsgEllipsis' 삭제",
+                          deleteFunc: () async {
+                            await boardsProvider.deleteTaskMsg(taskMsgId: widget.taskMsg.id)
+                                .then((successful) {
+                              if (successful) Navigator.of(context).pop();
+                            });
+                          }
+                      )
+                  );
+                } else {
+                  showCupertinoModalBottomSheet(
+                      context: context,
+                      builder: (_) => BottomModalContent(
+                          deleteText: "'$taskMsgEllipsis' 삭제",
+                          deleteFunc: () async {
+                            await boardsProvider.deleteTaskMsg(taskMsgId: widget.taskMsg.id)
+                                .then((successful) {
+                              if (successful) Navigator.of(context).pop();
+                            });
+                          }
+                      )
+                  );
+                }
               }
             },
             child: Padding(
