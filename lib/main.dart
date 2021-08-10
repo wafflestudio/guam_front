@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'providers/user_auth/authenticate.dart';
 import 'screens/user_auth/auth.dart';
 import 'providers/stacks/stacks.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +32,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primaryColor: themeColor,
           ),
+          builder: BotToastInit(),
+          navigatorObservers: [BotToastNavigatorObserver()],
         )
     );
   }

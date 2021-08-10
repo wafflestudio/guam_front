@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
 import '../../models/profile.dart';
+import '../../mixins/toast.dart';
 
-class Authenticate with ChangeNotifier {
+class Authenticate extends ChangeNotifier with Toast {
   final _kakaoClientId = "367d8cf339e2ba59376ba647c7135dd2";
   final _kakaoJavascriptClientId = "2edf60d1ebf23061d200cfe4a68a235a";
 
@@ -33,14 +34,21 @@ class Authenticate with ChangeNotifier {
         path: "/kakao",
         queryParams: {"token": kakaoAccessToken},
       ).then((response) async {
-        final customToken = jsonDecode(response.body)["customToken"];
-        await auth.signInWithCustomToken(customToken);
-        await getMyProfile();
+        if (response.statusCode == 200) {
+          final customToken = jsonDecode(response.body)["customToken"];
+          await auth.signInWithCustomToken(customToken);
+          await getMyProfile();
+          showToast(success: true, msg: "카카오 로그인 되었습니다.");
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
+        }
       });
-      notifyListeners();
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
+      notifyListeners();
       toggleLoading();
     }
   }
@@ -60,19 +68,20 @@ class Authenticate with ChangeNotifier {
           .get(
             path: "/user/me",
             authToken: authToken,
-        ).then((response) {
+        ).then((response) async {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
             me = Profile.fromJson(jsonData);
-          }
-          if (response.statusCode == 400) {
-            print("Error loading user profile");
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
         });
       }
     } catch (e) {
-      print("Failed fetching my profile: $e");
+      print(e);
     } finally {
       toggleLoading();
     }
@@ -96,34 +105,27 @@ class Authenticate with ChangeNotifier {
           .then((response) async {
             if (response.statusCode == 200) {
               getMyProfile();
-              print("Successfully updated profile.");
+              showToast(success: true, msg: "프로필을 생성하였습니다.");
               res = true;
             } else {
-              String err;
-
-              switch (response.statusCode) {
-                case 201: err = "Successfully created profile."; break;
-                case 401: err = "Unauthorized."; break;
-                case 403: err = "Forbidden to set a profile."; break;
-                case 404: err = "Not Found"; break;
-                case 500: err = "Internal Server Error"; break;
-              }
-
-              throw new Exception(err);
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              showToast(success: false, msg: err);
             }
           });
-
-        return res;
       }
     } catch (e) {
       print(e);
     } finally {
       toggleLoading();
     }
+
+    return res;
   }
 
   Future<void> signOut() async {
     await auth.signOut();
+    showToast(success: true, msg: "로그아웃 되었습니다.");
     notifyListeners();
   }
 

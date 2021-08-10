@@ -5,8 +5,9 @@ import '../user_auth/authenticate.dart';
 import '../../models/project.dart';
 import '../../helpers/http_request.dart';
 import '../../helpers/decode_ko.dart';
+import '../../mixins/toast.dart';
 
-class Projects with ChangeNotifier {
+class Projects extends ChangeNotifier with Toast {
   Authenticate _authProvider;
   List<Project> _projects;
   List<Project> _almostFullProjects;
@@ -34,6 +35,10 @@ class Projects with ChangeNotifier {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
           _projects = jsonList.map((e) => Project.fromJson(e)).toList();
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
 
@@ -43,6 +48,10 @@ class Projects with ChangeNotifier {
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
           _almostFullProjects =
               jsonList.map((e) => Project.fromJson(e)).toList();
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
 
@@ -64,6 +73,10 @@ class Projects with ChangeNotifier {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             return Project.fromJson(json.decode(jsonUtf8)["data"]);
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
       });
       loading = false;
@@ -85,31 +98,26 @@ class Projects with ChangeNotifier {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
             _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
-          }
-          if (response.statusCode == 401) {
-            print("프로젝트를 검색하려면 로그인이 필요합니다.");
-          }
-          if (response.statusCode == 403) {
-            print("검색 권한이 없습니다.");
-          }
-          if (response.statusCode == 404) {
-            print("검색된 결과가 존재하지 않습니다.");
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
       });
-
-      loading = false;
     } catch (e) {
       print(e);
     } finally {
+      loading = false;
       notifyListeners();
     }
   }
 
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
@@ -118,69 +126,53 @@ class Projects with ChangeNotifier {
             authToken: authToken,
             fields: fields,
             files: files,
-          ).then((response) {
+          ).then((response) async {
             if (response.statusCode == 200) {
-              print("프로젝트가 생성되었습니다.");
+              showToast(success: true, msg: "프로젝트가 생성되었습니다.");
               res = true;
             } else {
-              String err;
-
-              switch(response.statusCode) {
-                case 400: err = "불충분한 정보입니다"; break;
-                case 401: err = "프로젝트를 생성하려면 로그인이 필요합니다."; break;
-                case 403: err = "최대 3개의 프로젝트에만 참여할 수 있습니다."; break;
-                case 404: err = "프로젝트 생성에 필요한 정보를 모두 채워야 합니다."; break;
-                case 500: err = "Interner server error"; break;
-              }
-
-              throw new Exception(err);
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              showToast(success: false, msg: err);
             }
           });
       }
-      return res;
     } catch (e) {
       print(e);
     } finally {
       loading = false;
     }
+
+    return res;
   }
 
   Future applyProject(int projectId, dynamic queryParams) async {
+    bool res = false;
+
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
-            .post(path: "/project/$projectId", body: queryParams, authToken: authToken)
-            .then((response) {
-          if (response.statusCode == 200) {
-            print("프로젝트에 신청하였습니다.");
-            res = true;
-          }
-          if (response.statusCode == 400) {
-            print("불충분한 정보입니다");
-          }
-          if (response.statusCode == 401) {
-            print("프로젝트에 신청하려면 로그인이 필요합니다.");
-            // alert message confirm 후 redirect 시키기
-            // context 사용하지 않고 navigation 구현하는 GetX라는 라이브러리도 있네요.
-            // Get.to(MyPage())
-          }
-          if (response.statusCode == 403) {
-            print("지원하진 포지션은 이미 마감되었습니다.");
-          }
-          if (response.statusCode == 404) {
-            print("존재하지 않거나 이미 마감된 프로젝트입니다.");
-          }
+          .post(path: "/project/$projectId", body: queryParams, authToken: authToken)
+          .then((response) async {
+            if (response.statusCode == 200)  {
+              showToast(success: true, msg: "프로젝트에 신청하였습니다.");
+              res = true;
+            } else {
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              showToast(success: false, msg: err);
+            }
         });
       }
-      return res;
     } catch (e) {
       print(e);
     } finally {
       loading = false;
     }
+
+    return res;
   }
 }

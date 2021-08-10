@@ -3,7 +3,7 @@ import '../../screens/projects/projects_app.dart';
 import '../../screens/boards/boards_app.dart';
 import '../../screens/my_page/my_page_app.dart';
 
-class HomeProvider with ChangeNotifier {
+class HomeProvider extends ChangeNotifier {
   int _idx = 0;
 
   final List<Widget> bodyItems = [
