@@ -4,6 +4,8 @@ import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:provider/provider.dart';
 
 import '../../../commons/custom_app_bar.dart';
+import '../../../models/profile.dart';
+import '../../../providers/user_auth/authenticate.dart';
 import '../my_profile/my_profile.dart';
 
 class AnotherProfile extends StatelessWidget {
@@ -14,6 +16,15 @@ class AnotherProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stacksProvider = context.read<Stacks>();
+    final authProvider = context.watch<Authenticate>();
+
+    Future<Profile> getUserProfile(int userId) async {
+      final Profile profile = await authProvider.getUserProfile(userId);
+
+      return profile;
+    }
+
+    // print(getUserProfile(userId));
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -24,6 +35,7 @@ class AnotherProfile extends StatelessWidget {
         stacksProvider: stacksProvider,
         isMyProfile: false,
         userId: userId,
+        // user: getUserProfile(userId),
       ),
     );
   }

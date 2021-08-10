@@ -5,6 +5,7 @@ import 'package:guam_front/screens/my_page/my_profile/my_profile_link.dart';
 import 'package:guam_front/screens/my_page/my_profile/my_profile_top.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/profile.dart';
 import '../../../providers/user_auth/authenticate.dart';
 import '../../user_auth/sign_out.dart';
 
@@ -12,8 +13,14 @@ class MyProfile extends StatelessWidget {
   final Stacks stacksProvider;
   final bool isMyProfile;
   final int userId;
+  final Profile user;
 
-  MyProfile({this.stacksProvider, this.isMyProfile, this.userId});
+  MyProfile({
+    this.stacksProvider,
+    this.isMyProfile,
+    this.userId,
+    this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +32,7 @@ class MyProfile extends StatelessWidget {
       }
     });
     final profile = isMyProfile ? authProvider.me : authProvider.user;
+    // final profile = isMyProfile ? authProvider.me : user;
 
     return SingleChildScrollView(
       child: Column(
