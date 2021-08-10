@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import 'package:transparent_image/transparent_image.dart';
+
 import '../helpers/http_request.dart';
 import '../models/profile.dart';
 
@@ -9,6 +11,7 @@ class ProfileThumbnail extends StatelessWidget {
   final bool showNickname;
   final Color textColor;
   final bool activateRedirectOnTap;
+  final bool activateChangeTask;
   final Function onTap;
 
   ProfileThumbnail({
@@ -17,6 +20,7 @@ class ProfileThumbnail extends StatelessWidget {
     this.showNickname,
     this.textColor,
     this.activateRedirectOnTap,
+    this.activateChangeTask,
     this.onTap,
   });
 
@@ -24,9 +28,9 @@ class ProfileThumbnail extends StatelessWidget {
     final int randInt = profile.id % 5;
     Color res;
 
-    switch(randInt) {
+    switch (randInt) {
       case 0: res = Color.fromRGBO(255, 136, 155, 1); break;
-      case 1: res =  Color.fromRGBO(0, 141, 232, 1); break;
+      case 1: res = Color.fromRGBO(0, 141, 232, 1); break;
       case 2: res = Color.fromRGBO(141, 64, 0, 1); break;
       case 3: res = Color.fromRGBO(255, 223, 82, 1); break;
       case 4: res = Color.fromRGBO(8, 149, 28, 1); break;
@@ -38,7 +42,12 @@ class ProfileThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: activateRedirectOnTap ? onTap : null,
+      onTap: activateRedirectOnTap
+          ? () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => AnotherProfile(profile.id)))
+          : activateChangeTask
+            ? onTap
+            : null,
       child: Container(
         child: Row(
           children: [
@@ -56,20 +65,14 @@ class ProfileThumbnail extends StatelessWidget {
                       image: NetworkImage(HttpRequest().s3BaseAuthority + profile.imageUrl),
                       fit: BoxFit.cover,
                     )
-                  : Icon(
-                      Icons.person,
-                      color: randomColor(),
-                      size: 2 * radius,
-                    )
+                  : Icon(Icons.person, color: randomColor(), size: 2 * radius)
               ),
             ),
-            if (showNickname) Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                profile.nickname,
-                style: TextStyle(color: textColor),
-              ),
-            )
+            if (showNickname)
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(profile.nickname, style: TextStyle(color: textColor)),
+              )
           ],
         ),
       ),

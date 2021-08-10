@@ -83,11 +83,7 @@ class Comment extends StatelessWidget {
                   showNickname: true,
                   radius: 12,
                   activateRedirectOnTap: true,
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              AnotherProfile(comment.creator.id))),
+                  activateChangeTask: false,
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Text(

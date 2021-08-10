@@ -108,11 +108,7 @@ class Thread extends StatelessWidget {
               radius: 12,
               showNickname: false,
               activateRedirectOnTap: true,
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) =>
-                          AnotherProfile(thread.creator.id))),
+              activateChangeTask: false,
             ),
             Expanded(
               child: Padding(

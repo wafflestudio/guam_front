@@ -70,11 +70,7 @@ class TasksState extends State<Tasks> {
                             showNickname: true,
                             textColor: Colors.white,
                             activateRedirectOnTap: true,
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) =>
-                                        AnotherProfile(selectedUserTask.user.id))),
+                            activateChangeTask: false,
                           ),
                           positionChip(position: selectedUserTask.state),
                         ],
@@ -99,7 +95,8 @@ class TasksState extends State<Tasks> {
                               profile: e.user,
                               radius: 10,
                               showNickname: false,
-                              activateRedirectOnTap: true,
+                              activateRedirectOnTap: false,
+                              activateChangeTask: true,
                               onTap: () => selectUser(e.user.id),
                             ),
                           )

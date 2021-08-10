@@ -44,11 +44,7 @@ class Notice extends StatelessWidget {
                       radius: 12,
                       showNickname: false,
                       activateRedirectOnTap: true,
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) =>
-                                  AnotherProfile(notice.creator.id))),
+                      activateChangeTask: false,
                     ),
                     Expanded(
                       child: Padding(

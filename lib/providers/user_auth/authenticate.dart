@@ -13,7 +13,7 @@ class Authenticate with ChangeNotifier {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   Profile me;
-  Profile user;
+  Profile user; //user 없애기
   bool loading = false;
 
   get kakaoClientId => _kakaoClientId;

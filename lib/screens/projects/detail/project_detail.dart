@@ -42,11 +42,7 @@ class DetailProject extends StatelessWidget {
                   profile: project.leader,
                   showNickname: true,
                   activateRedirectOnTap: true,
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              AnotherProfile(project.leader.id))),
+                  activateChangeTask: false,
                 ),
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
