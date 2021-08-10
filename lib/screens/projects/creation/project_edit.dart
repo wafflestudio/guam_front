@@ -7,12 +7,16 @@ import 'package:guam_front/screens/projects/creation/page_three/project_create_p
 import 'package:guam_front/screens/projects/creation/page_two/project_create_page_two.dart';
 import '../../../commons/back.dart';
 import '../../../commons/custom_app_bar.dart';
+import '../../../models/project.dart';
+import '../../../models/project.dart';
 import '../../../models/stack.dart' as StackModel;
+import '../../../providers/boards/boards.dart';
 
 class ProjectEdit extends StatefulWidget {
   final Stacks stacksProvider;
+  final Project projectInfo;
 
-  ProjectEdit({this.stacksProvider});
+  ProjectEdit({this.stacksProvider, this.projectInfo});
 
   @override
   _ProjectEditState createState() => _ProjectEditState();
@@ -55,6 +59,13 @@ class _ProjectEditState extends State<ProjectEdit> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.projectInfo);
+    // Project projectToBeEdited = widget.projectInfo;
+    // print(projectToBeEdited.title);
+    // Map input = {
+    //   'title' = projectToBeEdited.title
+    // };
+
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 수정하기',

@@ -30,10 +30,14 @@ class BoardSetting extends StatelessWidget {
                   deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
                   editFunc: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ProjectEdit(
-                                stacksProvider: stacksProvider)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProjectEdit(
+                          stacksProvider: stacksProvider,
+                          projectInfo: boardsProvider.currentBoard,
+                        )
+                      )
+                    );
                   },
                   deleteFunc: () async {
                     if (boardsProvider
