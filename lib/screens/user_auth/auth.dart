@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import '../../providers/home/home_provider.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../home/home.dart';
+import '../home/splash.dart';
 
 class Auth extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class Auth extends StatelessWidget {
         body: FutureBuilder(
           future: _initFirebaseApp(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.connectionState != ConnectionState.done) { // temp. original: ==
               context.read<Authenticate>(); // Initialization of user authentication
 
               return ChangeNotifierProvider(
@@ -22,9 +23,7 @@ class Auth extends StatelessWidget {
                 child: Home(),
               );
             } else {
-              return Center(
-                child: SvgPicture.asset('assets/logos/guam_logo.svg', color: HexColor('#6200EE')),
-              );
+              return Splash();
             }
           },
         )
