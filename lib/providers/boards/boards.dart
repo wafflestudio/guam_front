@@ -191,6 +191,36 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
+  Future deleteTaskMsg({int taskMsgId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "taskMsg/$taskMsgId",
+          authToken: authToken,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          res = true;
+          await setTasks();
+          showToast(success: true, msg: "작업현황을 삭제했습니다.");
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
+        }
+      });
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+
+    return res;
+  }
+
   Future fetchThreads(int projectId) async {
     try {
       loading = true;
