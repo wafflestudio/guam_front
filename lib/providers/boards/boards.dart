@@ -16,6 +16,8 @@ class Boards extends ChangeNotifier with Toast {
 
   List<Project> _boards;
   int _renderBoardIdx = 0;
+  final int _defaultThreadsPage = 0;
+  final int _defaultThreadsSize = 10;
   bool loading = false;
 
   Map<int, Color> renderBoardColor = {
@@ -26,6 +28,8 @@ class Boards extends ChangeNotifier with Toast {
 
   get boards => _boards;
   get renderBoardIdx => _renderBoardIdx;
+  get defaultThreadsSize => _defaultThreadsSize;
+  get defaultThreadsPage => _defaultThreadsPage;
   get currentBoard => boards[renderBoardIdx];
 
   bool isMe(int userId) => _authProvider.me.id == userId;
@@ -78,7 +82,7 @@ class Boards extends ChangeNotifier with Toast {
       });
 
       await setTasks();
-      await fetchThreads(projectId);
+      await fetchThreads();
 
       loading = false;
     } catch (e) {
@@ -228,8 +232,12 @@ class Boards extends ChangeNotifier with Toast {
 
       await HttpRequest()
         .get(
-          path: "project/$projectId/threads",
+          path: "project/${currentBoard.id}/threads",
           authToken: authToken,
+          queryParams: queryParams ?? {
+            "size": "$defaultThreadsSize",
+            "page": "$defaultThreadsPage",
+          },
       ).then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
@@ -304,7 +312,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -334,7 +342,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -392,7 +400,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -421,7 +429,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -452,7 +460,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -509,7 +517,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
