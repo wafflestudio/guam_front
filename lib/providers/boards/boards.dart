@@ -225,7 +225,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future fetchThreads(int projectId) async {
+  Future fetchThreads({dynamic queryParams}) async {
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
