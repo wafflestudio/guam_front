@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../commons/bottom_modal/bottom_modal_content.dart';
 import '../../providers/boards/boards.dart';
+import '../../providers/projects/projects.dart';
 
 class BoardSetting extends StatelessWidget {
   @override
@@ -30,10 +31,17 @@ class BoardSetting extends StatelessWidget {
                   deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
                   editFunc: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ProjectEdit(
-                                stacksProvider: stacksProvider)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ChangeNotifierProvider.value(
+                          value: boardsProvider,
+                          child: ProjectEdit(
+                            stacksProvider: stacksProvider,
+                            projectInfo: boardsProvider.currentBoard,
+                          ),
+                        )
+                      )
+                    );
                   },
                   deleteFunc: () async {
                     if (boardsProvider
@@ -55,8 +63,24 @@ class BoardSetting extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => ProjectEdit(
-                                  stacksProvider: stacksProvider)));
+                              builder: (_) => ChangeNotifierProvider.value(
+                                value: boardsProvider,
+                                child: ProjectEdit(
+                                  stacksProvider: stacksProvider,
+                                  projectInfo: boardsProvider.currentBoard,
+                                ),
+                              )
+                          )
+                      );
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (_) => ProjectEdit(
+                      //           stacksProvider: stacksProvider,
+                      //           projectInfo: boardsProvider.currentBoard,
+                      //         )
+                      //     )
+                      // );
                     },
                   deleteFunc: () async {
                     if (boardsProvider

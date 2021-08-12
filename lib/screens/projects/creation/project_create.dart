@@ -31,6 +31,7 @@ class _ProjectCreateState extends State<ProjectCreate> {
     'DESIGNER': {'id': 0, 'stack': '', 'headcount': 0},
     'myPosition': '',
     'thumbnail': null,
+    'isThumbnailChanged': false,
   };
 
   Map<String, List<StackModel.Stack>> _filterOptions = {
@@ -77,9 +78,10 @@ class _ProjectCreateState extends State<ProjectCreate> {
                       ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
                     if (_currentPage == 3)
                       ProjectCreatePageThree(
-                          input,
-                          positionSelected,
-                          goToPreviousPage,
+                        input: input,
+                        positionSelected: positionSelected,
+                        goToPreviousPage: goToPreviousPage,
+                        isNewProject: true,
                       ),
                     ProjectStatus(totalPage: 3, currentPage: _currentPage)
                   ])),

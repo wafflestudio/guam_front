@@ -16,21 +16,11 @@ class _ProjectCreateDueState extends State<ProjectCreateDue> {
   void saveDue(idx) {
     setState(() {
       switch (idx) {
-        case 0:
-          widget.input["due"] = 'ONE';
-          break;
-        case 1:
-          widget.input["due"] = 'THREE';
-          break;
-        case 2:
-          widget.input["due"] = 'SIX';
-          break;
-        case 3:
-          widget.input["due"] = 'MORE';
-          break;
-        default:
-          widget.input["due"] = 'UNDEFINED';
-          break;
+        case 0: widget.input["due"] = 'ONE'; break;
+        case 1: widget.input["due"] = 'THREE'; break;
+        case 2: widget.input["due"] = 'SIX'; break;
+        case 3: widget.input["due"] = 'MORE'; break;
+        default: widget.input["due"] = 'UNDEFINED'; break;
       }
     });
   }
@@ -38,17 +28,18 @@ class _ProjectCreateDueState extends State<ProjectCreateDue> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                padding: EdgeInsets.only(left: 25, bottom: 10),
-                child: Text('진행 기간',
-                    style: TextStyle(fontSize: 18, color: Colors.white))),
-            selectDue()
-          ],
-        ));
+      padding: EdgeInsets.only(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: 25, bottom: 10),
+            child: Text('진행 기간',
+              style: TextStyle(fontSize: 18, color: Colors.white))),
+          selectDue(),
+        ],
+      )
+    );
   }
 
   Widget selectDue() {
@@ -61,8 +52,8 @@ class _ProjectCreateDueState extends State<ProjectCreateDue> {
         borderRadius: BorderRadius.circular(10),
         borderWidth: 0.3,
         constraints: BoxConstraints(
-            minWidth: (MediaQuery.of(context).size.width * 0.85) / 4,
-            minHeight: 40),
+          minWidth: (MediaQuery.of(context).size.width * 0.85) / 4,
+          minHeight: 40),
         isSelected: widget.dueSelected,
         onPressed: (idx) {
           setState(() {
