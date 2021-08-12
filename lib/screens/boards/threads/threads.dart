@@ -60,16 +60,23 @@ class ThreadsState extends State<Threads> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              height: 464, // temp: threads container 500 - textfield 36
-                              child: ListView.builder(
-                                itemBuilder: (context, idx) => Thread(
-                                  widget.threads[idx],
-                                  switchToEditMode: switchToEditMode,
-                                  isEditTarget: editTargetThread == widget.threads[idx]
+                              height: 480, // temp
+                              child: RefreshIndicator(
+                                child: ListView.builder(
+                                  itemBuilder: (context, idx) => Thread(
+                                      widget.threads[idx],
+                                      switchToEditMode: switchToEditMode,
+                                      isEditTarget: editTargetThread == widget.threads[idx]
+                                  ),
+                                  itemCount: widget.threads.length,
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
                                 ),
-                                itemCount: widget.threads.length,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                onRefresh: () async {
+                                  await boardsProvider.fetchThreads(queryParams: {
+                                    "size": "${widget.threads.length + boardsProvider.defaultThreadsSize}"
+                                  });
+                                },
                               ),
                             ),
                             CommonTextField(

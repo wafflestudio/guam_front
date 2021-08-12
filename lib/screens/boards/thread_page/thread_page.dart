@@ -71,9 +71,17 @@ class _ThreadPageState extends State<ThreadPage> {
         });
 
     Future deleteComment(int commentId) async {
-      return await boardsProvider.deleteComment(commentId).then((successful) {
-        if (successful) fetchFullThread();
-        return successful;
+      return await boardsProvider.deleteComment(commentId)
+        .then((successful) async {
+          if (successful) {
+            bool isDeletedThread = widget.thread.content == null;
+            bool wasLastComment = (await comments).length == 1;
+
+            // Corner case: Deleting last comment on deleted thread.
+            if (isDeletedThread && wasLastComment) Navigator.of(context).pop();
+            else fetchFullThread();
+          }
+          return successful;
       });
     }
 
