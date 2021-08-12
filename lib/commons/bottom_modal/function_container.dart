@@ -4,16 +4,53 @@ class FunctionContainer extends StatelessWidget {
   final Function customFunction;
   final IconData iconData;
   final String text;
+  final String detailText;
   final Color iconColor;
   final Color textColor;
   final Color defaultColor = Colors.black;
+  final bool toBeConfirmed;
 
-  FunctionContainer({this.customFunction, this.iconData, this.text, this.iconColor, this.textColor});
+  FunctionContainer({this.customFunction, this.iconData, this.text,this.detailText, this.iconColor, this.textColor, this.toBeConfirmed});
 
   @override
   Widget build(BuildContext context) {
+
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("$text"),
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Text("$detailText"),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('확인'),
+                onPressed: () {
+                  customFunction();
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('취소'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return InkWell(
-      onTap: customFunction,
+      onTap: toBeConfirmed ? _showMyDialog : customFunction,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Row(

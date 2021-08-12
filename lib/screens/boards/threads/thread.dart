@@ -62,6 +62,7 @@ class Thread extends StatelessWidget {
                   setText: "메시지 고정",
                   editText: "메시지 편집",
                   deleteText: "메시지 삭제",
+                  deleteDetailText: "해당 메시지를 정말 삭제하시겠습니까?",
                   setFunc: setNotice,
                   editFunc: () {
                     switchToEditMode(editTargetThread: thread);
@@ -77,6 +78,7 @@ class Thread extends StatelessWidget {
                   setText: "메시지 고정",
                   editText: "메시지 편집",
                   deleteText: "메시지 삭제",
+                  deleteDetailText: "해당 메시지를 정말 삭제하시겠습니까?",
                   setFunc: setNotice,
                   editFunc: () {
                     switchToEditMode(editTargetThread: thread);

@@ -63,6 +63,7 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
                 context: context,
                 builder: (_) => BottomModalContent(
                   deleteText: "이미지 삭제",
+                  deleteDetailText: "해당 이미지를 정말 삭제하시겠습니까?",
                   deleteFunc: () async {
                     await widget.deleteFunc(imageId: thumbnailsState[currPage].id)
                       .then((successful) {
@@ -79,6 +80,7 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
                 context: context,
                 builder: (_) => BottomModalContent(
                     deleteText: "이미지 삭제",
+                    deleteDetailText: "해당 이미지를 정말 삭제하시겠습니까?",
                     deleteFunc: () async {
                       await widget.deleteFunc(imageId: thumbnailsState[currPage].id)
                         .then((successful) {

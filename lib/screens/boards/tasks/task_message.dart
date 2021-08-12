@@ -60,6 +60,7 @@ class _TaskMessageState extends State<TaskMessage> {
                       context: context,
                       builder: (_) => BottomModalContent(
                           deleteText: "'$taskMsgEllipsis' 삭제",
+                          deleteDetailText: "해당 작업 현황을 정말 삭제하시겠습니까?",
                           deleteFunc: () async {
                             await boardsProvider.deleteTaskMsg(taskMsgId: widget.taskMsg.id)
                                 .then((successful) {
@@ -73,6 +74,7 @@ class _TaskMessageState extends State<TaskMessage> {
                       context: context,
                       builder: (_) => BottomModalContent(
                           deleteText: "'$taskMsgEllipsis' 삭제",
+                          deleteDetailText: "해당 작업 현황을 정말 삭제하시겠습니까?",
                           deleteFunc: () async {
                             await boardsProvider.deleteTaskMsg(taskMsgId: widget.taskMsg.id)
                                 .then((successful) {

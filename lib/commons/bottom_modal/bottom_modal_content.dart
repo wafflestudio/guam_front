@@ -5,12 +5,12 @@ class BottomModalContent extends StatelessWidget {
   final String setText;
   final String editText;
   final String deleteText;
+  final String deleteDetailText;
   final Function setFunc;
   final Function editFunc;
   final Function deleteFunc;
 
-  BottomModalContent({this.setText, this.editText, this.deleteText,
-    this.setFunc, this.editFunc, this.deleteFunc});
+  BottomModalContent({this.setText, this.editText, this.deleteText, this.deleteDetailText, this.setFunc, this.editFunc, this.deleteFunc});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class BottomModalContent extends StatelessWidget {
             width: double.infinity,
             child: Column(
               children: [
-                if (setFunc != null) FunctionContainer(iconData: Icons.push_pin_outlined, text: setText, textColor: Colors.white, customFunction: setFunc),
-                if (editFunc != null) FunctionContainer(iconData: Icons.edit_outlined, text: editText, textColor: Colors.white, customFunction: editFunc),
-                if (deleteFunc != null) FunctionContainer(iconData: Icons.delete_outlined, text: deleteText, iconColor: Colors.red, textColor: Colors.red, customFunction: deleteFunc),
+                if (setFunc != null) FunctionContainer(iconData: Icons.push_pin_outlined, text: setText, textColor: Colors.white, customFunction: setFunc, toBeConfirmed: false),
+                if (editFunc != null) FunctionContainer(iconData: Icons.edit_outlined, text: editText, textColor: Colors.white, customFunction: editFunc, toBeConfirmed: false),
+                if (deleteFunc != null) FunctionContainer(iconData: Icons.delete_outlined, text: deleteText, detailText: deleteDetailText, iconColor: Colors.red, textColor: Colors.red, customFunction: deleteFunc, toBeConfirmed: true),
               ],
             ),
           ),
