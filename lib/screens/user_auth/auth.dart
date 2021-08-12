@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../../providers/home/home_provider.dart';
@@ -13,9 +11,12 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder(
-          future: _initFirebaseApp(),
+          future: Future.wait([
+            Future.delayed(Duration(milliseconds: 2000), () => true),
+            _initFirebaseApp(),
+          ]),
           builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) { // temp. original: ==
+            if (snapshot.connectionState == ConnectionState.done && snapshot.data[0]) {
               context.read<Authenticate>(); // Initialization of user authentication
 
               return ChangeNotifierProvider(
