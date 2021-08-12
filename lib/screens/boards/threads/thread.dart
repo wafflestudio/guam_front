@@ -59,6 +59,7 @@ class Thread extends StatelessWidget {
             showMaterialModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                  requireConfirm: true,
                   setText: "메시지 고정",
                   editText: "메시지 편집",
                   deleteText: "메시지 삭제",
@@ -75,6 +76,7 @@ class Thread extends StatelessWidget {
             showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                  requireConfirm: true,
                   setText: "메시지 고정",
                   editText: "메시지 편집",
                   deleteText: "메시지 삭제",

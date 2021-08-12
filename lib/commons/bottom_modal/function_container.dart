@@ -8,9 +8,9 @@ class FunctionContainer extends StatelessWidget {
   final Color iconColor;
   final Color textColor;
   final Color defaultColor = Colors.black;
-  final bool toBeConfirmed;
+  final bool requireConfirm;
 
-  FunctionContainer({this.customFunction, this.iconData, this.text,this.detailText, this.iconColor, this.textColor, this.toBeConfirmed});
+  FunctionContainer({this.customFunction, this.iconData, this.text,this.detailText, this.iconColor, this.textColor, this.requireConfirm = false});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class FunctionContainer extends StatelessWidget {
     }
 
     return InkWell(
-      onTap: toBeConfirmed ? _showMyDialog : customFunction,
+      onTap: requireConfirm ? _showMyDialog : customFunction,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Row(

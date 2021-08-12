@@ -30,6 +30,7 @@ class Comment extends StatelessWidget {
             showMaterialModalBottomSheet(
               context: context,
               builder: (_) => BottomModalContent(
+                  requireConfirm: true,
                   editText: "메시지 편집",
                   deleteText: "메시지 삭제",
                   deleteDetailText: "해당 메시지를 정말 삭제하시겠습니까?",
@@ -46,6 +47,7 @@ class Comment extends StatelessWidget {
             showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                    requireConfirm: true,
                     editText: "메시지 편집",
                     deleteText: "메시지 삭제",
                     deleteDetailText: "해당 메시지를 정말 삭제하시겠습니까?",

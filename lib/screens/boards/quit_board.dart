@@ -21,6 +21,7 @@ class QuitBoard extends StatelessWidget {
               showMaterialModalBottomSheet(
                   context: context,
                   builder: (_) => BottomModalContent(
+                    requireConfirm: true,
                     deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
                     deleteDetailText: "현재 참여 중인 프로젝트에서 정말 나가시겠습니까?",
                     deleteFunc: () async {
@@ -37,6 +38,7 @@ class QuitBoard extends StatelessWidget {
               showCupertinoModalBottomSheet(
                   context: context,
                   builder: (_) => BottomModalContent(
+                    requireConfirm: true,
                     deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
                     deleteDetailText: "현재 참여 중인 프로젝트에서 정말 나가시겠습니까?",
                     deleteFunc: () async {
