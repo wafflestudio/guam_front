@@ -86,6 +86,13 @@ class _ProjectEditState extends State<ProjectEdit> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.projectInfo);
+    // Project projectToBeEdited = widget.projectInfo;
+    // print(projectToBeEdited.title);
+    // Map input = {
+    //   'title' = projectToBeEdited.title
+    // };
+
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 수정하기',
