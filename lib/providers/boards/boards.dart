@@ -16,6 +16,8 @@ class Boards extends ChangeNotifier with Toast {
 
   List<Project> _boards;
   int _renderBoardIdx = 0;
+  final int _defaultThreadsPage = 0;
+  final int _defaultThreadsSize = 10;
   bool loading = false;
 
   Map<int, Color> renderBoardColor = {
@@ -26,6 +28,8 @@ class Boards extends ChangeNotifier with Toast {
 
   get boards => _boards;
   get renderBoardIdx => _renderBoardIdx;
+  get defaultThreadsSize => _defaultThreadsSize;
+  get defaultThreadsPage => _defaultThreadsPage;
   get currentBoard => boards[renderBoardIdx];
 
   bool isMe(int userId) => _authProvider.me.id == userId;
@@ -78,7 +82,7 @@ class Boards extends ChangeNotifier with Toast {
       });
 
       await setTasks();
-      await fetchThreads(projectId);
+      await fetchThreads();
 
       loading = false;
     } catch (e) {
@@ -224,15 +228,49 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future fetchThreads(int projectId) async {
+  Future deleteTaskMsg({int taskMsgId}) async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+        .delete(
+          path: "taskMsg/$taskMsgId",
+          authToken: authToken,
+      ).then((response) async {
+        if (response.statusCode == 200) {
+          res = true;
+          await setTasks();
+          showToast(success: true, msg: "작업현황을 삭제했습니다.");
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
+        }
+      });
+    } catch (e) {
+      print(e);
+    } finally {
+      notifyListeners();
+    }
+
+    return res;
+  }
+
+  Future fetchThreads({dynamic queryParams}) async {
     try {
       loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
         .get(
-          path: "project/$projectId/threads",
+          path: "project/${currentBoard.id}/threads",
           authToken: authToken,
+          queryParams: queryParams ?? {
+            "size": "$defaultThreadsSize",
+            "page": "$defaultThreadsPage",
+          },
       ).then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
@@ -307,7 +345,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -337,7 +375,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -395,7 +433,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -424,7 +462,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -455,7 +493,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
@@ -512,7 +550,7 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      if (res) fetchThreads(currentBoard.id);
+      if (res) fetchThreads();
     }
 
     return res;
