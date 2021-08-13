@@ -15,7 +15,7 @@ class ModalReport extends StatelessWidget with Toast {
       const String password = "guam2021!";
       const String guamEmail = "guam@wafflestudio.com";
 
-      final smtpServer = gmail(userEmail, password);
+      final smtpServer = gmail(guamEmail, password);
       final message = Message()
         ..from = Address(userEmail, user)
         ..recipients.add(guamEmail)
