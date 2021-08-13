@@ -131,7 +131,6 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future<Profile> getUserProfile(int userId) async {
     Profile user;
-    toggleLoading();
 
     try {
       await HttpRequest()
@@ -152,9 +151,7 @@ class Authenticate extends ChangeNotifier with Toast {
       return user;
     } catch (e) {
       print(e);
-      return null; //
-    } finally {
-      toggleLoading();
+      return null;
     }
   }
 

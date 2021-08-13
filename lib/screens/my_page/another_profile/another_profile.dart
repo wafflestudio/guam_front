@@ -28,27 +28,26 @@ class AnotherProfileState extends State<AnotherProfile> {
     super.initState();
     user = context.read<Authenticate>().getUserProfile(widget.userId);
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: user,
       builder: (context, snapshot) {
-        if (!context.read<Authenticate>().loading && snapshot.hasData) {
+        if (snapshot.hasData) {
           return Column(
             children: [
               Stack(
-                  children: [
-                    MyProfileLink(snapshot.data),
-                    MyProfileTop(snapshot.data),
-                  ]
+                children: [
+                  MyProfileLink(snapshot.data),
+                  MyProfileTop(snapshot.data),
+                ]
               ),
               MyProfileBottom(snapshot.data, widget.stacksProvider),
             ],
           );
         } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return CircularProgressIndicator();
         }
       },
     );
