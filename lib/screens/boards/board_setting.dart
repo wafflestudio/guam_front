@@ -62,23 +62,23 @@ class BoardSetting extends StatelessWidget {
                 builder: (_) => BottomModalContent(
                   editText: "'${boardsProvider.currentBoard.title}' 수정하기",
                   deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
-                    editFunc: boardsProvider
-                        .isMe(boardsProvider.currentBoard.leader.id)
-                        ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ChangeNotifierProvider.value(
-                                value: boardsProvider,
-                                child: ProjectEdit(
-                                  stacksProvider: stacksProvider,
-                                  projectInfo: boardsProvider.currentBoard,
-                                ),
-                              )
+                  editFunc: boardsProvider
+                      .isMe(boardsProvider.currentBoard.leader.id)
+                      ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider.value(
+                              value: boardsProvider,
+                              child: ProjectEdit(
+                                stacksProvider: stacksProvider,
+                                projectInfo: boardsProvider.currentBoard,
+                              ),
                             )
-                          );
-                        }
-                        : null,
+                          )
+                        );
+                      }
+                      : null,
                   deleteFunc: () async {
                     if (boardsProvider
                         .isMe(boardsProvider.currentBoard.leader.id)) {

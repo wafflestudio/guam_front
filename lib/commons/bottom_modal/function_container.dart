@@ -48,7 +48,7 @@ class FunctionContainer extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                 child: Text(
-                  '확인',
+                  "확인",
                   style: TextStyle(
                     fontSize: 17, color: Color.fromRGBO(85, 88, 255, 1), fontWeight: FontWeight.bold)),
                 onPressed: () {
@@ -58,7 +58,7 @@ class FunctionContainer extends StatelessWidget {
               ),
               TextButton(
                 child: Text(
-                  '취소',
+                  "취소",
                   style: TextStyle(
                     fontSize: 17, color: Colors.red, fontWeight: FontWeight.bold)),
                 onPressed: () {
