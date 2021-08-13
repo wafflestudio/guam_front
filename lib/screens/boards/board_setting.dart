@@ -27,8 +27,10 @@ class BoardSetting extends StatelessWidget {
               showMaterialModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                  requireConfirm: true,
                   editText: "'${boardsProvider.currentBoard.title}' 수정하기",
                   deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
+                  deleteDetailText: "프로젝트를 나가시겠습니까?",
                   editFunc: boardsProvider
                       .isMe(boardsProvider.currentBoard.leader.id)
                       ? () {
@@ -60,8 +62,10 @@ class BoardSetting extends StatelessWidget {
               showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                  requireConfirm: true,
                   editText: "'${boardsProvider.currentBoard.title}' 수정하기",
                   deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
+                  deleteDetailText: "프로젝트를 나가시겠습니까?",
                   editFunc: boardsProvider
                       .isMe(boardsProvider.currentBoard.leader.id)
                       ? () {
