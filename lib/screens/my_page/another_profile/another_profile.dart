@@ -18,35 +18,29 @@ class AnotherProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<Authenticate>();
+    final authProvider = context.read<Authenticate>();
 
-    Future.delayed(Duration.zero, () {
-      authProvider.getUserProfile(userId);
-    });
-    final profile = authProvider.user;
-    // final profile = isMyProfile ? authProvider.me : user;
+    print("23: ${authProvider.me.nickname}");
 
-    return SingleChildScrollView(
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                colorFilter: ColorFilter.mode(
-                    Colors.white.withOpacity(0.7), BlendMode.dstATop),
-                image: AssetImage("assets/backgrounds/profile-bg-1.png"),
-                fit: BoxFit.cover,
-              )),
-          child: Column(
+    return FutureBuilder(
+      future: authProvider.getUserProfile(userId),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
             children: [
               Stack(
-                  children: [
-                    MyProfileLink(profile),
-                    MyProfileTop(profile),
-                  ]
+                children: [
+                  MyProfileLink(snapshot.data),
+                  MyProfileTop(snapshot.data),
+                ]
               ),
-              MyProfileBottom(profile, stacksProvider),
+              MyProfileBottom(snapshot.data, stacksProvider),
             ],
-          ),
-        )
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }

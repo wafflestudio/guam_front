@@ -20,7 +20,24 @@ class AnotherProfileApp extends StatelessWidget {
         title: "프로필",
         leading: Back(),
       ),
-      body: AnotherProfile(stacksProvider: stacksProvider, userId: userId),
+      body: SingleChildScrollView(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.7),
+                BlendMode.dstATop
+              ),
+              image: AssetImage("assets/backgrounds/profile-bg-1.png"),
+              fit: BoxFit.cover,
+            )
+          ),
+          child: AnotherProfile(
+            stacksProvider: stacksProvider,
+            userId: userId,
+          )
+        )
+      )
     );
   }
 }

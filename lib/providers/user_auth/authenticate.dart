@@ -14,7 +14,6 @@ class Authenticate extends ChangeNotifier with Toast {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   Profile me;
-  Profile user; //user 없애기
   bool loading = false;
 
   get kakaoClientId => _kakaoClientId;
@@ -131,29 +130,28 @@ class Authenticate extends ChangeNotifier with Toast {
   }
 
   Future getUserProfile(int userId) async {
+    Profile user;
+    toggleLoading();
+
     try {
-      toggleLoading();
       await HttpRequest()
-          .get(
-        path: "/user/$userId",
+        .get(
+          path: "/user/$userId",
       ).then((response) {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
           user = Profile.fromJson(jsonData);
+
+          print("144 user nickname: ${user.nickname}");
         } else{
-          String err;
-
-          switch(response.statusCode) {
-            case 401: err = "Unauthorized"; break;
-            case 403: err = "Forbidden"; break;
-            case 404: err = "Not Found"; break;
-            case 500: err = "Internal server error"; break;
-          }
-
-          throw new Exception(err);
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
+
+      return user;
     } catch (e) {
       print("Failed fetching the user profile: $e");
     } finally {
