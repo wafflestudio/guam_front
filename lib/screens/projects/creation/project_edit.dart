@@ -66,15 +66,15 @@ class _ProjectEditState extends State<ProjectEdit> {
         'stack': projectToBeEdited.techStacks[0].name,
         'headcount': projectToBeEdited.backHeadCount
       },
-      'FRONTEND': {
+      'DESIGNER': {
         'id': projectToBeEdited.techStacks[1].id,
         'stack': projectToBeEdited.techStacks[1].name,
-        'headcount': projectToBeEdited.frontHeadCount
+        'headcount': projectToBeEdited.designHeadCount
       },
-      'DESIGNER': {
+      'FRONTEND': {
         'id': projectToBeEdited.techStacks[2].id,
         'stack': projectToBeEdited.techStacks[2].name,
-        'headcount': projectToBeEdited.designHeadCount
+        'headcount': projectToBeEdited.frontHeadCount
       },
       'thumbnail': projectToBeEdited.thumbnail,
       'isThumbnailChanged': false,
@@ -86,13 +86,6 @@ class _ProjectEditState extends State<ProjectEdit> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.projectInfo);
-    // Project projectToBeEdited = widget.projectInfo;
-    // print(projectToBeEdited.title);
-    // Map input = {
-    //   'title' = projectToBeEdited.title
-    // };
-
     return Scaffold(
         appBar: CustomAppBar(
           title: '프로젝트 수정하기',

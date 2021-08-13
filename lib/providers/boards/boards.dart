@@ -99,6 +99,8 @@ class Boards extends ChangeNotifier with Toast {
       bool res = false;
 
       if (authToken.isNotEmpty) {
+        print(fields);
+        print(files);
         await HttpRequest()
           .postMultipart(
             path: "/project/$projectId/edit",
