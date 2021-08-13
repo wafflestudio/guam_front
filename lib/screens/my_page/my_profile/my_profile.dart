@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../providers/user_auth/authenticate.dart';
 import '../../user_auth/sign_out.dart';
+import 'button_report.dart';
 
 class MyProfile extends StatelessWidget {
   final Stacks stacksProvider;
@@ -18,34 +19,37 @@ class MyProfile extends StatelessWidget {
     final authProvider = context.watch<Authenticate>();
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-                image: DecorationImage(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            image: DecorationImage(
               colorFilter: ColorFilter.mode(
                   Colors.white.withOpacity(0.7), BlendMode.dstATop),
               image: AssetImage("assets/backgrounds/profile-bg-1.png"),
               fit: BoxFit.cover,
             )),
-            child: Column(
+        child: Column(
+          children: [
+            Stack(
               children: [
-                Stack(children: [
-                  MyProfileLink(authProvider.me),
-                  MyProfileTop(authProvider.me),
-                ]),
-                MyProfileBottom(authProvider.me, stacksProvider),
-              ],
+                MyProfileLink(authProvider.me),
+                MyProfileTop(authProvider.me),
+              ]
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 30),
-            child: Center(
-              child: SignOut(),
-            ),
-          )
-        ],
-      ),
+            MyProfileBottom(authProvider.me, stacksProvider),
+            Container(
+              width: double.infinity,
+              color: Colors.white,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  ButtonReport(),
+                  SignOut()
+                ],
+              )
+            )
+          ],
+        ),
+      )
     );
   }
 }
