@@ -72,7 +72,7 @@ class _ModalReportState extends State with Toast {
               padding: EdgeInsets.fromLTRB(10, 20, 10, 40),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color.fromRGBO(203, 203, 203, 0.5),
+                color: Color.fromRGBO(54, 54, 54, 1),
               ),
               child: Stack(
                 alignment: Alignment.center,
@@ -85,7 +85,7 @@ class _ModalReportState extends State with Toast {
                           "Ask Guam anything 🏝️",
                           style: TextStyle(
                             fontSize: 12,
-                            color: Color.fromRGBO(129, 129, 129, 1),
+                            color: Color.fromRGBO(203, 203, 203, 1),
                           ),
                         ),
                         margin: EdgeInsets.only(bottom: 10),
@@ -95,7 +95,7 @@ class _ModalReportState extends State with Toast {
                           "궁금하신 사항, 버그 등을 보내주세요!\n문의주신 내용은 Guam 개발팀에게 전달됩니다.",
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         ),
                         margin: EdgeInsets.only(bottom: 10),
@@ -106,7 +106,7 @@ class _ModalReportState extends State with Toast {
                               "· '메일 계정' 을 기입해 주시면 해당 메일로 회신드리겠습니다.",
                           style: TextStyle(
                             fontSize: 12,
-                            color: Color.fromRGBO(129, 129, 129, 1),
+                            color: Color.fromRGBO(203, 203, 203, 1),
                           ),
                         ),
                         margin: EdgeInsets.only(bottom: 20),
