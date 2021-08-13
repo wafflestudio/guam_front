@@ -149,41 +149,6 @@ class Projects extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future editProject({int projectId, Map<String, dynamic> fields, dynamic files}) async {
-    bool res = false;
-
-    try {
-      loading = true;
-      String authToken = await _authProvider.getFirebaseIdToken();
-
-      if (authToken.isNotEmpty) {
-        await HttpRequest()
-            .postMultipart(
-          path: "/project/$projectId/edit",
-          authToken: authToken,
-          fields: fields,
-          files: files,
-        ).then((response) async {
-          if (response.statusCode == 200) {
-            showToast(success: true, msg: "프로젝트 정보가 수정되었습니다.");
-            res = true;
-          } else {
-            final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
-            showToast(success: false, msg: err);
-          }
-        });
-      }
-    } catch (e) {
-      print(e);
-    } finally {
-      loading = false;
-    }
-
-    return res;
-  }
-
-
   Future applyProject(int projectId, dynamic queryParams) async {
     bool res = false;
 
