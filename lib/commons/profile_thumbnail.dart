@@ -44,7 +44,7 @@ class ProfileThumbnail extends StatelessWidget {
     return InkWell(
       onTap: activateRedirectOnTap
           ? () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => AnotherProfile(profile.id)))
+              MaterialPageRoute(builder: (_) => AnotherProfileApp(profile.id)))
           : activateChangeTask
             ? onTap
             : null,
