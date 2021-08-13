@@ -7,37 +7,60 @@ import '../../../mixins/toast.dart';
 import '../../../providers/user_auth/authenticate.dart';
 import '../../../commons/common_text_field.dart';
 
-class ModalReport extends StatelessWidget with Toast {
+class ModalReport extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _ModalReportState();
+}
+
+class _ModalReportState extends State with Toast {
+  final String _commonReportEmail = "guam.user.report@gmail.com";
+  final String _commonReportEmailPassword = "guam2021!";
+  final String _guamEmail = "guam@wafflestudio.com";
+  bool sendingInProgress = false;
+
+  void toggleSendingInProgress() {
+    setState(() {
+      sendingInProgress = !sendingInProgress;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final String _user = "User Id.${context.read<Authenticate>().me.id}";
+
     Future<void> sendEmail({Map<String, String> fields, List<File> files}) async {
-      const String userEmail = "guam.user.report@gmail.com";
-      final String user = "User Id.${context.read<Authenticate>().me.id}";
-      const String password = "guam2021!";
-      const String guamEmail = "guam@wafflestudio.com";
-
-      final smtpServer = gmail(userEmail, password);
-      final message = Message()
-        ..from = Address(userEmail, user)
-        ..recipients.add(guamEmail)
-        ..text = fields["content"]
-        ..attachments = [
-          ...files.map((file) => FileAttachment(file))
-        ];
-
-      bool res = false;
+      toggleSendingInProgress();
 
       try {
+        if (fields["content"] == "" && files.isEmpty)
+          throw new FormatException("빈 메일을 보낼 수 없습니다.");
+
+        final smtpServer = gmail(_commonReportEmail, _commonReportEmailPassword);
+        final message = Message()
+          ..from = Address(_commonReportEmail, _user)
+          ..recipients.add(_guamEmail)
+          ..text = fields["content"]
+          ..attachments = [
+            ...files.map((file) => FileAttachment(file))
+          ];
+
         await send(message, smtpServer).then((report) {
           showToast(success: true, msg: "메일을 보냈습니다.");
-          res = true;
           Navigator.of(context).pop();
         });
-      } on MailerException catch (e) {
-        showToast(success: false, msg: "메일 전송을 실패했습니다.");
-      }
 
-      return res;
+        return true; // to CommonTextField
+      } catch (e) {
+        String msg;
+
+        if (e is MailerException) msg = "메일 전송을 실패했습니다.";
+        else if (e is FormatException) msg = e.message;
+        showToast(success: false, msg: msg);
+
+        return false;// to CommonTextField
+      } finally {
+        toggleSendingInProgress();
+      }
     }
 
     return Wrap(
@@ -51,43 +74,49 @@ class ModalReport extends StatelessWidget with Toast {
               decoration: BoxDecoration(
                 color: Color.fromRGBO(203, 203, 203, 0.5),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  Container(
-                    child: Text(
-                      "Ask Guam anything 🏝️",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color.fromRGBO(129, 129, 129, 1),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Text(
+                          "Ask Guam anything 🏝️",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color.fromRGBO(129, 129, 129, 1),
+                          ),
+                        ),
+                        margin: EdgeInsets.only(bottom: 10),
                       ),
-                    ),
-                    margin: EdgeInsets.only(bottom: 10),
-                  ),
-                  Container(
-                    child: Text(
-                      "궁금하신 사항, 버그 등을 보내주세요!\n문의주신 내용은 Guam 메일로 전송됩니다.",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
+                      Container(
+                        child: Text(
+                          "궁금하신 사항, 버그 등을 보내주세요!\n문의주신 내용은 Guam 개발팀에게 전달됩니다.",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                        margin: EdgeInsets.only(bottom: 10),
                       ),
-                    ),
-                    margin: EdgeInsets.only(bottom: 10),
-                  ),
-                  Container(
-                    child: Text(
-                      "· '이미지 파일' 은 문제 확인 및 해결에 큰 도움이 됩니다.\n"
-                          "· '메일 계정' 을 기입해 주시면 해당 메일로 회신드리겠습니다.",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color.fromRGBO(129, 129, 129, 1),
+                      Container(
+                        child: Text(
+                          "· '이미지 파일' 은 문제 확인 및 해결에 큰 도움이 됩니다.\n"
+                              "· '메일 계정' 을 기입해 주시면 해당 메일로 회신드리겠습니다.",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color.fromRGBO(129, 129, 129, 1),
+                          ),
+                        ),
+                        margin: EdgeInsets.only(bottom: 20),
                       ),
-                    ),
-                    margin: EdgeInsets.only(bottom: 30),
+                      CommonTextField(onTap: sendEmail)
+                    ],
                   ),
-                  CommonTextField(onTap: sendEmail)
+                  if (sendingInProgress) CircularProgressIndicator(),
                 ],
-              ),
+              )
             ),
           ),
         )
