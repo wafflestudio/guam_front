@@ -52,7 +52,6 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
         if (successful) {
           Navigator.pop(context); // project edit 페이지 나가
           context.read<Boards>().fetchBoard(widget.input['id']);
-          Navigator.pop(context); // board setting bottomModal 나가기
           return successful;
         }
       });
@@ -66,15 +65,15 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       ? Container(
           padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
           child: InkWell(
-            onTap: () {
+            onTap: () async {
               if (widget.btnEnabled)
-                createOrUpdateProject(
-                  files: widget.input['thumbnail'] != null
-                    ? widget.input['isThumbnailChanged']
-                      ? [File(widget.input['thumbnail'].path)]
+                await createOrUpdateProject(
+                  files: (widget.input['thumbnail'] != null) && widget.input['isThumbnailChanged']
+                      ? [File(widget.input["thumbnail"].path)]
                       : null
-                    : null
-              );
+                ).then((value) {
+                  Navigator.of(context).pop(); // pops board_setting modal
+                });
             },
             child: Container(
               alignment: Alignment.center,
