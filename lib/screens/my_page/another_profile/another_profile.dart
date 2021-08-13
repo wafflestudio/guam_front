@@ -44,10 +44,20 @@ class AnotherProfileState extends State<AnotherProfile> {
                 ]
               ),
               MyProfileBottom(snapshot.data, widget.stacksProvider),
+              Container(
+                padding: EdgeInsets.only(bottom: 20),
+                color: Colors.white,
+              )
             ],
           );
         } else {
-          return CircularProgressIndicator();
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Center(
+              child: CircularProgressIndicator()
+            )
+          );
         }
       },
     );
