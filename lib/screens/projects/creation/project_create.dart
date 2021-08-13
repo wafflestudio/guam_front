@@ -9,16 +9,16 @@ import '../../../commons/back.dart';
 import '../../../commons/custom_app_bar.dart';
 import '../../../models/stack.dart' as StackModel;
 
-class CreateProjectScreen extends StatefulWidget {
+class ProjectCreate extends StatefulWidget {
   final Stacks stacksProvider;
 
-  CreateProjectScreen({this.stacksProvider});
+  ProjectCreate({this.stacksProvider});
 
   @override
-  _CreateProjectScreenState createState() => _CreateProjectScreenState();
+  _ProjectCreateState createState() => _ProjectCreateState();
 }
 
-class _CreateProjectScreenState extends State<CreateProjectScreen> {
+class _ProjectCreateState extends State<ProjectCreate> {
   String selectedKey;
   List<String> filterValues;
 
@@ -31,6 +31,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     'DESIGNER': {'id': 0, 'stack': '', 'headcount': 0},
     'myPosition': '',
     'thumbnail': null,
+    'isThumbnailChanged': false,
   };
 
   Map<String, List<StackModel.Stack>> _filterOptions = {
@@ -56,33 +57,33 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-          title: '프로젝트 만들기',
-          leading: Back(),
-        ),
-        body: Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 5),
-            child: ProjectCreateContainer(
-              content: SingleChildScrollView(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                    if (_currentPage == 1)
-                      ProjectCreatePageOne(
-                          input,
-                          dueSelected,
-                          goToNextPage),
-                    if (_currentPage == 2)
-                      ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
-                    if (_currentPage == 3)
-                      ProjectCreatePageThree(
-                          input,
-                          positionSelected,
-                          goToPreviousPage,
-                      ),
-                    ProjectStatus(totalPage: 3, currentPage: _currentPage)
-                  ])),
-            )));
+      appBar: CustomAppBar(
+        title: '프로젝트 만들기',
+        leading: Back(),
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.only(top: 5),
+        child: ProjectCreateContainer(
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (_currentPage == 1) ProjectCreatePageOne(input, dueSelected, goToNextPage),
+                if (_currentPage == 2) ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
+                if (_currentPage == 3)
+                  ProjectCreatePageThree(
+                    input: input,
+                    positionSelected: positionSelected,
+                    goToPreviousPage: goToPreviousPage,
+                    isNewProject: true,
+                  ),
+                ProjectStatus(totalPage: 3, currentPage: _currentPage)
+              ]
+            )
+          ),
+        )
+      )
+    );
   }
 }

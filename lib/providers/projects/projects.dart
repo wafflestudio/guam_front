@@ -9,6 +9,7 @@ import '../../mixins/toast.dart';
 
 class Projects extends ChangeNotifier with Toast {
   Authenticate _authProvider;
+  Project _projectToBeEdited;
   List<Project> _projects;
   List<Project> _almostFullProjects;
   List<Project> _filteredProjects;
@@ -17,6 +18,8 @@ class Projects extends ChangeNotifier with Toast {
   Projects() {
     fetchProjects();
   }
+
+  Project get projectToBeEdited => _projectToBeEdited;
 
   List<Project> get projects => _projects;
 

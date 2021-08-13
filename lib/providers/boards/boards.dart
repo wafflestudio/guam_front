@@ -92,6 +92,38 @@ class Boards extends ChangeNotifier with Toast {
     }
   }
 
+  Future editProject({int projectId, Map<String, dynamic> fields, dynamic files}) async {
+    try {
+      loading = true;
+      String authToken = await _authProvider.getFirebaseIdToken();
+      bool res = false;
+
+      if (authToken.isNotEmpty) {
+        await HttpRequest()
+          .postMultipart(
+            path: "/project/$projectId/edit",
+            authToken: authToken,
+            fields: fields,
+            files: files,
+          ).then((response) {
+            if (response.statusCode == 200) {
+              res = true;
+              showToast(success: true, msg: "프로젝트를 수정했습니다.");
+            } else {
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              showToast(success: false, msg: err);
+            }
+          });
+      }
+      return res;
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+    }
+  }
+
   Future setTasks() async {
     List<UserTask> newTasks = [];
 

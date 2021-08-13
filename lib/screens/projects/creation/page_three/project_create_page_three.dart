@@ -11,8 +11,14 @@ class ProjectCreatePageThree extends StatefulWidget {
   final Map input;
   final List<bool> positionSelected;
   final Function goToPreviousPage;
+  final bool isNewProject;
 
-  ProjectCreatePageThree(this.input, this.positionSelected, this.goToPreviousPage);
+  ProjectCreatePageThree({
+    this.input,
+    this.positionSelected,
+    this.goToPreviousPage,
+    this.isNewProject
+  });
 
   @override
   _ProjectCreatePageThreeState createState() => _ProjectCreatePageThreeState();
@@ -46,6 +52,7 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
             ),
           ),
         ),
+        if (widget.isNewProject)
         Container(
           padding: EdgeInsets.only(top: 20, left: 30, bottom: 10),
           alignment: Alignment.centerLeft,
@@ -58,6 +65,7 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
             ),
           ),
         ),
+        if (widget.isNewProject)
         Container(
           decoration: BoxDecoration(
             color: HexColor("6B70AA"),
@@ -73,7 +81,7 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
           padding: EdgeInsets.only(top: 40, left: 30, bottom: 10),
           alignment: Alignment.centerLeft,
           child: Text(
-            '4. 프로젝트 사진 선택',
+            '${widget.isNewProject ? 4 : 3}. 프로젝트 사진 선택',
             style: TextStyle(
               fontSize: 24,
               color: Colors.white,
@@ -81,7 +89,7 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
             ),
           ),
         ),
-        ProjectCreateThumbnail(widget.input),
+        ProjectCreateThumbnail(widget.input, widget.isNewProject),
         Theme(
           data: Theme.of(context).copyWith(
             unselectedWidgetColor: Colors.white,
@@ -93,7 +101,8 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
               ProjectCreateSave(
                 input: widget.input,
                 page: 3,
-                btnEnabled: nextBtnEnabled
+                btnEnabled: widget.isNewProject ? nextBtnEnabled : true,
+                isNewProject: widget.isNewProject,
               )
             ],
           ),
