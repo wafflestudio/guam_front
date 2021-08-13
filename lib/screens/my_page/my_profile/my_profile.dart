@@ -48,11 +48,11 @@ class MyProfile extends StatelessWidget {
           children: [
             Stack(
               children: [
-                MyProfileLink(authProvider.me),
-                MyProfileTop(authProvider.me),
+                MyProfileLink(profile),
+                MyProfileTop(profile),
               ]
             ),
-            MyProfileBottom(authProvider.me, stacksProvider),
+            MyProfileBottom(profile, stacksProvider),
             Container(
               width: double.infinity,
               color: Colors.white,
