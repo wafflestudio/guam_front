@@ -30,7 +30,7 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       "frontStackId": widget.input['FRONTEND']['id'].toString(),
       "backStackId": widget.input['BACKEND']['id'].toString(),
       "designStackId": widget.input['DESIGNER']['id'].toString(),
-      "myPosition": widget.input['myPosition'],
+      "myPosition": widget.input['myPosition'].toString(),
     };
     if (widget.isNewProject) {
       return await context.read<Projects>().createProject(
