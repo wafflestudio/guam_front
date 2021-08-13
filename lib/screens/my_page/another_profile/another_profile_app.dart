@@ -31,12 +31,7 @@ class AnotherProfile extends StatelessWidget {
         title: "프로필",
         leading: Back(),
       ),
-      body: MyProfile(
-        stacksProvider: stacksProvider,
-        isMyProfile: false,
-        userId: userId,
-        // user: getUserProfile(userId),
-      ),
+      body: MyProfile(stacksProvider: stacksProvider),
     );
   }
 }
