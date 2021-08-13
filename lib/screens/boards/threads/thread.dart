@@ -60,10 +60,10 @@ class Thread extends StatelessWidget {
                 context: context,
                 builder: (_) => BottomModalContent(
                   requireConfirm: true,
-                  setText: "메시지 고정",
-                  editText: "메시지 편집",
-                  deleteText: "메시지 삭제",
-                  deleteDetailText: "해당 메시지를 정말 삭제하시겠습니까?",
+                  setText: "스레드 고정",
+                  editText: "스레드 편집",
+                  deleteText: "스레드 삭제",
+                  deleteDetailText: "스레드를 삭제하시겠습니까?",
                   setFunc: setNotice,
                   editFunc: () {
                     switchToEditMode(editTargetThread: thread);
@@ -77,10 +77,10 @@ class Thread extends StatelessWidget {
                 context: context,
                 builder: (_) => BottomModalContent(
                   requireConfirm: true,
-                  setText: "메시지 고정",
-                  editText: "메시지 편집",
-                  deleteText: "메시지 삭제",
-                  deleteDetailText: "해당 메시지를 정말 삭제하시겠습니까?",
+                  setText: "스레드 고정",
+                  editText: "스레드 편집",
+                  deleteText: "스레드 삭제",
+                  deleteDetailText: "스레드를 삭제하시겠습니까?",
                   setFunc: setNotice,
                   editFunc: () {
                     switchToEditMode(editTargetThread: thread);

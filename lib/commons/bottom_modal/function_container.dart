@@ -26,31 +26,41 @@ class FunctionContainer extends StatelessWidget {
             ),
             titlePadding: EdgeInsets.all(0),
             title: Container(
-              child: Text(""),
-              // child: Text("$text", style: TextStyle(color: Colors.white),),
-              decoration: BoxDecoration(
-                color: Colors.yellow,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-              ),
+              padding: EdgeInsets.all(15),
+              child: Row(
+                  children: <Widget>[
+                    Icon(Icons.notifications_none, size: 20),
+                    Text(" 알림", style: TextStyle(fontSize: 17))
+                  ]
+              )
             ),
             contentPadding: EdgeInsets.all(20),
             content: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Text("$detailText"),
+                  Text(
+                    "$detailText",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                  ),
                 ],
               ),
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('확인', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                    fontSize: 17, color: Color.fromRGBO(85, 88, 255, 1), fontWeight: FontWeight.bold)),
                 onPressed: () {
                   customFunction();
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('취소', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+                child: Text(
+                  '취소',
+                  style: TextStyle(
+                    fontSize: 17, color: Colors.red, fontWeight: FontWeight.bold)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
