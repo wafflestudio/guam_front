@@ -57,34 +57,33 @@ class _ProjectCreateState extends State<ProjectCreate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-          title: '프로젝트 만들기',
-          leading: Back(),
-        ),
-        body: Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 5),
-            child: ProjectCreateContainer(
-              content: SingleChildScrollView(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                    if (_currentPage == 1)
-                      ProjectCreatePageOne(
-                          input,
-                          dueSelected,
-                          goToNextPage),
-                    if (_currentPage == 2)
-                      ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
-                    if (_currentPage == 3)
-                      ProjectCreatePageThree(
-                        input: input,
-                        positionSelected: positionSelected,
-                        goToPreviousPage: goToPreviousPage,
-                        isNewProject: true,
-                      ),
-                    ProjectStatus(totalPage: 3, currentPage: _currentPage)
-                  ])),
-            )));
+      appBar: CustomAppBar(
+        title: '프로젝트 만들기',
+        leading: Back(),
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.only(top: 5),
+        child: ProjectCreateContainer(
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (_currentPage == 1) ProjectCreatePageOne(input, dueSelected, goToNextPage),
+                if (_currentPage == 2) ProjectCreatePageTwo(input, _filterOptions, goToNextPage, goToPreviousPage),
+                if (_currentPage == 3)
+                  ProjectCreatePageThree(
+                    input: input,
+                    positionSelected: positionSelected,
+                    goToPreviousPage: goToPreviousPage,
+                    isNewProject: true,
+                  ),
+                ProjectStatus(totalPage: 3, currentPage: _currentPage)
+              ]
+            )
+          ),
+        )
+      )
+    );
   }
 }
