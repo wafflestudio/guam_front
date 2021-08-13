@@ -27,8 +27,10 @@ class BoardSetting extends StatelessWidget {
               showMaterialModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                  requireConfirm: true,
                   editText: "'${boardsProvider.currentBoard.title}' 수정하기",
                   deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
+                  deleteDetailText: "프로젝트를 나가시겠습니까?",
                   editFunc: boardsProvider
                       .isMe(boardsProvider.currentBoard.leader.id)
                       ? () {
@@ -60,25 +62,27 @@ class BoardSetting extends StatelessWidget {
               showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
+                  requireConfirm: true,
                   editText: "'${boardsProvider.currentBoard.title}' 수정하기",
                   deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
-                    editFunc: boardsProvider
-                        .isMe(boardsProvider.currentBoard.leader.id)
-                        ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ChangeNotifierProvider.value(
-                                value: boardsProvider,
-                                child: ProjectEdit(
-                                  stacksProvider: stacksProvider,
-                                  projectInfo: boardsProvider.currentBoard,
-                                ),
-                              )
+                  deleteDetailText: "프로젝트를 나가시겠습니까?",
+                  editFunc: boardsProvider
+                      .isMe(boardsProvider.currentBoard.leader.id)
+                      ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider.value(
+                              value: boardsProvider,
+                              child: ProjectEdit(
+                                stacksProvider: stacksProvider,
+                                projectInfo: boardsProvider.currentBoard,
+                              ),
                             )
-                          );
-                        }
-                        : null,
+                          )
+                        );
+                      }
+                      : null,
                   deleteFunc: () async {
                     if (boardsProvider
                         .isMe(boardsProvider.currentBoard.leader.id)) {
