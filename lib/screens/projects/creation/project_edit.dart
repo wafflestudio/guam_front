@@ -62,18 +62,30 @@ class _ProjectEditState extends State<ProjectEdit> {
       // id 및 stack 순서는 server 수정 후 제대로 돌아갈 예정.
 
       'BACKEND': {
-        'id': projectToBeEdited.techStacks[0].id,
-        'stack': projectToBeEdited.techStacks[0].name,
+        'id': projectToBeEdited.techStacks.firstWhere(
+                (e) => e.position == "BACKEND",
+            orElse: () {return null;}).id,
+        'stack': projectToBeEdited.techStacks.firstWhere(
+                (e) => e.position == "BACKEND",
+            orElse: () {return null;}).name,
         'headcount': projectToBeEdited.backHeadCount
       },
       'DESIGNER': {
-        'id': projectToBeEdited.techStacks[1].id,
-        'stack': projectToBeEdited.techStacks[1].name,
+        'id': projectToBeEdited.techStacks.firstWhere(
+                (e) => e.position == "DESIGNER",
+            orElse: () {return null;}).id,
+        'stack': projectToBeEdited.techStacks.firstWhere(
+                (e) => e.position == "DESIGNER",
+            orElse: () {return null;}).name,
         'headcount': projectToBeEdited.designHeadCount
       },
       'FRONTEND': {
-        'id': projectToBeEdited.techStacks[2].id,
-        'stack': projectToBeEdited.techStacks[2].name,
+        'id': projectToBeEdited.techStacks.firstWhere(
+                (e) => e.position == "FRONTEND",
+            orElse: () {return null;}).id,
+        'stack': projectToBeEdited.techStacks.firstWhere(
+                (e) => e.position == "FRONTEND",
+            orElse: () {return null;}).name,
         'headcount': projectToBeEdited.frontHeadCount
       },
       'thumbnail': projectToBeEdited.thumbnail,
