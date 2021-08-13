@@ -23,7 +23,7 @@ class QuitBoard extends StatelessWidget {
                   builder: (_) => BottomModalContent(
                     requireConfirm: true,
                     deleteText: "'${boardsProvider.currentBoard.title}' 나가기",
-                    deleteDetailText: "현재 참여 중인 프로젝트에서 정말 나가시겠습니까?",
+                    deleteDetailText: "프로젝트를 나가시겠습니까?",
                     deleteFunc: () async {
                       if (boardsProvider.isMe(boardsProvider.currentBoard.leader.id)) {
                         await boardsProvider.deleteBoard();
