@@ -107,9 +107,8 @@ class Boards extends ChangeNotifier with Toast {
             files: files,
           ).then((response) {
             if (response.statusCode == 200) {
-              print("프로젝트를 수정했습니다.");
               res = true;
-              showToast(success: true, msg: "프로젝트 정보가 수정되었습니다.");
+              showToast(success: true, msg: "프로젝트를 수정했습니다.");
             } else {
               final jsonUtf8 = decodeKo(response);
               final String err = json.decode(jsonUtf8)["message"];
