@@ -2,10 +2,40 @@ import 'package:flutter/material.dart';
 import '../../../commons/common_text_field.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import '../../../mixins/toast.dart';
+import '../../../providers/user_auth/authenticate.dart';
+import 'package:provider/provider.dart';
 
-class ModalReport extends StatelessWidget {
+class ModalReport extends StatelessWidget with Toast {
   @override
   Widget build(BuildContext context) {
+    Future<void> sendEmail({Map<String, String> fields, dynamic files}) async {
+      const String userEmail = "guam.user.report@gmail.com";
+      final String user = "User Id.${context.read<Authenticate>().me.id}";
+      const String password = "guam2021!";
+      const String guamEmail = "guam@wafflestudio.com";
+
+      final smtpServer = gmail(userEmail, password);
+      final message = Message()
+        ..from = Address(userEmail, user)
+        ..recipients.add(guamEmail)
+        ..text = fields["content"];
+
+      bool res = false;
+
+      try {
+        await send(message, smtpServer).then((report) {
+          showToast(success: true, msg: "메일을 보냈습니다.");
+          res = true;
+          Navigator.of(context).pop();
+        });
+      } on MailerException catch (e) {
+        showToast(success: false, msg: "메일 전송을 실패했습니다.");
+      }
+
+      return res;
+    }
+
     return Wrap(
       children: [
         Material(
@@ -61,29 +91,4 @@ class ModalReport extends StatelessWidget {
       ],
     );
   }
-}
-
-Future<void> sendEmail({Map<String, String> fields, dynamic files}) async {
-  const String username = "daewon30825@gmail.com";
-  const String password = "daniel1004";
-  const String guamEmail = "guam@wafflestudio.com";
-
-  final smtpServer = gmail(username, password);
-
-  final message = Message()
-    ..from = Address(username, 'Your name')
-    ..recipients.add(guamEmail)
-    ..text = fields["content"];
-
-  try {
-    final sendReport = await send(message, smtpServer);
-    print('Message sent: ' + sendReport.toString());
-  } on MailerException catch (e) {
-    print('Message not sent.');
-    for (var p in e.problems) {
-      print('Problem: ${p.code}: ${p.msg}');
-    }
-  }
-
-  return true;
 }
