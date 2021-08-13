@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../commons/common_text_field.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 class ModalReport extends StatelessWidget {
   @override
@@ -39,7 +41,7 @@ class ModalReport extends StatelessWidget {
                   ),
                   Container(
                     child: Text(
-                      "궁금하신 사항, 버그 등을 보내주세요!\n문의주신 내용은 개발팀 메일로 전송됩니다.",
+                      "궁금하신 사항, 버그 등을 보내주세요!\n문의주신 내용은 Guam 🏝️ 메일로 전송됩니다.",
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.black,
@@ -62,4 +64,26 @@ class ModalReport extends StatelessWidget {
 }
 
 Future<void> sendEmail({Map<String, String> fields, dynamic files}) async {
+  const String username = "daewon30825@gmail.com";
+  const String password = "daniel1004";
+  const String guamEmail = "guam@wafflestudio.com";
+
+  final smtpServer = gmail(username, password);
+
+  final message = Message()
+    ..from = Address(username, 'Your name')
+    ..recipients.add(guamEmail)
+    ..text = fields["content"];
+
+  try {
+    final sendReport = await send(message, smtpServer);
+    print('Message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('Message not sent.');
+    for (var p in e.problems) {
+      print('Problem: ${p.code}: ${p.msg}');
+    }
+  }
+
+  return true;
 }
