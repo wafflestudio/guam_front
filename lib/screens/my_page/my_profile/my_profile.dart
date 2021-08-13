@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../models/profile.dart';
 import '../../../providers/user_auth/authenticate.dart';
 import '../../user_auth/sign_out.dart';
+import 'button_report.dart';
 
 class MyProfile extends StatelessWidget {
   final Stacks stacksProvider;
@@ -35,32 +36,37 @@ class MyProfile extends StatelessWidget {
     // final profile = isMyProfile ? authProvider.me : user;
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 30),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                colorFilter: ColorFilter.mode(
-                    Colors.white.withOpacity(0.7), BlendMode.dstATop),
-                image: AssetImage("assets/backgrounds/profile-bg-1.png"),
-                fit: BoxFit.cover,
-              )),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.7), BlendMode.dstATop),
+              image: AssetImage("assets/backgrounds/profile-bg-1.png"),
+              fit: BoxFit.cover,
+            )),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                MyProfileLink(authProvider.me),
+                MyProfileTop(authProvider.me),
+              ]
+            ),
+            MyProfileBottom(authProvider.me, stacksProvider),
+            Container(
+              width: double.infinity,
+              color: Colors.white,
+              padding: EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Stack(children: [
-                    MyProfileLink(profile),
-                    MyProfileTop(profile),
-                  ]),
-                  MyProfileBottom(profile, stacksProvider),
+                  ButtonReport(),
+                  SignOut()
                 ],
-              ),
-            ),
-          ),
-          if (isMyProfile) Center(child: SignOut()),
-        ],
-      ),
+              )
+            )
+          ],
+        ),
+      )
     );
   }
 }
