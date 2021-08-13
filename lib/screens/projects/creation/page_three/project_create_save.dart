@@ -50,8 +50,9 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
         files: files,
       ).then((successful) {
         if (successful) {
-          Navigator.pop(context);
+          Navigator.pop(context); // project edit 페이지 나가
           context.read<Boards>().fetchBoard(widget.input['id']);
+          Navigator.pop(context); // board setting bottomModal 나가기
           return successful;
         }
       });
