@@ -129,7 +129,7 @@ class Authenticate extends ChangeNotifier with Toast {
     notifyListeners();
   }
 
-  Future getUserProfile(int userId) async {
+  Future<Profile> getUserProfile(int userId) async {
     Profile user;
     toggleLoading();
 
@@ -142,8 +142,6 @@ class Authenticate extends ChangeNotifier with Toast {
           final jsonUtf8 = decodeKo(response);
           final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
           user = Profile.fromJson(jsonData);
-
-          print("144 user nickname: ${user.nickname}");
         } else{
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
@@ -153,7 +151,8 @@ class Authenticate extends ChangeNotifier with Toast {
 
       return user;
     } catch (e) {
-      print("Failed fetching the user profile: $e");
+      print(e);
+      return null; //
     } finally {
       toggleLoading();
     }
