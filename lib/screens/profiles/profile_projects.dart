@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/models/profile.dart';
-import '../../projects/project_square.dart';
+import '../projects/project_square.dart';
 
-class MyProfileProjects extends StatelessWidget {
+class ProfileProjects extends StatelessWidget {
   final Profile me;
 
-  MyProfileProjects(this.me);
+  ProfileProjects(this.me);
 
   @override
   Widget build(BuildContext context) {

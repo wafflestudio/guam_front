@@ -5,13 +5,13 @@ import 'package:guam_front/models/profile.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import 'my_profile_projects.dart';
+import 'profile_projects.dart';
 
-class MyProfileBottom extends StatelessWidget {
+class ProfileBottom extends StatelessWidget {
   final Profile me;
   final Stacks stacksProvider;
 
-  MyProfileBottom(this.me, this.stacksProvider);
+  ProfileBottom(this.me, this.stacksProvider);
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class MyProfileBottom extends StatelessWidget {
                     )
                   ],
                 ),
-                MyProfileProjects(me)
+                ProfileProjects(me)
               ],
             ),
           ),

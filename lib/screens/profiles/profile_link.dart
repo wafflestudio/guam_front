@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MyProfileLink extends StatelessWidget {
+class ProfileLink extends StatelessWidget {
   final Profile me;
 
-  MyProfileLink(this.me);
+  ProfileLink(this.me);
 
   _launchURL(String url) async =>
       await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
-import 'package:guam_front/screens/my_page/my_profile/my_profile_bottom.dart';
-import 'package:guam_front/screens/my_page/my_profile/my_profile_link.dart';
-import 'package:guam_front/screens/my_page/my_profile/my_profile_top.dart';
+import 'package:guam_front/screens/profiles/profile_bottom.dart';
+import 'package:guam_front/screens/profiles/profile_link.dart';
+import 'package:guam_front/screens/profiles/profile_top.dart';
 import 'package:provider/provider.dart';
 import '../../../models/profile.dart';
 import '../../../providers/user_auth/authenticate.dart';
@@ -39,11 +39,11 @@ class AnotherProfileState extends State<AnotherProfile> {
             children: [
               Stack(
                 children: [
-                  MyProfileLink(snapshot.data),
-                  MyProfileTop(snapshot.data),
+                  ProfileLink(snapshot.data),
+                  ProfileTop(snapshot.data),
                 ]
               ),
-              MyProfileBottom(snapshot.data, widget.stacksProvider),
+              ProfileBottom(snapshot.data, widget.stacksProvider),
               Container(
                 padding: EdgeInsets.only(bottom: 20),
                 color: Colors.white,
