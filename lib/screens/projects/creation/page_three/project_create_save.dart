@@ -50,8 +50,9 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
         files: files,
       ).then((successful) {
         if (successful) {
-          Navigator.pop(context); // project edit 페이지 나가
+          Navigator.pop(context); // project edit 페이지 나가기
           context.read<Boards>().fetchBoard(widget.input['id']);
+          Navigator.pop(context); // bottomModal 나가기
           return successful;
         }
       });
@@ -71,9 +72,7 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
                   files: (widget.input['thumbnail'] != null) && widget.input['isThumbnailChanged']
                       ? [File(widget.input["thumbnail"].path)]
                       : null
-                ).then((value) {
-                  Navigator.of(context).pop(); // pops board_setting modal
-                });
+                );
             },
             child: Container(
               alignment: Alignment.center,
