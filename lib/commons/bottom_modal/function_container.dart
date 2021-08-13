@@ -15,42 +15,43 @@ class FunctionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Future<void> _showMyDialog() async {
-      return showDialog<void>(
+    Future _showMyDialog() async {
+      return showDialog (
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))
+              borderRadius: BorderRadius.all(Radius.circular(10))
             ),
             titlePadding: EdgeInsets.all(0),
             title: Container(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(10),
               child: Row(
-                  children: <Widget>[
-                    Icon(Icons.notifications_none, size: 20),
-                    Text(" 알림", style: TextStyle(fontSize: 17))
+                  children: [
+                    Icon(Icons.notifications_none, size: 16),
+                    Text(" 알림", style: TextStyle(fontSize: 12))
                   ]
               )
             ),
-            contentPadding: EdgeInsets.all(20),
-            content: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    "$detailText",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-                  ),
-                ],
-              ),
+            contentPadding: EdgeInsets.all(10),
+            content: Text(
+                "$detailText",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black
+                )
             ),
             actions: <Widget>[
               TextButton(
                 child: Text(
                   "확인",
                   style: TextStyle(
-                    fontSize: 17, color: Color.fromRGBO(85, 88, 255, 1), fontWeight: FontWeight.bold)),
+                    fontSize: 14,
+                    color: Color.fromRGBO(85, 88, 255, 1),
+                  )
+                ),
                 onPressed: () {
                   customFunction();
                   Navigator.of(context).pop();
@@ -60,10 +61,11 @@ class FunctionContainer extends StatelessWidget {
                 child: Text(
                   "취소",
                   style: TextStyle(
-                    fontSize: 17, color: Colors.red, fontWeight: FontWeight.bold)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                    fontSize: 14,
+                    color: Colors.red,
+                  )
+                ),
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ],
           );
