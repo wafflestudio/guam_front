@@ -46,7 +46,7 @@ class ModalReport extends StatelessWidget with Toast {
           child: Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 40),
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Color.fromRGBO(203, 203, 203, 0.5),
@@ -83,7 +83,7 @@ class ModalReport extends StatelessWidget with Toast {
                         color: Color.fromRGBO(129, 129, 129, 1),
                       ),
                     ),
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: EdgeInsets.only(bottom: 30),
                   ),
                   CommonTextField(onTap: sendEmail)
                 ],
