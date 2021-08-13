@@ -30,8 +30,10 @@ class Comment extends StatelessWidget {
             showMaterialModalBottomSheet(
               context: context,
               builder: (_) => BottomModalContent(
-                  editText: "메시지 편집",
-                  deleteText: "메시지 삭제",
+                  requireConfirm: true,
+                  editText: "답글 편집",
+                  deleteText: "답글 삭제",
+                  deleteDetailText: "답글을 삭제하시겠습니까?",
                   editFunc: () {
                     switchToEditMode(editTargetComment: comment);
                     Navigator.of(context).pop(); // pops Modal Bottom Content Widget
@@ -45,8 +47,10 @@ class Comment extends StatelessWidget {
             showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                    editText: "메시지 편집",
-                    deleteText: "메시지 삭제",
+                    requireConfirm: true,
+                    editText: "답글 편집",
+                    deleteText: "답글 삭제",
+                    deleteDetailText: "답글을 삭제하시겠습니까?",
                     editFunc: () {
                       switchToEditMode(editTargetComment: comment);
                       Navigator.of(context).pop(); // pops Modal Bottom Content Widget
