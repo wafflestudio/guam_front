@@ -23,7 +23,7 @@ class Messaging extends StatelessWidget {
   // ;
 
   InitializationSettings initializationSettings = InitializationSettings(
-      android: AndroidInitializationSettings('app_icon'),
+      android: AndroidInitializationSettings('push_icon'),
       // iOS: initializationSettingsIOS
   );
 
