@@ -69,7 +69,7 @@ class ProjectBanner extends StatelessWidget {
                       Spacer(),
                       Stack(children: [
                         ...project.tasks.map(
-                          (user) => project.tasks.indexOf(user) < 4
+                          (user) => project.tasks.indexOf(user) < 3
                               ? Positioned(
                                   child: Padding(
                                     padding: EdgeInsets.only(
@@ -91,7 +91,7 @@ class ProjectBanner extends StatelessWidget {
                                     padding:
                                         EdgeInsets.only(left: 60, top: 3),
                                     child: Text(
-                                      "+${(project.tasks.length - 3).abs()}",
+                                      " +${(project.tasks.length - 3).abs()}",
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.black),
