@@ -17,6 +17,8 @@ class ProjectSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int maxProfileCnt = 3;
+
     return Container(
       height: 150,
       width: 150,
@@ -68,7 +70,7 @@ class ProjectSquare extends StatelessWidget {
               child: Stack(
                 children: [
                   ...project.tasks.map(
-                    (user) => project.tasks.indexOf(user) < 3
+                    (user) => project.tasks.indexOf(user) < maxProfileCnt
                       ? Positioned(
                           child: Padding(
                             padding: EdgeInsets.only(
@@ -86,7 +88,7 @@ class ProjectSquare extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.only(left: 60, top: 3),
                             child: Text(
-                              "+${(project.tasks.length - 3).abs()}",
+                              "+${(project.tasks.length - maxProfileCnt)}",
                               style: TextStyle(fontSize: 12, color: Colors.white),
                             ),
                           ),
