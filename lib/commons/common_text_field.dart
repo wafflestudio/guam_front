@@ -100,6 +100,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
                         controller: _threadTextFieldController,
                         decoration: null,
                         maxLines: null,
+                        maxLength: 250, // server DB 설정 상한을 넘지 않도록 클라에서는 250자로 제한합니다.
                         style: TextStyle(fontSize: 14),
                       )
                     ],
