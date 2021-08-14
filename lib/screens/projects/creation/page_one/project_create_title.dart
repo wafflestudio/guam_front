@@ -31,16 +31,17 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            padding: EdgeInsets.only(left: 30, bottom: 15),
-            child: Text('제목',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ))),
+          padding: EdgeInsets.only(left: 30, bottom: 15),
+          child: Text(
+            '제목',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          )
+        ),
         Container(
           padding: EdgeInsets.only(left: 20, right: 20),
-          height: 50,
+          height: 70,
           child: TextFormField(
+          maxLength: 20,
             onChanged: (text) {
               setState(() {widget.input["title"] = text;});
               widget.checkButtonEnable();
@@ -48,31 +49,19 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
             controller: _projectNameController,
             style: TextStyle(fontSize: 14, color: Colors.white),
             decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white24,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-                hintText: "프로젝트 이름을 입력하세요.",
-                hintStyle: TextStyle(fontSize: 14, color: Colors.white)),
-            validator: (String value) {
-              if (value.isEmpty) {
-                return "프로젝트 이름을 입력하지 않았습니다.";
-              }
-              if (value.length > 2) {
-                return "프로젝트 이름은 최소한 두 글자 이상이어야 합니다.";
-              }
-              return null;
-            },
+              filled: true,
+              fillColor: Colors.white24,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              hintText: "프로젝트 이름을 입력하세요.",
+              hintStyle: TextStyle(fontSize: 14, color: Colors.white),
+            ),
           ),
         )
       ],
