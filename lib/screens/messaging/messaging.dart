@@ -41,7 +41,7 @@ class Messaging extends StatelessWidget {
     print('User granted permission: ${settings.authorizationStatus}');
   }
 
-  Future allowIOSForegroundNotifications() async {
+  void allowIOSForegroundNotifications() async {
     await messaging.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
