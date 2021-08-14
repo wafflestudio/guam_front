@@ -116,29 +116,33 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     }
 
     return Scaffold(
-        appBar: widget.showAppBar ? CustomAppBar(title: "프로필 수정", leading: Back()) : null,
-        body: DecoratedBox(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                  Colors.white.withOpacity(0.7), BlendMode.dstATop),
-              image: AssetImage("assets/backgrounds/profile-bg-1.png"),
-              fit: BoxFit.cover,
-            )),
-            child: SingleChildScrollView(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(height: 20),
-                  Container(color: Colors.grey),
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    MakeProfileImage(onTap: setImageFile, profile: me),
-                    _profileInfo(techStacks),
-                    _authButton(setProfile)
-                  ]),
-                ],
-              ),
-            )));
+      appBar: widget.showAppBar ? CustomAppBar(title: "프로필 수정", leading: Back()) : null,
+      body: DecoratedBox(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+              Colors.white.withOpacity(0.7), BlendMode.dstATop,
+            ),
+            image: AssetImage("assets/backgrounds/profile-bg-1.png"),
+            fit: BoxFit.cover,
+          )
+        ),
+        child: SingleChildScrollView(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(height: 20),
+              Container(color: Colors.grey),
+              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                MakeProfileImage(onTap: setImageFile, profile: me),
+                _profileInfo(techStacks),
+                _authButton(setProfile)
+              ]),
+            ],
+          ),
+        )
+      )
+    );
   }
 
   Widget _profileInfo(Map<dynamic, List<dynamic>> techStacks) {
@@ -148,13 +152,36 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _inputForm("", _nicknameController, '별명', '닉네임을 입력하세요.', 1),
-            _inputForm("assets/images/github-icon.png", _githubIdController,
-                'GitHub ID', 'GitHub ID를 입력하세요.', 1),
-            _inputForm("assets/images/browser-icon.png", _blogController,
-                '웹사이트', 'https://wafflestudio.com', 1),
             _inputForm(
-                "", _introductionController, '자기 소개', '다른 사람들에게 나를 소개해보세요.', 3),
+              textController: _nicknameController,
+              label: '별명',
+              hint: '닉네임을 입력하세요.',
+              maxLines: 1,
+              maxLength: 8,
+            ),
+            _inputForm(
+              image: 'assets/images/github-icon.png',
+              textController: _githubIdController,
+              label: 'GitHub ID',
+              hint: 'GitHub ID를 입력하세요.',
+              maxLines: 1,
+              maxLength: 39, // github official maxLength
+            ),
+            _inputForm(
+              image: 'assets/images/browser-icon.png',
+              textController: _blogController,
+              label: '웹사이트',
+              hint: 'https://wafflestudio.com',
+              maxLines: 1,
+              maxLength: 100,
+            ),
+            _inputForm(
+              textController: _introductionController,
+              label: '자기소개',
+              hint: '다른 사람들에게 나를 소개해보세요.',
+              maxLines: 4,
+              maxLength: 250,
+            ),
             _techStacksFilter(techStacks)
           ],
         ),
@@ -162,66 +189,58 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  Widget _inputForm(String image, TextEditingController textController,
-      String label, String hint, int maxLines) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
+  Widget _inputForm({String image, TextEditingController textController, String label, String hint, int height = 30, int maxLines, int maxLength}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
           padding: EdgeInsets.only(left: 10, bottom: 3),
           child: Row(
             children: [
-              if (image != "")
+              if (image != null)
                 Row(
                   children: [
-                    Image(
-                      width: 20,
-                      image: AssetImage(image),
-                    ),
-                    Text(" ")
+                    Image(width: 20, image: AssetImage(image)),
+                    Text(' '),
                   ],
                 ),
-              Text(label,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  )),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                )
+              ),
             ],
-          )),
-      Container(
-        padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
-        child: TextFormField(
-          maxLines: maxLines,
-          controller: textController,
-          style: TextStyle(fontSize: 14, color: Colors.black),
-          decoration: InputDecoration(
+          )
+        ),
+        Container(
+          // height: 30,
+          padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          child: TextFormField(
+            maxLines: maxLines,
+            maxLength: maxLength,
+            controller: textController,
+            style: TextStyle(fontSize: 14, color: Colors.black),
+            decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  color: Colors.grey,
-                ),
+                borderSide: BorderSide(color: Colors.grey),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  color: Colors.grey,
-                ),
+                borderSide: BorderSide(color: Colors.grey),
               ),
               hintText: hint,
-              hintStyle: TextStyle(fontSize: 14, color: Colors.grey)),
-          validator: (String value) {
-            if (value.isEmpty) {
-              return "입력하지 않았습니다.";
-            }
-            if (value.length > 2) {
-              return "최소한 두 글자 이상이어야 합니다.";
-            }
-            return null;
-          },
-        ),
-      )
-    ]);
+              hintStyle: TextStyle(fontSize: 14, color: Colors.grey)
+            ),
+          ),
+        )
+      ]
+    );
   }
 
   Widget _techStacksFilter(Map<dynamic, List<dynamic>> techStacks) {
@@ -229,30 +248,27 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            padding: EdgeInsets.only(left: 10, bottom: 3),
-            child: Text("기술 스택",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ))),
+          padding: EdgeInsets.only(left: 10, bottom: 3),
+          child: Text("기술 스택",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)
+          )
+        ),
         positionSelection(),
         if (selectedKey != null)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Container(
-                    child: ProfileFilterValueChip(
-                      techStacks[selectedKey],
-                      (selectedList) {
-                        setState(() {
-                          selectedSkillsList = selectedList;
-                        });
-                      },
-                    ),
-                  ))
+                padding: EdgeInsets.only(left: 10),
+                child: Container(
+                  child: ProfileFilterValueChip(
+                    techStacks[selectedKey],
+                    (selectedList) {
+                      setState(() => selectedSkillsList = selectedList);
+                    },
+                  ),
+                )
+              )
             ],
           ),
       ],
@@ -268,8 +284,9 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
         borderRadius: BorderRadius.circular(10),
         borderWidth: 0.5,
         constraints: BoxConstraints(
-            minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
-            minHeight: 40),
+          minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
+          minHeight: 40,
+        ),
         isSelected: isSelected,
         onPressed: (idx) {
           setState(() {
@@ -285,11 +302,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             child: Text(
               '백엔드',
               style: (selectedKey == '백엔드')
-                  ? TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)
-                  : TextStyle(fontSize: 14, color: Colors.black),
+                ? TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  )
+                : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
           Padding(
@@ -297,11 +315,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             child: Text(
               '프론트엔드',
               style: (selectedKey == '프론트엔드')
-                  ? TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)
-                  : TextStyle(fontSize: 14, color: Colors.black),
+                ? TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  )
+                : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
           Padding(
@@ -309,11 +328,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
             child: Text(
               '디자이너',
               style: (selectedKey == '디자이너')
-                  ? TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)
-                  : TextStyle(fontSize: 14, color: Colors.black),
+                ? TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  )
+                : TextStyle(fontSize: 14, color: Colors.black),
             ),
           ),
         ],
@@ -344,25 +364,19 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           width: MediaQuery.of(context).size.width * 0.85,
           height: 50,
           decoration: BoxDecoration(
-            border: Border.all(
-              width: 1.5,
-              color: Colors.white24,
-            ),
-            gradient: LinearGradient(
-                colors: [
-                  HexColor("4F34F3"),
-                  HexColor("3EF7FF"),
-                ],
-                begin: FractionalOffset(1.0, 0.0),
-                end: FractionalOffset(0.0, 0.0),
-                stops: [0, 1],
-                tileMode: TileMode.clamp),
+            border: Border.all(width: 1.5, color: Colors.white24),
             borderRadius: BorderRadius.circular(30),
+            gradient: LinearGradient(
+              colors: [HexColor("4F34F3"), HexColor("3EF7FF")],
+              begin: FractionalOffset(1.0, 0.0),
+              end: FractionalOffset(0.0, 0.0),
+              stops: [0, 1],
+              tileMode: TileMode.clamp,
+            ),
           ),
           child: Text(
             '저장하기',
-            style: TextStyle(
-                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
