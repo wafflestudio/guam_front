@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../providers/home/home_provider.dart';
 import '../home/home.dart';
+import 'dart:math';
 
 class Messaging extends StatelessWidget {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -14,6 +15,17 @@ class Messaging extends StatelessWidget {
     importance: Importance.max, // for allowing foreground messaging
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  // IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
+  //     onDidReceiveLocalNotification: onDidReceiveLocalNotification)
+  // ;
+
+  InitializationSettings initializationSettings = InitializationSettings(
+      android: AndroidInitializationSettings('app_icon'),
+      // iOS: initializationSettingsIOS
+  );
 
   Future requestPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
@@ -55,6 +67,8 @@ class Messaging extends StatelessWidget {
     requestPermission();
     allowIOSForegroundNotifications();
 
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
@@ -66,8 +80,13 @@ class Messaging extends StatelessWidget {
         print('Message also contained a notification: $notification');
 
         if (android != null) {
+          print("Max channel id: ${maxImportanceChannel.id}");
+          print("Max channel id: ${maxImportanceChannel.name}");
+          print("Max channel id: ${maxImportanceChannel.description}");
+
           flutterLocalNotificationsPlugin.show(
-              notification.hashCode,
+              // notification.hashCode,
+              Random().nextInt(100), //temp 100
               notification.title,
               notification.body,
               NotificationDetails(
@@ -75,7 +94,7 @@ class Messaging extends StatelessWidget {
                   maxImportanceChannel.id,
                   maxImportanceChannel.name,
                   maxImportanceChannel.description,
-                  icon: android?.smallIcon,
+                  icon: null, //
                   // other properties...
                 ),
               ));
