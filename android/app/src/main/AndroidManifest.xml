@@ -7,8 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="guam_front"
-        android:icon="@mipmap/ic_launcher"
+        android:label="Guam"
+        android:icon="@mipmap/guam_logo"
         android:usesCleartextTraffic="true"> <!-- temp code to delete after https -->
         <activity
             android:name=".MainActivity"
