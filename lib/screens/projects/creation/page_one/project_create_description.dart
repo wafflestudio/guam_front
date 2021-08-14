@@ -39,7 +39,7 @@ class _ProjectCreateDescriptionState extends State<ProjectCreateDescription> {
           padding: EdgeInsets.only(left: 20, right: 20),
           height: 140,
           child: TextFormField(
-            maxLength: 100,
+            maxLength: 250,
             onChanged: (text) {
               setState(() => widget.input["description"] = text);
               widget.checkButtonEnable();
