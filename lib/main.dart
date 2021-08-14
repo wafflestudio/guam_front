@@ -8,6 +8,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:math';
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
 AndroidNotificationChannel channel;
@@ -70,8 +71,9 @@ void main() async {
     android: initializationSettingsAndroid,
     // iOS: initializationSettingsIOS // iOS 푸시 넣기 전 주석처리
   );
+  flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-  settings = settings = await FirebaseMessaging.instance.requestPermission(
+  settings = await FirebaseMessaging.instance.requestPermission(
     alert: true,
     announcement: false,
     badge: true,
@@ -86,7 +88,6 @@ void main() async {
     sound: true,
   );
 
-  print("start run my app");
   runApp(MyApp());
 }
 
@@ -95,10 +96,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+
+      if (notification != null) {
+        if (android != null) {
+          flutterLocalNotificationsPlugin.show(
+              Random().nextInt(100), // create random id for required field
+              notification.title,
+              notification.body,
+              NotificationDetails(
+                android: AndroidNotificationDetails(
+                  channel.id,
+                  channel.name,
+                  channel.description,
+                ),
+              ));
+        }
+      }
+    });
+
     return MultiProvider(
         providers: [
           // First-most providers to be initialized
-          ChangeNotifierProvider<Authenticate>(create: (_) => Authenticate()),
+          ChangeNotifierProvider<Authenticate>(
+            create: (_) => Authenticate(),
+            lazy: false,
+          ),
           ChangeNotifierProvider<Stacks>(
             create: (_) => Stacks(),
             lazy: false,
