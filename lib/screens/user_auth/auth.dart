@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import '../../providers/home/home_provider.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../home/home.dart';
+import '../messaging/messaging.dart';
 
 class Auth extends StatelessWidget {
   @override
@@ -17,10 +18,7 @@ class Auth extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               context.read<Authenticate>(); // Initialization of user authentication
 
-              return ChangeNotifierProvider(
-                create: (_) => HomeProvider(),
-                child: Home(),
-              );
+              return Messaging();
             } else {
               return Center(
                 child: SvgPicture.asset('assets/logos/guam_logo.svg', color: HexColor('#6200EE')),
