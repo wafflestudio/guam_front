@@ -17,6 +17,8 @@ class ProjectSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int maxProfileCnt = 3;
+
     return Container(
       height: 150,
       width: 150,
@@ -33,19 +35,20 @@ class ProjectSquare extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
                   // Temp code. Should use cached_network_image with errorWidget (default image) and placeholder
-                  image: project.thumbnail != null && project.thumbnail.path != null
+                    image: project.thumbnail != null && project.thumbnail.path != null
                       ? NetworkImage(HttpRequest().s3BaseAuthority +
                           project.thumbnail.path)
                       : AssetImage("assets/images/project-square-default.jpeg"),
                   fit: BoxFit.fill,
                 ),
-                borderRadius: BorderRadius.circular(30),
-              ),
-            )),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              )
+            ),
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -66,10 +69,9 @@ class ProjectSquare extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: Stack(
                 children: [
-                  if (project.tasks != null && project.tasks.length < 4)
-                    ...project.tasks.map(
-                      (user) => project.tasks.indexOf(user) < 3
-                        ? Positioned(
+                  ...project.tasks.map(
+                    (user) => project.tasks.indexOf(user) < maxProfileCnt
+                      ? Positioned(
                           child: Padding(
                             padding: EdgeInsets.only(
                               left: 20 * (project.tasks.indexOf(user).toDouble())),
@@ -82,17 +84,16 @@ class ProjectSquare extends StatelessWidget {
                             ),
                           ),
                         )
-                        : Positioned(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 60, top: 3),
-                              child: Text(
-                                "+${(project.tasks.length - 3).abs()}",
-                                style: TextStyle(
-                                  fontSize: 12, color: Colors.white),
-                              ),
+                      : Positioned(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 60, top: 3),
+                            child: Text(
+                              "+${(project.tasks.length - maxProfileCnt)}",
+                              style: TextStyle(fontSize: 12, color: Colors.white),
                             ),
                           ),
-                    ),
+                        ),
+                  ),
                 ],
               ),
             ),
