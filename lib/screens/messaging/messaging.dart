@@ -43,6 +43,13 @@ class Messaging extends StatelessWidget {
         ?.createNotificationChannel(maxImportanceChannel);
   }
 
+  Future getFirebaseMessagingToken() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    print("fcm token: $token");
+
+    return token;
+  }
+
   @override
   Widget build(BuildContext context) {
     requestPermission();
@@ -75,6 +82,8 @@ class Messaging extends StatelessWidget {
         }
       }
     });
+
+    getFirebaseMessagingToken();
 
     return ChangeNotifierProvider(
       create: (_) => HomeProvider(),

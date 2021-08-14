@@ -3,9 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '../../providers/home/home_provider.dart';
 import '../../providers/user_auth/authenticate.dart';
-import '../home/home.dart';
 import '../messaging/messaging.dart';
 
 class Auth extends StatelessWidget {
