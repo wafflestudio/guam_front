@@ -4,7 +4,7 @@ import 'package:guam_front/commons/back.dart';
 import 'package:guam_front/commons/custom_app_bar.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:guam_front/providers/stacks/stacks.dart';
-import 'package:guam_front/screens/my_page/profile_filter_value_chip.dart';
+import 'package:guam_front/screens/profiles/profile_filter_value_chip.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';

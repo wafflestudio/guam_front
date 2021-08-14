@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,8 @@ class ThreadContainer extends StatelessWidget {
                   profile: thread.creator,
                   showNickname: true,
                   radius: 12,
+                  activateRedirectOnTap: true,
+                  activateChangeTask: false,
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Text(

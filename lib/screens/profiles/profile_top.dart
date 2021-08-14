@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/commons/closable_image_expanded.dart';
 import 'package:guam_front/models/profile.dart';
 import 'package:transparent_image/transparent_image.dart';
-import '../../../helpers/http_request.dart';
-import '../../../commons/closable_image_expanded.dart';
+import '../../helpers/http_request.dart';
+import '../../commons/closable_image_expanded.dart';
 
-class MyProfileTop extends StatelessWidget {
+class ProfileTop extends StatelessWidget {
   final Profile me;
 
-  MyProfileTop(this.me);
+  ProfileTop(this.me);
 
   @override
   Widget build(BuildContext context) {

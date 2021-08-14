@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
+import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import '../../../models/boards/user_task.dart';
 import '../iconTitle.dart';
 import 'task.dart';
@@ -51,56 +52,57 @@ class TasksState extends State<Tasks> {
             child: Row(
               children: [
                 Expanded(
-                    child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(85, 88, 255, 1),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 7, horizontal: 15
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(85, 88, 255, 1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 7, horizontal: 15
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ProfileThumbnail(
+                            profile: selectedUserTask.user,
+                            radius: 12,
+                            showNickname: true,
+                            textColor: Colors.white,
+                            activateRedirectOnTap: true,
+                            activateChangeTask: false,
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ProfileThumbnail(
-                                profile: selectedUserTask.user,
-                                radius: 12,
-                                showNickname: true,
-                                textColor: Colors.white,
-                              ),
-                              positionChip(position: selectedUserTask.state),
-                            ],
-                          ),
-                        )
+                          positionChip(position: selectedUserTask.state),
+                        ],
+                      ),
                     )
-                  // media query to the box aside
+                  )
                 ),
                 Padding(padding: EdgeInsets.only(left: 5)),
                 DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(155, 155, 155, 0.3),
-                      borderRadius: BorderRadius.circular(15),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(155, 155, 155, 0.3),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [...unselectedUsers.map((e) =>
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: ProfileThumbnail(
+                              profile: e.user,
+                              radius: 10,
+                              showNickname: false,
+                              activateRedirectOnTap: false,
+                              activateChangeTask: true,
+                              onTap: () => selectUser(e.user.id),
+                            ),
+                          )
+                      )]
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 6),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [...unselectedUsers.map((e) =>
-                              InkWell(
-                                onTap: () => selectUser(e.user.id),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child: ProfileThumbnail(
-                                    profile: e.user,
-                                    radius: 10,
-                                    showNickname: false,
-                                  ),
-                                ),
-                              )
-                          )]
-                      ),
-                    )
+                  )
                 ),
               ],
             ),

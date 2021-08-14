@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../projects/project_square.dart';
-import '../../../providers/user_auth/authenticate.dart';
-import 'package:provider/provider.dart';
+import 'package:guam_front/models/profile.dart';
+import '../projects/project_square.dart';
 
-class MyProfileProjects extends StatelessWidget {
+class ProfileProjects extends StatelessWidget {
+  final Profile me;
+
+  ProfileProjects(this.me);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +27,7 @@ class MyProfileProjects extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [...context.read<Authenticate>().me.projects.map((e) =>
+              children: [...me.projects.map((e) =>
                 ProjectSquare(
                   project: e,
                   allowOnTap: false,

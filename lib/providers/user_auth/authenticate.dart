@@ -129,6 +129,33 @@ class Authenticate extends ChangeNotifier with Toast {
     notifyListeners();
   }
 
+  Future<Profile> getUserProfile(int userId) async {
+    Profile user;
+
+    try {
+      await HttpRequest()
+        .get(
+          path: "/user/$userId",
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          user = Profile.fromJson(jsonData);
+        } else{
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
+        }
+      });
+
+      return user;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+
   void toggleLoading() {
     loading = !loading;
     notifyListeners();
