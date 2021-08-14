@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../helpers/decode_ko.dart';
 import '../../helpers/http_request.dart';
@@ -73,6 +74,7 @@ class Authenticate extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
             me = Profile.fromJson(jsonData);
+            // 여기에 set fcm
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
@@ -155,7 +157,26 @@ class Authenticate extends ChangeNotifier with Toast {
     }
   }
 
+  Future<void> setMyFcmToken() async {
+    try {
+      String authToken = await getFirebaseIdToken();
+      String fcmToken = await FirebaseMessaging.instance.getToken();
 
+      await HttpRequest().post(
+        path: "/user/fcm",
+        authToken: authToken,
+        body: { "fcmToken": fcmToken }
+      ).then((response) {
+        if (response.statusCode == 200) {
+          final jsonUtf8 = decodeKo(response);
+          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+          print(jsonData);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
   void toggleLoading() {
     loading = !loading;
     notifyListeners();
