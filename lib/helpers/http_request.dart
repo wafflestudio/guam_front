@@ -3,8 +3,9 @@ import 'dart:io' show File, HttpHeaders;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as p;
+import '../mixins/toast.dart';
 
-class HttpRequest {
+class HttpRequest with Toast {
   final String baseAuthority = "15.164.72.46:8080";
   final String s3BaseAuthority = "https://guam.s3.ap-northeast-2.amazonaws.com/";
 
@@ -19,6 +20,7 @@ class HttpRequest {
       return response;
     } catch (e) {
       print("Error on GET request: $e");
+      showToast(success: false);
     }
   }
 
@@ -35,6 +37,7 @@ class HttpRequest {
       return response;
     } catch (e) {
       print("Error on POST request: $e");
+      showToast(success: false);
     }
   }
 
@@ -62,6 +65,7 @@ class HttpRequest {
       return response;
     } catch (e) {
       print("Error on POST Multipart request: $e");
+      showToast(success: false);
     }
   }
 
@@ -78,6 +82,7 @@ class HttpRequest {
       return response;
     } catch (e) {
       print("Error on PUT request: $e");
+      showToast(success: false);
     }
   }
 
@@ -94,6 +99,7 @@ class HttpRequest {
       }
     } catch (e) {
       print("Error on DELETE request: $e");
+      showToast(success: false);
     }
   }
 }
