@@ -5,8 +5,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import io.flutter.embedding.android.FlutterActivity
-
-//import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity: FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +21,7 @@ class MainActivity: FlutterActivity() {
 
                 override fun onAnimationEnd(animation: Animation?) {
                     //context 전환
-                    startActivity(
-                            FlutterActivity.createDefaultIntent(this@MainActivity)
-                    )
+                    startActivity(FlutterActivity.createDefaultIntent(this@MainActivity))
                 }
             })
         }
