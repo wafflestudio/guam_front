@@ -33,30 +33,22 @@ class Projects extends ChangeNotifier with Toast {
     try {
       loading = true;
 
-      await HttpRequest().get(path: "/project/list").then((response) async {
-        if (response.statusCode == 200) {
-          final jsonUtf8 = decodeKo(response);
-          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-          _projects = jsonList.map((e) => Project.fromJson(e)).toList();
-        } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          showToast(success: false, msg: err);
-        }
-      });
-
-      await HttpRequest().get(path: "/project/tab").then((response) {
-        if (response.statusCode == 200) {
-          final jsonUtf8 = decodeKo(response);
-          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-          _almostFullProjects =
-              jsonList.map((e) => Project.fromJson(e)).toList();
-        } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          showToast(success: false, msg: err);
-        }
-      });
+      await Future.wait([
+        HttpRequest().get(path: "/project/list").then((response) async {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+            _projects = jsonList.map((e) => Project.fromJson(e)).toList();
+          }
+        }),
+        HttpRequest().get(path: "/project/tab").then((response) {
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+            _almostFullProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+          }
+        })
+      ]);
 
       loading = false;
     } catch (e) {
@@ -64,6 +56,16 @@ class Projects extends ChangeNotifier with Toast {
     } finally {
       notifyListeners();
     }
+  }
+
+  void getAllProjects() async {
+    HttpRequest().get(path: "/project/list").then((response) {
+      if (response.statusCode == 200) {
+        final jsonUtf8 = decodeKo(response);
+        final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+        _projects = jsonList.map((e) => Project.fromJson(e)).toList();
+      }
+    });
   }
 
   Future getProject(int projectId) async {
