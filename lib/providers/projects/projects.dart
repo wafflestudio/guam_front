@@ -33,7 +33,7 @@ class Projects extends ChangeNotifier with Toast {
     try {
       loading = true;
 
-      await HttpRequest().get(path: "/project/list").then((response) {
+      await HttpRequest().get(path: "/project/list").then((response) async {
         if (response.statusCode == 200) {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
@@ -116,7 +116,7 @@ class Projects extends ChangeNotifier with Toast {
   }
 
   Future createProject({Map<String, dynamic> fields, dynamic files}) async {
-    bool res = false;
+    bool successful = false;
 
     try {
       loading = true;
@@ -129,24 +129,25 @@ class Projects extends ChangeNotifier with Toast {
             authToken: authToken,
             fields: fields,
             files: files,
-          ).then((response) async {
+          ).then((response) {
             if (response.statusCode == 200) {
               showToast(success: true, msg: "프로젝트가 생성되었습니다.");
-              res = true;
+              successful = true;
             } else {
-              final jsonUtf8 = decodeKo(response);
-              final String err = json.decode(jsonUtf8)["message"];
-              showToast(success: false, msg: err);
+              response.stream.bytesToString().then((val) {
+                final String err = json.decode(val)["message"];
+                showToast(success: false, msg: err);
+              });
             }
           });
       }
+
+      return successful;
     } catch (e) {
       print(e);
     } finally {
       loading = false;
     }
-
-    return res;
   }
 
   Future applyProject(int projectId, dynamic queryParams) async {
