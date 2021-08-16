@@ -86,12 +86,10 @@ class ProjectDetailBody extends StatelessWidget {
                         ],
                       ),
                       width: size.width * 0.3,
-                      height: size.height * 0.2,
                       padding: EdgeInsets.only(top: 10),
                     ),
                     Container(
                       width: size.width * 0.3,
-                      height: size.height * 0.2,
                       padding: EdgeInsets.only(top: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,12 +108,13 @@ class ProjectDetailBody extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      height: size.height * 0.2,
-                      padding: EdgeInsets.only(top: 10, bottom: 200),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _columnName("인원 현황"),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8, bottom: 5),
+                            child: _columnName("인원 현황"),
+                          ),
                           _percentBar(
                             size: size,
                             currentCnt: project.backHeadCount - project.backLeftCount,
@@ -162,37 +161,44 @@ class ProjectDetailBody extends StatelessWidget {
 
   Widget _text(String text) {
     return Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10),
-        child: Text(
-          '$text',
-          style: TextStyle(height: 1, fontSize: 14),
-        ));
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: Text(
+        '$text',
+        style: TextStyle(height: 1, fontSize: 14),
+      )
+    );
   }
 
   Widget _columnName(String attribute) {
-    return Text("$attribute",
-        style: TextStyle(
-            color: HexColor("#828282"),
-            fontSize: 14,
-            fontWeight: FontWeight.bold));
+    return Text(
+      "$attribute",
+      style: TextStyle(
+        color: HexColor("#828282"),
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      )
+    );
   }
 
   Widget _percentBar({Size size, int currentCnt, int totalCnt}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 3),
+      padding: EdgeInsets.symmetric(vertical: 6),
       child: LinearPercentIndicator(
         width: size.width * 0.25,
         animation: true,
-        lineHeight: 25,
+        lineHeight: 20,
         animationDuration: 500,
         percent: totalCnt == 0 ? 0 : currentCnt / totalCnt,
-        center: Container(
-            padding: EdgeInsets.only(left: 37),
-            alignment: Alignment.centerRight,
-            child: Text("$totalCnt",
-                style: TextStyle(fontSize: 12, color: Colors.white))),
         backgroundColor: HexColor("#828282"),
         progressColor: HexColor("#8CE591"),
+        center: Container(
+          padding: EdgeInsets.only(left: 37),
+          alignment: Alignment.centerRight,
+          child: Text(
+            "$totalCnt",
+            style: TextStyle(fontSize: 12, color: Colors.white),
+          )
+        ),
       ),
     );
   }
