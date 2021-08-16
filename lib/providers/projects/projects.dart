@@ -30,72 +30,72 @@ class Projects extends ChangeNotifier with Toast {
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
 
   Future fetchProjects() async {
+    loading = true;
+
     try {
-      loading = true;
-
       await Future.wait([
-        HttpRequest().get(path: "/project/list").then((response) async {
-          if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-            _projects = jsonList.map((e) => Project.fromJson(e)).toList();
-          }
-        }),
-        HttpRequest().get(path: "/project/tab").then((response) {
-          if (response.statusCode == 200) {
-            final jsonUtf8 = decodeKo(response);
-            final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-            _almostFullProjects = jsonList.map((e) => Project.fromJson(e)).toList();
-          }
-        })
+        getAllProjects(),
+        getAlmostFullProjects(),
       ]);
-
-      loading = false;
+      print("fetch projects done.");  ///
     } catch (e) {
       print(e);
     } finally {
+      loading = false;
       notifyListeners();
     }
   }
 
-  void getAllProjects() async {
-    HttpRequest().get(path: "/project/list").then((response) {
+  Future getAllProjects() {
+    print("get all projects start");  ///
+
+    return HttpRequest().get(path: "/project/list").then((response) {
       if (response.statusCode == 200) {
         final jsonUtf8 = decodeKo(response);
         final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
         _projects = jsonList.map((e) => Project.fromJson(e)).toList();
+        print("get all projects done");   ///
       }
     });
   }
 
-  Future getProject(int projectId) async {
-    try {
-      loading = true;
+  Future getAlmostFullProjects() {
+    print("get almost full projects start");  ///
 
+    return HttpRequest().get(path: "/project/tab").then((response) {
+      if (response.statusCode == 200) {
+        final jsonUtf8 = decodeKo(response);
+        final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+        _almostFullProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+        print("get almost full projects done"); ///
+      }
+    });
+  }
+
+  Future<Project> getProject(int projectId) async {
+    Project project;
+
+    try {
       await HttpRequest()
         .get(path: "/project/$projectId")
         .then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            return Project.fromJson(json.decode(jsonUtf8)["data"]);
-          } else {
-            final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
-            showToast(success: false, msg: err);
+            project = Project.fromJson(json.decode(jsonUtf8)["data"]);
           }
       });
-      loading = false;
     } catch (e) {
       print(e);
-    } finally {
-      notifyListeners();
     }
+
+    return project;
   }
 
-  Future searchProjects(dynamic queryParams) async {
-    try {
-      loading = true;
+  Future<void> searchProjects(dynamic queryParams) async {
+    loading = true;
 
+    try {
+      print("start fetch filtered projects"); ///
       await HttpRequest()
         .get(path: "/project/search", queryParams: queryParams)
         .then((response) {
@@ -103,25 +103,23 @@ class Projects extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
             _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
-          } else {
-            final jsonUtf8 = decodeKo(response);
-            final String err = json.decode(jsonUtf8)["message"];
-            showToast(success: false, msg: err);
+            print("set filted projects done");  ///
           }
       });
     } catch (e) {
       print(e);
     } finally {
       loading = false;
+      print("toggled loading: $loading"); ///
       notifyListeners();
     }
   }
 
-  Future createProject({Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> createProject({Map<String, dynamic> fields, dynamic files}) async {
     bool successful = false;
+    loading = true;
 
     try {
-      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       if (authToken.isNotEmpty) {
@@ -143,20 +141,20 @@ class Projects extends ChangeNotifier with Toast {
             }
           });
       }
-
-      return successful;
     } catch (e) {
       print(e);
     } finally {
       loading = false;
     }
+
+    return successful;
   }
 
-  Future applyProject(int projectId, dynamic queryParams) async {
+  Future<bool> applyProject(int projectId, dynamic queryParams) async {
     bool res = false;
+    loading = true;
 
     try {
-      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       if (authToken.isNotEmpty) {
