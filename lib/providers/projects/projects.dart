@@ -55,6 +55,10 @@ class Projects extends ChangeNotifier with Toast {
         final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
         _projects = jsonList.map((e) => Project.fromJson(e)).toList();
         print("get all projects done");   ///
+      } else {
+        final jsonUtf8 = decodeKo(response);
+        final String err = json.decode(jsonUtf8)["message"];
+        showToast(success: false, msg: err);
       }
     });
   }
@@ -68,6 +72,10 @@ class Projects extends ChangeNotifier with Toast {
         final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
         _almostFullProjects = jsonList.map((e) => Project.fromJson(e)).toList();
         print("get almost full projects done"); ///
+      } else {
+        final jsonUtf8 = decodeKo(response);
+        final String err = json.decode(jsonUtf8)["message"];
+        showToast(success: false, msg: err);
       }
     });
   }
@@ -82,6 +90,10 @@ class Projects extends ChangeNotifier with Toast {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
             project = Project.fromJson(json.decode(jsonUtf8)["data"]);
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
       });
     } catch (e) {
@@ -104,6 +116,10 @@ class Projects extends ChangeNotifier with Toast {
             final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
             _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
             print("set filted projects done");  ///
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
           }
       });
     } catch (e) {

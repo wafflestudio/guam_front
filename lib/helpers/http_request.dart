@@ -94,9 +94,7 @@ class HttpRequest with Toast {
           headers: {'Content-Type': "application/json", HttpHeaders.authorizationHeader: authToken},
       );
 
-      if (response.statusCode == 200) {
-        return response;
-      }
+      return response;
     } catch (e) {
       print("Error on DELETE request: $e");
       showToast(success: false);

@@ -27,6 +27,10 @@ class Stacks extends ChangeNotifier with Toast {
           final List<dynamic> jsonList = json.decode(jsonUtf8);
           _stacks = jsonList.map((e) => StackModel.Stack.fromJson(e)).toList();
           print("fetch stacks done"); ///
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
         }
       });
     } catch (e) {
