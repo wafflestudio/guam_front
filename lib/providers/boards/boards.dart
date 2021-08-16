@@ -44,19 +44,25 @@ class Boards extends ChangeNotifier with Toast {
     fetchBoardIds();
   }
 
-  Future fetchBoardIds() async {
-    try {
-      loading = true;
+  Future<void> fetchBoardIds() async {
+    loading = true;
 
+    try {
       if (_authProvider.userSignedIn()) {
         await HttpRequest()
           .get(
             path: "user/project/ids",
             authToken: await _authProvider.getFirebaseIdToken()
           ).then((response) {
-            final jsonUtf8 = decodeKo(response);
-            final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-            _boards = jsonList.map((e) => Project.fromJson({ "id": e })).toList();
+            if (response.statusCode == 200) {
+              final jsonUtf8 = decodeKo(response);
+              final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+              _boards = jsonList.map((e) => Project.fromJson({ "id": e })).toList();
+            } else {
+              final jsonUtf8 = decodeKo(response);
+              final String err = json.decode(jsonUtf8)["message"];
+              showToast(success: false, msg: err);
+            }
         });
       }
     } catch (e) {
@@ -66,9 +72,11 @@ class Boards extends ChangeNotifier with Toast {
     }
   }
 
-  Future fetchBoard(int projectId) async {
+  Future<void> fetchBoard(int projectId) async {
+    print("Start fetching board");  ///
+    loading = true;
+
     try {
-      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
@@ -76,27 +84,34 @@ class Boards extends ChangeNotifier with Toast {
           path: "/project/$projectId",
           authToken: authToken
         ).then((response) {
-          final jsonUtf8 = decodeKo(response);
-          final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
-          boards[renderBoardIdx] = Project.fromJson(jsonData);
+          if (response.statusCode == 200) {
+            final jsonUtf8 = decodeKo(response);
+            final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
+            boards[renderBoardIdx] = Project.fromJson(jsonData);
+            print("Finished fetching board info");  ///
+          } else {
+            final jsonUtf8 = decodeKo(response);
+            final String err = json.decode(jsonUtf8)["message"];
+            showToast(success: false, msg: err);
+          }
       });
 
+      // 순서 중요! Thread.dart 에서 task
       await setTasks();
       await fetchThreads();
-
-      loading = false;
     } catch (e) {
       print(e);
     } finally {
+      loading = false;
       notifyListeners();
     }
   }
 
-  Future editProject({int projectId, Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> editProject({int projectId, Map<String, dynamic> fields, dynamic files}) async {
+    bool res = false;
+
     try {
-      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
-      bool res = false;
 
       if (authToken.isNotEmpty) {
         await HttpRequest()
@@ -110,21 +125,22 @@ class Boards extends ChangeNotifier with Toast {
               res = true;
               showToast(success: true, msg: "프로젝트를 수정했습니다.");
             } else {
-              final jsonUtf8 = decodeKo(response);
-              final String err = json.decode(jsonUtf8)["message"];
-              showToast(success: false, msg: err);
+              response.stream.bytesToString().then((val) {
+                final String err = json.decode(val)["message"];
+                showToast(success: false, msg: err);
+              });
             }
           });
       }
-      return res;
     } catch (e) {
       print(e);
-    } finally {
-      loading = false;
     }
+
+    return res;
   }
 
-  Future setTasks() async {
+  Future<void> setTasks() async {
+    print("Start set tasks"); ///
     List<UserTask> newTasks = [];
 
     for (UserTask briefTask in currentBoard.tasks) {
@@ -136,6 +152,7 @@ class Boards extends ChangeNotifier with Toast {
     }
 
     currentBoard.tasks = newTasks;
+    print("Finished set tasks");  ///
   }
 
   Future<UserTask> fetchTask(int taskId) async {
@@ -165,7 +182,7 @@ class Boards extends ChangeNotifier with Toast {
     return userTask;
   }
 
-  Future createTaskMsg({int taskId, Map<String, String> body}) async {
+  Future<bool> createTaskMsg({int taskId, Map<String, String> body}) async {
     bool res = false;
 
     try {
@@ -196,7 +213,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future updateTaskMsg({int taskMsgId, Map<String, String> body}) async {
+  Future<void> updateTaskMsg({int taskMsgId, Map<String, String> body}) async {
     bool res = false;
 
     try {
@@ -258,8 +275,10 @@ class Boards extends ChangeNotifier with Toast {
   }
 
   Future fetchThreads({dynamic queryParams}) async {
+    print("Start fetch threads"); ///
+    loading = true;
+
     try {
-      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
@@ -276,6 +295,7 @@ class Boards extends ChangeNotifier with Toast {
           final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
           final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
           currentBoard.threads = threads;
+          print("Finished fetch threads"); ///
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
@@ -320,7 +340,7 @@ class Boards extends ChangeNotifier with Toast {
     return comments;
   }
 
-  Future postThread({Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> postThread({Map<String, dynamic> fields, dynamic files}) async {
     bool res = false;
 
     try {
@@ -337,9 +357,11 @@ class Boards extends ChangeNotifier with Toast {
           showToast(success: true, msg: "스레드가 등록되었습니다.");
           res = true;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          showToast(success: false, msg: err);        }
+          response.stream.bytesToString().then((val) {
+            final String err = json.decode(val)["message"];
+            showToast(success: false, msg: err);
+          });
+        }
       });
     } catch (e) {
       print(e);
@@ -350,7 +372,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future editThreadContent({int threadId, Map<String, dynamic> fields}) async {
+  Future<bool> editThreadContent({int threadId, Map<String, dynamic> fields}) async {
     bool res = false;
 
     try {
@@ -380,7 +402,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future setNotice(int threadId) async {
+  Future<bool> setNotice(int threadId) async {
     bool res = false;
 
     try {
@@ -438,16 +460,16 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future deleteThreadImage({int threadId, int imageId}) async {
+  Future<bool> deleteThreadImage({int threadId, int imageId}) async {
     bool res = false;
 
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
-      .delete(
-        path: "/thread/$threadId/image/$imageId",
-        authToken: authToken,
+        .delete(
+         path: "/thread/$threadId/image/$imageId",
+         authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
           showToast(success: true, msg: "이미지가 삭제되었습니다.");
@@ -467,7 +489,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
     bool res = false;
 
     try {
@@ -484,9 +506,10 @@ class Boards extends ChangeNotifier with Toast {
           showToast(success: true, msg: "답글이 등록되었습니다.");
           res = true;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          showToast(success: false, msg: err);
+          response.stream.bytesToString().then((val) {
+            final String err = json.decode(val)["message"];
+            showToast(success: false, msg: err);
+          });
         }
       });
     } catch (e) {
@@ -498,7 +521,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future editCommentContent({int commentId, Map<String, dynamic> fields}) async {
+  Future<bool> editCommentContent({int commentId, Map<String, dynamic> fields}) async {
     bool res = false;
 
     try {
@@ -526,7 +549,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future deleteComment(int commentId) async {
+  Future<bool> deleteComment(int commentId) async {
     bool res = false;
 
     try {
@@ -555,16 +578,16 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future deleteCommentImage({int commentId, int imageId}) async {
+  Future<bool> deleteCommentImage({int commentId, int imageId}) async {
     bool res = false;
 
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
-      .delete(
-        path: "/comment/$commentId/image/$imageId",
-        authToken: authToken,
+        .delete(
+          path: "/comment/$commentId/image/$imageId",
+          authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
           showToast(success: true, msg: "이미지가 삭제되었습니다.");
@@ -582,7 +605,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future acceptDecline({int userId, bool accept}) async {
+  Future<void> acceptDecline({int userId, bool accept}) async {
     bool res = false;
 
     try {
@@ -590,7 +613,7 @@ class Boards extends ChangeNotifier with Toast {
 
       await HttpRequest()
         .post(
-          path: "/project/${currentBoard.id}/$userId",
+          path: "/project/${currentBoard.id}/115",
           authToken: authToken,
           queryParams: { "accept": "$accept" }
       ).then((response) {
@@ -612,7 +635,7 @@ class Boards extends ChangeNotifier with Toast {
     }
   }
 
-  Future quitBoard() async {
+  Future<bool> quitBoard() async {
     bool res = false;
 
     try {
@@ -642,7 +665,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future deleteBoard() async {
+  Future<bool> deleteBoard() async {
     bool res = false;
 
     try {

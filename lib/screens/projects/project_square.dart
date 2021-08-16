@@ -64,7 +64,7 @@ class ProjectSquare extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
+            if (project.tasks != null) Container(
               padding: EdgeInsets.all(10),
               alignment: Alignment.topLeft,
               child: Stack(
@@ -86,7 +86,7 @@ class ProjectSquare extends StatelessWidget {
                         )
                       : Positioned(
                           child: Padding(
-                            padding: EdgeInsets.only(left: 60, top: 3),
+                            padding: EdgeInsets.only(left: 20.0 * maxProfileCnt, top: 3),
                             child: Text(
                               "+${(project.tasks.length - maxProfileCnt)}",
                               style: TextStyle(fontSize: 12, color: Colors.white),

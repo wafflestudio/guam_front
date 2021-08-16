@@ -82,7 +82,6 @@ class ImagesCarouselPageState extends State<ImagesCarouselPage> {
                     deleteFunc: () async {
                       await widget.deleteFunc(imageId: thumbnailsState[currPage].id)
                         .then((successful) {
-                          print(successful);
                           if (successful) {
                             Navigator.of(context).pop(); // pop Modal Bottom Content
                             afterDelete();
