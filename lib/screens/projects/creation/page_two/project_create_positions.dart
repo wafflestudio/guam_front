@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guam_front/screens/projects/creation/page_two/project_create_selected_positions.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../create_filter_chip.dart';
 import '../create_filter_value_chip.dart';
@@ -168,32 +169,7 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
         if ((widget.input["BACKEND"]["stack"] != '') ||
             (widget.input["FRONTEND"]["stack"] != '') ||
             (widget.input["DESIGNER"]["stack"] != ''))
-          Wrap(
-            children: [
-              ...filterOptions.entries.map((e) =>
-                  (widget.input[e.key]["stack"].toString() != '')
-                    ? Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              translate(e.key.toString()),
-                              style: TextStyle(fontSize: 14, color: Colors.white)),
-                            Text(
-                              widget.input[e.key.toString()]["stack"].toString(),
-                              style: TextStyle(fontSize: 14, color: Colors.white)),
-                            Text(
-                              widget.input[e.key.toString()]["headcount"].toString(),
-                              style: TextStyle(fontSize: 14, color: Colors.white)),
-                          ]
-                        )
-                      )
-                    : Container()
-              )
-            ],
-          ),
+          ProjectCreateSelectedPositions(widget.input)
       ])
     );
   }
