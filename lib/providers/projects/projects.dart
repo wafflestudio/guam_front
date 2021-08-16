@@ -30,70 +30,84 @@ class Projects extends ChangeNotifier with Toast {
   set authProvider(Authenticate authProvider) => _authProvider = authProvider;
 
   Future fetchProjects() async {
+    loading = true;
+
     try {
-      loading = true;
-
-      await HttpRequest().get(path: "/project/list").then((response) {
-        if (response.statusCode == 200) {
-          final jsonUtf8 = decodeKo(response);
-          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-          _projects = jsonList.map((e) => Project.fromJson(e)).toList();
-        } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          showToast(success: false, msg: err);
-        }
-      });
-
-      await HttpRequest().get(path: "/project/tab").then((response) {
-        if (response.statusCode == 200) {
-          final jsonUtf8 = decodeKo(response);
-          final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
-          _almostFullProjects =
-              jsonList.map((e) => Project.fromJson(e)).toList();
-        } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          showToast(success: false, msg: err);
-        }
-      });
-
-      loading = false;
+      await Future.wait([
+        getAllProjects(),
+        getAlmostFullProjects(),
+      ]);
+      print("fetch projects done.");  ///
     } catch (e) {
       print(e);
     } finally {
+      loading = false;
       notifyListeners();
     }
   }
 
-  Future getProject(int projectId) async {
-    try {
-      loading = true;
+  Future getAllProjects() {
+    print("get all projects start");  ///
 
+    return HttpRequest().get(path: "/project/list").then((response) {
+      if (response.statusCode == 200) {
+        final jsonUtf8 = decodeKo(response);
+        final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+        _projects = jsonList.map((e) => Project.fromJson(e)).toList();
+        print("get all projects done");   ///
+      } else {
+        final jsonUtf8 = decodeKo(response);
+        final String err = json.decode(jsonUtf8)["message"];
+        showToast(success: false, msg: err);
+      }
+    });
+  }
+
+  Future getAlmostFullProjects() {
+    print("get almost full projects start");  ///
+
+    return HttpRequest().get(path: "/project/tab").then((response) {
+      if (response.statusCode == 200) {
+        final jsonUtf8 = decodeKo(response);
+        final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
+        _almostFullProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+        print("get almost full projects done"); ///
+      } else {
+        final jsonUtf8 = decodeKo(response);
+        final String err = json.decode(jsonUtf8)["message"];
+        showToast(success: false, msg: err);
+      }
+    });
+  }
+
+  Future<Project> getProject(int projectId) async {
+    Project project;
+
+    try {
       await HttpRequest()
         .get(path: "/project/$projectId")
         .then((response) {
           if (response.statusCode == 200) {
             final jsonUtf8 = decodeKo(response);
-            return Project.fromJson(json.decode(jsonUtf8)["data"]);
+            project = Project.fromJson(json.decode(jsonUtf8)["data"]);
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
             showToast(success: false, msg: err);
           }
       });
-      loading = false;
     } catch (e) {
       print(e);
-    } finally {
-      notifyListeners();
     }
+
+    return project;
   }
 
-  Future searchProjects(dynamic queryParams) async {
-    try {
-      loading = true;
+  Future<void> searchProjects(dynamic queryParams) async {
+    loading = true;
 
+    try {
+      print("start fetch filtered projects"); ///
       await HttpRequest()
         .get(path: "/project/search", queryParams: queryParams)
         .then((response) {
@@ -101,6 +115,7 @@ class Projects extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
             _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
+            print("set filted projects done");  ///
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
@@ -111,15 +126,16 @@ class Projects extends ChangeNotifier with Toast {
       print(e);
     } finally {
       loading = false;
+      print("toggled loading: $loading"); ///
       notifyListeners();
     }
   }
 
-  Future createProject({Map<String, dynamic> fields, dynamic files}) async {
-    bool res = false;
+  Future<bool> createProject({Map<String, dynamic> fields, dynamic files}) async {
+    bool successful = false;
+    loading = true;
 
     try {
-      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       if (authToken.isNotEmpty) {
@@ -129,14 +145,15 @@ class Projects extends ChangeNotifier with Toast {
             authToken: authToken,
             fields: fields,
             files: files,
-          ).then((response) async {
+          ).then((response) {
             if (response.statusCode == 200) {
               showToast(success: true, msg: "프로젝트가 생성되었습니다.");
-              res = true;
+              successful = true;
             } else {
-              final jsonUtf8 = decodeKo(response);
-              final String err = json.decode(jsonUtf8)["message"];
-              showToast(success: false, msg: err);
+              response.stream.bytesToString().then((val) {
+                final String err = json.decode(val)["message"];
+                showToast(success: false, msg: err);
+              });
             }
           });
       }
@@ -146,14 +163,14 @@ class Projects extends ChangeNotifier with Toast {
       loading = false;
     }
 
-    return res;
+    return successful;
   }
 
-  Future applyProject(int projectId, dynamic queryParams) async {
+  Future<bool> applyProject(int projectId, dynamic queryParams) async {
     bool res = false;
+    loading = true;
 
     try {
-      loading = true;
       String authToken = await _authProvider.getFirebaseIdToken();
 
       if (authToken.isNotEmpty) {
