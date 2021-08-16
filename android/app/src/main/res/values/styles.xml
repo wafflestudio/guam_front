@@ -10,6 +10,6 @@
     </style>
 
     <style name="SplashTheme" parent="@android:style/Theme.Black.NoTitleBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:background">@drawable/splash_background</item>
     </style>
 </resources>
