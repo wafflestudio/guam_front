@@ -489,7 +489,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
+  Future<bool> postComment({int threadId, Map<String, dynamic> fields, dynamic files}) async {
     bool res = false;
 
     try {
@@ -498,8 +498,7 @@ class Boards extends ChangeNotifier with Toast {
       await HttpRequest()
         .postMultipart(
           authToken: authToken,
-        path: "/comment/create/1111",
-        // path: "/comment/create/$threadId",
+          path: "/comment/create/$threadId",
           fields: fields,
           files: files,
       ).then((response) {
@@ -507,9 +506,10 @@ class Boards extends ChangeNotifier with Toast {
           showToast(success: true, msg: "답글이 등록되었습니다.");
           res = true;
         } else {
-          final jsonUtf8 = decodeKo(response);
-          final String err = json.decode(jsonUtf8)["message"];
-          showToast(success: false, msg: err);
+          response.stream.bytesToString().then((val) {
+            final String err = json.decode(val)["message"];
+            showToast(success: false, msg: err);
+          });
         }
       });
     } catch (e) {
@@ -521,7 +521,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future editCommentContent({int commentId, Map<String, dynamic> fields}) async {
+  Future<bool> editCommentContent({int commentId, Map<String, dynamic> fields}) async {
     bool res = false;
 
     try {
@@ -549,7 +549,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future deleteComment(int commentId) async {
+  Future<bool> deleteComment(int commentId) async {
     bool res = false;
 
     try {
@@ -578,16 +578,16 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future deleteCommentImage({int commentId, int imageId}) async {
+  Future<bool> deleteCommentImage({int commentId, int imageId}) async {
     bool res = false;
 
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
 
       await HttpRequest()
-      .delete(
-        path: "/comment/$commentId/image/$imageId",
-        authToken: authToken,
+        .delete(
+          path: "/comment/$commentId/image/$imageId",
+          authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
           showToast(success: true, msg: "이미지가 삭제되었습니다.");
