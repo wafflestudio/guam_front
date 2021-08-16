@@ -32,9 +32,9 @@ class Comment extends StatelessWidget {
               context: context,
               builder: (_) => BottomModalContent(
                   requireConfirm: true,
-                  editText: "답글 편집",
-                  deleteText: "답글 삭제",
-                  deleteDetailText: "답글을 삭제하시겠습니까?",
+                  editText: "댓글 편집",
+                  deleteText: "댓글 삭제",
+                  deleteDetailText: "댓글을 삭제하시겠습니까?",
                   editFunc: () {
                     switchToEditMode(editTargetComment: comment);
                     Navigator.of(context).pop(); // pops Modal Bottom Content Widget
@@ -49,9 +49,9 @@ class Comment extends StatelessWidget {
                 context: context,
                 builder: (_) => BottomModalContent(
                     requireConfirm: true,
-                    editText: "답글 편집",
-                    deleteText: "답글 삭제",
-                    deleteDetailText: "답글을 삭제하시겠습니까?",
+                    editText: "댓글 편집",
+                    deleteText: "댓글 삭제",
+                    deleteDetailText: "댓글을 삭제하시겠습니까?",
                     editFunc: () {
                       switchToEditMode(editTargetComment: comment);
                       Navigator.of(context).pop(); // pops Modal Bottom Content Widget

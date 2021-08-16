@@ -503,7 +503,7 @@ class Boards extends ChangeNotifier with Toast {
           files: files,
       ).then((response) {
         if (response.statusCode == 200) {
-          showToast(success: true, msg: "답글이 등록되었습니다.");
+          showToast(success: true, msg: "댓글이 등록되었습니다.");
           res = true;
         } else {
           response.stream.bytesToString().then((val) {
@@ -534,7 +534,7 @@ class Boards extends ChangeNotifier with Toast {
           body: fields,
       ).then((response) {
         if (response.statusCode == 200) {
-          showToast(success: true, msg: "답글이 수정되었습니다.");
+          showToast(success: true, msg: "댓글이 수정되었습니다.");
           res = true;
         } else {
           final jsonUtf8 = decodeKo(response);
@@ -561,7 +561,7 @@ class Boards extends ChangeNotifier with Toast {
           authToken: authToken,
       ).then((response) {
         if (response.statusCode == 200) {
-          showToast(success: true, msg: "답글이 삭제되었습니다.");
+          showToast(success: true, msg: "댓글이 삭제되었습니다.");
           res = true;
         } else {
           final jsonUtf8 = decodeKo(response);

@@ -22,7 +22,7 @@ class CommentsContainer extends StatelessWidget {
         children: [
           iconTitle(
               icon: Icons.message_outlined,
-              title: "${comments.length}개의 답글"
+              title: "${comments.length}개의 댓글"
           ),
           ListView.builder(
             physics: NeverScrollableScrollPhysics(),
