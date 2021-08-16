@@ -111,9 +111,10 @@ class Authenticate extends ChangeNotifier with Toast {
               showToast(success: true, msg: "프로필을 생성하였습니다.");
               res = true;
             } else {
-              final jsonUtf8 = decodeKo(response);
-              final String err = json.decode(jsonUtf8)["message"];
-              showToast(success: false, msg: err);
+              response.stream.bytesToString().then((val) {
+                final String err = json.decode(val)["message"];
+                showToast(success: false, msg: err);
+              });
             }
           });
       }
