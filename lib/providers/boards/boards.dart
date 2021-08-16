@@ -605,7 +605,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future acceptDecline({int userId, bool accept}) async {
+  Future<void> acceptDecline({int userId, bool accept}) async {
     bool res = false;
 
     try {
@@ -613,7 +613,7 @@ class Boards extends ChangeNotifier with Toast {
 
       await HttpRequest()
         .post(
-          path: "/project/${currentBoard.id}/$userId",
+          path: "/project/${currentBoard.id}/115",
           authToken: authToken,
           queryParams: { "accept": "$accept" }
       ).then((response) {
@@ -635,7 +635,7 @@ class Boards extends ChangeNotifier with Toast {
     }
   }
 
-  Future quitBoard() async {
+  Future<bool> quitBoard() async {
     bool res = false;
 
     try {
@@ -665,7 +665,7 @@ class Boards extends ChangeNotifier with Toast {
     return res;
   }
 
-  Future deleteBoard() async {
+  Future<bool> deleteBoard() async {
     bool res = false;
 
     try {
