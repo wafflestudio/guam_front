@@ -50,7 +50,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
         children: [
           ProjectApply(setMyPosition),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            padding: EdgeInsets.all(15),
             child: Container(
               decoration: BoxDecoration(color: Colors.white),
               child: Theme(
