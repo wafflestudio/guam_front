@@ -51,19 +51,19 @@ class ProfileLink extends StatelessWidget {
                             icon:
                                 Image.asset('assets/images/github-icon.png'))),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3),
-                    child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: IconButton(
-                          onPressed: () {},
-                          // flutter 공식 plugin에서 지원하는 share 라이브러리가 있긴 한데, deprecated군요...
-                          padding: EdgeInsets.only(bottom: 2),
-                          iconSize: 20,
-                          icon: Icon(Icons.ios_share)),
-                    ),
-                  )
+                  // Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: 3),
+                  //   child: SizedBox(
+                  //     height: 24,
+                  //     width: 24,
+                  //     child: IconButton(
+                  //         onPressed: () {},
+                  //         // flutter 공식 plugin에서 지원하는 share 라이브러리가 있긴 한데, deprecated군요...
+                  //         padding: EdgeInsets.only(bottom: 2),
+                  //         iconSize: 20,
+                  //         icon: Icon(Icons.ios_share)),
+                  //   ),
+                  // )
                 ],
               ),
             ),
