@@ -613,7 +613,7 @@ class Boards extends ChangeNotifier with Toast {
 
       await HttpRequest()
         .post(
-          path: "/project/${currentBoard.id}/115",
+          path: "/project/${currentBoard.id}/$userId",
           authToken: authToken,
           queryParams: { "accept": "$accept" }
       ).then((response) {
