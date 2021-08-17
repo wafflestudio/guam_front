@@ -51,24 +51,25 @@ class ProjectDetailBody extends StatelessWidget {
             child: Column(
               children: [
                 _startBar("08951C", 100, 5),
-                Row(children: <Widget>[
-                  Icon(Icons.timer),
-                  Text(' 진행 기간     ',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                  Text(
-                    '${_selectDue(project.due)}',
-                    style: TextStyle(fontSize: 14),
-                  )
-                ]),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.timer),
+                    Text(
+                      ' 진행 기간     ',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
+                    ),
+                    Text('${_selectDue(project.due)}', style: TextStyle(fontSize: 14))
+                  ]
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: 10, bottom: 8, left: 2),
                   child: Row(
                     children: [
                       Icon(Icons.people, size: 20),
-                      Text(' 참여 현황 ',
-                        style: TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text(
+                        ' 참여 현황 ',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
+                      ),
                     ],
                   ),
                 ),
@@ -85,53 +86,52 @@ class ProjectDetailBody extends StatelessWidget {
                         ],
                       ),
                       width: size.width * 0.3,
-                      height: size.height * 0.2,
                       padding: EdgeInsets.only(top: 10),
                     ),
                     Container(
+                      width: size.width * 0.3,
+                      padding: EdgeInsets.only(top: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _columnName("기술 스택"),
-                          project.techStacks != [] &&
-                            project.techStacks.length > 2
-                              ? _text(_selectTechStack(project.techStacks, 'BACKEND'))
-                              : Text(""),
-                          project.techStacks != [] &&
-                            project.techStacks.length > 2
-                              ? _text(_selectTechStack(project.techStacks, 'FRONTEND'))
-                              : Text(""),
-                          project.techStacks != [] &&
-                            project.techStacks.length > 2
-                              ? _text(_selectTechStack(project.techStacks, 'DESIGNER'))
-                              : Text(""),
+                          project.techStacks != [] && project.techStacks.length > 2
+                            ? _text(_selectTechStack(project.techStacks, 'BACKEND'))
+                            : Text(""),
+                          project.techStacks != [] && project.techStacks.length > 2
+                            ? _text(_selectTechStack(project.techStacks, 'FRONTEND'))
+                            : Text(""),
+                          project.techStacks != [] && project.techStacks.length > 2
+                            ? _text(_selectTechStack(project.techStacks, 'DESIGNER'))
+                            : Text(""),
                         ],
                       ),
-                      width: size.width * 0.3,
-                      height: size.height * 0.2,
-                      padding: EdgeInsets.only(top: 10),
                     ),
                     Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _columnName("인원 현황"),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8, bottom: 5),
+                            child: _columnName("인원 현황"),
+                          ),
                           _percentBar(
-                              size,
-                              project.backHeadCount - project.backLeftCount,
-                              project.backHeadCount),
+                            size: size,
+                            currentCnt: project.backHeadCount - project.backLeftCount,
+                            totalCnt: project.backHeadCount,
+                          ),
                           _percentBar(
-                              size,
-                              project.frontHeadCount - project.frontLeftCount,
-                              project.frontHeadCount),
+                            size: size,
+                            currentCnt: project.frontHeadCount - project.frontLeftCount,
+                            totalCnt: project.frontHeadCount,
+                          ),
                           _percentBar(
-                              size,
-                              project.designHeadCount - project.designLeftCount,
-                              project.designHeadCount)
+                            size: size,
+                            currentCnt: project.designHeadCount - project.designLeftCount,
+                            totalCnt: project.designHeadCount,
+                          )
                         ],
                       ),
-                      height: size.height * 0.2,
-                      padding: EdgeInsets.only(top: 10),
                     ),
                   ],
                 ),
@@ -161,37 +161,44 @@ class ProjectDetailBody extends StatelessWidget {
 
   Widget _text(String text) {
     return Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10),
-        child: Text(
-          '$text',
-          style: TextStyle(height: 1, fontSize: 14),
-        ));
+      padding: EdgeInsets.only(top: 10, bottom: 10),
+      child: Text(
+        '$text',
+        style: TextStyle(height: 1, fontSize: 14),
+      )
+    );
   }
 
   Widget _columnName(String attribute) {
-    return Text("$attribute",
-        style: TextStyle(
-            color: HexColor("#828282"),
-            fontSize: 14,
-            fontWeight: FontWeight.bold));
+    return Text(
+      "$attribute",
+      style: TextStyle(
+        color: HexColor("#828282"),
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      )
+    );
   }
 
-  Widget _percentBar(Size size, int currentCount, int totalCount) {
+  Widget _percentBar({Size size, int currentCnt, int totalCnt}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 3),
+      padding: EdgeInsets.symmetric(vertical: 6),
       child: LinearPercentIndicator(
         width: size.width * 0.25,
         animation: true,
-        lineHeight: 25,
+        lineHeight: 20,
         animationDuration: 500,
-        percent: totalCount == 0 ? 0 : currentCount / totalCount,
-        center: Container(
-            padding: EdgeInsets.only(left: 37),
-            alignment: Alignment.centerRight,
-            child: Text("$totalCount",
-                style: TextStyle(fontSize: 12, color: Colors.white))),
+        percent: totalCnt == 0 ? 0 : currentCnt / totalCnt,
         backgroundColor: HexColor("#828282"),
         progressColor: HexColor("#8CE591"),
+        center: Container(
+          padding: EdgeInsets.only(left: 37),
+          alignment: Alignment.centerRight,
+          child: Text(
+            "$totalCnt",
+            style: TextStyle(fontSize: 12, color: Colors.white),
+          )
+        ),
       ),
     );
   }
