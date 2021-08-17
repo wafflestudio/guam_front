@@ -22,6 +22,7 @@ class MainActivity: FlutterActivity() {
                 override fun onAnimationEnd(animation: Animation?) {
                     //context 전환
                     startActivity(FlutterActivity.createDefaultIntent(this@MainActivity))
+                    finish()
                 }
             })
         }
