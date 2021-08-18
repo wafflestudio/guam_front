@@ -39,9 +39,9 @@ class _ProjectCreateTitleState extends State<ProjectCreateTitle> {
         ),
         Container(
           padding: EdgeInsets.only(left: 20, right: 20),
-          height: 70,
+          height: 75,
           child: TextFormField(
-          maxLength: 20,
+          maxLength: 30,
             onChanged: (text) {
               setState(() {widget.input["title"] = text;});
               widget.checkButtonEnable();
