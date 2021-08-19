@@ -55,7 +55,7 @@ class _MakeProfileImageState extends State<MakeProfileImage> {
                     borderRadius: BorderRadius.circular(100),
                     child: Image(
                       image: FileImage(File(_imageFile.path)),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     )),
             decoration: _imageFile == null && widget.profile.imageUrl == null
                 ? BoxDecoration(boxShadow: [
