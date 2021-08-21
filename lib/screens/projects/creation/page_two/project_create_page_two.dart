@@ -24,20 +24,24 @@ class ProjectCreatePageTwo extends StatefulWidget {
 class _ProjectCreatePageTwoState extends State<ProjectCreatePageTwo> {
   bool nextBtnEnabled;
 
-  void checkButtonEnable() => setState(() {
-    nextBtnEnabled =
-      widget.input['BACKEND']['id'] != 0 && widget.input['BACKEND']['stack'] != ''
-      && widget.input['FRONTEND']['id'] != 0 && widget.input['FRONTEND']['stack'] != ''
-      && widget.input['DESIGNER']['id'] != 0 && widget.input['DESIGNER']['stack'] != '';
-  });
+  bool allPositionsFilled() => widget.input['BACKEND']['id'] != 0
+      && widget.input['FRONTEND']['id'] != 0
+      && widget.input['DESIGNER']['id'] != 0;
+
+  bool notAllHeadCntZero() => widget.input['BACKEND']['headcount'] != 0
+          || widget.input['FRONTEND']['headcount'] != 0
+          || widget.input['DESIGNER']['headcount'] != 0;
+
+  void checkButtonEnable() {
+    setState(() {
+      nextBtnEnabled = allPositionsFilled() && notAllHeadCntZero();
+    });
+  }
 
   @override
   void initState() {
-    nextBtnEnabled =
-      widget.input['BACKEND']['id'] != 0 && widget.input['BACKEND']['stack'] != ''
-      && widget.input['FRONTEND']['id'] != 0 && widget.input['FRONTEND']['stack'] != ''
-      && widget.input['DESIGNER']['id'] != 0 && widget.input['DESIGNER']['stack'] != '';
     super.initState();
+    nextBtnEnabled = allPositionsFilled() && notAllHeadCntZero();
   }
 
   @override

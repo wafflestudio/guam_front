@@ -118,8 +118,11 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
             elevation: 5.0,
             fillColor: Colors.white24,
             child: Icon(Icons.remove, color: Colors.white),
-            onPressed: () => {
-              if (selectedKey != null) minusHeadcount(selectedKey),
+            onPressed: () {
+              if (selectedKey != null) {
+                minusHeadcount(selectedKey);
+                widget.checkButtonEnable();
+              }
             },
           ),
         ),
@@ -138,8 +141,11 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
             elevation: 5.0,
             fillColor: Colors.white24,
             child: Icon(Icons.add, color: Colors.white),
-            onPressed: () => {
-              if (selectedKey != null) addHeadcount(selectedKey),
+            onPressed: () {
+              if (selectedKey != null) {
+                addHeadcount(selectedKey);
+                widget.checkButtonEnable();
+              }
             },
           ),
         ),
@@ -175,14 +181,11 @@ class _ProjectCreatePositionsState extends State<ProjectCreatePositions> {
   }
 
   void addHeadcount(tech) {
-    setState(() => widget.input[tech]["headcount"]++);
+    widget.input[tech]["headcount"]++;
   }
 
   void minusHeadcount(tech) {
-    setState(() {
-      if (widget.input[tech]["headcount"] > 0)
-        widget.input[tech]["headcount"]--;
-    });
+    if (widget.input[tech]["headcount"] > 0) widget.input[tech]["headcount"]--;
   }
 
   void selectKey(String key, List<StackModel.Stack> value) {
