@@ -47,6 +47,8 @@ class Authenticate extends ChangeNotifier with Toast {
           showToast(success: false, msg: err);
         }
       });
+    } on FirebaseAuthException {
+      showToast(success: false, msg: "Firebase Auth 에 문제가 발생했습니다.");
     } catch (e) {
       showToast(success: false, msg: e.message);
     } finally {
@@ -56,7 +58,16 @@ class Authenticate extends ChangeNotifier with Toast {
   }
 
   Future<String> getFirebaseIdToken() async {
-    final idToken = await auth.currentUser.getIdToken();
+    String idToken;
+
+    try {
+      User user = auth.currentUser;
+      idToken = await user.getIdToken();
+    } on NoSuchMethodError {
+      throw new Exception("로그인이 필요합니다.");
+    } catch (e) {
+      throw new Exception(e);
+    }
 
     return idToken;
   }
@@ -65,6 +76,7 @@ class Authenticate extends ChangeNotifier with Toast {
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
+
       if (authToken.isNotEmpty) {
         await HttpRequest()
           .get(

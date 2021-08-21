@@ -158,7 +158,7 @@ class Projects extends ChangeNotifier with Toast {
           });
       }
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
       loading = false;
     }
@@ -188,7 +188,7 @@ class Projects extends ChangeNotifier with Toast {
         });
       }
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
       loading = false;
     }
