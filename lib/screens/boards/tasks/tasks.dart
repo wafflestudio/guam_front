@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
-import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import '../../../models/boards/user_task.dart';
 import '../iconTitle.dart';
 import 'task.dart';
+import '../../../commons/profile_thumbnail.dart';
 
 class Tasks extends StatefulWidget {
   final List<UserTask> tasks;
@@ -47,12 +47,21 @@ class TasksState extends State<Tasks> {
       child: Column(
         children: [
           iconTitle(icon: Icons.assignment_outlined, title: "작업 현황"),
+          ListView.builder(
+            itemBuilder: unselectedUsers.map((e) => ProfileThumbnail(
+              radius: 10,
+              profile: e.user,
+              showNickname: true,
+              textColor: Colors.black,
+              activateRedirectOnTap: false,
+              a
+            ))
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
-                Expanded(
-                  child: DecoratedBox(
+                DecoratedBox(
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(85, 88, 255, 1),
                       borderRadius: BorderRadius.circular(30),
@@ -62,7 +71,6 @@ class TasksState extends State<Tasks> {
                           vertical: 7, horizontal: 15
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ProfileThumbnail(
                             profile: selectedUserTask.user,
@@ -72,38 +80,38 @@ class TasksState extends State<Tasks> {
                             activateRedirectOnTap: true,
                             activateChangeTask: false,
                           ),
+                          Padding(padding: EdgeInsets.only(right: 20)),
                           positionChip(position: selectedUserTask.state),
                         ],
                       ),
                     )
-                  )
                 ),
                 Padding(padding: EdgeInsets.only(left: 5)),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(155, 155, 155, 0.3),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [...unselectedUsers.map((e) =>
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: ProfileThumbnail(
-                              profile: e.user,
-                              radius: 10,
-                              showNickname: false,
-                              activateRedirectOnTap: false,
-                              activateChangeTask: true,
-                              onTap: () => selectUser(e.user.id),
-                            ),
-                          )
-                      )]
-                    ),
-                  )
-                ),
+                // DecoratedBox(
+                //   decoration: BoxDecoration(
+                //     color: Color.fromRGBO(155, 155, 155, 0.3),
+                //     borderRadius: BorderRadius.circular(15),
+                //   ),
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(vertical: 6),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [...unselectedUsers.map((e) =>
+                //           Padding(
+                //             padding: EdgeInsets.symmetric(horizontal: 5),
+                //             child: ProfileThumbnail(
+                //               profile: e.user,
+                //               radius: 10,
+                //               showNickname: false,
+                //               activateRedirectOnTap: false,
+                //               activateChangeTask: true,
+                //               onTap: () => selectUser(e.user.id),
+                //             ),
+                //           )
+                //       )]
+                //     ),
+                //   )
+                // ),
               ],
             ),
           ),
