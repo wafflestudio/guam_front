@@ -40,7 +40,6 @@ class ProjectDetail extends StatelessWidget {
                   profile: project.leader,
                   showNickname: true,
                   activateRedirectOnTap: true,
-                  activateChangeTask: false,
                 ),
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

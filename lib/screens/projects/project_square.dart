@@ -82,7 +82,6 @@ class ProjectSquare extends StatelessWidget {
                               radius: 10,
                               showNickname: false,
                               activateRedirectOnTap: false,
-                              activateChangeTask: false,
                             ),
                           ),
                         )

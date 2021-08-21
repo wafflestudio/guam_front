@@ -11,7 +11,6 @@ class ProfileThumbnail extends StatelessWidget {
   final bool showNickname;
   final Color textColor;
   final bool activateRedirectOnTap;
-  final bool activateChangeTask;
   final Function onTap;
 
   ProfileThumbnail({
@@ -20,7 +19,6 @@ class ProfileThumbnail extends StatelessWidget {
     this.showNickname,
     this.textColor,
     this.activateRedirectOnTap,
-    this.activateChangeTask,
     this.onTap,
   });
 
@@ -45,9 +43,7 @@ class ProfileThumbnail extends StatelessWidget {
       onTap: activateRedirectOnTap
           ? () => Navigator.push(context,
               MaterialPageRoute(builder: (_) => AnotherProfileApp(profile.id)))
-          : activateChangeTask
-            ? onTap
-            : null,
+          : onTap,
       child: Container(
         child: Row(
           children: [
