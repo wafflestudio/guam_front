@@ -6,6 +6,7 @@ import 'package:guam_front/commons/techStack_thumbnail.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 
 import '../../helpers/http_request.dart';
 import '../../models/project.dart';
@@ -26,11 +27,14 @@ class ProjectBanner extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 10),
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      DetailProject(project, projectsProvider)));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => ChangeNotifierProvider.value(
+                value: context.read<Projects>(),
+                child: ProjectDetail(project),
+              )
+            )
+          );
         },
         child: Stack(
           children: [

@@ -3,6 +3,7 @@ import 'package:guam_front/commons/profile_thumbnail.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
 
 import '../../helpers/http_request.dart';
 import '../../models/project.dart';
@@ -25,11 +26,12 @@ class ProjectSquare extends StatelessWidget {
       margin: EdgeInsets.only(right: 10),
       child: InkWell(
         onTap: () {
-          if (allowOnTap) Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailProject(project, projectsProvider)
-              )
+          if (allowOnTap) Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => ChangeNotifierProvider.value(
+                value: context.read<Projects>(),
+                child: ProjectDetail(project),
+            ))
           );
         },
         child: Stack(

@@ -8,9 +8,8 @@ import '../../../models/project.dart';
 
 class ProjectDetailBody extends StatelessWidget {
   final Project project;
-  final Projects projectsProvider;
 
-  ProjectDetailBody(this.project, this.projectsProvider);
+  ProjectDetailBody(this.project);
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +137,7 @@ class ProjectDetailBody extends StatelessWidget {
               ],
             ),
           ),
-          ProjectDetailApply(project, projectsProvider),
+          ProjectDetailApply(project),
         ]),
       ),
     ]);

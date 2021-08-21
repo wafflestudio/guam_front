@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/models/project.dart';
+import 'package:provider/provider.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_apply.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ProjectDetailApply extends StatefulWidget {
   final Project project;
-  final Projects projectProvider;
 
-  ProjectDetailApply(this.project, this.projectProvider);
+  ProjectDetailApply(this.project);
 
   @override
   _ProjectDetailApplyState createState() => _ProjectDetailApplyState();
@@ -33,12 +33,12 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
     final Size size = MediaQuery.of(context).size;
 
     Future applyProject(int projectId, dynamic params) async {
-      return await widget.projectProvider
+      return await context.read<Projects>()
           .applyProject(projectId, params)
           .then((successful) {
         if (successful) {
           Navigator.pop(context);
-          widget.projectProvider.fetchProjects();
+          context.read<Projects>().fetchProjects();
           return successful;
         }
       });
