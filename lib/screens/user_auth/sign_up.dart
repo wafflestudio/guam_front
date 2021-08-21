@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import '../../commons/app_bar.dart';
+import '../../commons/custom_app_bar.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
 
@@ -10,7 +10,7 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar(title: '회원가입'),
+        appBar: CustomAppBar(title: '회원가입'),
         body: Column(
           children: [
             FormBuilder(
@@ -53,10 +53,10 @@ class SignUp extends StatelessWidget {
                   ),
                   FlatButton(
                       onPressed: () {
-                        if (_formKey.currentState.saveAndValidate()) {
-                          context.read<Authenticate>().signUp(params: _formKey.currentState.value)
-                              .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
-                        }
+                        // if (_formKey.currentState.saveAndValidate()) {
+                        //   context.read<Authenticate>().signUp(params: _formKey.currentState.value)
+                        //       .then((val) => Navigator.of(context).popUntil((route) => route.isFirst));
+                        // }
                       },
                       child: const Text('확인')
                   )
