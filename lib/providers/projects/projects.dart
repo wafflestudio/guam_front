@@ -166,7 +166,7 @@ class Projects extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> applyProject(int projectId, dynamic queryParams) async {
+  Future<bool> applyProject({int projectId, dynamic queryParams}) async {
     bool res = false;
     loading = true;
 
