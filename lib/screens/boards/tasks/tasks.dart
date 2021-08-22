@@ -67,13 +67,11 @@ class TasksState extends State<Tasks> {
               ),
               itemCount: unselectedUsers.length,
               scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
             ),
             constraints: BoxConstraints(maxHeight: 30),
             margin: EdgeInsets.only(bottom: 10),
           ),
           Container(
-            width: double.infinity,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -82,36 +80,33 @@ class TasksState extends State<Tasks> {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(85, 88, 255, 1),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 7, horizontal: 15
-                              ),
-                              child: Row(
-                                children: [
-                                  ProfileThumbnail(
-                                    profile: selectedUserTask.user,
-                                    radius: 12,
-                                    showNickname: true,
-                                    textColor: Colors.white,
-                                    activateRedirectOnTap: true,
-                                  ),
-                                  Padding(padding: EdgeInsets.only(right: 20)),
-                                  positionChip(position: selectedUserTask.state),
-                                ],
-                              ),
-                            )
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(85, 88, 255, 1),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        Padding(padding: EdgeInsets.only(left: 5))
-                      ],
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 7, horizontal: 15
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ProfileThumbnail(
+                                profile: selectedUserTask.user,
+                                radius: 12,
+                                showNickname: true,
+                                textColor: Colors.white,
+                                activateRedirectOnTap: true,
+                              ),
+                              Padding(padding: EdgeInsets.only(right: 20)),
+                              positionChip(position: selectedUserTask.state),
+                            ],
+                          ),
+                        )
                     ),
                     Task(task: selectedUserTask)
                   ],
