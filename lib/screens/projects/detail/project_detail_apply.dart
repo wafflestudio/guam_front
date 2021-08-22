@@ -1,46 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/models/project.dart';
+import 'package:provider/provider.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_apply.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'apply_button.dart';
 
 class ProjectDetailApply extends StatefulWidget {
   final Project project;
-  final Projects projectProvider;
 
-  ProjectDetailApply(this.project, this.projectProvider);
+  ProjectDetailApply(this.project);
 
   @override
   _ProjectDetailApplyState createState() => _ProjectDetailApplyState();
 }
 
 class _ProjectDetailApplyState extends State<ProjectDetailApply> {
+  final TextEditingController introController = TextEditingController();
   String myPosition;
-  final TextEditingController _introductionController = TextEditingController();
+  bool fieldsFulfilled;
+
+  bool myPositionFilled() => myPosition != null && myPosition != "";
+  bool introFilled() => introController.text != null && introController.text != "";
+
+  @override
+  void initState() {
+    super.initState();
+    fieldsFulfilled = false;
+  }
 
   @override
   void dispose() {
-    _introductionController.dispose();
+    introController.dispose();
     super.dispose();
   }
 
   void setMyPosition(String position) {
-    setState(() => myPosition = position);
+    setState(() {
+      myPosition = position;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
 
-    Future applyProject(int projectId, dynamic params) async {
-      return await widget.projectProvider
-          .applyProject(projectId, params)
-          .then((successful) {
-        if (successful) {
-          Navigator.pop(context);
-          widget.projectProvider.fetchProjects();
-          return successful;
-        }
+    void applyProject({dynamic params}) {
+      context.read<Projects>().applyProject(
+          projectId: widget.project.id,
+          queryParams: {
+            "introduction": introController.text,
+            "position": myPosition,
+          }
+        ).then((successful) {
+          if (successful) {
+            Navigator.pop(context);
+          }
       });
     }
 
@@ -57,7 +71,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
                 data: ThemeData(primaryColor: HexColor("#5A5A5A").withOpacity(0.8)),
                 child: TextField(
                   keyboardType: TextInputType.multiline,
-                  controller: _introductionController,
+                  controller: introController,
                   minLines: 3,
                   maxLines: 10,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
@@ -67,34 +81,22 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
                     "간단히 자기소개를 해주세요. 기술 스택, 개발 경험 등 자세하게 적어주시면 팀 구성에 도움이 된답니다.🚀",
                     hintStyle: TextStyle(fontSize: 14, color: Colors.black38),
                   ),
+                  onChanged: (String _) {
+                    setState(() {
+                      fieldsFulfilled = myPositionFilled() && introFilled();
+                    });
+                  },
                 ),
               ),
             ),
           ),
-          _applyButton(size, applyProject)
+          applyButton(
+            width: MediaQuery.of(context).size.width * 0.85,
+            enabled: myPositionFilled() && introFilled(),
+            applyProject: applyProject,
+          )
         ],
       )
-    );
-  }
-
-  Widget _applyButton(Size size, Function applyProject) {
-    return Container(
-      width: size.width * 0.85,
-      child: RaisedButton(
-          child: Text(
-            '참여하기',
-            style: TextStyle(
-                fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          color: HexColor("08951C"),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          onPressed: () {
-            final keyMap = {
-              "introduction": _introductionController.text,
-              "position": myPosition
-            };
-            applyProject(widget.project.id, keyMap);
-          }),
     );
   }
 }

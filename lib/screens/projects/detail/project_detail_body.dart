@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail_apply.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -8,9 +7,8 @@ import '../../../models/project.dart';
 
 class ProjectDetailBody extends StatelessWidget {
   final Project project;
-  final Projects projectsProvider;
 
-  ProjectDetailBody(this.project, this.projectsProvider);
+  ProjectDetailBody(this.project);
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +136,7 @@ class ProjectDetailBody extends StatelessWidget {
               ],
             ),
           ),
-          ProjectDetailApply(project, projectsProvider),
+          ProjectDetailApply(project),
         ]),
       ),
     ]);
