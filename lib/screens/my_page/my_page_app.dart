@@ -17,7 +17,7 @@ class MyPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: "프로필",
-        trailing: authProvider.profileExists()
+        trailing: authProvider.profileExists() && authProvider.userSignedIn()
             ? TextButton(
                 child: Text(
                   'Edit',

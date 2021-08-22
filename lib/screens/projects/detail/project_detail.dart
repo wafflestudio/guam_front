@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
-import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import 'package:guam_front/screens/projects/detail/project_detail_body.dart';
 
 import '../../../commons/back.dart';
@@ -8,11 +7,10 @@ import '../../../commons/custom_app_bar.dart';
 import '../../../commons/profile_thumbnail.dart';
 import '../../../models/project.dart';
 
-class DetailProject extends StatelessWidget {
+class ProjectDetail extends StatelessWidget {
   final Project project;
-  final Projects projectsProvider;
 
-  DetailProject(this.project, this.projectsProvider);
+  ProjectDetail(this.project);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,6 @@ class DetailProject extends StatelessWidget {
                   profile: project.leader,
                   showNickname: true,
                   activateRedirectOnTap: true,
-                  activateChangeTask: false,
                 ),
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -59,7 +56,7 @@ class DetailProject extends StatelessWidget {
               ]),
               Container(
                 width: double.maxFinite,
-                child: ProjectDetailBody(project, projectsProvider),
+                child: ProjectDetailBody(project),
               )
             ])
           )

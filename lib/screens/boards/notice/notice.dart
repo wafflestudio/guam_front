@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import 'package:provider/provider.dart';
 
 import '../../../commons/circular_border_container.dart';
@@ -44,7 +43,6 @@ class Notice extends StatelessWidget {
                       radius: 12,
                       showNickname: false,
                       activateRedirectOnTap: true,
-                      activateChangeTask: false,
                     ),
                     Expanded(
                       child: Padding(

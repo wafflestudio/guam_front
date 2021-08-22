@@ -45,6 +45,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTask"
             />
         <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
             <intent-filter android:label="flutter_web_auth">

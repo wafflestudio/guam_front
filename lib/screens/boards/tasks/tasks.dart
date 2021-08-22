@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/profile_thumbnail.dart';
-import 'package:guam_front/screens/my_page/another_profile/another_profile_app.dart';
 import '../../../models/boards/user_task.dart';
 import '../iconTitle.dart';
 import 'task.dart';
+import '../../../commons/profile_thumbnail.dart';
 
 class Tasks extends StatefulWidget {
   final List<UserTask> tasks;
@@ -47,69 +47,31 @@ class TasksState extends State<Tasks> {
       child: Column(
         children: [
           iconTitle(icon: Icons.assignment_outlined, title: "작업 현황"),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(85, 88, 255, 1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 7, horizontal: 15
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ProfileThumbnail(
-                            profile: selectedUserTask.user,
-                            radius: 12,
-                            showNickname: true,
-                            textColor: Colors.white,
-                            activateRedirectOnTap: true,
-                            activateChangeTask: false,
-                          ),
-                          positionChip(position: selectedUserTask.state),
-                        ],
-                      ),
-                    )
-                  )
-                ),
-                Padding(padding: EdgeInsets.only(left: 5)),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(155, 155, 155, 0.3),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [...unselectedUsers.map((e) =>
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                            child: ProfileThumbnail(
-                              profile: e.user,
-                              radius: 10,
-                              showNickname: false,
-                              activateRedirectOnTap: false,
-                              activateChangeTask: true,
-                              onTap: () => selectUser(e.user.id),
-                            ),
-                          )
-                      )]
-                    ),
-                  )
-                ),
-              ],
-            ),
-          ),
-          Padding(padding: EdgeInsets.only(bottom: 10)),
           Container(
-            width: double.infinity,
+            child: ListView.builder(
+              itemBuilder: (_, idx) => Container(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(238, 238, 238, 1),
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: ProfileThumbnail(
+                  radius: 10,
+                  profile: unselectedUsers[idx].user,
+                  showNickname: true,
+                  textColor: Colors.black,
+                  activateRedirectOnTap: false,
+                  onTap: () => selectUser(unselectedUsers[idx].user.id),
+                ),
+              ),
+              itemCount: unselectedUsers.length,
+              scrollDirection: Axis.horizontal,
+            ),
+            constraints: BoxConstraints(maxHeight: 30),
+            margin: EdgeInsets.only(bottom: 10),
+          ),
+          Container(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -117,7 +79,38 @@ class TasksState extends State<Tasks> {
               ),
               child: Padding(
                 padding: EdgeInsets.all(10),
-                child: Task(task: selectedUserTask),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(85, 88, 255, 1),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 7, horizontal: 15
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ProfileThumbnail(
+                                profile: selectedUserTask.user,
+                                radius: 12,
+                                showNickname: true,
+                                textColor: Colors.white,
+                                activateRedirectOnTap: true,
+                              ),
+                              Padding(padding: EdgeInsets.only(right: 20)),
+                              positionChip(position: selectedUserTask.state),
+                            ],
+                          ),
+                        )
+                    ),
+                    Task(task: selectedUserTask)
+                  ],
+                ),
               )
             )
           )

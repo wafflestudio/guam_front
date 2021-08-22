@@ -158,7 +158,7 @@ class Projects extends ChangeNotifier with Toast {
           });
       }
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
       loading = false;
     }
@@ -166,7 +166,7 @@ class Projects extends ChangeNotifier with Toast {
     return successful;
   }
 
-  Future<bool> applyProject(int projectId, dynamic queryParams) async {
+  Future<bool> applyProject({int projectId, dynamic queryParams}) async {
     bool res = false;
     loading = true;
 
@@ -188,7 +188,7 @@ class Projects extends ChangeNotifier with Toast {
         });
       }
     } catch (e) {
-      print(e);
+      showToast(success: false, msg: e.message);
     } finally {
       loading = false;
     }
