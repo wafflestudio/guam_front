@@ -28,6 +28,7 @@ class ProfileLink extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  if (me.blogUrl != '')
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3),
                     child: SizedBox(
@@ -39,6 +40,7 @@ class ProfileLink extends StatelessWidget {
                           icon: Image.asset('assets/images/browser-icon.png')),
                     ),
                   ),
+                  if (me.githubUrl != '')
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3),
                     child: SizedBox(

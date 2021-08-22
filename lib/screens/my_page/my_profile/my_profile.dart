@@ -32,7 +32,8 @@ class MyProfile extends StatelessWidget {
           children: [
             Stack(
               children: [
-                ProfileLink(profile),
+                if (profile.blogUrl != '' || profile.githubUrl != '')
+                  ProfileLink(profile),
                 ProfileTop(profile),
               ]
             ),
