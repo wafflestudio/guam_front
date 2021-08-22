@@ -73,7 +73,7 @@ class Boards extends ChangeNotifier with Toast {
   }
 
   Future<void> fetchBoard(int projectId) async {
-    print("Start fetching board");  ///
+    print("Start fetching board info");  ///
     loading = true;
 
     try {
@@ -96,9 +96,11 @@ class Boards extends ChangeNotifier with Toast {
           }
       });
 
-      // 순서 중요! Thread.dart 에서 task
-      await setTasks();
-      await fetchThreads();
+      await Future.wait([
+        setTasks(),
+        fetchThreads()
+      ]);
+
     } catch (e) {
       print(e);
     } finally {
@@ -276,8 +278,6 @@ class Boards extends ChangeNotifier with Toast {
 
   Future fetchThreads({dynamic queryParams}) async {
     print("Start fetch threads"); ///
-    loading = true;
-
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
 
@@ -305,7 +305,6 @@ class Boards extends ChangeNotifier with Toast {
     } catch (e) {
       print(e);
     } finally {
-      loading = false;
       notifyListeners();
     }
   }
