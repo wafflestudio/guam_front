@@ -189,7 +189,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  Widget _inputForm({String image, TextEditingController textController, String label, String hint, int height = 30, int maxLines, int maxLength}) {
+  Widget _inputForm({String image, TextEditingController textController, String label, String hint, int maxLines, int maxLength}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -216,7 +216,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           )
         ),
         Container(
-          // height: 30,
           padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
           child: TextFormField(
             maxLines: maxLines,
@@ -278,65 +277,68 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   Widget positionSelection() {
     return Container(
       padding: EdgeInsets.only(left: 10),
-      child: ToggleButtons(
-        fillColor: HexColor("85DC40"),
-        borderColor: HexColor("000000").withOpacity(0.6),
-        borderRadius: BorderRadius.circular(10),
-        borderWidth: 0.5,
-        constraints: BoxConstraints(
-          minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
-          minHeight: 40,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ToggleButtons(
+          fillColor: HexColor("85DC40"),
+          borderColor: HexColor("000000").withOpacity(0.6),
+          borderRadius: BorderRadius.circular(10),
+          borderWidth: 0.5,
+          constraints: BoxConstraints(
+            minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
+            minHeight: 40,
+          ),
+          isSelected: isSelected,
+          onPressed: (idx) {
+            setState(() {
+              for (int i = 0; i < isSelected.length; i++) {
+                isSelected[i] = i == idx;
+              }
+              selectPosition(idx);
+            });
+          },
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '백엔드',
+                style: (selectedKey == '백엔드')
+                  ? TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
+                  : TextStyle(fontSize: 14, color: Colors.black),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '프론트엔드',
+                style: (selectedKey == '프론트엔드')
+                  ? TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
+                  : TextStyle(fontSize: 14, color: Colors.black),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '디자이너',
+                style: (selectedKey == '디자이너')
+                  ? TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
+                  : TextStyle(fontSize: 14, color: Colors.black),
+              ),
+            ),
+          ],
         ),
-        isSelected: isSelected,
-        onPressed: (idx) {
-          setState(() {
-            for (int i = 0; i < isSelected.length; i++) {
-              isSelected[i] = i == idx;
-            }
-            selectPosition(idx);
-          });
-        },
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '백엔드',
-              style: (selectedKey == '백엔드')
-                ? TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )
-                : TextStyle(fontSize: 14, color: Colors.black),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '프론트엔드',
-              style: (selectedKey == '프론트엔드')
-                ? TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )
-                : TextStyle(fontSize: 14, color: Colors.black),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '디자이너',
-              style: (selectedKey == '디자이너')
-                ? TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )
-                : TextStyle(fontSize: 14, color: Colors.black),
-            ),
-          ),
-        ],
       ),
     );
   }
