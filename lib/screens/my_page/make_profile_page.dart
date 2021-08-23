@@ -349,7 +349,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
       padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
       child: InkWell(
         onTap: () {
-          if (!Uri.tryParse(_blogController.text).isAbsolute) {
+          if (!Uri.tryParse(_blogController.text).isAbsolute && _blogController.text != '') {
             showToast(success: false, msg: "웹사이트는 http 또는 https 형식으로 입력해주세요.");
           } else {
             final keyMap = {
