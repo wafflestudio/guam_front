@@ -9,6 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
+import '../../mixins/toast.dart';
 import 'make_profile_image.dart';
 
 class MakeProfilePage extends StatefulWidget {
@@ -21,7 +22,7 @@ class MakeProfilePage extends StatefulWidget {
   _MakeProfilePageState createState() => _MakeProfilePageState();
 }
 
-class _MakeProfilePageState extends State<MakeProfilePage> {
+class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
@@ -189,7 +190,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
     );
   }
 
-  Widget _inputForm({String image, TextEditingController textController, String label, String hint, int height = 30, int maxLines, int maxLength}) {
+  Widget _inputForm({String image, TextEditingController textController, String label, String hint, int maxLines, int maxLength}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -216,7 +217,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
           )
         ),
         Container(
-          // height: 30,
           padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
           child: TextFormField(
             maxLines: maxLines,
@@ -278,65 +278,68 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
   Widget positionSelection() {
     return Container(
       padding: EdgeInsets.only(left: 10),
-      child: ToggleButtons(
-        fillColor: HexColor("85DC40"),
-        borderColor: HexColor("000000").withOpacity(0.6),
-        borderRadius: BorderRadius.circular(10),
-        borderWidth: 0.5,
-        constraints: BoxConstraints(
-          minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
-          minHeight: 40,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ToggleButtons(
+          fillColor: HexColor("85DC40"),
+          borderColor: HexColor("000000").withOpacity(0.6),
+          borderRadius: BorderRadius.circular(10),
+          borderWidth: 0.5,
+          constraints: BoxConstraints(
+            minWidth: (MediaQuery.of(context).size.width * 0.85) / 3,
+            minHeight: 40,
+          ),
+          isSelected: isSelected,
+          onPressed: (idx) {
+            setState(() {
+              for (int i = 0; i < isSelected.length; i++) {
+                isSelected[i] = i == idx;
+              }
+              selectPosition(idx);
+            });
+          },
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '백엔드',
+                style: (selectedKey == '백엔드')
+                  ? TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
+                  : TextStyle(fontSize: 14, color: Colors.black),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '프론트엔드',
+                style: (selectedKey == '프론트엔드')
+                  ? TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
+                  : TextStyle(fontSize: 14, color: Colors.black),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                '디자이너',
+                style: (selectedKey == '디자이너')
+                  ? TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
+                  : TextStyle(fontSize: 14, color: Colors.black),
+              ),
+            ),
+          ],
         ),
-        isSelected: isSelected,
-        onPressed: (idx) {
-          setState(() {
-            for (int i = 0; i < isSelected.length; i++) {
-              isSelected[i] = i == idx;
-            }
-            selectPosition(idx);
-          });
-        },
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '백엔드',
-              style: (selectedKey == '백엔드')
-                ? TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )
-                : TextStyle(fontSize: 14, color: Colors.black),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '프론트엔드',
-              style: (selectedKey == '프론트엔드')
-                ? TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )
-                : TextStyle(fontSize: 14, color: Colors.black),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '디자이너',
-              style: (selectedKey == '디자이너')
-                ? TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )
-                : TextStyle(fontSize: 14, color: Colors.black),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -346,18 +349,22 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
       padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
       child: InkWell(
         onTap: () {
-          final keyMap = {
-            "nickname": _nicknameController.text,
-            "blogUrl": _blogController.text,
-            "githubUrl": _githubIdController.text,
-            "introduction": _introductionController.text,
-            "skills": selectedSkillsList,
-            "willUploadImage": willUploadImage.toString(),
-          };
-          setProfile(
-            fields: keyMap,
-            files: willUploadImage ? [File(profileImage.path)] : null,
-          );
+          if (!Uri.tryParse(_blogController.text).isAbsolute && _blogController.text != '') {
+            showToast(success: false, msg: "웹사이트는 http 또는 https 형식으로 입력해주세요.");
+          } else {
+            final keyMap = {
+              "nickname": _nicknameController.text,
+              "blogUrl": _blogController.text,
+              "githubUrl": _githubIdController.text,
+              "introduction": _introductionController.text,
+              "skills": selectedSkillsList,
+              "willUploadImage": willUploadImage.toString(),
+            };
+            setProfile(
+              fields: keyMap,
+              files: willUploadImage ? [File(profileImage.path)] : null,
+            );
+          }
         },
         child: Container(
           alignment: Alignment.center,
