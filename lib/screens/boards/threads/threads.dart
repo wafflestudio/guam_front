@@ -20,11 +20,13 @@ class Threads extends StatefulWidget {
 class ThreadsState extends State<Threads> {
   ThreadModel.Thread editTargetThread;
   bool foldThreads;
+  final ScrollController _threadsController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     foldThreads = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) => scrollThreadsToBottom());
   }
 
   void switchToEditMode({@required ThreadModel.Thread editTargetThread}) {
@@ -37,6 +39,16 @@ class ThreadsState extends State<Threads> {
     setState(() {
       this.foldThreads = !this.foldThreads;
     });
+  }
+
+  void scrollThreadsToBottom() {
+    if (widget.threads.isNotEmpty) {
+      _threadsController.animateTo(
+          _threadsController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOut
+      );
+    }
   }
 
   @override
@@ -116,10 +128,11 @@ class ThreadsState extends State<Threads> {
                             ),
                             child: RefreshIndicator(
                               child: ListView.builder(
+                                controller: _threadsController,
                                 itemBuilder: (context, idx) => Thread(
-                                    widget.threads[idx],
-                                    switchToEditMode: switchToEditMode,
-                                    isEditTarget: editTargetThread == widget.threads[idx]
+                                  widget.threads[idx],
+                                  switchToEditMode: switchToEditMode,
+                                  isEditTarget: editTargetThread == widget.threads[idx]
                                 ),
                                 itemCount: widget.threads.length,
                                 shrinkWrap: true,
