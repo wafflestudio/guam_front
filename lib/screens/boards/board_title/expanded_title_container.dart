@@ -27,13 +27,17 @@ class ExpandedTitleContainer extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: boardsProvider.currentBoard.title.length > 15
                       ? ScrollingText(
-                    text: boardsProvider.currentBoard.title,
-                    textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                  )
+                          text: boardsProvider.currentBoard.title,
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700
+                          )) 
                       : Text(
-                    boardsProvider.currentBoard.title,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                  ),
+                          boardsProvider.currentBoard.title,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700
+                          ))
                 ),
               )
           )
