@@ -109,24 +109,28 @@ class ThreadsState extends State<Threads> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          height: threadsContentsHeight,
-                          child: RefreshIndicator(
-                            child: ListView.builder(
-                              itemBuilder: (context, idx) => Thread(
-                                  widget.threads[idx],
-                                  switchToEditMode: switchToEditMode,
-                                  isEditTarget: editTargetThread == widget.threads[idx]
-                              ),
-                              itemCount: widget.threads.length,
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
+                        Expanded(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: threadsContentsHeight // !important
                             ),
-                            onRefresh: () async {
-                              await boardsProvider.fetchThreads(queryParams: {
-                                "size": "${widget.threads.length + boardsProvider.defaultThreadsSize}"
-                              });
-                            },
+                            child: RefreshIndicator(
+                              child: ListView.builder(
+                                itemBuilder: (context, idx) => Thread(
+                                    widget.threads[idx],
+                                    switchToEditMode: switchToEditMode,
+                                    isEditTarget: editTargetThread == widget.threads[idx]
+                                ),
+                                itemCount: widget.threads.length,
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                              ),
+                              onRefresh: () async {
+                                await boardsProvider.fetchThreads(queryParams: {
+                                  "size": "${widget.threads.length + boardsProvider.defaultThreadsSize}"
+                                });
+                              },
+                            ),
                           ),
                         ),
                         CommonTextField(
