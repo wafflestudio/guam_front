@@ -17,10 +17,23 @@ class Threads extends StatefulWidget {
 
 class ThreadsState extends State<Threads> {
   ThreadModel.Thread editTargetThread;
+  bool foldThreads;
+
+  @override
+  void initState() {
+    super.initState();
+    foldThreads = true;
+  }
 
   void switchToEditMode({@required ThreadModel.Thread editTargetThread}) {
     setState(() {
       this.editTargetThread = editTargetThread;
+    });
+  }
+
+  void toggleFoldThreads() {
+    setState(() {
+      this.foldThreads = !this.foldThreads;
     });
   }
 
@@ -42,11 +55,38 @@ class ThreadsState extends State<Threads> {
             }
       });
 
+    double threadsHeight = foldThreads ? 208 : 480;
+
     return Padding(
         padding: EdgeInsets.only(bottom: 12),
         child: Column(
             children: [
-              iconTitle(icon: Icons.comment_outlined, title: "스레드"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  iconTitle(icon: Icons.comment_outlined, title: "스레드"),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 24),
+                    child: OutlinedButton(
+                      onPressed: () => toggleFoldThreads(),
+                      child: Text(
+                        foldThreads ? "펼치기" : "접기",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black
+                        )
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(203, 203, 203, 0.5),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        side: BorderSide.none
+                      ),
+                    ),
+                  )
+                ],
+              ),
               SizedBox(
                   width: double.infinity,
                   child: DecoratedBox(
@@ -60,7 +100,7 @@ class ThreadsState extends State<Threads> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              height: 480, // temp
+                              height: threadsHeight,
                               child: RefreshIndicator(
                                 child: ListView.builder(
                                   itemBuilder: (context, idx) => Thread(
