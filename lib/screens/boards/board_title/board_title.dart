@@ -13,7 +13,6 @@ class BoardTitle extends StatelessWidget {
       padding: EdgeInsets.all(10),
       child: Container(
         height: 40,
-
         child: Row(
           children: [
             ...boardsProvider.boards.asMap().keys.map((idx) {
