@@ -1,12 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 import '../../../commons/custom_app_bar.dart';
 import '../../../commons/common_text_field.dart';
 import '../../../providers/boards/boards.dart';
 import '../../../models/boards/thread.dart' as ThreadModel;
 import '../iconTitle.dart';
 import 'thread.dart';
+import 'fold_threads_button.dart';
 
 class Threads extends StatefulWidget {
   final List<ThreadModel.Thread> threads;
@@ -69,10 +71,22 @@ class ThreadsState extends State<Threads> {
             }
       });
 
-    final boardsBodyHeight = MediaQuery.of(context).size.height -
-        CustomAppBar().preferredSize.height -
-        MediaQueryData.fromWindow(window).padding.top -
-        58; // 58 for bottom nav height. How to get it by code // -
+    double boardsBodyHeight;
+
+    if (Platform.isAndroid) {
+      // 58 for bottom nav height. How to get it by code?
+      boardsBodyHeight =
+          MediaQuery.of(context).size.height -
+          CustomAppBar().preferredSize.height -
+          MediaQueryData.fromWindow(window).padding.top - 58;
+    } else {
+      // 90 for bottom nav height. How to get it by code?
+      // 2 for slight mismatch in iOS safeArea height...
+      boardsBodyHeight =
+          MediaQuery.of(context).size.height -
+          CustomAppBar().preferredSize.height -
+          MediaQueryData.fromWindow(window).padding.top + 2 - 90;
+    }
 
     double threadsHeight = foldThreads
         ? 208 // Fixed folded height
@@ -81,81 +95,66 @@ class ThreadsState extends State<Threads> {
     double threadsContentsHeight = threadsHeight - ( 10*2 + 42); // Vertical padding * 2 + Common Text Field height
 
     return Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              iconTitle(icon: Icons.comment_outlined, title: "스레드"),
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 24),
-                child: OutlinedButton(
-                  onPressed: () => toggleFoldThreads(),
-                  child: Text(
-                      foldThreads ? "펼치기" : "접기",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black
-                      )
-                  ),
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: Color.fromRGBO(203, 203, 203, 0.5),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      side: BorderSide.none
-                  ),
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-              width: double.infinity,
-              height: threadsHeight,
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color.fromRGBO(203, 203, 203, 0.5),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxHeight: threadsContentsHeight // !important
-                            ),
-                            child: RefreshIndicator(
-                              child: ListView.builder(
-                                controller: _threadsController,
-                                itemBuilder: (context, idx) => Thread(
-                                  widget.threads[idx],
-                                  switchToEditMode: switchToEditMode,
-                                  isEditTarget: editTargetThread == widget.threads[idx]
-                                ),
-                                itemCount: widget.threads.length,
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                              ),
-                              onRefresh: () async {
-                                await boardsProvider.fetchThreads(queryParams: {
-                                  "size": "${widget.threads.length + boardsProvider.defaultThreadsSize}"
-                                });
-                              },
-                            ),
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            iconTitle(icon: Icons.comment_outlined, title: "스레드"),
+            FoldThreadsButton(
+              buttonText: foldThreads ? "펼치기" : "접기",
+              onPressed: toggleFoldThreads
+            )
+          ],
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: threadsHeight,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Color.fromRGBO(203, 203, 203, 0.5),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: threadsContentsHeight // !important
+                      ),
+                      child: RefreshIndicator(
+                        child: ListView.builder(
+                          controller: _threadsController,
+                          itemBuilder: (context, idx) => Thread(
+                            widget.threads[idx],
+                            switchToEditMode: switchToEditMode,
+                            isEditTarget: editTargetThread == widget.threads[idx]
                           ),
+                          itemCount: widget.threads.length,
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
                         ),
-                        CommonTextField(
-                          onTap: editTargetThread == null ? postThread : editThreadContent,
-                          editTarget: editTargetThread ?? null,
-                        ),
-                      ],
+                        onRefresh: () async {
+                          await boardsProvider.fetchThreads(queryParams: {
+                            "size": "${widget.threads.length + boardsProvider.defaultThreadsSize}"
+                          });
+                        },
+                      ),
                     ),
-                  )
-              )
+                  ),
+                  CommonTextField(
+                    onTap: editTargetThread == null ? postThread : editThreadContent,
+                    editTarget: editTargetThread ?? null,
+                  ),
+                ],
+              ),
+            )
           )
-        ]
+        )
+      ]
     );
   }
 }
