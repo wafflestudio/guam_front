@@ -31,6 +31,12 @@ class ThreadsState extends State<Threads> {
     WidgetsBinding.instance.addPostFrameCallback((_) => scrollThreadsToBottom());
   }
 
+  @override
+  void dispose() {
+    _threadsController.dispose();
+    super.dispose();
+  }
+
   void switchToEditMode({@required ThreadModel.Thread editTargetThread}) {
     setState(() {
       this.editTargetThread = editTargetThread;
