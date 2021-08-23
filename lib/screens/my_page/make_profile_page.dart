@@ -9,6 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
+import '../../mixins/toast.dart';
 import 'make_profile_image.dart';
 
 class MakeProfilePage extends StatefulWidget {
@@ -21,7 +22,7 @@ class MakeProfilePage extends StatefulWidget {
   _MakeProfilePageState createState() => _MakeProfilePageState();
 }
 
-class _MakeProfilePageState extends State<MakeProfilePage> {
+class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _blogController = TextEditingController();
   final TextEditingController _githubIdController = TextEditingController();
@@ -348,18 +349,22 @@ class _MakeProfilePageState extends State<MakeProfilePage> {
       padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
       child: InkWell(
         onTap: () {
-          final keyMap = {
-            "nickname": _nicknameController.text,
-            "blogUrl": _blogController.text,
-            "githubUrl": _githubIdController.text,
-            "introduction": _introductionController.text,
-            "skills": selectedSkillsList,
-            "willUploadImage": willUploadImage.toString(),
-          };
-          setProfile(
-            fields: keyMap,
-            files: willUploadImage ? [File(profileImage.path)] : null,
-          );
+          if (!Uri.tryParse(_blogController.text).isAbsolute) {
+            showToast(success: false, msg: "웹사이트는 http 또는 https 형식으로 입력해주세요.");
+          } else {
+            final keyMap = {
+              "nickname": _nicknameController.text,
+              "blogUrl": _blogController.text,
+              "githubUrl": _githubIdController.text,
+              "introduction": _introductionController.text,
+              "skills": selectedSkillsList,
+              "willUploadImage": willUploadImage.toString(),
+            };
+            setProfile(
+              fields: keyMap,
+              files: willUploadImage ? [File(profileImage.path)] : null,
+            );
+          }
         },
         child: Container(
           alignment: Alignment.center,
