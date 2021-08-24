@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
 import '../../../commons/custom_app_bar.dart';
 import '../../../commons/common_text_field.dart';
+import '../../../commons/common_sizes.dart';
 import '../../../providers/boards/boards.dart';
 import '../../../models/boards/thread.dart' as ThreadModel;
 import '../iconTitle.dart';
@@ -77,28 +78,32 @@ class ThreadsState extends State<Threads> {
             }
       });
 
+    const double threadsPadding = 10;
+    const double foldedThreadsHeight = 208;
+    const double boardItemPadding = 10;
+    const double iconTitleHeight = 36;
     double boardsBodyHeight;
 
     if (Platform.isAndroid) {
-      // 58 for bottom nav height. How to get it by code?
       boardsBodyHeight =
           MediaQuery.of(context).size.height -
           CustomAppBar().preferredSize.height -
-          MediaQueryData.fromWindow(window).padding.top - 58;
+          MediaQueryData.fromWindow(window).padding.top -
+          androidBottomNavigationHeight;
     } else {
-      // 90 for bottom nav height. How to get it by code?
-      // 2 for slight mismatch in iOS safeArea height...
       boardsBodyHeight =
           MediaQuery.of(context).size.height -
           CustomAppBar().preferredSize.height -
-          MediaQueryData.fromWindow(window).padding.top + 2 - 90;
+          MediaQueryData.fromWindow(window).padding.top -
+          iosBottomNavigationHeight + 2;  // 2 for slight mismatch in iOS safeArea height...
     }
 
     double threadsHeight = foldThreads
-        ? 208 // Fixed folded height
-        : boardsBodyHeight - ( 10*2 + 36 ); // Vertical padding * 2 + Thread header height
+        ? foldedThreadsHeight
+        : boardsBodyHeight - ( boardItemPadding * 2 + iconTitleHeight );
 
-    double threadsContentsHeight = threadsHeight - ( 10*2 + 42); // Vertical padding * 2 + Common Text Field height
+    double threadsContentsHeight = threadsHeight -
+        ( threadsPadding * 2 + commonTextFieldHeight );
 
     return Column(
       children: [
@@ -122,7 +127,7 @@ class ThreadsState extends State<Threads> {
               color: Color.fromRGBO(203, 203, 203, 0.5),
             ),
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(threadsPadding),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
