@@ -44,15 +44,19 @@ class KakaoLoginState extends State<KakaoLogin> {
   */
   _loginWithKakao() async {
     try {
+      authProvider.toggleLoading();
+
       final authCode = await AuthCodeClient.instance.request();
       final token = await _issueAccessToken(authCode);
-      authProvider.kakaoSignIn(token.accessToken);
+      await authProvider.kakaoSignIn(token.accessToken);
     } on KakaoAuthException catch (e) {
       print("Kakao Auth Exception:\n$e");
     } on KakaoClientException catch (e) {
       print("Kakao Client Exception:\n$e");
     } catch (e) {
       print(e);
+    } finally {
+      authProvider.toggleLoading();
     }
   }
 
@@ -61,15 +65,19 @@ class KakaoLoginState extends State<KakaoLogin> {
   */
   _loginWithTalk() async {
     try {
+      authProvider.toggleLoading();
+
       final authCode = await AuthCodeClient.instance.requestWithTalk();
       final token = await _issueAccessToken(authCode);
-      authProvider.kakaoSignIn(token.accessToken);
+      await authProvider.kakaoSignIn(token.accessToken);
     } on KakaoAuthException catch (e) {
       print("Kakao Auth Exception:\n$e");
     } on KakaoClientException catch (e) {
       print("Kakao Client Exception:\n$e");
     } catch (e) {
       print(e);
+    } finally {
+      authProvider.toggleLoading();
     }
   }
 
@@ -80,7 +88,7 @@ class KakaoLoginState extends State<KakaoLogin> {
         width: MediaQuery.of(context).size.width * 0.5,
         height: MediaQuery.of(context).size.height * 0.07,
         child: Image(
-          image: AssetImage("assets/buttons/kakao_login_medium_narrow.png"),
+          image: AssetImage("assets/buttons/kakao_login_large_narrow.png"),
         ),
       ),
       onTap: () => _isKakaoTalkInstalled ? _loginWithTalk() : _loginWithKakao(),

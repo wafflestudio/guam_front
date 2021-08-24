@@ -47,7 +47,7 @@ class TasksState extends State<Tasks> {
       child: Column(
         children: [
           iconTitle(icon: Icons.assignment_outlined, title: "작업 현황"),
-          Container(
+          if (unselectedUsers.isNotEmpty) Container(
             child: ListView.builder(
               itemBuilder: (_, idx) => Container(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),

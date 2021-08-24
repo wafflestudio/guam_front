@@ -34,8 +34,8 @@ class _ProjectCreateDueState extends State<ProjectCreateDue> {
         children: [
           Container(
             padding: EdgeInsets.only(left: 25, bottom: 10),
-            child: Text('진행 기간',
-              style: TextStyle(fontSize: 18, color: Colors.white))),
+            child: Text('진행 기간', style: TextStyle(fontSize: 18, color: Colors.white)),
+          ),
           selectDue(),
         ],
       )
@@ -45,55 +45,47 @@ class _ProjectCreateDueState extends State<ProjectCreateDue> {
   Widget selectDue() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      child: ToggleButtons(
-        fillColor: HexColor("4694F9").withOpacity(0.5),
-        borderColor: Colors.white,
-        selectedBorderColor: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        borderWidth: 0.3,
-        constraints: BoxConstraints(
-          minWidth: (MediaQuery.of(context).size.width * 0.85) / 4,
-          minHeight: 40),
-        isSelected: widget.dueSelected,
-        onPressed: (idx) {
-          setState(() {
-            for (int i = 0; i < widget.dueSelected.length; i++) {
-              widget.dueSelected[i] = i == idx;
-            }
-            widget.checkButtonEnable();
-            saveDue(idx);
-          });
-        },
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '1개월 미만',
-              style: TextStyle(fontSize: 12, color: Colors.white),
-            ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ToggleButtons(
+          fillColor: HexColor("4694F9").withOpacity(0.5),
+          borderColor: Colors.white,
+          selectedBorderColor: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          borderWidth: 0.3,
+          constraints: BoxConstraints(
+            minWidth: (MediaQuery.of(context).size.width * 0.85) / 4,
+            minHeight: 40,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '3개월 미만',
-              style: TextStyle(fontSize: 12, color: Colors.white),
+          isSelected: widget.dueSelected,
+          onPressed: (idx) {
+            setState(() {
+              for (int i = 0; i < widget.dueSelected.length; i++) {
+                widget.dueSelected[i] = i == idx;
+              }
+              widget.checkButtonEnable();
+              saveDue(idx);
+            });
+          },
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text('1개월 미만', style: TextStyle(fontSize: 12, color: Colors.white)),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '6개월 미만',
-              style: TextStyle(fontSize: 12, color: Colors.white),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text('3개월 미만', style: TextStyle(fontSize: 12, color: Colors.white)),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              '6개월 이상',
-              style: TextStyle(fontSize: 12, color: Colors.white),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text('6개월 미만', style: TextStyle(fontSize: 12, color: Colors.white)),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text('6개월 이상', style: TextStyle(fontSize: 12, color: Colors.white)),
+            ),
+          ],
+        ),
       ),
     );
   }
