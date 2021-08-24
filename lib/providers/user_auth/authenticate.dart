@@ -31,7 +31,6 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future kakaoSignIn(String kakaoAccessToken) async {
     try {
-      toggleLoading();
       await HttpRequest().get(
         path: "/kakao",
         queryParams: {"token": kakaoAccessToken},
@@ -53,7 +52,6 @@ class Authenticate extends ChangeNotifier with Toast {
       showToast(success: false, msg: e.message);
     } finally {
       notifyListeners();
-      toggleLoading();
     }
   }
 
@@ -74,7 +72,6 @@ class Authenticate extends ChangeNotifier with Toast {
 
   Future getMyProfile() async {
     try {
-      toggleLoading();
       String authToken = await getFirebaseIdToken();
 
       if (authToken.isNotEmpty) {
@@ -97,8 +94,6 @@ class Authenticate extends ChangeNotifier with Toast {
       }
     } catch (e) {
       print(e);
-    } finally {
-      toggleLoading();
     }
   }
 
@@ -119,7 +114,7 @@ class Authenticate extends ChangeNotifier with Toast {
             authToken: authToken)
           .then((response) async {
             if (response.statusCode == 200) {
-              getMyProfile();
+              await getMyProfile();
               showToast(success: true, msg: "프로필을 생성하였습니다.");
               res = true;
             } else {

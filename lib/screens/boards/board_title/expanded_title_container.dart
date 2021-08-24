@@ -30,13 +30,15 @@ class ExpandedTitleContainer extends StatelessWidget {
                           text: boardsProvider.currentBoard.title,
                           textStyle: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w700
+                            height: 1.2,
+                            fontWeight: FontWeight.w700,
                           )) 
                       : Text(
                           boardsProvider.currentBoard.title,
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w700
+                            height: 1.2,
+                            fontWeight: FontWeight.w700,
                           ))
                 ),
               )
