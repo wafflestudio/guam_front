@@ -39,6 +39,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
     setState(() {
       myPosition = position;
     });
+    checkFieldsFulfilled();
   }
 
   void checkFieldsFulfilled() {
@@ -51,7 +52,6 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
     setState(() {
       applying = !applying;
     });
-    print("applying: $applying");
   }
 
   @override
@@ -72,7 +72,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
             introController.clear();
             setMyPosition(null);
             checkFieldsFulfilled();
-            // Navigator.of(context).pop();
+            FocusScope.of(context).unfocus();
           }
         });
       } catch (e) {
@@ -86,7 +86,10 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       child: Column(
         children: [
-          ProjectApply(setMyPosition),
+          ProjectApply(
+            myPosition: myPosition,
+            setMyPosition: setMyPosition,
+          ),
           Padding(
             padding: EdgeInsets.all(15),
             child: Container(
