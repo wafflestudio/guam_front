@@ -27,12 +27,23 @@ class BoardSetting extends StatelessWidget {
             showMaterialModalBottomSheet(
               context: context,
               builder: (_) => BottomModalContent(
-                requireConfirm: true,
+                setIcon: Icons.flag_outlined,
+                setText: "'$boardTitleEllipsis' 완료하기",
+                setDetailText: "프로젝트를 완료시겠습니까?",
                 editText: "'$boardTitleEllipsis' 수정하기",
-                completeText: "'$boardTitleEllipsis' 완료하기",
-                completeDetailText: "프로젝트를 완료시겠습니까?",
-                deleteText: "'$boardTitleEllipsis' 나가기",
-                deleteDetailText: "프로젝트를 나가시겠습니까?",
+                deleteText: boardsProvider.isMe(boardsProvider.currentBoard.leader.id)
+                  ? "'$boardTitleEllipsis' 삭제하기"
+                  : "'$boardTitleEllipsis' 나가기",
+                deleteDetailText: boardsProvider.isMe(boardsProvider.currentBoard.leader.id)
+                  ? "프로젝트를 삭제하시겠습니까?"
+                  : "프로젝트를 나가시겠습니까?",
+                setFunc: boardsProvider
+                    .isMe(boardsProvider.currentBoard.leader.id)
+                    ? () async {
+                  await boardsProvider.completeBoard();
+                  Navigator.of(context).pop();
+                }
+                    : null,
                 editFunc: boardsProvider
                     .isMe(boardsProvider.currentBoard.leader.id)
                     ? () {
@@ -50,13 +61,6 @@ class BoardSetting extends StatelessWidget {
                         );
                       }
                     : null,
-                completeFunc: boardsProvider
-                    .isMe(boardsProvider.currentBoard.leader.id)
-                  ? () async {
-                      await boardsProvider.completeBoard();
-                      Navigator.of(context).pop();
-                    }
-                  : null,
                 deleteFunc: () async {
                   if (boardsProvider
                       .isMe(boardsProvider.currentBoard.leader.id)) {
@@ -66,18 +70,31 @@ class BoardSetting extends StatelessWidget {
                   }
                   Navigator.of(context).pop();
                 },
+                setRequireConfirm: true,
+                deleteRequireConfirm: true,
               )
             );
           } else {
             showCupertinoModalBottomSheet(
               context: context,
               builder: (_) => BottomModalContent(
-                requireConfirm: true,
+                setIcon: Icons.flag_outlined,
+                setText: "'$boardTitleEllipsis' 완료하기",
+                setDetailText: "프로젝트를 완료시겠습니까?",
                 editText: "'$boardTitleEllipsis' 수정하기",
-                completeText: "'$boardTitleEllipsis' 완료하기",
-                completeDetailText: "프로젝트를 완료시겠습니까?",
-                deleteText: "'$boardTitleEllipsis' 나가기",
-                deleteDetailText: "프로젝트를 나가시겠습니까?",
+                deleteText: boardsProvider.isMe(boardsProvider.currentBoard.leader.id)
+                  ? "'$boardTitleEllipsis' 삭제하기"
+                  : "'$boardTitleEllipsis' 나가기",
+                deleteDetailText: boardsProvider.isMe(boardsProvider.currentBoard.leader.id)
+                  ? "프로젝트를 삭제하시겠습니까?"
+                  : "프로젝트를 나가시겠습니까?",
+                setFunc: boardsProvider
+                    .isMe(boardsProvider.currentBoard.leader.id)
+                    ? () async {
+                  await boardsProvider.completeBoard();
+                  Navigator.of(context).pop();
+                }
+                    : null,
                 editFunc: boardsProvider
                     .isMe(boardsProvider.currentBoard.leader.id)
                     ? () {
@@ -95,13 +112,6 @@ class BoardSetting extends StatelessWidget {
                         );
                       }
                     : null,
-                completeFunc: boardsProvider
-                    .isMe(boardsProvider.currentBoard.leader.id)
-                    ? () async {
-                        await boardsProvider.completeBoard();
-                        Navigator.of(context).pop();
-                      }
-                    : null,
                 deleteFunc: () async {
                   if (boardsProvider
                       .isMe(boardsProvider.currentBoard.leader.id)) {
@@ -111,6 +121,8 @@ class BoardSetting extends StatelessWidget {
                   }
                   Navigator.of(context).pop();
                 },
+                setRequireConfirm: true,
+                deleteRequireConfirm: true,
               )
             );
           }
