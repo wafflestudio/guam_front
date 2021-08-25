@@ -36,26 +36,26 @@ class BoardSetting extends StatelessWidget {
                 editFunc: boardsProvider
                     .isMe(boardsProvider.currentBoard.leader.id)
                     ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ChangeNotifierProvider.value(
-                            value: boardsProvider,
-                            child: ProjectEdit(
-                              stacksProvider: stacksProvider,
-                              projectInfo: boardsProvider.currentBoard,
-                            ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider.value(
+                              value: boardsProvider,
+                              child: ProjectEdit(
+                                stacksProvider: stacksProvider,
+                                projectInfo: boardsProvider.currentBoard,
+                              ),
+                            )
                           )
-                        )
-                      );
-                    }
+                        );
+                      }
                     : null,
                 completeFunc: boardsProvider
                     .isMe(boardsProvider.currentBoard.leader.id)
                   ? () async {
-                  await boardsProvider.completeBoard();
-                  Navigator.of(context).pop();
-                }
+                      await boardsProvider.completeBoard();
+                      Navigator.of(context).pop();
+                    }
                   : null,
                 deleteFunc: () async {
                   if (boardsProvider
@@ -81,26 +81,26 @@ class BoardSetting extends StatelessWidget {
                 editFunc: boardsProvider
                     .isMe(boardsProvider.currentBoard.leader.id)
                     ? () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => ChangeNotifierProvider.value(
-                            value: boardsProvider,
-                            child: ProjectEdit(
-                              stacksProvider: stacksProvider,
-                              projectInfo: boardsProvider.currentBoard,
-                            ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider.value(
+                              value: boardsProvider,
+                              child: ProjectEdit(
+                                stacksProvider: stacksProvider,
+                                projectInfo: boardsProvider.currentBoard,
+                              ),
+                            )
                           )
-                      )
-                  );
-                }
+                        );
+                      }
                     : null,
                 completeFunc: boardsProvider
                     .isMe(boardsProvider.currentBoard.leader.id)
                     ? () async {
-                  await boardsProvider.completeBoard();
-                  Navigator.of(context).pop();
-                }
+                        await boardsProvider.completeBoard();
+                        Navigator.of(context).pop();
+                      }
                     : null,
                 deleteFunc: () async {
                   if (boardsProvider
