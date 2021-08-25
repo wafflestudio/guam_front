@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'function_container.dart';
 
 class BottomModalContent extends StatelessWidget {
+  final IconData setIcon;
   final String setText;
+  final String setDetailText;
   final String editText;
   final String deleteText;
   final String deleteDetailText;
   final Function setFunc;
   final Function editFunc;
   final Function deleteFunc;
-  final bool requireConfirm;
+  final bool setRequireConfirm;
+  final bool deleteRequireConfirm;
 
-  BottomModalContent({this.setText, this.editText, this.deleteText, this.deleteDetailText, this.setFunc, this.editFunc, this.deleteFunc, this.requireConfirm = false});
+  BottomModalContent({
+    this.setIcon = Icons.push_pin_outlined,
+    this.setText, this.setDetailText, this.editText, this.deleteText, this.deleteDetailText,
+    this.setFunc, this.editFunc, this.deleteFunc,
+    this.setRequireConfirm = false, this.deleteRequireConfirm = false
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +32,9 @@ class BottomModalContent extends StatelessWidget {
             width: double.infinity,
             child: Column(
               children: [
-                if (setFunc != null) FunctionContainer(iconData: Icons.push_pin_outlined, text: setText, textColor: Colors.white, customFunction: setFunc),
+                if (setFunc != null) FunctionContainer(iconData: setIcon, text: setText, detailText: setDetailText, iconColor: Colors.blue, textColor: Colors.blue, customFunction: setFunc, requireConfirm: setRequireConfirm),
                 if (editFunc != null) FunctionContainer(iconData: Icons.edit_outlined, text: editText, textColor: Colors.white, customFunction: editFunc),
-                if (deleteFunc != null) FunctionContainer(iconData: Icons.delete_outlined, text: deleteText, detailText: deleteDetailText, iconColor: Colors.red, textColor: Colors.red, customFunction: deleteFunc, requireConfirm: requireConfirm),
+                if (deleteFunc != null) FunctionContainer(iconData: Icons.delete_outlined, text: deleteText, detailText: deleteDetailText, iconColor: Colors.red, textColor: Colors.red, customFunction: deleteFunc, requireConfirm: deleteRequireConfirm),
               ],
             ),
           ),
