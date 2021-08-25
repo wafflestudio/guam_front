@@ -19,7 +19,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
   final TextEditingController introController = TextEditingController();
   String myPosition;
   bool fieldsFulfilled;
-
+  bool applying = false; // toggled true while requesting apply
   bool myPositionFilled() => myPosition != null && myPosition != "";
   bool introFilled() => introController.text != null && introController.text != "";
 
@@ -41,21 +41,45 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
     });
   }
 
+  void checkFieldsFulfilled() {
+    setState(() {
+      fieldsFulfilled = myPositionFilled() && introFilled();
+    });
+  }
+
+  void toggleApplying() {
+    setState(() {
+      applying = !applying;
+    });
+    print("applying: $applying");
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    void applyProject({dynamic params}) {
-      context.read<Projects>().applyProject(
-          projectId: widget.project.id,
-          queryParams: {
-            "introduction": introController.text,
-            "position": myPosition,
-          }
+    Future<void> applyProject({dynamic params}) async {
+      toggleApplying();
+
+      try {
+        await context.read<Projects>().applyProject(
+            projectId: widget.project.id,
+            queryParams: {
+              "introduction": introController.text,
+              "position": myPosition,
+            }
         ).then((successful) {
           if (successful) {
-            Navigator.pop(context);
+            introController.clear();
+            setMyPosition(null);
+            checkFieldsFulfilled();
+            // Navigator.of(context).pop();
           }
-      });
+        });
+      } catch (e) {
+        print(e);
+      } finally {
+        toggleApplying();
+      }
     }
 
     return Container(
@@ -82,9 +106,7 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
                     hintStyle: TextStyle(fontSize: 14, color: Colors.black38),
                   ),
                   onChanged: (String _) {
-                    setState(() {
-                      fieldsFulfilled = myPositionFilled() && introFilled();
-                    });
+                    checkFieldsFulfilled();
                   },
                 ),
               ),
@@ -92,7 +114,8 @@ class _ProjectDetailApplyState extends State<ProjectDetailApply> {
           ),
           applyButton(
             width: MediaQuery.of(context).size.width * 0.85,
-            enabled: myPositionFilled() && introFilled(),
+            enabled: fieldsFulfilled,
+            applying: applying,
             applyProject: applyProject,
           )
         ],
