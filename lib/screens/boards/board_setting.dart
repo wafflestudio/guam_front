@@ -29,6 +29,8 @@ class BoardSetting extends StatelessWidget {
               builder: (_) => BottomModalContent(
                 requireConfirm: true,
                 editText: "'$boardTitleEllipsis' 수정하기",
+                completeText: "'$boardTitleEllipsis' 완료하기",
+                completeDetailText: "프로젝트를 완료시겠습니까?",
                 deleteText: "'$boardTitleEllipsis' 나가기",
                 deleteDetailText: "프로젝트를 나가시겠습니까?",
                 editFunc: boardsProvider
@@ -48,6 +50,13 @@ class BoardSetting extends StatelessWidget {
                       );
                     }
                     : null,
+                completeFunc: boardsProvider
+                    .isMe(boardsProvider.currentBoard.leader.id)
+                  ? () async {
+                  await boardsProvider.completeBoard();
+                  Navigator.of(context).pop();
+                }
+                  : null,
                 deleteFunc: () async {
                   if (boardsProvider
                       .isMe(boardsProvider.currentBoard.leader.id)) {
@@ -56,7 +65,7 @@ class BoardSetting extends StatelessWidget {
                     await boardsProvider.quitBoard();
                   }
                   Navigator.of(context).pop();
-                }
+                },
               )
             );
           } else {
@@ -65,14 +74,16 @@ class BoardSetting extends StatelessWidget {
               builder: (_) => BottomModalContent(
                 requireConfirm: true,
                 editText: "'$boardTitleEllipsis' 수정하기",
+                completeText: "'$boardTitleEllipsis' 완료하기",
+                completeDetailText: "프로젝트를 완료시겠습니까?",
                 deleteText: "'$boardTitleEllipsis' 나가기",
                 deleteDetailText: "프로젝트를 나가시겠습니까?",
                 editFunc: boardsProvider
                     .isMe(boardsProvider.currentBoard.leader.id)
                     ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
                           builder: (_) => ChangeNotifierProvider.value(
                             value: boardsProvider,
                             child: ProjectEdit(
@@ -80,9 +91,16 @@ class BoardSetting extends StatelessWidget {
                               projectInfo: boardsProvider.currentBoard,
                             ),
                           )
-                        )
-                      );
-                    }
+                      )
+                  );
+                }
+                    : null,
+                completeFunc: boardsProvider
+                    .isMe(boardsProvider.currentBoard.leader.id)
+                    ? () async {
+                  await boardsProvider.completeBoard();
+                  Navigator.of(context).pop();
+                }
                     : null,
                 deleteFunc: () async {
                   if (boardsProvider
@@ -92,7 +110,7 @@ class BoardSetting extends StatelessWidget {
                     await boardsProvider.quitBoard();
                   }
                   Navigator.of(context).pop();
-                }
+                },
               )
             );
           }
