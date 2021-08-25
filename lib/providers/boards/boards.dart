@@ -693,4 +693,33 @@ class Boards extends ChangeNotifier with Toast {
 
     return res;
   }
+
+  Future<bool> completeBoard() async {
+    bool res = false;
+
+    try {
+      String authToken = await _authProvider.getFirebaseIdToken();
+
+      await HttpRequest()
+          .put(
+        path: "/project/${currentBoard.id}",
+        authToken: authToken,
+      ).then((response) {
+        if (response.statusCode == 200) {
+          showToast(success: true, msg: "프로젝트를 완료했습니다.");
+          renderBoardIdx = max(_renderBoardIdx - 1, 0);
+          res = true;
+        } else {
+          final jsonUtf8 = decodeKo(response);
+          final String err = json.decode(jsonUtf8)["message"];
+          showToast(success: false, msg: err);
+        }
+      });
+    } catch (e) {
+      print(e);
+    } finally {
+      if (res) fetchBoardIds();
+    }
+    return res;
+  }
 }
