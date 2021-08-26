@@ -174,7 +174,6 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
               Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 MakeProfileImage(onTap: setImageFile, profile: me),
                 _profileInfo(techStacks),
-                // _authButton(setProfile)
                 SaveProfileButton(
                   enabled: saveBtnEnabled,
                   requesting: requesting,
