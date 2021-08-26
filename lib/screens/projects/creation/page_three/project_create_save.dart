@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:provider/provider.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import '../../../../commons/button_size_circular_progress_indicator.dart';
 import '../../../../providers/boards/boards.dart';
 
 class ProjectCreateSave extends StatefulWidget {
@@ -19,7 +19,16 @@ class ProjectCreateSave extends StatefulWidget {
 }
 
 class _ProjectCreateSaveState extends State<ProjectCreateSave> {
+  bool requesting = false;
+
+  void toggleRequesting() {
+    setState(() {
+      requesting = !requesting;
+    });
+  }
+
   Future createOrUpdateProject({dynamic files}) async {
+    toggleRequesting();
     Map<String, String> fields = {
       "title": widget.input['title'],
       "due": widget.input['due'],
@@ -32,30 +41,37 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       "designStackId": widget.input['DESIGNER']['id'].toString(),
       "myPosition": widget.input['myPosition'].toString(),
     };
-    if (widget.isNewProject) {
-      return await context.read<Projects>().createProject(
-        fields: fields,
-        files: files,
-      ).then((successful) {
-        if (successful) {
-          Navigator.pop(context);
-          context.read<Projects>().fetchProjects();
-          return successful;
-        }
-      });
-    } else {
-      return await context.read<Boards>().editProject(
-        projectId: widget.input['id'],
-        fields: fields,
-        files: files,
-      ).then((successful) {
-        if (successful) {
-          Navigator.pop(context); // project edit 페이지 나가기
-          context.read<Boards>().fetchBoard(widget.input['id']);
-          Navigator.pop(context); // bottomModal 나가기
-          return successful;
-        }
-      });
+
+    try {
+      if (widget.isNewProject) {
+        return await context.read<Projects>().createProject(
+          fields: fields,
+          files: files,
+        ).then((successful) {
+          if (successful) {
+            Navigator.pop(context);
+            context.read<Projects>().fetchProjects();
+            return successful;
+          }
+        });
+      } else {
+        return await context.read<Boards>().editProject(
+          projectId: widget.input['id'],
+          fields: fields,
+          files: files,
+        ).then((successful) {
+          if (successful) {
+            Navigator.pop(context); // project edit 페이지 나가기
+            context.read<Boards>().fetchBoard(widget.input['id']);
+            Navigator.pop(context); // bottomModal 나가기
+            return successful;
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      toggleRequesting();
     }
   }
 
@@ -66,14 +82,14 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
       ? Container(
           padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
           child: InkWell(
-            onTap: () async {
-              if (widget.btnEnabled)
-                await createOrUpdateProject(
+            onTap: widget.btnEnabled && !requesting
+                ? () async {
+              await createOrUpdateProject(
                   files: (widget.input['thumbnail'] != null) && widget.input['isThumbnailChanged']
-                      ? [File(widget.input["thumbnail"].path)]
+                  ? [File(widget.input["thumbnail"].path)]
                       : null
-                );
-            },
+              );
+            } : null,
             child: Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.45,
@@ -81,24 +97,25 @@ class _ProjectCreateSaveState extends State<ProjectCreateSave> {
               decoration: BoxDecoration(
                 border: Border.all(width: 1.5, color: Colors.white24),
                 borderRadius: BorderRadius.circular(30),
-                gradient: !widget.btnEnabled
-                  ? null
-                  : LinearGradient(
+                gradient: widget.btnEnabled && !requesting
+                    ? LinearGradient(
                       colors: [HexColor("4F34F3"), HexColor("3EF7FF")],
                       begin: FractionalOffset(1.0, 0.0),
                       end: FractionalOffset(0.0, 0.0),
                       stops: [0, 1],
-                      tileMode: TileMode.clamp,
-                    ),
+                      tileMode: TileMode.clamp
+                    )
+                    : null
               ),
-              child: Text(
-                '${widget.isNewProject ? '생성' : '수정'}',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: !requesting
+                  ? Text(
+                    '${widget.isNewProject ? '생성' : '수정'}',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ))
+                  : ButtonSizeCircularProgressIndicator(),
             ),
           ),
         )

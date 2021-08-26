@@ -101,7 +101,7 @@ class _ProjectCreatePageThreeState extends State<ProjectCreatePageThree> {
               ProjectCreateSave(
                 input: widget.input,
                 page: 3,
-                btnEnabled: widget.isNewProject ? nextBtnEnabled : true,
+                btnEnabled: widget.isNewProject ? nextBtnEnabled : true, // update 에서는 myPosition 을 바꿀 수 없어 always enable
                 isNewProject: widget.isNewProject,
               )
             ],

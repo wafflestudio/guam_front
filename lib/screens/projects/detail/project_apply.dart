@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class ProjectApply extends StatefulWidget {
+class ProjectApply extends StatelessWidget {
+  final String myPosition;
   final Function setMyPosition;
-
-  ProjectApply(this.setMyPosition);
-
-  @override
-  _ProjectApplyState createState() => _ProjectApplyState();
-}
-
-class _ProjectApplyState extends State<ProjectApply> {
-  Map<String, dynamic> pos = {
+  final Map<String, dynamic> pos = {
     'BACKEND': {
       'label': '백엔드',
-      'selected': false,
     },
     'FRONTEND': {
       'label': '프론트엔드',
-      'selected': false,
     },
     'DESIGNER': {
       'label': '디자이너',
-      'selected': false,
     },
   };
+
+  ProjectApply({this.myPosition, this.setMyPosition});
 
   @override
   Widget build(BuildContext context) {
@@ -43,30 +35,24 @@ class _ProjectApplyState extends State<ProjectApply> {
               minWidth: MediaQuery.of(context).size.width * 0.85 / pos.length,
               minHeight: 36
           ),
-          isSelected: [...pos.values.map((e) => e['selected'])],
+          isSelected: [...pos.keys.map((e) => e == myPosition)],
           onPressed: (idx) {
-            final pressedKey = pos.keys.toList()[idx];
-
-            setState(() {
-              for(int i = 0; i < pos.length; i++) {
-                final key = pos.keys.toList()[i];
-                if (key == pressedKey) pos[pressedKey]['selected'] = !pos[pressedKey]['selected']; // toggle pressed key
-                else pos[key]['selected'] = false;
-              }
-            });
-
-            final selected = pos.entries.firstWhere((entry) => entry.value['selected'] == true, orElse: () => MapEntry(null, null)); // returns null if no matching entry
-            widget.setMyPosition(selected.key);
+            final String pressedKey = pos.keys.toList()[idx];
+            if (myPosition == pressedKey) {
+              setMyPosition(null);
+            } else {
+              setMyPosition(pressedKey);
+            }
           },
-          children: [...pos.values.map((e) => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text(
-              e['label'],
-              style: TextStyle(
-                  fontSize: 14,
-                  color: e['selected'] ? Colors.white : HexColor("707070")
-              ),
-            )),
+          children: [...pos.entries.map((e) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                e.value['label'],
+                style: TextStyle(
+                    fontSize: 14,
+                    color: e.key == myPosition ? Colors.white : HexColor("707070")
+                ),
+              )),
           )],
         ),
       ),
