@@ -30,7 +30,23 @@ class Comment extends StatelessWidget {
             showMaterialModalBottomSheet(
               context: context,
               builder: (_) => BottomModalContent(
-                  requireConfirm: true,
+                editText: "댓글 편집",
+                deleteText: "댓글 삭제",
+                deleteDetailText: "댓글을 삭제하시겠습니까?",
+                editFunc: () {
+                  switchToEditMode(editTargetComment: comment);
+                  Navigator.of(context).pop(); // pops Modal Bottom Content Widget
+                },
+                deleteFunc: () => deleteComment(comment.id).then((val) {
+                  if (val) Navigator.of(context).pop();
+                }),
+                deleteRequireConfirm: true,
+              )
+            );
+          } else {
+            showCupertinoModalBottomSheet(
+                context: context,
+                builder: (_) => BottomModalContent(
                   editText: "댓글 편집",
                   deleteText: "댓글 삭제",
                   deleteDetailText: "댓글을 삭제하시겠습니까?",
@@ -40,24 +56,8 @@ class Comment extends StatelessWidget {
                   },
                   deleteFunc: () => deleteComment(comment.id).then((val) {
                     if (val) Navigator.of(context).pop();
-                  })
-                )
-            );
-          } else {
-            showCupertinoModalBottomSheet(
-                context: context,
-                builder: (_) => BottomModalContent(
-                    requireConfirm: true,
-                    editText: "댓글 편집",
-                    deleteText: "댓글 삭제",
-                    deleteDetailText: "댓글을 삭제하시겠습니까?",
-                    editFunc: () {
-                      switchToEditMode(editTargetComment: comment);
-                      Navigator.of(context).pop(); // pops Modal Bottom Content Widget
-                    },
-                    deleteFunc: () => deleteComment(comment.id).then((val) {
-                      if (val) Navigator.of(context).pop();
-                    })
+                  }),
+                  deleteRequireConfirm: true,
                 )
             );
           }

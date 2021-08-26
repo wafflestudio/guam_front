@@ -59,7 +59,6 @@ class Thread extends StatelessWidget {
             showMaterialModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                  requireConfirm: true,
                   setText: "스레드 고정",
                   editText: "스레드 편집",
                   deleteText: "스레드 삭제",
@@ -69,14 +68,14 @@ class Thread extends StatelessWidget {
                     switchToEditMode(editTargetThread: thread);
                     Navigator.of(context).pop();
                   },
-                  deleteFunc: deleteThread
+                  deleteFunc: deleteThread,
+                  deleteRequireConfirm: true,
                 )
             );
           } else {
             showCupertinoModalBottomSheet(
                 context: context,
                 builder: (_) => BottomModalContent(
-                  requireConfirm: true,
                   setText: "스레드 고정",
                   editText: "스레드 편집",
                   deleteText: "스레드 삭제",
@@ -86,7 +85,8 @@ class Thread extends StatelessWidget {
                     switchToEditMode(editTargetThread: thread);
                     Navigator.of(context).pop();
                   },
-                  deleteFunc: deleteThread
+                  deleteFunc: deleteThread,
+                  deleteRequireConfirm: true,
                 )
             );
           }

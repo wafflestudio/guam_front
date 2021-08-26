@@ -3,8 +3,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
 import '../helpers/pick_image.dart';
-import '../commons/image_thumbnail.dart';
+import 'image_thumbnail.dart';
 import 'common_icon_button.dart';
+import 'button_size_circular_progress_indicator.dart';
 
 class CommonTextField extends StatefulWidget {
   final Function onTap;
@@ -22,6 +23,7 @@ class _CommonTextFieldState extends State<CommonTextField> {
   final double maxImgSize = 80;
   final double deleteImgButtonRadius = 12;
   List<PickedFile> imageFileList = [];
+  bool sending = false;
 
   @override
   void dispose() {
@@ -42,15 +44,52 @@ class _CommonTextFieldState extends State<CommonTextField> {
     });
   }
 
+  void toggleSending() {
+    setState(() {
+      sending = !sending;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isEdit = widget.editTarget != null;
     _threadTextFieldController.text = isEdit ? widget.editTarget.content : null;
 
+    Future<void> send() async {
+      toggleSending();
+
+      try {
+        if (isEdit) {
+          await widget.onTap(
+            id: widget.editTarget.id,
+            fields: {"content": _threadTextFieldController.text},
+          ).then((successful) {
+            if (successful) {
+              _threadTextFieldController.clear();
+              FocusScope.of(context).unfocus();
+            }
+          });
+        } else {
+          await widget.onTap(
+            files: [...imageFileList.map((e) => File(e.path))],
+            fields: {"content": _threadTextFieldController.text},
+          ).then((successful) {
+            if (successful) {
+              imageFileList.clear();
+              _threadTextFieldController.clear();
+              FocusScope.of(context).unfocus();
+            }
+          });
+        }
+      } catch (e) {
+        print(e);
+      } finally {
+        toggleSending();
+      }
+    }
+
     return ConstrainedBox(
-      constraints: BoxConstraints(
-          minHeight: 36
-      ),
+      constraints: BoxConstraints(minHeight: 36),
       child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
@@ -114,39 +153,18 @@ class _CommonTextFieldState extends State<CommonTextField> {
                           icon: Icons.add_a_photo,
                           // 추후 갤러리에서만 아니라 카메라 촬영을 통해서 사진을 넣는 경우도 있어
                           // make_profile_image.dart 참고하시면 좋을 듯합니다!
-                          onPressed: () async => await pickImage(type: 'gallery')
-                              .then((img) => setImageFile(img)),
+                          onPressed: !sending
+                              ? () {pickImage(type: 'gallery').then((img) => setImageFile(img));}
+                              : null,
                         ),
                         Padding(padding: EdgeInsets.only(right: 10))
                       ],
                     ),
-                    CommonIconButton(
+                    !sending ? CommonIconButton(
                       icon: Icons.send_outlined,
-                      onPressed: () async {
-                        if (isEdit) {
-                          await widget.onTap(
-                            id: widget.editTarget.id,
-                            fields: {"content": _threadTextFieldController.text},
-                          ).then((successful) {
-                            if (successful) {
-                              _threadTextFieldController.clear();
-                              FocusScope.of(context).unfocus();
-                            }
-                          });
-                        } else {
-                          await widget.onTap(
-                            files: [...imageFileList.map((e) => File(e.path))],
-                            fields: {"content": _threadTextFieldController.text},
-                          ).then((successful) {
-                            if (successful) {
-                              imageFileList.clear();
-                              _threadTextFieldController.clear();
-                              FocusScope.of(context).unfocus();
-                            }
-                          });
-                        }
-                      }
-                    ),
+                      onPressed: !sending ? send : null
+                    )
+                    : ButtonSizeCircularProgressIndicator()
                   ],
                 )
               ],

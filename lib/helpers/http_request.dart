@@ -6,7 +6,8 @@ import 'package:path/path.dart' as p;
 import '../mixins/toast.dart';
 
 class HttpRequest with Toast {
-  final String baseAuthority = "15.164.72.46:8080";
+  // final String baseAuthority = "15.164.72.46:8080"; // master
+  final String baseAuthority = "13.209.157.42:8080"; // refactoring
   final String s3BaseAuthority = "https://guam.s3.ap-northeast-2.amazonaws.com/";
 
   Future get({String authority, String path, dynamic queryParams, String authToken}) async {
