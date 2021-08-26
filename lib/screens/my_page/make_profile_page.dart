@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../providers/user_auth/authenticate.dart';
 import '../../mixins/toast.dart';
 import 'make_profile_image.dart';
+import 'save_profile_button.dart';
 
 class MakeProfilePage extends StatefulWidget {
   final Stacks stacksProvider;
@@ -137,7 +138,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
               Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                 MakeProfileImage(onTap: setImageFile, profile: me),
                 _profileInfo(techStacks),
-                _authButton(setProfile)
+                // _authButton(setProfile)
+                SaveProfileButton(
+                  enabled: false,
+                  requesting: false,
+                  saveProfile: setProfile,
+                )
               ]),
             ],
           ),
@@ -344,49 +350,49 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
     );
   }
 
-  Widget _authButton(Function setProfile) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
-      child: InkWell(
-        onTap: () {
-          if (!Uri.tryParse(_blogController.text).isAbsolute && _blogController.text != '') {
-            showToast(success: false, msg: "웹사이트는 http 또는 https 형식으로 입력해주세요.");
-          } else {
-            final keyMap = {
-              "nickname": _nicknameController.text,
-              "blogUrl": _blogController.text,
-              "githubUrl": _githubIdController.text,
-              "introduction": _introductionController.text,
-              "skills": selectedSkillsList,
-              "willUploadImage": willUploadImage.toString(),
-            };
-            setProfile(
-              fields: keyMap,
-              files: willUploadImage ? [File(profileImage.path)] : null,
-            );
-          }
-        },
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * 0.85,
-          height: 50,
-          decoration: BoxDecoration(
-            border: Border.all(width: 1.5, color: Colors.white24),
-            borderRadius: BorderRadius.circular(30),
-            gradient: LinearGradient(
-              colors: [HexColor("4F34F3"), HexColor("3EF7FF")],
-              begin: FractionalOffset(1.0, 0.0),
-              end: FractionalOffset(0.0, 0.0),
-              stops: [0, 1],
-              tileMode: TileMode.clamp,
-            ),
-          ),
-          child: Text(
-            '저장하기',
-            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _authButton(Function setProfile) {
+  //   return Container(
+  //     padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
+  //     child: InkWell(
+  //       onTap: () {
+  //         if (!Uri.tryParse(_blogController.text).isAbsolute && _blogController.text != '') {
+  //           showToast(success: false, msg: "웹사이트는 http 또는 https 형식으로 입력해주세요.");
+  //         } else {
+  //           final keyMap = {
+  //             "nickname": _nicknameController.text,
+  //             "blogUrl": _blogController.text,
+  //             "githubUrl": _githubIdController.text,
+  //             "introduction": _introductionController.text,
+  //             "skills": selectedSkillsList,
+  //             "willUploadImage": willUploadImage.toString(),
+  //           };
+  //           setProfile(
+  //             fields: keyMap,
+  //             files: willUploadImage ? [File(profileImage.path)] : null,
+  //           );
+  //         }
+  //       },
+  //       child: Container(
+  //         alignment: Alignment.center,
+  //         width: MediaQuery.of(context).size.width * 0.85,
+  //         height: 50,
+  //         decoration: BoxDecoration(
+  //           border: Border.all(width: 1.5, color: Colors.white24),
+  //           borderRadius: BorderRadius.circular(30),
+  //           gradient: LinearGradient(
+  //             colors: [HexColor("4F34F3"), HexColor("3EF7FF")],
+  //             begin: FractionalOffset(1.0, 0.0),
+  //             end: FractionalOffset(0.0, 0.0),
+  //             stops: [0, 1],
+  //             tileMode: TileMode.clamp,
+  //           ),
+  //         ),
+  //         child: Text(
+  //           '저장하기',
+  //           style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
