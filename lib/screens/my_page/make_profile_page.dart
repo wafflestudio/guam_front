@@ -103,6 +103,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
     });
   }
 
+  void validate() { // more validation logic is free to be added !!
+    if (!Uri.tryParse(_blogController.text).isAbsolute && _blogController.text != '') {
+      throw new Exception("웹사이트는 http 또는 https 형식으로 입력해주세요.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var techStacks = {
@@ -123,6 +129,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
     Future setProfile() async {
       toggleRequesting();
       try {
+        validate();
         return await authProvider.setProfile(
           fields: {
             "nickname": _nicknameController.text,
@@ -133,14 +140,14 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
             "willUploadImage": willUploadImage.toString(),
           },
           files: willUploadImage ? [File(profileImage.path)] : null,
-        ).then((successful) {
+        ).then((successful) async {
           if (successful) {
+            await authProvider.getMyProfile();
             Navigator.pop(context);
-            authProvider.getMyProfile();
           }
         });
       } catch (e) {
-        print(e);
+        showToast(success: false, msg: e.message);
       } finally {
         toggleRequesting();
       }
@@ -389,50 +396,4 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
       ),
     );
   }
-
-  // Widget _authButton(Function setProfile) {
-  //   return Container(
-  //     padding: EdgeInsets.fromLTRB(5, 10, 5, 20),
-  //     child: InkWell(
-  //       onTap: () {
-  //         if (!Uri.tryParse(_blogController.text).isAbsolute && _blogController.text != '') {
-  //           showToast(success: false, msg: "웹사이트는 http 또는 https 형식으로 입력해주세요.");
-  //         } else {
-  //           final keyMap = {
-  //             "nickname": _nicknameController.text,
-  //             "blogUrl": _blogController.text,
-  //             "githubUrl": _githubIdController.text,
-  //             "introduction": _introductionController.text,
-  //             "skills": selectedSkillsList,
-  //             "willUploadImage": willUploadImage.toString(),
-  //           };
-  //           setProfile(
-  //             fields: keyMap,
-  //             files: willUploadImage ? [File(profileImage.path)] : null,
-  //           );
-  //         }
-  //       },
-  //       child: Container(
-  //         alignment: Alignment.center,
-  //         width: MediaQuery.of(context).size.width * 0.85,
-  //         height: 50,
-  //         decoration: BoxDecoration(
-  //           border: Border.all(width: 1.5, color: Colors.white24),
-  //           borderRadius: BorderRadius.circular(30),
-  //           gradient: LinearGradient(
-  //             colors: [HexColor("4F34F3"), HexColor("3EF7FF")],
-  //             begin: FractionalOffset(1.0, 0.0),
-  //             end: FractionalOffset(0.0, 0.0),
-  //             stops: [0, 1],
-  //             tileMode: TileMode.clamp,
-  //           ),
-  //         ),
-  //         child: Text(
-  //           '저장하기',
-  //           style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
