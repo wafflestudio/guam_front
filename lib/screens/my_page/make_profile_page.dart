@@ -42,8 +42,12 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
   bool willUploadImage;
   PickedFile profileImage;
 
+  bool saveBtnEnabled;
+  bool requesting = false;
+
   @override
   void initState() {
+    super.initState();
     me = context.read<Authenticate>().me;
     _nicknameController.text = me.nickname;
     _githubIdController.text = me.githubUrl;
@@ -51,7 +55,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
     _introductionController.text = me.introduction;
     willUploadImage = false;
     selectedSkillsList = List<String>.from(me.skills);
-    super.initState();
+    checkSaveEnabled();
   }
 
   @override
@@ -61,6 +65,18 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
     _blogController.dispose();
     _introductionController.dispose();
     super.dispose();
+  }
+
+  void checkSaveEnabled() {
+    setState(() {
+      saveBtnEnabled = _nicknameController.text != null && _nicknameController.text != "";
+    });
+  }
+
+  void toggleRequesting() {
+    setState(() {
+      requesting = !requesting;
+    });
   }
 
   void setImageFile(PickedFile val) {
@@ -104,17 +120,30 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
 
     final authProvider = context.read<Authenticate>();
 
-    Future setProfile({Map<String, dynamic> fields, dynamic files}) async {
-      return await authProvider
-        .setProfile(
-          fields: fields,
-          files: files,
+    Future setProfile() async {
+      toggleRequesting();
+      try {
+        return await authProvider.setProfile(
+          fields: {
+            "nickname": _nicknameController.text,
+            "blogUrl": _blogController.text,
+            "githubUrl": _githubIdController.text,
+            "introduction": _introductionController.text,
+            "skills": selectedSkillsList,
+            "willUploadImage": willUploadImage.toString(),
+          },
+          files: willUploadImage ? [File(profileImage.path)] : null,
         ).then((successful) {
           if (successful) {
             Navigator.pop(context);
             authProvider.getMyProfile();
           }
         });
+      } catch (e) {
+        print(e);
+      } finally {
+        toggleRequesting();
+      }
     }
 
     return Scaffold(
@@ -140,8 +169,8 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
                 _profileInfo(techStacks),
                 // _authButton(setProfile)
                 SaveProfileButton(
-                  enabled: false,
-                  requesting: false,
+                  enabled: saveBtnEnabled,
+                  requesting: requesting,
                   saveProfile: setProfile,
                 )
               ]),
@@ -165,6 +194,8 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
               hint: '닉네임을 입력하세요.',
               maxLines: 1,
               maxLength: 8,
+              required: true,
+              onTextChanged: checkSaveEnabled, // 필수 필드 체크
             ),
             _inputForm(
               image: 'assets/images/github-icon.png',
@@ -196,7 +227,8 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
     );
   }
 
-  Widget _inputForm({String image, TextEditingController textController, String label, String hint, int maxLines, int maxLength}) {
+  Widget _inputForm({String image, TextEditingController textController, String label,
+    String hint, int maxLines, int maxLength, bool required = false, Function onTextChanged}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -219,6 +251,13 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
                   color: Colors.black,
                 )
               ),
+              if (required) Text(
+                " *",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 12,
+                ),
+              )
             ],
           )
         ),
@@ -228,6 +267,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
             maxLines: maxLines,
             maxLength: maxLength,
             controller: textController,
+            onChanged: (_) => onTextChanged(),
             style: TextStyle(fontSize: 14, color: Colors.black),
             decoration: InputDecoration(
               filled: true,
