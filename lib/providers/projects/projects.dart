@@ -107,7 +107,6 @@ class Projects extends ChangeNotifier with Toast {
     loading = true;
 
     try {
-      print("start fetch filtered projects"); ///
       await HttpRequest()
         .get(path: "/project/search", queryParams: queryParams)
         .then((response) {
@@ -115,7 +114,7 @@ class Projects extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final List<dynamic> jsonList = json.decode(jsonUtf8)["data"];
             _filteredProjects = jsonList.map((e) => Project.fromJson(e)).toList();
-            print("set filted projects done");  ///
+            showToast(success: true, msg: "프로젝트 검색 완료");
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
@@ -126,7 +125,6 @@ class Projects extends ChangeNotifier with Toast {
       print(e);
     } finally {
       loading = false;
-      print("toggled loading: $loading"); ///
       notifyListeners();
     }
   }
