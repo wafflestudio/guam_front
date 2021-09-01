@@ -8,8 +8,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Guam"
-        android:icon="@mipmap/guam_logo"
-        android:usesCleartextTraffic="true"> <!-- temp code to delete after https -->
+        android:icon="@mipmap/guam_logo">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
