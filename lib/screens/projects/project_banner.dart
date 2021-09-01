@@ -102,7 +102,7 @@ class ProjectBanner extends StatelessWidget {
                 Positioned.fill(
                   child: FractionallySizedBox(
                     widthFactor: 1,
-                    heightFactor: 0.7,
+                    heightFactor: 0.73, // 112 / 152 ~= 0.73
                     alignment: FractionalOffset.bottomCenter,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
