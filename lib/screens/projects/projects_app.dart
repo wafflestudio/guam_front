@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../commons/custom_app_bar.dart';
 import '../../providers/projects/projects.dart';
 import '../../providers/user_auth/authenticate.dart';
-import '../tutorial/tutorial_app.dart';
+import '../tutorial/tutorial_modal.dart';
 import 'creation/project_create_button.dart';
 import 'projects_body.dart';
 
@@ -21,7 +21,7 @@ class ProjectsApp extends StatelessWidget {
               projectsProvider..authProvider = authProvider,
         ),
       ],
-      child: TutorialApp(),
+      child: TutorialModal(),
       // child: ProjectsAppScaffold(),
     );
   }

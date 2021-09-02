@@ -42,10 +42,12 @@ class TutorialPage extends StatelessWidget {
                 Row(
                   children: [
                     ArrowButton(onTap: this.goToPreviousPage, active: true, isRightArrow: false),
+                    Spacer(),
                     ArrowButton(onTap: this.goToNextPage, active: true),
                   ],
                 ),
                 if (!isImageTop) TutorialImage(imagePath, isImageTop),
+                Spacer(),
                 ProjectStatus(totalPage: 6, currentPage: page)
               ],
             ),

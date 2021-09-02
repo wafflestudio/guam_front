@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/screens/tutorial/tutorial_page.dart';
 
-class TutorialApp extends StatefulWidget {
+class TutorialModal extends StatefulWidget {
   @override
-  _TutorialAppState createState() => _TutorialAppState();
+  _TutorialModalState createState() => _TutorialModalState();
 }
 
-class _TutorialAppState extends State<TutorialApp> {
+class _TutorialModalState extends State<TutorialModal> {
   int _currentPage = 1;
   void goToNextPage() => setState(() {if (_currentPage < 6) _currentPage++;});
   void goToPreviousPage() => setState(() {if (_currentPage > 1) _currentPage--;});
@@ -34,7 +34,7 @@ class _TutorialAppState extends State<TutorialApp> {
                 title: "다양한 검색 기능",
                 description_1: "원하는 기술 스택, 포지션, 기간",
                 description_2: "딱 맞는 프로젝트를 찾을 수 있어요",
-                imagePath: "assets/tutorial/tutorial_search.png",
+                imagePath: "assets/tutorial/tutorial_project_search.png",
                 isImageTop: true,
                 page: _currentPage,
                 goToNextPage: goToNextPage,
