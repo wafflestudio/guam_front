@@ -130,7 +130,7 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
       toggleRequesting();
       try {
         validate();
-        return await authProvider.setProfile(
+        await authProvider.setProfile(
           fields: {
             "nickname": _nicknameController.text,
             "blogUrl": _blogController.text,
@@ -140,16 +140,20 @@ class _MakeProfilePageState extends State<MakeProfilePage> with Toast {
             "willUploadImage": willUploadImage.toString(),
           },
           files: willUploadImage ? [File(profileImage.path)] : null,
-        ).then((successful) async {
-          if (successful) {
-            await authProvider.getMyProfile();
-            Navigator.pop(context);
-          }
+        ).then((successful) {
+          /*
+          *  최초 set profile 은 authProvider.profileExists() 를 toggle => 페이지 전환
+          *  이를 통해 dismount 되므로 Navigator pop 할 필요 없음
+          *  그 이후 set profile 은 profileExists() 를 toggle 하지 않으므로 mount 되어 있고,
+          *  이 경우에만 Navigator pop 해주면 됨.
+          */
+          if (successful && this.mounted) Navigator.pop(context);
         });
       } catch (e) {
         showToast(success: false, msg: e.message);
       } finally {
-        toggleRequesting();
+        // 최초 set profile 시는 이미 dismount 된 상태이므로 toggleRequest() 할 필요 없음
+        if (this.mounted) toggleRequesting();
       }
     }
 
