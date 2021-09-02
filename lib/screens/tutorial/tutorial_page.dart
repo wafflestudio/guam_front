@@ -21,7 +21,11 @@ class TutorialPage extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/backgrounds/projects-bg-2.png"),
+            image: AssetImage(
+              isImageTop
+                ? "assets/tutorial/tutorial_bg_2.png"
+                : "assets/tutorial/tutorial_bg_1.png"
+            ),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.7), BlendMode.dstATop),
           ),
