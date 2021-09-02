@@ -42,7 +42,7 @@ class ProjectsAppScaffold extends StatelessWidget {
             leading: ProjectCreateButton(),
             trailing: ProjectSearchButton()
         ),
-        body: ProjectsBody(context.watch<Projects>()),
+        body: ProjectsBody(),
         backgroundColor: Colors.transparent,
       ),
     );
