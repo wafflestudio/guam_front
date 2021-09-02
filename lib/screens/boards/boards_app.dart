@@ -23,10 +23,12 @@ class BoardsApp extends StatelessWidget {
 class BoardsAppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final bool showBoardSetting = context.watch<Boards>().hasBoards();
+
     return Scaffold(
       appBar: CustomAppBar(
         title: '작업실',
-        trailing: BoardSetting(),
+        trailing: showBoardSetting ? BoardSetting() : null,
       ),
       body: BoardsBody(),
       backgroundColor: Colors.transparent,

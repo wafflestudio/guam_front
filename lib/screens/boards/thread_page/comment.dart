@@ -89,7 +89,7 @@ class Comment extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Text(
-                  DateFormat("M월 d일 hh:mm").format(comment.createdAt).toString(),
+                  DateFormat("M월 d일 kk:mm").format(comment.createdAt).toString(),
                   style: TextStyle(
                     fontSize: 10,
                     color: HexColor("#818181"),

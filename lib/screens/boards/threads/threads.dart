@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:io' show Platform;
-import '../../../commons/custom_app_bar.dart';
 import '../../../commons/common_text_field.dart';
 import '../../../commons/common_sizes.dart';
 import '../../../providers/boards/boards.dart';
@@ -13,8 +11,9 @@ import 'fold_threads_button.dart';
 
 class Threads extends StatefulWidget {
   final List<ThreadModel.Thread> threads;
+  final Function onUnfoldThreads;
 
-  Threads(this.threads);
+  Threads(this.threads, {this.onUnfoldThreads});
 
   @override
   State<StatefulWidget> createState() => ThreadsState();
@@ -82,25 +81,11 @@ class ThreadsState extends State<Threads> {
     const double foldedThreadsHeight = 208;
     const double boardItemPadding = 10;
     const double iconTitleHeight = 36;
-    double boardsBodyHeight;
-
-    if (Platform.isAndroid) {
-      boardsBodyHeight =
-          MediaQuery.of(context).size.height -
-          CustomAppBar().preferredSize.height -
-          MediaQueryData.fromWindow(window).padding.top -
-          androidBottomNavigationHeight;
-    } else {
-      boardsBodyHeight =
-          MediaQuery.of(context).size.height -
-          CustomAppBar().preferredSize.height -
-          MediaQueryData.fromWindow(window).padding.top -
-          iosBottomNavigationHeight + 2;  // 2 for slight mismatch in iOS safeArea height...
-    }
+    double _boardsBodyHeight = boardsBodyHeight(context);
 
     double threadsHeight = foldThreads
         ? foldedThreadsHeight
-        : boardsBodyHeight - ( boardItemPadding * 2 + iconTitleHeight );
+        : _boardsBodyHeight - ( boardItemPadding * 2 + iconTitleHeight );
 
     double threadsContentsHeight = threadsHeight -
         ( threadsPadding * 2 + commonTextFieldHeight );
@@ -114,7 +99,10 @@ class ThreadsState extends State<Threads> {
             iconTitle(icon: Icons.comment_outlined, title: "스레드"),
             FoldThreadsButton(
               buttonText: foldThreads ? "펼치기" : "접기",
-              onPressed: toggleFoldThreads
+              onPressed: () {
+                toggleFoldThreads();
+                if (!foldThreads) widget.onUnfoldThreads();
+              }
             )
           ],
         ),
