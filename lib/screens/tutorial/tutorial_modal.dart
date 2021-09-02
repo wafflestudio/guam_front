@@ -32,8 +32,8 @@ class _TutorialModalState extends State<TutorialModal> {
             if (_currentPage == 2)
               TutorialPage(
                 title: "프로젝트 검색",
-                description_1: "기술스택, 포지션, 기간으로",
-                description_2: "꼭 맞는 프로젝트를 찾을 수 있어요",
+                description_1: "기술스택, 포지션, 기간",
+                description_2: "프로젝트를 찾을 수 있어요",
                 imagePath: "assets/tutorial/tutorial_project_search.png",
                 isImageTop: false,
                 page: _currentPage,

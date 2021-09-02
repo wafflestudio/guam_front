@@ -42,7 +42,7 @@ class TutorialPage extends StatelessWidget {
                     ArrowButton(onTap: this.goToPreviousPage, active: true, isRightArrow: false),
                     Column(
                       children: [
-                        if (isImageTop) TutorialImage(imagePath, isImageTop),
+                        if (isImageTop) TutorialImage(imagePath: imagePath, isImageTop: isImageTop),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 30),
                           child: Column(
@@ -60,7 +60,7 @@ class TutorialPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        if (!isImageTop) TutorialImage(imagePath, isImageTop),
+                        if (!isImageTop) TutorialImage(imagePath: imagePath, isImageTop: isImageTop, page: page),
                       ],
                     ),
                     ArrowButton(onTap: this.goToNextPage, active: true),
