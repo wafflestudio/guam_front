@@ -8,18 +8,9 @@ class TutorialImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.white.withOpacity(0.7), BlendMode.dstATop,
-            ),
-          ),
-        )
-      )
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.45,
+      child: Image(image: AssetImage(imagePath), fit: BoxFit.cover)
     );
   }
 }

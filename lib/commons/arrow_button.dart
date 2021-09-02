@@ -10,7 +10,6 @@ class ArrowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(5, 60, 5, 20),
       child: InkWell(
         onTap: active ? onTap : null,
         child: IconButton(

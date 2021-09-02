@@ -33,24 +33,39 @@ class TutorialPage extends StatelessWidget {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.75,
           child: Padding(
-            padding: const EdgeInsets.only(top: 40),
+            padding: EdgeInsets.only(top: 30),
             child: Column(
               children: [
-                if (isImageTop) TutorialImage(imagePath, isImageTop),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: FittedBox(child: Text(title, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold))),
-                ),
-                FittedBox(child: Text(description_1, style: TextStyle(fontSize: 20))),
-                FittedBox(child: Text(description_2, style: TextStyle(fontSize: 20))),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ArrowButton(onTap: this.goToPreviousPage, active: true, isRightArrow: false),
-                    Spacer(),
+                    Column(
+                      children: [
+                        if (isImageTop) TutorialImage(imagePath, isImageTop),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 30),
+                          child: Column(
+                            children: [
+                              // Title
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: FittedBox(
+                                  child: Text(title, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))
+                                ),
+                              ),
+                              // Description two lines
+                              FittedBox(child: Text(description_1, style: TextStyle(fontSize: 15))),
+                              FittedBox(child: Text(description_2, style: TextStyle(fontSize: 15))),
+                            ],
+                          ),
+                        ),
+                        if (!isImageTop) TutorialImage(imagePath, isImageTop),
+                      ],
+                    ),
                     ArrowButton(onTap: this.goToNextPage, active: true),
                   ],
                 ),
-                if (!isImageTop) TutorialImage(imagePath, isImageTop),
                 Spacer(),
                 ProjectStatus(totalPage: 6, currentPage: page)
               ],
