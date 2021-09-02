@@ -17,7 +17,6 @@ class Stacks extends ChangeNotifier with Toast {
   get stacks => _stacks;
 
   Future<void> fetchStacks() async {
-    print("fetch stacks start"); ///
     try {
       await HttpRequest().get(
         path: "/stacks"
@@ -26,7 +25,6 @@ class Stacks extends ChangeNotifier with Toast {
           final jsonUtf8 = decodeKo(response);
           final List<dynamic> jsonList = json.decode(jsonUtf8);
           _stacks = jsonList.map((e) => StackModel.Stack.fromJson(e)).toList();
-          print("fetch stacks done"); ///
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
