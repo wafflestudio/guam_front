@@ -74,7 +74,6 @@ class Boards extends ChangeNotifier with Toast {
   }
 
   Future<void> fetchBoard(int projectId) async {
-    print("Start fetching board info");  ///
     loading = true;
 
     try {
@@ -89,7 +88,6 @@ class Boards extends ChangeNotifier with Toast {
             final jsonUtf8 = decodeKo(response);
             final Map<String, dynamic> jsonData = json.decode(jsonUtf8)["data"];
             boards[renderBoardIdx] = Project.fromJson(jsonData);
-            print("Finished fetching board info");  ///
           } else {
             final jsonUtf8 = decodeKo(response);
             final String err = json.decode(jsonUtf8)["message"];
@@ -143,7 +141,6 @@ class Boards extends ChangeNotifier with Toast {
   }
 
   Future<void> setTasks() async {
-    print("Start set tasks"); ///
     List<UserTask> newTasks = [];
 
     for (UserTask briefTask in currentBoard.tasks) {
@@ -155,7 +152,6 @@ class Boards extends ChangeNotifier with Toast {
     }
 
     currentBoard.tasks = newTasks;
-    print("Finished set tasks");  ///
   }
 
   Future<UserTask> fetchTask(int taskId) async {
@@ -278,7 +274,6 @@ class Boards extends ChangeNotifier with Toast {
   }
 
   Future fetchThreads({dynamic queryParams}) async {
-    print("Start fetch threads"); ///
     try {
       String authToken = await _authProvider.getFirebaseIdToken();
 
@@ -296,7 +291,6 @@ class Boards extends ChangeNotifier with Toast {
           final List<dynamic> jsonData = json.decode(jsonUtf8)["data"];
           final List<Thread> threads = [...jsonData.map((e) => Thread.fromJson(e))];
           currentBoard.threads = threads;
-          print("Finished fetch threads"); ///
         } else {
           final jsonUtf8 = decodeKo(response);
           final String err = json.decode(jsonUtf8)["message"];
