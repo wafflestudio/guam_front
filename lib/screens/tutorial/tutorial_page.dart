@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guam_front/commons/arrow_button.dart';
+import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/screens/tutorial/tutorial_image.dart';
 
 class TutorialPage extends StatelessWidget {
@@ -8,10 +9,11 @@ class TutorialPage extends StatelessWidget {
   final String description_2;
   final String imagePath;
   final bool isImageTop;
+  final int page;
   final Function goToNextPage;
   final Function goToPreviousPage;
 
-  TutorialPage({this.title, this.description_1, this.description_2, this.imagePath, this.isImageTop, this.goToNextPage, this.goToPreviousPage});
+  TutorialPage({this.title, this.description_1, this.description_2, this.imagePath, this.isImageTop, this.goToNextPage, this.goToPreviousPage, this.page});
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +26,29 @@ class TutorialPage extends StatelessWidget {
             colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.7), BlendMode.dstATop),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 40),
-          child: Column(
-            children: [
-              if (isImageTop) TutorialImage(imagePath, isImageTop),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: FittedBox(child: Text(title, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold))),
-              ),
-              FittedBox(child: Text(description_1, style: TextStyle(fontSize: 20))),
-              FittedBox(child: Text(description_2, style: TextStyle(fontSize: 20))),
-              Row(
-                children: [
-                  ArrowButton(onTap: this.goToPreviousPage, active: true, isRightArrow: false),
-                  ArrowButton(onTap: this.goToNextPage, active: true),
-                ],
-              ),
-              if (!isImageTop) TutorialImage(imagePath, isImageTop),
-            ],
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Column(
+              children: [
+                if (isImageTop) TutorialImage(imagePath, isImageTop),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: FittedBox(child: Text(title, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold))),
+                ),
+                FittedBox(child: Text(description_1, style: TextStyle(fontSize: 20))),
+                FittedBox(child: Text(description_2, style: TextStyle(fontSize: 20))),
+                Row(
+                  children: [
+                    ArrowButton(onTap: this.goToPreviousPage, active: true, isRightArrow: false),
+                    ArrowButton(onTap: this.goToNextPage, active: true),
+                  ],
+                ),
+                if (!isImageTop) TutorialImage(imagePath, isImageTop),
+                ProjectStatus(totalPage: 6, currentPage: page)
+              ],
+            ),
           ),
         )
       )
