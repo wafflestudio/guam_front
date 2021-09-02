@@ -15,6 +15,7 @@ class ProjectsBody extends StatelessWidget {
       child: Column(
         children: [
           AlmostFullProjectsList(projectsProvider),
+          Padding(padding: EdgeInsets.only(bottom: 10)),
           ProjectsList(projectsProvider),
         ],
       ),
