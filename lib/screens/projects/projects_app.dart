@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/providers/stacks/stacks.dart';
 import 'package:guam_front/screens/projects/search/project_search_button.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +43,7 @@ class ProjectsAppScaffold extends StatelessWidget {
             leading: ProjectCreateButton(),
             trailing: ProjectSearchButton()
         ),
-        body: ProjectsBody(context.watch<Projects>()),
+        body: ProjectsBody(),
         backgroundColor: Colors.transparent,
       ),
     );
