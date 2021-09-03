@@ -20,6 +20,7 @@ class TutorialPage extends StatelessWidget {
     return Container(
       child: DecoratedBox(
         decoration: BoxDecoration(
+          color: Colors.white,
           image: DecorationImage(
             image: AssetImage(
               isImageTop
@@ -27,7 +28,7 @@ class TutorialPage extends StatelessWidget {
                 : "assets/tutorial/tutorial_bg_1.png"
             ),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.7), BlendMode.dstATop),
+            // colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.7), BlendMode.dstATop),
           ),
         ),
         child: SizedBox(
@@ -66,8 +67,8 @@ class TutorialPage extends StatelessWidget {
                     ArrowButton(onTap: this.goToNextPage, active: true),
                   ],
                 ),
-                Spacer(),
-                ProjectStatus(totalPage: 6, currentPage: page)
+                // Spacer(),
+                // ProjectStatus(totalPage: 6, currentPage: page)
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../providers/home/home_provider.dart';
+import '../tutorial/tutorial_modal.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class HomeState extends State<Home> {
 
     if (seenTutorial) return; // No need to show tutorial twice.
 
+    showDialog(context: context, builder: (_) => TutorialModal());
     // code for showing tutorial
 
     // tutorial 마지막 button press 시 -> await prefs.setBool("seenTutorial", true); 해주심 됩니다.

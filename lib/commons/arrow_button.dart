@@ -13,6 +13,7 @@ class ArrowButton extends StatelessWidget {
       child: InkWell(
         onTap: active ? onTap : null,
         child: IconButton(
+          padding: EdgeInsets.all(0),
           icon: Icon(this.isRightArrow ? Icons.arrow_right : Icons.arrow_left),
           color: Colors.black,
           iconSize: 60,
