@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ProjectStatus extends StatelessWidget {
+class PageStatus extends StatelessWidget {
   final int totalPage;
   final int currentPage;
 
-  ProjectStatus({
+  PageStatus({
     this.totalPage,
     this.currentPage,
   });

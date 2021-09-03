@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:guam_front/commons/profile_thumbnail.dart';
 import 'package:guam_front/providers/projects/projects.dart';
 import 'package:guam_front/screens/projects/detail/project_detail.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -43,7 +42,7 @@ class ProjectSquare extends StatelessWidget {
                     image: project.thumbnail != null && project.thumbnail.path != null
                       ? NetworkImage(HttpRequest().s3BaseAuthority + project.thumbnail.path)
                       : AssetImage("assets/images/project-square-default.jpeg"),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
               )
