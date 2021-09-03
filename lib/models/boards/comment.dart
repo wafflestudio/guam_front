@@ -34,8 +34,8 @@ class Comment extends ChangeNotifier {
       }),
       content: json["content"],
       commentImages: [...json["commentImages"].map((e) => Thumbnail.fromJson(e))],
-      createdAt: DateTime.parse(json["createdAt"]),
-      modifiedAt: DateTime.parse(json["modifiedAt"])
+      createdAt: DateTime.parse(json["createdAt"]).toLocal(),
+      modifiedAt: DateTime.parse(json["modifiedAt"]).toLocal()
     );
   }
 }

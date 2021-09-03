@@ -78,7 +78,7 @@ class _ProjectCreateState extends State<ProjectCreate> {
                     goToPreviousPage: goToPreviousPage,
                     isNewProject: true,
                   ),
-                ProjectStatus(totalPage: 3, currentPage: _currentPage)
+                PageStatus(totalPage: 3, currentPage: _currentPage)
               ]
             )
           ),

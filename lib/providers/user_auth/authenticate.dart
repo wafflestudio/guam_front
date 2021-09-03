@@ -103,7 +103,6 @@ class Authenticate extends ChangeNotifier with Toast {
     try {
       toggleLoading();
       String authToken = await getFirebaseIdToken();
-      print(authToken);
 
       if (authToken.isNotEmpty) {
         await HttpRequest()

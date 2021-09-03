@@ -39,8 +39,8 @@ class Thread extends ChangeNotifier {
       content: json["content"],
       threadImages: [...json["threadImages"].map((e) => Thumbnail.fromJson(e))],
       commentSize: json["commentSize"],
-      createdAt: DateTime.parse(json["createdAt"]),
-      modifiedAt: DateTime.parse(json["modifiedAt"])
+      createdAt: DateTime.parse(json["createdAt"]).toLocal(),
+      modifiedAt: DateTime.parse(json["modifiedAt"]).toLocal()
     );
   }
 }

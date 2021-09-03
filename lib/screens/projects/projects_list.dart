@@ -6,10 +6,6 @@ import 'project_banner.dart';
 import 'sub_headings.dart';
 
 class ProjectsList extends StatelessWidget {
-  final Projects projectsProvider;
-
-  ProjectsList(this.projectsProvider);
-
   @override
   Widget build(BuildContext context) {
     final projectsProvider = context.watch<Projects>();

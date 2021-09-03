@@ -6,10 +6,6 @@ import 'project_square.dart';
 import 'sub_headings.dart';
 
 class AlmostFullProjectsList extends StatelessWidget {
-  final Projects projectsProvider;
-
-  AlmostFullProjectsList(this.projectsProvider);
-
   @override
   Widget build(BuildContext context) {
     final projectsProvider = context.watch<Projects>();
