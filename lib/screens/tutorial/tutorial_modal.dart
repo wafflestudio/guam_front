@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/screens/tutorial/tutorial_page.dart';
 
 class TutorialModal extends StatefulWidget {
+  final Function onExit;
+
+  TutorialModal({this.onExit});
+
   @override
   _TutorialModalState createState() => _TutorialModalState();
 }
@@ -83,6 +87,7 @@ class _TutorialModalState extends State<TutorialModal> {
                 page: _currentPage,
                 goToNextPage: goToNextPage,
                 goToPreviousPage: goToPreviousPage,
+                onExit: widget.onExit,
               ),
           ]
         )

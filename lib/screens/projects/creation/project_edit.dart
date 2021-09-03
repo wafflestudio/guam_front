@@ -125,7 +125,7 @@ class _ProjectEditState extends State<ProjectEdit> {
                             goToPreviousPage: goToPreviousPage,
                             isNewProject: false,
                           ),
-                        ProjectStatus(totalPage: 3, currentPage: _currentPage)
+                        PageStatus(totalPage: 3, currentPage: _currentPage)
                       ])),
             )));
   }

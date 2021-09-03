@@ -24,10 +24,14 @@ class HomeState extends State<Home> {
 
     if (seenTutorial) return; // No need to show tutorial twice.
 
-    showDialog(context: context, builder: (_) => TutorialModal());
-    // code for showing tutorial
-
-    // tutorial 마지막 button press 시 -> await prefs.setBool("seenTutorial", true); 해주심 됩니다.
+    Future<void> onExit() async {
+      await prefs.setBool("seenTutorial", true);
+      Navigator.of(context).pop();
+    }
+    showDialog(
+      context: context,
+      builder: (_) => TutorialModal(onExit: onExit)
+    );
   }
 
   @override

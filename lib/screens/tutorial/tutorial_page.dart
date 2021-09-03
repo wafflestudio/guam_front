@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guam_front/commons/arrow_button.dart';
 import 'package:guam_front/commons/page_status.dart';
 import 'package:guam_front/screens/tutorial/tutorial_image.dart';
+import 'exit_tutorial_button.dart';
 
 class TutorialPage extends StatelessWidget {
   final String title;
@@ -12,8 +13,10 @@ class TutorialPage extends StatelessWidget {
   final int page;
   final Function goToNextPage;
   final Function goToPreviousPage;
+  final Function onExit;
 
-  TutorialPage({this.title, this.description_1, this.description_2, this.imagePath, this.isImageTop, this.goToNextPage, this.goToPreviousPage, this.page});
+  TutorialPage({this.title, this.description_1, this.description_2, this.imagePath,
+    this.isImageTop, this.goToNextPage, this.goToPreviousPage, this.page, this.onExit});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,7 @@ class TutorialPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ArrowButton(onTap: this.goToPreviousPage, active: true, isRightArrow: false),
+                    ArrowButton(onTap: this.goToPreviousPage, active: page != 1, isRightArrow: false),
                     Column(
                       children: [
                         if (isImageTop) TutorialImage(imagePath: imagePath, isImageTop: isImageTop),
@@ -64,7 +67,9 @@ class TutorialPage extends StatelessWidget {
                         if (!isImageTop) TutorialImage(imagePath: imagePath, isImageTop: isImageTop, page: page),
                       ],
                     ),
-                    ArrowButton(onTap: this.goToNextPage, active: true),
+                    page != 6
+                        ? ArrowButton(onTap: this.goToNextPage, active: true)
+                        : ExitTutorialButton(onExit: onExit),
                   ],
                 ),
                 // Spacer(),
