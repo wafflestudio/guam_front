@@ -7,8 +7,9 @@ class CommonConfirmDialog extends StatelessWidget {
   final Function onPressConfirm;
   final Function onPressDecline;
 
-  CommonConfirmDialog({@required this.dialogText, this.confirmText = "확인",
-    this.declineText = "취소", this.onPressConfirm, this.onPressDecline});
+  CommonConfirmDialog({@required this.dialogText, confirmText = "확인",
+    declineText = "취소", this.onPressConfirm, this.onPressDecline})
+      : this.confirmText = confirmText, this.declineText = declineText;
 
   @override
   Widget build(BuildContext context) {
@@ -38,28 +39,30 @@ class CommonConfirmDialog extends StatelessWidget {
       actions: [
         TextButton(
           child: Text(
-              "확인",
+              confirmText,
               style: TextStyle(
                 fontSize: 14,
                 color: Color.fromRGBO(85, 88, 255, 1),
               )
           ),
           onPressed: () {
-            if (onPressConfirm != null) onPressConfirm();
+            // 일단은 dialog 2개 연달아 띄우는 tutorial을 위해 순서 유지
             Navigator.of(context).pop();
+            if (onPressConfirm != null) onPressConfirm();
           },
         ),
         TextButton(
           child: Text(
-              "취소",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.red,
-              )
+            declineText,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.red,
+            )
           ),
           onPressed: () {
-            if (onPressDecline != null) onPressDecline();
+            // 일단은 dialog 2개 연달아 띄우는 tutorial을 위해 순서 유지
             Navigator.of(context).pop();
+            if (onPressDecline != null) onPressDecline();
           },
         ),
       ],
