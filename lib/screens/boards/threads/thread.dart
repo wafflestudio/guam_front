@@ -11,8 +11,8 @@ import '../../../models/boards/thread.dart' as ThreadModel;
 import '../thread_page/thread_page.dart';
 import '../thread_page/thread_comment_images.dart';
 import '../../../commons/bottom_modal/bottom_modal_content.dart';
-import '../accept_decline_button.dart';
-import '../waiting_button.dart';
+import '../buttons/join_thread_buttons.dart';
+import '../buttons/accepted_declined_thread_button.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
@@ -25,14 +25,9 @@ class Thread extends StatelessWidget {
   Widget build(BuildContext context) {
     Boards boardsProvider = context.read<Boards>();
 
-    print(boardsProvider.currentBoard.userStates);
-
-
-    final isGuestThread = boardsProvider.currentBoard.userStates[thread.creator.id] == "GUEST";
-    final isDeclinedThread = boardsProvider.currentBoard.userStates[thread.creator.id] == "DECLINED";
-
-    final showAcceptDeclineButton = ( isGuestThread && boardsProvider.leaderIsMe() ) || isDeclinedThread;
-    final showWaitingButton = isGuestThread && !boardsProvider.leaderIsMe();
+    final isJoinThread = thread.type == "JOIN";
+    final isAcceptedThread = thread.type == "ACCEPTED";
+    final isDeclinedThread = thread.type == "DECLINED";
 
     Future setNotice() async {
       await boardsProvider.setNotice(thread.id).then((res) {
@@ -155,12 +150,14 @@ class Thread extends StatelessWidget {
                       ],
                     ),
                     // show accept decline button if condition met & is leader
-                    if (showAcceptDeclineButton) AcceptDeclineButton(
+                    if (isJoinThread) JoinThreadButtons(
                       userId: thread.creator.id,
-                      userState: boardsProvider.currentBoard.userStates[thread.creator.id],
-                      enabled: boardsProvider.currentBoard.userStates[thread.creator.id] == "GUEST"
+                      //userState: boardsProvider.currentBoard.userStates[thread.creator.id],
+                      enabled: boardsProvider.leaderIsMe(),
                     ),
-                    if (showWaitingButton) WaitingButton()
+                    if (isAcceptedThread || isDeclinedThread) AcceptedDeclinedThreadButton(
+                      accepted: isAcceptedThread
+                    )
                   ],
                 ),
               ),

@@ -6,9 +6,9 @@ import '../../../commons/circular_border_container.dart';
 import '../../../models/boards/thread.dart';
 import '../../../commons/profile_thumbnail.dart';
 import 'thread_comment_images.dart';
-import '../accept_decline_button.dart';
+import '../buttons/join_thread_buttons.dart';
 import '../../../providers/boards/boards.dart';
-import '../waiting_button.dart';
+import '../buttons/waiting_button.dart';
 
 class ThreadContainer extends StatelessWidget {
   final Thread thread;
@@ -55,9 +55,9 @@ class ThreadContainer extends StatelessWidget {
             child: Text(thread.content),
           ),
           if (thread.threadImages.isNotEmpty) ThreadCommentImages(images: thread.threadImages),
-          if (showAcceptDeclineButton) AcceptDeclineButton(
+          if (showAcceptDeclineButton) JoinThreadButtons(
             userId: thread.creator.id,
-            userState: context.read<Boards>().currentBoard.userStates[thread.creator.id],
+            // userState: context.read<Boards>().currentBoard.userStates[thread.creator.id],
             enabled: context.read<Boards>().currentBoard.userStates[thread.creator.id] == "GUEST"
           ),
           if (showWaitingButton) WaitingButton()
