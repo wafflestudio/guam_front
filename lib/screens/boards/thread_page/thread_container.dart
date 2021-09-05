@@ -8,6 +8,7 @@ import '../../../commons/profile_thumbnail.dart';
 import 'thread_comment_images.dart';
 import '../accept_decline_button.dart';
 import '../../../providers/boards/boards.dart';
+import '../waiting_button.dart';
 
 class ThreadContainer extends StatelessWidget {
   final Thread thread;
@@ -16,8 +17,13 @@ class ThreadContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showAcceptDenyButton = ["GUEST", "DECLINED"]
-        .contains(context.read<Boards>().currentBoard.userStates[thread.creator.id]);
+    Boards boardsProvider = context.read<Boards>();
+
+    final isGuestThread = boardsProvider.currentBoard.userStates[thread.creator.id] == "GUEST";
+    final isDeclinedThread = boardsProvider.currentBoard.userStates[thread.creator.id] == "DECLINED";
+
+    final showAcceptDeclineButton = ( isGuestThread && boardsProvider.leaderIsMe() ) || isDeclinedThread;
+    final showWaitingButton = isGuestThread && !boardsProvider.leaderIsMe();
 
     return CircularBorderContainer(
       content: Column(
@@ -49,11 +55,12 @@ class ThreadContainer extends StatelessWidget {
             child: Text(thread.content),
           ),
           if (thread.threadImages.isNotEmpty) ThreadCommentImages(images: thread.threadImages),
-          if (showAcceptDenyButton) AcceptDeclineButton(
+          if (showAcceptDeclineButton) AcceptDeclineButton(
             userId: thread.creator.id,
             userState: context.read<Boards>().currentBoard.userStates[thread.creator.id],
             enabled: context.read<Boards>().currentBoard.userStates[thread.creator.id] == "GUEST"
-          )
+          ),
+          if (showWaitingButton) WaitingButton()
         ],
       ),
       contentColor: Color.fromRGBO(246, 228, 173, 0.6),

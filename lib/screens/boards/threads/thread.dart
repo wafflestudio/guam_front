@@ -25,6 +25,9 @@ class Thread extends StatelessWidget {
   Widget build(BuildContext context) {
     Boards boardsProvider = context.read<Boards>();
 
+    print(boardsProvider.currentBoard.userStates);
+
+
     final isGuestThread = boardsProvider.currentBoard.userStates[thread.creator.id] == "GUEST";
     final isDeclinedThread = boardsProvider.currentBoard.userStates[thread.creator.id] == "DECLINED";
 
