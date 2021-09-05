@@ -15,6 +15,7 @@ class Thread extends ChangeNotifier {
   final String content;
   final List<Thumbnail> threadImages;
   final int commentSize;
+  final String type; // NORMAL, JOIN, ACCEPTED, DECLINED
   final DateTime createdAt;
   final DateTime modifiedAt;
 
@@ -24,6 +25,7 @@ class Thread extends ChangeNotifier {
     this.content,
     this.threadImages,
     this.commentSize,
+    this.type,
     this.createdAt,
     this.modifiedAt
   });
@@ -39,6 +41,7 @@ class Thread extends ChangeNotifier {
       content: json["content"],
       threadImages: [...json["threadImages"].map((e) => Thumbnail.fromJson(e))],
       commentSize: json["commentSize"],
+      type: json["type"],
       createdAt: DateTime.parse(json["createdAt"]).toLocal(),
       modifiedAt: DateTime.parse(json["modifiedAt"]).toLocal()
     );

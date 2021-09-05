@@ -11,7 +11,8 @@ import '../../../models/boards/thread.dart' as ThreadModel;
 import '../thread_page/thread_page.dart';
 import '../thread_page/thread_comment_images.dart';
 import '../../../commons/bottom_modal/bottom_modal_content.dart';
-import '../accept_decline_button.dart';
+import '../buttons/join_thread_buttons.dart';
+import '../buttons/accepted_declined_thread_button.dart';
 
 class Thread extends StatelessWidget {
   final ThreadModel.Thread thread;
@@ -24,7 +25,9 @@ class Thread extends StatelessWidget {
   Widget build(BuildContext context) {
     Boards boardsProvider = context.read<Boards>();
 
-    final showAcceptDenyButton = ["GUEST", "DECLINED"].contains(boardsProvider.currentBoard.userStates[thread.creator.id]);
+    final isJoinThread = thread.type == "JOIN";
+    final isAcceptedThread = thread.type == "ACCEPTED";
+    final isDeclinedThread = thread.type == "DECLINED";
 
     Future setNotice() async {
       await boardsProvider.setNotice(thread.id).then((res) {
@@ -146,10 +149,12 @@ class Thread extends StatelessWidget {
                         )
                       ],
                     ),
-                    if (showAcceptDenyButton) AcceptDeclineButton(
+                    if (isJoinThread) JoinThreadButtons(
                       userId: thread.creator.id,
-                      userState: boardsProvider.currentBoard.userStates[thread.creator.id],
-                      enabled: boardsProvider.currentBoard.userStates[thread.creator.id] == "GUEST"
+                      enabled: boardsProvider.leaderIsMe(),
+                    ),
+                    if (isAcceptedThread || isDeclinedThread) AcceptedDeclinedThreadButton(
+                      accepted: isAcceptedThread
                     )
                   ],
                 ),

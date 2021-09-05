@@ -34,6 +34,7 @@ class Boards extends ChangeNotifier with Toast {
 
   bool isMe(int userId) => _authProvider.me.id == userId;
   bool hasBoards() => boards != null && boards.length != 0;
+  bool leaderIsMe() => isMe(currentBoard.leader.id);
 
   set renderBoardIdx(idx) {
     _renderBoardIdx = idx;
