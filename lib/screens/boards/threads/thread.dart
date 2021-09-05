@@ -149,10 +149,8 @@ class Thread extends StatelessWidget {
                         )
                       ],
                     ),
-                    // show accept decline button if condition met & is leader
                     if (isJoinThread) JoinThreadButtons(
                       userId: thread.creator.id,
-                      //userState: boardsProvider.currentBoard.userStates[thread.creator.id],
                       enabled: boardsProvider.leaderIsMe(),
                     ),
                     if (isAcceptedThread || isDeclinedThread) AcceptedDeclinedThreadButton(
