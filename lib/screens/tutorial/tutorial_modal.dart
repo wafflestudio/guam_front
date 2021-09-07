@@ -20,7 +20,7 @@ class _TutorialModalState extends State<TutorialModal> {
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             if (_currentPage == 1)
               TutorialPage(
