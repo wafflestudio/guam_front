@@ -19,9 +19,8 @@ class HomeState extends State<Home> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool seenTutorial = prefs.getBool("seenTutorial") ?? false;
 
-      if (seenTutorial) {
-      //   return; // No need to show tutorial twice.
-      // else {
+      if (seenTutorial) return; // No need to show tutorial twice.
+      else {
         Future<void> onExit() async {
           await prefs.setBool("seenTutorial", true);
           Navigator.of(context).pop();
